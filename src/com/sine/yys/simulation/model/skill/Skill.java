@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.Camp;
+import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**

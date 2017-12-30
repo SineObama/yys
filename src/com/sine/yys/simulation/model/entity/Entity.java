@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.entity;
 
-import com.sine.yys.simulation.component.OperationHandler;
+import com.sine.yys.simulation.component.operationhandler.OperationHandler;
 import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.model.skill.Skill;
 
@@ -19,7 +19,7 @@ public interface Entity {
 
     int getMaxLife();
 
-    int getDefend();
+    int getDefense();
 
     double getSpeed();
 

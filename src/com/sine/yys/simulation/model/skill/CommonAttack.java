@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.component.targetresolver.EnemyTargetResolver;
+import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 import com.sine.yys.simulation.model.constance.TargetType;
 
 /**
@@ -15,4 +17,7 @@ public abstract class CommonAttack  implements ActiveSkill {
     public int getFire() {
         return 0;
     }
+
+    @Override
+    public TargetResolver getTargetResolver() {return new EnemyTargetResolver();}
 }

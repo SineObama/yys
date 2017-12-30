@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.model.entity;
 
-import com.sine.yys.simulation.component.AutoOperationHandler;
-import com.sine.yys.simulation.component.OperationHandler;
+import com.sine.yys.simulation.component.operationhandler.AutoOperationHandler;
+import com.sine.yys.simulation.component.operationhandler.OperationHandler;
 import com.sine.yys.simulation.model.shield.Shield;
 
 /**
@@ -11,7 +11,7 @@ import com.sine.yys.simulation.model.shield.Shield;
 public abstract class BaseEntity implements Entity {
     private final int attack;
     private final int maxLife;
-    private final int defend;
+    private final int defense;
     private final double speed;
     private final double critical;
     private final double criticalDamage;
@@ -21,10 +21,10 @@ public abstract class BaseEntity implements Entity {
     private int life;
     private Shield shield = null;
 
-    public BaseEntity(int attack, int maxLife, int defend, double speed, double critical, double criticalDamage, double effectHit, double effectDef) {
+    public BaseEntity(int attack, int maxLife, int defense, double speed, double critical, double criticalDamage, double effectHit, double effectDef) {
         this.attack = attack;
         this.maxLife = maxLife;
-        this.defend = defend;
+        this.defense = defense;
         this.speed = speed;
         this.critical = critical;
         this.criticalDamage = criticalDamage;
@@ -42,8 +42,8 @@ public abstract class BaseEntity implements Entity {
         return maxLife;
     }
 
-    public int getDefend() {
-        return defend;
+    public int getDefense() {
+        return defense;
     }
 
     public double getSpeed() {

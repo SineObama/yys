@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.entity;
 
-import com.sine.yys.simulation.component.OperationHandler;
+import com.sine.yys.simulation.component.operationhandler.OperationHandler;
 import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.model.skill.Skill;
 
@@ -79,7 +79,7 @@ public class BattleKoinobori implements Entity {
     }
 
     @Override
-    public int getDefend() {
+    public int getDefense() {
         return 0;
     }
 

@@ -5,7 +5,7 @@ import com.sine.yys.simulation.model.constance.TargetType;
 /**
  * 简单群攻，可多段。
  */
-public abstract class SimpleGroupAttack extends BaseSkill implements ActiveSkill  {
+public abstract class SimpleGroupAttack implements ActiveSkill  {
     @Override
     public TargetType getTargetType() {
         return TargetType.EnemyCamp;
