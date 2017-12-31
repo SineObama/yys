@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.operationhandler;
 
-import com.sine.yys.simulation.component.Camp;
-import com.sine.yys.simulation.component.targetresolver.TargetResolver;
+import com.sine.yys.simulation.model.battle.Camp;
+import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.operation.Operation;
 import com.sine.yys.simulation.model.operation.SimpleOperation;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class AutoOperationHandler implements OperationHandler {
     @Override
-    public Operation handle(Entity entity, Camp own, Map<ActiveSkill, List<Entity>> map) {
+    public Operation handle(Entity entity, Camp own, Map<ActiveSkill, List<? extends Target>> map) {
         final List<Skill> skills = entity.getSkills();
         int max = 0;
         ActiveSkill use = null;
@@ -28,7 +28,7 @@ public class AutoOperationHandler implements OperationHandler {
         }
         if (use == null)
             return null;
-        final List<Entity> targets = map.get(use);
+        final List<? extends Target> targets = map.get(use);
         if (targets.isEmpty())
             return null;
         return new SimpleOperation(entity, targets.get(0), use);

@@ -9,12 +9,7 @@ import java.util.List;
 
 public class QingXingDeng extends BaseEntity {
     public QingXingDeng(int attack, int maxLife, int defense, double speed, double critical, double criticalDamage, double effectHit, double effectDef) {
-        super(attack, maxLife, defense, speed, critical, criticalDamage, effectHit, effectDef);
-    }
-
-    @Override
-    public List<Skill> getSkills() {
-        return Arrays.asList((Skill) new YouGuang(), new XiHunDeng());
+        super(attack, maxLife, defense, speed, critical, criticalDamage, effectHit, effectDef, Arrays.asList(new YouGuang(), new XiHunDeng()));
     }
 
     @Override

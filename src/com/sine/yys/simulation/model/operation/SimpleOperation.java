@@ -1,14 +1,15 @@
 package com.sine.yys.simulation.model.operation;
 
+import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
-import com.sine.yys.simulation.model.skill.Skill;
 
 public class SimpleOperation implements Operation {
-    private final Entity source, target;
+    private final Entity source;
+    private final Target target;
     private final ActiveSkill skill;
 
-    public SimpleOperation(Entity source, Entity target, ActiveSkill skill) {
+    public SimpleOperation(Entity source, Target target, ActiveSkill skill) {
         this.source = source;
         this.target = target;
         this.skill = skill;
@@ -25,7 +26,7 @@ public class SimpleOperation implements Operation {
     }
 
     @Override
-    public Entity getTarget() {
+    public Target getTarget() {
         return target;
     }
 }

@@ -17,10 +17,13 @@ public class CalcDam {
         return 300.0 / (300.0 + defense);
     }
 
-    public static double attack(Entity source, Entity target) {
+    /**
+     * 计算某式神攻击目标的期望伤害。
+     * 包括暴击的计算（但没有反馈信息）。
+     */
+    public static int expect(Entity source, Entity target, double coefficient) {
         Random random = new Random();
-        int life = target.getLife();
         double critical = random.nextDouble() < source.getCritical() ? source.getCriticalDamage() : 1.0;
-        return injuryPct(target.getDefense()) * source.getAttack() * critical;
+        return (int) (coefficient * injuryPct(target.getDefense()) * source.getAttack() * critical);
     }
 }

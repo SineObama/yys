@@ -1,11 +1,11 @@
 package com.sine.yys.simulation.simulator;
 
-import com.sine.yys.simulation.component.*;
+import com.sine.yys.simulation.component.SpeedBar;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
-import com.sine.yys.simulation.component.targetresolver.EnemyTargetResolver;
-import com.sine.yys.simulation.component.targetresolver.TargetResolver;
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.battle.Camp;
+import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.entity.BattleKoinobori;
+import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.operation.Operation;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
 import com.sine.yys.simulation.model.skill.CommonAttack;
@@ -33,8 +33,7 @@ public class BattleSimulator {
     public BattleSimulator(final Camp camp0, final Camp camp1) {
         this.camp0 = camp0;
         this.camp1 = camp1;
-        battleKoinobori = new BattleKoinobori();
-        battleKoinobori.setSpeed(100.0);
+        battleKoinobori = new BattleKoinobori(100.0);
     }
 
     public void step() {
@@ -42,15 +41,15 @@ public class BattleSimulator {
             // 为技能添加事件回调处理函数
 
             // 加入到行动条中。
-            final List<Entity> all = camp0.getAllEntity();
-            all.addAll(camp1.getAllEntity());
+            final List<Entity> all = camp0.getAllAlive();
+            all.addAll(camp1.getAllAlive());
             speedBar.addAll(all);
+
             // TODO 战斗开始事件
         }
 
         // 获取当前行动式神
         Entity cur = speedBar.step();
-        List<Skill> skills = cur.getSkills();
         // 百目鬼操作空间=。=
 
         // TODO 行动前事件
@@ -64,13 +63,14 @@ public class BattleSimulator {
             own = camp1;
             enemy = camp0;
         }
+        // 鬼火行动条推进一格。
+        own.step();
 
         // 获取每个主动技能的可选目标
-        Map<ActiveSkill, List<Entity>> map = new HashMap<>();
+        Map<ActiveSkill, List<? extends Target>> map = new HashMap<>();
         for (Skill skill : cur.getSkills()) {
             if (skill instanceof ActiveSkill) {
-                ActiveSkill activeSkill = (ActiveSkill) skill;
-                map.put(activeSkill, activeSkill.getTargetResolver().resolve(cur, own, enemy));
+                map.put((ActiveSkill) skill, ((ActiveSkill) skill).getTargetResolver().resolve(cur, own, enemy));
             }
         }
 
@@ -85,16 +85,34 @@ public class BattleSimulator {
         ActiveSkill skill = operation.getSkill();
         if (skill instanceof CommonAttack) {
             CommonAttack commonAttack = (CommonAttack) skill;
-            Entity target = operation.getTarget();
             double coefficient = commonAttack.getCoefficient();
-
-            double damage = coefficient * CalcDam.attack(cur, target);
+            Entity target = (Entity) operation.getTarget();
+            applyRealDamage(target, enemy, CalcDam.expect(cur, target, coefficient));
         } else if (skill instanceof SimpleGroupAttack) {
-
+            SimpleGroupAttack groupAttack = (SimpleGroupAttack) skill;
+            double coefficient = groupAttack.getCoefficient();
+            for (int i = 0; i < groupAttack.getTimes(); i++) {
+                List<Entity> targets = enemy.getAllAlive();
+                for (Entity target : targets) {
+                    applyRealDamage(target, enemy, CalcDam.expect(cur, target, coefficient));
+                }
+            }
         }
 
 
         // TODO 行动后事件
+    }
+
+    /**
+     * 扣除真实生命，并检查死亡。
+     * 以后要区分召唤物和式神的情况
+     */
+    private void applyRealDamage(Entity target, Camp camp, int damage) {
+        if (target.getLife() > damage) {
+            target.setLife(target.getLife() - damage);
+        } else {
+            camp.getPosition(target).setDead(true);
+        }
     }
 
     public Camp getCamp0() {

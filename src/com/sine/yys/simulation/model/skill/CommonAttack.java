@@ -19,5 +19,7 @@ public abstract class CommonAttack  implements ActiveSkill {
     }
 
     @Override
-    public TargetResolver getTargetResolver() {return new EnemyTargetResolver();}
+    public TargetResolver getTargetResolver() {
+        return new EnemyTargetResolver();
+    }
 }

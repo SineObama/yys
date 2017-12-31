@@ -5,17 +5,24 @@ import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.model.skill.Skill;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * 战场鲤鱼旗。
  */
-public class BattleKoinobori implements Entity {
+public class BattleKoinobori extends BaseEntity implements Entity {
     private double speed;
     private double damageRatio = 1.0;
     private double cureRatio = 1.0;
     private double damageRatioAddition = 0.2;
     private double cureRatioReduction = 0.2;
+
+    public BattleKoinobori(double speed) {
+        super(0, 0, 0, 0, 0, 0, 0, 0, Collections.emptyList());
+        this.speed = speed;
+    }
 
     public double getDamageRatio() {
         return damageRatio;
@@ -54,77 +61,12 @@ public class BattleKoinobori implements Entity {
     }
 
     @Override
-    public OperationHandler getAI() {
-        return null;
-    }
-
-    @Override
-    public List<Skill> getSkills() {
-        return new ArrayList<>();
+    public double getSpeed() {
+        return this.speed;
     }
 
     @Override
     public String getName() {
         return "战场鲤鱼旗";
-    }
-
-    @Override
-    public int getAttack() {
-        return 0;
-    }
-
-    @Override
-    public int getMaxLife() {
-        return 0;
-    }
-
-    @Override
-    public int getDefense() {
-        return 0;
-    }
-
-    @Override
-    public double getSpeed() {
-        return speed;
-    }
-
-    @Override
-    public double getCritical() {
-        return 0;
-    }
-
-    @Override
-    public double getCriticalDamage() {
-        return 0;
-    }
-
-    @Override
-    public double getEffectHit() {
-        return 0;
-    }
-
-    @Override
-    public double getEffectDef() {
-        return 0;
-    }
-
-    @Override
-    public int getLife() {
-        return 0;
-    }
-
-    @Override
-    public void setLife(int life) {
-
-    }
-
-    @Override
-    public Shield getShield() {
-        return null;
-    }
-
-    @Override
-    public void setShield(Shield shield) {
-
     }
 }

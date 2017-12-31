@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.operationhandler;
 
-import com.sine.yys.simulation.component.Camp;
-import com.sine.yys.simulation.component.targetresolver.TargetResolver;
+import com.sine.yys.simulation.model.battle.Camp;
+import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.operation.Operation;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
@@ -14,5 +14,5 @@ import java.util.Map;
  * 可通过人工指定（手动）或者式神AI来实现。
  */
 public interface OperationHandler {
-    Operation handle(Entity entity, Camp own, Map<ActiveSkill, List<Entity>> map);
+    Operation handle(Entity entity, Camp own, Map<ActiveSkill, List<? extends Target>> map);
 }
