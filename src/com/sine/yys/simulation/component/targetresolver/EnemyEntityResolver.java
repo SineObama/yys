@@ -6,7 +6,7 @@ import com.sine.yys.simulation.model.entity.Entity;
 
 import java.util.List;
 
-public class EnemyTargetResolver implements TargetResolver {
+public class EnemyEntityResolver implements TargetResolver {
     @Override
     public List<? extends Target> resolve(Entity self, Camp own, Camp enemy) {
         return enemy.getAllAlive();

@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.model.skill;
 
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
+import com.sine.yys.simulation.model.battle.ActionContext;
 import com.sine.yys.simulation.model.constance.TargetType;
 
 /**
@@ -8,6 +9,10 @@ import com.sine.yys.simulation.model.constance.TargetType;
  */
 public interface ActiveSkill extends Skill {
     TargetResolver getTargetResolver();
+
     TargetType getTargetType();
+
     double getCoefficient();
+
+    void apply(ActionContext context);
 }

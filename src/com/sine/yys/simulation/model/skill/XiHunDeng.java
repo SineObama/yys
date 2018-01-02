@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.model.battle.ActionContext;
+
 /**
  * 青行灯-吸魂灯。
  */
@@ -20,17 +22,27 @@ public class XiHunDeng extends SimpleGroupAttack {
     }
 
     @Override
-    public int getCD() {
-        return 0;
-    }
-
-    @Override
     public double getCoefficient() {
-        return 107;
+        return 1.07;
     }
 
     @Override
     public int getTimes() {
         return 1;
+    }
+
+    /**
+     * 吸火概率
+     */
+    public double getPct() {
+        return 0.3;
+    }
+
+    @Override
+    public void apply(ActionContext context) {
+        context.getOwn().useFire(getFire());
+        final int times = context.getEnemy().getAllShikigami().size();
+        super.apply(context);
+        super.randomGrab(context, getPct(), times);
     }
 }

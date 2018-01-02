@@ -10,5 +10,9 @@ public interface Skill {
 
     int getCD();
 
+    int getMAXCD();
+
+    int step();
+
     int getFire();
 }

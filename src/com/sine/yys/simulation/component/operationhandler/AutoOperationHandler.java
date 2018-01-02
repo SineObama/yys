@@ -18,7 +18,7 @@ public class AutoOperationHandler implements OperationHandler {
         int max = 0;
         ActiveSkill use = null;
         for (Skill skill : skills) {
-            if (skill instanceof ActiveSkill) {
+            if (skill instanceof ActiveSkill && skill.getCD() == 0) {
                 ActiveSkill activeSkill = (ActiveSkill) skill;
                 if (activeSkill.getFire() <= own.getFire() && max <= activeSkill.getFire()) {
                     max = activeSkill.getFire();

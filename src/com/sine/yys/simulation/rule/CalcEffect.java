@@ -1,15 +1,14 @@
 package com.sine.yys.simulation.rule;
 
 import com.sine.yys.simulation.model.constance.HitResult;
-
-import java.util.Random;
+import com.sine.yys.simulation.util.RandUtil;
 
 /**
  * 计算效果命中
  */
 public class CalcEffect {
     /**
-     * 计算命中概率。相当于100%概率0命中下的命中概率。
+     * 已知抵抗，计算命中概率。相当于100%概率0命中下的命中概率。
      *
      * @param resistance 对方效果抵抗
      * @return
@@ -28,11 +27,10 @@ public class CalcEffect {
      */
     public static HitResult calc(double pro, double hit, double resistance) {
         double proHit0 = pro * (1 + hit);
-        Random random = new Random();
-        if (random.nextDouble() > proHit0)
+        if (RandUtil.fail(proHit0))
             return HitResult.Miss;
         if (proHit0 < 1)
             proHit0 = 1;
-        return random.nextDouble() < proHit0 * hitPct(resistance) ? HitResult.Hit : HitResult.Resist;
+        return RandUtil.success(proHit0 * hitPct(resistance)) ? HitResult.Hit : HitResult.Resist;
     }
 }

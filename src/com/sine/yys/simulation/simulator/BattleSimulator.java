@@ -1,7 +1,9 @@
 package com.sine.yys.simulation.simulator;
 
 import com.sine.yys.simulation.component.SpeedBar;
+import com.sine.yys.simulation.component.SpeedBarImpl;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
+import com.sine.yys.simulation.model.battle.ActionContextImpl;
 import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.entity.BattleKoinobori;
@@ -12,16 +14,19 @@ import com.sine.yys.simulation.model.skill.CommonAttack;
 import com.sine.yys.simulation.model.skill.SimpleGroupAttack;
 import com.sine.yys.simulation.model.skill.Skill;
 import com.sine.yys.simulation.rule.CalcDam;
+import com.sine.yys.simulation.util.Msg;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * 一场战斗。
  * 包含2个阵营。
  */
 public class BattleSimulator {
+    private final Logger log = Logger.getLogger(this.getClass().toString());
     private final Camp camp0, camp1;
     private boolean auto = true;
     private OperationHandler handler = null;
@@ -30,15 +35,19 @@ public class BattleSimulator {
     private boolean started = false;
     private SpeedBar speedBar = null;
 
+    private int round = 0;
+
     public BattleSimulator(final Camp camp0, final Camp camp1) {
         this.camp0 = camp0;
         this.camp1 = camp1;
-        battleKoinobori = new BattleKoinobori(100.0);
+        this.battleKoinobori = new BattleKoinobori(100.0);
+        this.speedBar = new SpeedBarImpl();
     }
 
-    public void step() {
+    public Camp step() {
         if (!started) {
-            // 为技能添加事件回调处理函数
+            started = true;
+            // 为技能添加事件回调处理函数？
 
             // 加入到行动条中。
             final List<Entity> all = camp0.getAllAlive();
@@ -50,9 +59,6 @@ public class BattleSimulator {
 
         // 获取当前行动式神
         Entity cur = speedBar.step();
-        // 百目鬼操作空间=。=
-
-        // TODO 行动前事件
 
         // 确定敌我阵营
         final Camp own, enemy;
@@ -65,6 +71,11 @@ public class BattleSimulator {
         }
         // 鬼火行动条推进一格。
         own.step();
+
+        round += 1;
+        log.info(Msg.turn(own, cur) + " 序号 " + round);
+
+        // TODO 行动前事件
 
         // 获取每个主动技能的可选目标
         Map<ActiveSkill, List<? extends Target>> map = new HashMap<>();
@@ -80,39 +91,22 @@ public class BattleSimulator {
             operation = cur.getAI().handle(cur, own, map);
         else
             operation = handler.handle(cur, own, map);
+        log.info(Msg.action(own, cur, operation.getSkill()));
 
         // 实现操作
         ActiveSkill skill = operation.getSkill();
-        if (skill instanceof CommonAttack) {
-            CommonAttack commonAttack = (CommonAttack) skill;
-            double coefficient = commonAttack.getCoefficient();
-            Entity target = (Entity) operation.getTarget();
-            applyRealDamage(target, enemy, CalcDam.expect(cur, target, coefficient));
-        } else if (skill instanceof SimpleGroupAttack) {
-            SimpleGroupAttack groupAttack = (SimpleGroupAttack) skill;
-            double coefficient = groupAttack.getCoefficient();
-            for (int i = 0; i < groupAttack.getTimes(); i++) {
-                List<Entity> targets = enemy.getAllAlive();
-                for (Entity target : targets) {
-                    applyRealDamage(target, enemy, CalcDam.expect(cur, target, coefficient));
-                }
-            }
-        }
-
+        if (operation.getTarget() instanceof Entity)
+            skill.apply(new ActionContextImpl(cur, (Entity) operation.getTarget(), own, enemy));
+        else
+            skill.apply(new ActionContextImpl(cur, null, own, enemy));
 
         // TODO 行动后事件
-    }
 
-    /**
-     * 扣除真实生命，并检查死亡。
-     * 以后要区分召唤物和式神的情况
-     */
-    private void applyRealDamage(Entity target, Camp camp, int damage) {
-        if (target.getLife() > damage) {
-            target.setLife(target.getLife() - damage);
-        } else {
-            camp.getPosition(target).setDead(true);
-        }
+        if (own.getAllShikigami().size() == 0)
+            return enemy;
+        if (enemy.getAllShikigami().size() == 0)
+            return own;
+        return null;
     }
 
     public Camp getCamp0() {
