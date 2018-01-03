@@ -1,8 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.model.battle.ActionContext;
-import com.sine.yys.simulation.model.battle.Camp;
-import com.sine.yys.simulation.util.RandUtil;
+import com.sine.yys.simulation.component.ContextAndRunner;
 
 /**
  * 青行灯-幽光。
@@ -13,11 +11,6 @@ public class YouGuang extends CommonAttack {
         return "幽光";
     }
 
-    @Override
-    public String getDetail() {
-        return "";
-    }
-
     /**
      * 吸火概率
      */
@@ -26,8 +19,8 @@ public class YouGuang extends CommonAttack {
     }
 
     @Override
-    public void apply(ActionContext context) {
+    public void apply(ContextAndRunner context) {
         super.apply(context);
-        super.randomGrab(context, getPct(), 1);
+        context.randomGrab(getPct(), 1);
     }
 }

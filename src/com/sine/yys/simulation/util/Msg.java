@@ -1,24 +1,41 @@
 package com.sine.yys.simulation.util;
 
-import com.sine.yys.simulation.model.battle.ActionContext;
+import com.sine.yys.simulation.component.Context;
 import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.entity.Entity;
-import com.sine.yys.simulation.model.skill.ActiveSkill;
+import com.sine.yys.simulation.model.skill.Skill;
+
+import java.util.logging.Logger;
 
 public class Msg {
+    private static final Logger log = Logger.getLogger(Msg.class.toString());
 
-    public static String turn(Camp own, Entity entity) {
-        return String.format("%s行动", formatCampEntity(own, entity));
+    private static Context context = null;
+
+    public static void setContext(Context o) {
+        context = o;
     }
 
-    public static String action(Camp own, Entity entity, ActiveSkill skill) {
-        return String.format("%s使用了 %s", formatCampEntity(own, entity), skill.getName());
+    public static String turn() {
+        return String.format("%s行动", formatCampEntity(context.getOwn(), context.getSelf()));
     }
 
-    public static String damage(ActionContext context, Entity target, int damage) {
+    public static String action() {
+        return String.format("%s使用了 %s", formatCampEntity(context.getOwn(), context.getSelf()), context.getActiveSkill().getName());
+    }
+
+    public static String damage(Entity target, int damage) {
         String src = formatCampEntity(context.getOwn(), context.getSelf());
         String dst = formatCampEntity(context.getEnemy(), target);
         return String.format("%s攻击%s造成% 5d伤害", src, dst, damage);
+    }
+
+    public static String trigger(Skill skill) {
+        return String.format("%s触发%s", formatCampEntity(context.getOwn(), context.getSelf()), skill.getName());
+    }
+
+    public static String grabFire(int num) {
+        return String.format("%s 吸取%s%2d鬼火", chStr("[" + context.getOwn().getName() + "]", 8), chStr("[" + context.getEnemy().getName() + "]", 8), num);
     }
 
     private static String formatCampEntity(Camp camp, Entity entity) {

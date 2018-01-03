@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.model.battle;
 
+import com.sine.yys.simulation.component.event.EventController;
+import com.sine.yys.simulation.component.event.EventControllerImpl;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.entity.Shikigami;
 
@@ -7,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CampImpl implements Camp {
+    private final EventController eventController = new EventControllerImpl();
     private final String name;
-    private List<Position> positions = new ArrayList<>();
+    private final List<Position> positions = new ArrayList<>();
     private int fire;
     private int fireBarPos = 0;
 
@@ -96,5 +99,10 @@ public class CampImpl implements Camp {
                 return position;
         }
         return null;
+    }
+
+    @Override
+    public EventController getEventController() {
+        return eventController;
     }
 }

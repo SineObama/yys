@@ -1,13 +1,6 @@
 package com.sine.yys.simulation.model.entity;
 
-import com.sine.yys.simulation.component.operationhandler.OperationHandler;
-import com.sine.yys.simulation.model.shield.Shield;
-import com.sine.yys.simulation.model.skill.Skill;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * 战场鲤鱼旗。

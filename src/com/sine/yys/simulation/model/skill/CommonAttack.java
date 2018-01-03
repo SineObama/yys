@@ -1,25 +1,13 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.component.ContextAndRunner;
 import com.sine.yys.simulation.component.targetresolver.EnemyEntityResolver;
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
-import com.sine.yys.simulation.model.battle.ActionContext;
-import com.sine.yys.simulation.model.constance.TargetType;
-import com.sine.yys.simulation.model.entity.Entity;
-import com.sine.yys.simulation.rule.CalcDam;
 
 /**
  * 普通攻击
  */
 public abstract class CommonAttack extends BaseSkill implements ActiveSkill {
-    public CommonAttack() {
-        super(0);
-    }
-
-    @Override
-    public TargetType getTargetType() {
-        return TargetType.Enemy;
-    }
-
     @Override
     public int getFire() {
         return 0;
@@ -40,10 +28,9 @@ public abstract class CommonAttack extends BaseSkill implements ActiveSkill {
     }
 
     @Override
-    public void apply(ActionContext context) {
-        double coefficient = getCoefficient();
+    public void apply(ContextAndRunner context) {
         for (int i = 0; i < getTimes(); i++) {
-            applyRealDamage(context, context.getTarget(), CalcDam.expect(context.getSelf(), context.getTarget(), coefficient));
+            context.damage(getCoefficient());
         }
     }
 }

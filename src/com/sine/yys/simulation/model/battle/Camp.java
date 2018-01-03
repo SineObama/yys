@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.model.battle;
 
+import com.sine.yys.simulation.component.event.EventController;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.entity.Shikigami;
 
@@ -50,4 +51,6 @@ public interface Camp extends Target {
     int step();
 
     Position getPosition(Entity entity);
+
+    EventController getEventController();
 }

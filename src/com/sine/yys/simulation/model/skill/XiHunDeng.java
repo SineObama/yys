@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.model.battle.ActionContext;
+import com.sine.yys.simulation.component.ContextAndRunner;
 
 /**
  * 青行灯-吸魂灯。
@@ -14,11 +14,6 @@ public class XiHunDeng extends SimpleGroupAttack {
     @Override
     public String getName() {
         return "吸魂灯";
-    }
-
-    @Override
-    public String getDetail() {
-        return "";
     }
 
     @Override
@@ -39,10 +34,9 @@ public class XiHunDeng extends SimpleGroupAttack {
     }
 
     @Override
-    public void apply(ActionContext context) {
-        context.getOwn().useFire(getFire());
-        final int times = context.getEnemy().getAllShikigami().size();
+    public void apply(ContextAndRunner context) {
+        final int grabTimes = context.getEnemy().getAllShikigami().size();
         super.apply(context);
-        super.randomGrab(context, getPct(), times);
+        context.randomGrab(getPct(), grabTimes);
     }
 }

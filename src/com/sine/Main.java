@@ -4,9 +4,8 @@ import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.battle.CampImpl;
 import com.sine.yys.simulation.model.entity.QingXingDeng;
 import com.sine.yys.simulation.simulator.BattleSimulator;
-import com.sine.yys.simulation.util.Msg;
+import com.sine.yys.simulation.simulator.Simulator;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
@@ -18,9 +17,12 @@ public class Main {
         for (int i = 0; i < times; i++) {
             Camp red = new CampImpl("红方", 3);
             red.addEntity(new QingXingDeng(12400, 10000, 400, 187, 0.08, 1.5, 0, 0));
+            red.addEntity(new QingXingDeng(12400, 10000, 400, 187, 0.08, 1.5, 0, 0));
             Camp blue = new CampImpl("蓝方", 3);
             blue.addEntity(new QingXingDeng(12400, 10000, 400, 117, 0.08, 1.5, 0, 0));
-            BattleSimulator simulator = new BattleSimulator(red, blue);
+            blue.addEntity(new QingXingDeng(12400, 10000, 400, 117, 0.08, 1.5, 0, 0));
+            blue.addEntity(new QingXingDeng(12400, 10000, 400, 117, 0.08, 1.5, 0, 0));
+            Simulator simulator = new BattleSimulator(red, blue);
             Camp win;
             while ((win = simulator.step()) == null) ;
             log.warning(win.getName() + "胜利");
