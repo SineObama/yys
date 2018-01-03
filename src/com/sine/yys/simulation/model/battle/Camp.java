@@ -25,6 +25,8 @@ public interface Camp extends Target {
      */
     int getFire();
 
+    int getIncrease();
+
     /**
      * 使用（减去）鬼火数
      */

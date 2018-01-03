@@ -23,6 +23,7 @@ public abstract class SimpleGroupAttack extends BaseSkill implements ActiveSkill
         context.useFire(getFire());
         for (int i = 0; i < getTimes(); i++) {
             for (Entity target : context.getEnemy().getAllAlive()) {
+                context.setTarget(target);
                 context.damage(target, getCoefficient());
             }
         }

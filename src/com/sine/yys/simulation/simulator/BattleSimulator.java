@@ -235,6 +235,7 @@ public class BattleSimulator implements Simulator, ContextAndRunner {
         if (target.getLife() > damage) {
             target.setLife(target.getLife() - damage);
         } else {
+            log.info(Msg.kill());
             target.setLife(0);
             enemy.getPosition(target).setDead(true);
         }
@@ -255,10 +256,16 @@ public class BattleSimulator implements Simulator, ContextAndRunner {
         costFire = num;
         own.getEventController().trigger(UseFire.class, this);
         own.useFire(costFire);
+        log.info(Msg.useFire(costFire));
     }
 
     @Override
     public void setCostFire(int num) {
         costFire = num;
+    }
+
+    @Override
+    public void setTarget(Entity entity) {
+        target = entity;
     }
 }
