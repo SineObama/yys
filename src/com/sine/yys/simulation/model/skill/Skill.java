@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.model.battle.InitContext;
+
 /**
  * 技能。根基类。
  */
@@ -13,4 +15,6 @@ public interface Skill {
     int getMAXCD();
 
     int step();
+
+    void init(InitContext context);
 }

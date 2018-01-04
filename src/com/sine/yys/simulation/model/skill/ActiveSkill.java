@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.ContextAndRunner;
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 
 /**
@@ -13,5 +13,5 @@ public interface ActiveSkill extends Skill {
 
     double getCoefficient();
 
-    void apply(ContextAndRunner context);
+    void apply(Controller controller);
 }

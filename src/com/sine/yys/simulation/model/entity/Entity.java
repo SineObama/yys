@@ -1,6 +1,8 @@
 package com.sine.yys.simulation.model.entity;
 
+import com.sine.yys.simulation.component.event.EventController;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
+import com.sine.yys.simulation.model.battle.InitContext;
 import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
@@ -39,9 +41,15 @@ public interface Entity extends Target {
 
     int getLife();
 
+    double getLifePct();
+
     void setLife(int life);
 
     Shield getShield();
 
     void setShield(Shield shield);
+
+    EventController getEventController();
+
+    void init(InitContext context);
 }

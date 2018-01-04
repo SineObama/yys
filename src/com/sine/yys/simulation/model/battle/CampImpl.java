@@ -120,4 +120,12 @@ public class CampImpl implements Camp {
     public EventController getEventController() {
         return eventController;
     }
+
+    @Override
+    public void init(InitContext context) {
+        final List<Shikigami> allShikigami = getAllShikigami();
+        for (Shikigami shikigami : allShikigami) {
+            shikigami.init(context);
+        }
+    }
 }

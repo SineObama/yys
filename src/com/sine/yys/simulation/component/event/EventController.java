@@ -1,11 +1,12 @@
 package com.sine.yys.simulation.component.event;
 
-import com.sine.yys.simulation.component.ContextAndRunner;
-
+/**
+ * 事件控制器，可以按事件类型把回调对象（Handler）分别存储、分别触发。
+ */
 public interface EventController {
-    <T extends Event> void add(Class<T> T, EventHandler handler);
+    <EventType extends Event> void add(Class<EventType> EventType, EventHandler<EventType> handler);
 
-    <T extends Event> void remove(Class<T> T, EventHandler handler);
+    <EventType extends Event> void remove(Class<EventType> EventType, EventHandler<EventType> handler);
 
-    <T extends Event> void trigger(Class<T> T, ContextAndRunner context);
+    <EventType extends Event> void trigger(Class<EventType> EventType, EventType event);
 }

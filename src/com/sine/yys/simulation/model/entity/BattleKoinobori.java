@@ -13,7 +13,7 @@ public class BattleKoinobori extends BaseEntity implements Entity {
     private double cureRatioReduction = 0.2;
 
     public BattleKoinobori(double speed) {
-        super(0, 0, 0, 0, 0, 0, 0, 0, Collections.emptyList());
+        super(0, 0, 0, 0, 0, 0, 0, 0, Collections.emptyList(), null);
         this.speed = speed;
     }
 

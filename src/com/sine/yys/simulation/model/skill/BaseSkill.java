@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.model.battle.InitContext;
+
 import java.util.logging.Logger;
 
 public abstract class BaseSkill implements Skill {
@@ -35,5 +37,10 @@ public abstract class BaseSkill implements Skill {
         if (this.CD == 0)
             return 0;
         return this.CD = this.CD - 1;
+    }
+
+    @Override
+    public void init(InitContext context) {
+
     }
 }

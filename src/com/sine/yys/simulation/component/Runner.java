@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**
@@ -23,8 +22,6 @@ public interface Runner {
     void randomGrab(double pct, int times);
 
     void useFire(int num);
-
-    void setCostFire(int num);
 
     void setTarget(Entity entity);
 }

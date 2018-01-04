@@ -1,7 +1,11 @@
 package com.sine.yys.simulation.model.entity;
 
+import com.sine.yys.simulation.component.event.EventController;
+import com.sine.yys.simulation.component.event.EventControllerImpl;
 import com.sine.yys.simulation.component.operationhandler.AutoOperationHandler;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
+import com.sine.yys.simulation.model.battle.InitContext;
+import com.sine.yys.simulation.model.mitama.Mitama;
 import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
 import com.sine.yys.simulation.model.skill.Skill;
@@ -26,9 +30,11 @@ public abstract class BaseEntity implements Entity {
     private int life;
     private Shield shield = null;
 
-    private List<Skill> skills = null;
+    private final List<Skill> skills;
+    private final Mitama mitama;
+    private final EventController eventController = new EventControllerImpl();
 
-    public BaseEntity(int attack, int maxLife, int defense, double speed, double critical, double criticalDamage, double effectHit, double effectDef, List<Skill> skills) {
+    public BaseEntity(int attack, int maxLife, int defense, double speed, double critical, double criticalDamage, double effectHit, double effectDef, List<Skill> skills, Mitama mitama) {
         this.attack = attack;
         this.maxLife = maxLife;
         this.defense = defense;
@@ -40,6 +46,9 @@ public abstract class BaseEntity implements Entity {
 
         this.life = maxLife;
         this.skills = skills;
+        this.mitama = mitama;
+
+        // TODO
     }
 
     @Override
@@ -88,6 +97,11 @@ public abstract class BaseEntity implements Entity {
     }
 
     @Override
+    public double getLifePct() {
+        return (double) life / maxLife;
+    }
+
+    @Override
     public void setLife(int life) {
         this.life = life;
     }
@@ -100,6 +114,11 @@ public abstract class BaseEntity implements Entity {
     @Override
     public void setShield(Shield shield) {
         this.shield = shield;
+    }
+
+    @Override
+    public EventController getEventController() {
+        return this.eventController;
     }
 
     @Override
@@ -121,5 +140,15 @@ public abstract class BaseEntity implements Entity {
             }
         }
         return activeSkills;
+    }
+
+    @Override
+    public void init(InitContext context) {
+        context.setSelf(this);
+        for (Skill skill : getSkills()) {
+            skill.init(context);
+        }
+        if (mitama != null)
+            mitama.init(context);
     }
 }

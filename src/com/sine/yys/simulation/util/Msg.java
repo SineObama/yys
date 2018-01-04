@@ -3,6 +3,7 @@ package com.sine.yys.simulation.util;
 import com.sine.yys.simulation.component.Context;
 import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.mitama.Mitama;
 import com.sine.yys.simulation.model.skill.Skill;
 
 import java.util.logging.Logger;
@@ -24,6 +25,10 @@ public class Msg {
         return discribe(1, 1, "行动");
     }
 
+    public static String info(String msg) {
+        return discribe(1, 1, msg);
+    }
+
     public static String action() {
         return discribe(1, 1, "使用了 " + context.getActiveSkill().getName());
     }
@@ -36,8 +41,12 @@ public class Msg {
         return discribe(1, 1, "触发 " + skill.getName());
     }
 
+    public static String trigger(Mitama mitama) {
+        return discribe(1, 1, "触发 " + mitama.getName());
+    }
+
     public static String grabFire(int num) {
-        return vector(1, 0, "吸取", 1, 0, num + "点鬼火");
+        return vector(1, 0, "吸取", 1, 0, num + " 点鬼火，还剩 " + context.getOwn().getFire() + " 点");
     }
 
     public static String addFire(int num) {

@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.ContextAndRunner;
+import com.sine.yys.simulation.component.Controller;
 
 /**
  * 青行灯-吸魂灯。
@@ -34,9 +34,9 @@ public class XiHunDeng extends SimpleGroupAttack {
     }
 
     @Override
-    public void apply(ContextAndRunner context) {
-        final int grabTimes = context.getEnemy().getAllShikigami().size();
-        super.apply(context);
-        context.randomGrab(getPct(), grabTimes);
+    public void apply(Controller controller) {
+        final int grabTimes = controller.getEnemy().getAllShikigami().size();
+        super.apply(controller);
+        controller.randomGrab(getPct(), grabTimes);
     }
 }

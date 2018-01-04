@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.ContextAndRunner;
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.targetresolver.EnemyCampResolver;
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 import com.sine.yys.simulation.model.entity.Entity;
@@ -19,12 +19,12 @@ public abstract class SimpleGroupAttack extends BaseSkill implements ActiveSkill
     }
 
     @Override
-    public void apply(ContextAndRunner context) {
-        context.useFire(getFire());
+    public void apply(Controller controller) {
+        controller.useFire(getFire());
         for (int i = 0; i < getTimes(); i++) {
-            for (Entity target : context.getEnemy().getAllAlive()) {
-                context.setTarget(target);
-                context.damage(target, getCoefficient());
+            for (Entity target : controller.getEnemy().getAllAlive()) {
+                controller.setTarget(target);
+                controller.damage(target, getCoefficient());
             }
         }
     }

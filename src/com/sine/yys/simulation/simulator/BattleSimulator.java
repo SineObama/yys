@@ -1,18 +1,18 @@
 package com.sine.yys.simulation.simulator;
 
-import com.sine.yys.simulation.component.ContextAndRunner;
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.SpeedBar;
 import com.sine.yys.simulation.component.SpeedBarImpl;
-import com.sine.yys.simulation.component.event.UseFire;
+import com.sine.yys.simulation.component.event.PreDamageEvent;
+import com.sine.yys.simulation.component.event.UseFireEvent;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
 import com.sine.yys.simulation.model.battle.Camp;
+import com.sine.yys.simulation.model.battle.InitContext;
 import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.entity.BattleKoinobori;
 import com.sine.yys.simulation.model.entity.Entity;
-import com.sine.yys.simulation.model.entity.Shikigami;
 import com.sine.yys.simulation.model.operation.Operation;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
-import com.sine.yys.simulation.model.skill.MingDeng;
 import com.sine.yys.simulation.model.skill.Skill;
 import com.sine.yys.simulation.rule.CalcDam;
 import com.sine.yys.simulation.util.Msg;
@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 /**
  * 红白竞猜模拟器？
  */
-public class BattleSimulator implements Simulator, ContextAndRunner {
+public class BattleSimulator implements Simulator, Controller {
     private final Logger log = Logger.getLogger(this.getClass().toString());
 
     // 引用
@@ -46,7 +46,6 @@ public class BattleSimulator implements Simulator, ContextAndRunner {
     private Camp own, enemy;
     private Entity self, target;
     private ActiveSkill activeSkill;
-    private int costFire;
 
     public BattleSimulator(final Camp camp0, final Camp camp1) {
         this.camp0 = camp0;
@@ -60,26 +59,18 @@ public class BattleSimulator implements Simulator, ContextAndRunner {
 
             Msg.setContext(this);
 
-            // 为技能添加事件回调处理函数
-            for (Shikigami shikigami : camp0.getAllShikigami()) {
-                for (Skill skill : shikigami.getSkills()) {
-                    if (skill instanceof MingDeng) {
-                        camp0.getEventController().add(UseFire.class, (MingDeng) skill);
-                    }
-                }
-            }
-            for (Shikigami shikigami : camp1.getAllShikigami()) {
-                for (Skill skill : shikigami.getSkills()) {
-                    if (skill instanceof MingDeng) {
-                        camp1.getEventController().add(UseFire.class, (MingDeng) skill);
-                    }
-                }
-            }
+            // 初始化，为技能添加事件回调处理函数
+            InitContext context = new InitContext();
+            context.setOwn(camp0);
+            context.setEnemy(camp1);
+            camp0.init(context);
+            context.setOwn(camp1);
+            context.setEnemy(camp0);
+            camp1.init(context);
 
             // 加入到行动条中。
-            final List<Entity> all = camp0.getAllAlive();
-            all.addAll(camp1.getAllAlive());
-            speedBar.addAll(all);
+            speedBar.addAll(camp0.getAllAlive());
+            speedBar.addAll(camp1.getAllAlive());
 
             // TODO 战斗开始事件
         }
@@ -99,11 +90,11 @@ public class BattleSimulator implements Simulator, ContextAndRunner {
             return null;
         }
 
-        // 推进鬼火行动条
-        own.step();
-
         round += 1;
         log.info(Msg.turn() + " 序号 " + round);
+
+        // 推进鬼火行动条
+        own.step();
 
         // TODO 行动前事件
 
@@ -229,11 +220,17 @@ public class BattleSimulator implements Simulator, ContextAndRunner {
     @Override
     public void damage(Entity target, double coefficient) {
         boolean critical = RandUtil.success(self.getCritical());
-        int damage = (int) CalcDam.expect(self, target, coefficient, critical);
-        log.info(Msg.damage(target, damage));
+        if (critical)
+            log.info(Msg.info("暴击"));
+        double damage = CalcDam.expect(self, target, coefficient, critical);
+        PreDamageEvent event = new PreDamageEvent();
+        event.setTarget(target);
+        self.getEventController().trigger(PreDamageEvent.class, event);
+        damage *= event.getCoefficient();
+        log.info(Msg.damage(target, (int) damage));
 
         if (target.getLife() > damage) {
-            target.setLife(target.getLife() - damage);
+            target.setLife(target.getLife() - (int) damage);
         } else {
             log.info(Msg.kill());
             target.setLife(0);
@@ -253,15 +250,10 @@ public class BattleSimulator implements Simulator, ContextAndRunner {
 
     @Override
     public void useFire(int num) {
-        costFire = num;
-        own.getEventController().trigger(UseFire.class, this);
-        own.useFire(costFire);
-        log.info(Msg.useFire(costFire));
-    }
-
-    @Override
-    public void setCostFire(int num) {
-        costFire = num;
+        UseFireEvent event = new UseFireEvent(num);
+        own.getEventController().trigger(UseFireEvent.class, event);
+        own.useFire(event.getCostFire());
+        log.info(Msg.useFire(event.getCostFire()));
     }
 
     @Override

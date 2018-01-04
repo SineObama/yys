@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.ContextAndRunner;
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.targetresolver.EnemyEntityResolver;
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 
@@ -28,9 +28,9 @@ public abstract class CommonAttack extends BaseSkill implements ActiveSkill {
     }
 
     @Override
-    public void apply(ContextAndRunner context) {
+    public void apply(Controller controller) {
         for (int i = 0; i < getTimes(); i++) {
-            context.damage(getCoefficient());
+            controller.damage(getCoefficient());
         }
     }
 }

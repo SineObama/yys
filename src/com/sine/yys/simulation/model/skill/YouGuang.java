@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.ContextAndRunner;
+import com.sine.yys.simulation.component.Controller;
 
 /**
  * 青行灯-幽光。
@@ -19,8 +19,8 @@ public class YouGuang extends CommonAttack {
     }
 
     @Override
-    public void apply(ContextAndRunner context) {
-        super.apply(context);
-        context.randomGrab(getPct(), 1);
+    public void apply(Controller controller) {
+        super.apply(controller);
+        controller.randomGrab(getPct(), 1);
     }
 }

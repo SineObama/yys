@@ -55,4 +55,6 @@ public interface Camp extends Target {
     Position getPosition(Entity entity);
 
     EventController getEventController();
+
+    void init(InitContext context);
 }
