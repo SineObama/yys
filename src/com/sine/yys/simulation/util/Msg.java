@@ -33,7 +33,7 @@ public class Msg {
         return discribe(1, 1, "使用了 " + context.getActiveSkill().getName());
     }
 
-    public static String damage(Entity target, int damage) {
+    public static String damage(int damage) {
         return vector(1, 1, "攻击", 1, 1, String.format("造成% 5d伤害", damage));
     }
 

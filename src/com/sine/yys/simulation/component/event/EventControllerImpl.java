@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.component.event;
 
+import com.sine.yys.simulation.component.Controller;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +24,9 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType extends Event> void trigger(Class<EventType> EventType, EventType event){
+    public <EventType extends Event> void trigger(Class<EventType> EventType, EventType event, Controller controller){
         for (EventHandler handler : get(EventType)) {
-            handler.handle(event);
+            handler.handle(event, controller);
         }
     }
 

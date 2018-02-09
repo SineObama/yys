@@ -9,6 +9,10 @@ import com.sine.yys.simulation.model.entity.Entity;
  * 简单群攻，可多段。
  */
 public abstract class SimpleGroupAttack extends BaseSkill implements ActiveSkill {
+    public SimpleGroupAttack(Entity self) {
+        super(self);
+    }
+
     public int getTimes() {
         return 1;
     }

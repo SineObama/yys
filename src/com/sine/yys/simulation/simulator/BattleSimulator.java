@@ -225,9 +225,9 @@ public class BattleSimulator implements Simulator, Controller {
         double damage = CalcDam.expect(self, target, coefficient, critical);
         PreDamageEvent event = new PreDamageEvent();
         event.setTarget(target);
-        self.getEventController().trigger(PreDamageEvent.class, event);
+        self.getEventController().trigger(PreDamageEvent.class, event, this);
         damage *= event.getCoefficient();
-        log.info(Msg.damage(target, (int) damage));
+        log.info(Msg.damage((int) damage));
 
         if (target.getLife() > damage) {
             target.setLife(target.getLife() - (int) damage);
@@ -251,7 +251,7 @@ public class BattleSimulator implements Simulator, Controller {
     @Override
     public void useFire(int num) {
         UseFireEvent event = new UseFireEvent(num);
-        own.getEventController().trigger(UseFireEvent.class, event);
+        own.getEventController().trigger(UseFireEvent.class, event, this);
         own.useFire(event.getCostFire());
         log.info(Msg.useFire(event.getCostFire()));
     }

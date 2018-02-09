@@ -30,11 +30,11 @@ public abstract class BaseEntity implements Entity {
     private int life;
     private Shield shield = null;
 
-    private final List<Skill> skills;
+    private List<Skill> skills;
     private final Mitama mitama;
     private final EventController eventController = new EventControllerImpl();
 
-    public BaseEntity(int attack, int maxLife, int defense, double speed, double critical, double criticalDamage, double effectHit, double effectDef, List<Skill> skills, Mitama mitama) {
+    public BaseEntity(int attack, int maxLife, int defense, double speed, double critical, double criticalDamage, double effectHit, double effectDef, Mitama mitama) {
         this.attack = attack;
         this.maxLife = maxLife;
         this.defense = defense;
@@ -45,7 +45,6 @@ public abstract class BaseEntity implements Entity {
         this.effectDef = effectDef;
 
         this.life = maxLife;
-        this.skills = skills;
         this.mitama = mitama;
 
         // TODO
@@ -124,6 +123,10 @@ public abstract class BaseEntity implements Entity {
     @Override
     public OperationHandler getAI() {
         return new AutoOperationHandler();
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
     }
 
     @Override

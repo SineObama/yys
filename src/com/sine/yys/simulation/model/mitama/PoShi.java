@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.model.mitama;
 
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.event.EventHandler;
 import com.sine.yys.simulation.component.event.PreDamageEvent;
 import com.sine.yys.simulation.model.battle.InitContext;
@@ -24,7 +25,7 @@ public class PoShi extends BaseMitama implements Mitama, EventHandler<PreDamageE
     }
 
     @Override
-    public void handle(PreDamageEvent context) {
+    public void handle(PreDamageEvent context, Controller controller) {
         if (effect.judge(context.getTarget())) {
             log.info(Msg.trigger(this));
             context.multiplyCoefficient(effect.getCoefficient());

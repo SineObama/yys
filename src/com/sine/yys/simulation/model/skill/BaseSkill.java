@@ -1,19 +1,23 @@
 package com.sine.yys.simulation.model.skill;
 
 import com.sine.yys.simulation.model.battle.InitContext;
+import com.sine.yys.simulation.model.entity.Entity;
 
 import java.util.logging.Logger;
 
 public abstract class BaseSkill implements Skill {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
+    protected final Entity self;
     private final int MAXCD;
     private int CD = 0;
 
-    public BaseSkill() {
+    public BaseSkill(Entity self) {
+        this.self = self;
         this.MAXCD = 0;
     }
 
-    public BaseSkill(int MAXCD) {
+    public BaseSkill(Entity self, int MAXCD) {
+        this.self = self;
         this.MAXCD = MAXCD;
     }
 

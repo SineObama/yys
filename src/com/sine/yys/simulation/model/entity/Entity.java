@@ -17,6 +17,8 @@ import java.util.List;
 public interface Entity extends Target {
     OperationHandler getAI();
 
+    void setSkills(List<Skill> skills);
+
     List<Skill> getSkills();
 
     List<ActiveSkill> getActiveSkills();

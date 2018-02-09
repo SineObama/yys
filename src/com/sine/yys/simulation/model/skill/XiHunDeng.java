@@ -1,11 +1,16 @@
 package com.sine.yys.simulation.model.skill;
 
 import com.sine.yys.simulation.component.Controller;
+import com.sine.yys.simulation.model.entity.Entity;
 
 /**
  * 青行灯-吸魂灯。
  */
 public class XiHunDeng extends SimpleGroupAttack {
+    public XiHunDeng(Entity self) {
+        super(self);
+    }
+
     @Override
     public int getFire() {
         return 3;
