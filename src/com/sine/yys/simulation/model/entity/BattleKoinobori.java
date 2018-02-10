@@ -1,7 +1,5 @@
 package com.sine.yys.simulation.model.entity;
 
-import java.util.Collections;
-
 /**
  * 战场鲤鱼旗。
  */

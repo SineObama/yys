@@ -4,7 +4,7 @@ import com.sine.yys.simulation.model.constance.HitResult;
 import com.sine.yys.simulation.util.RandUtil;
 
 /**
- * 计算效果命中
+ * 计算效果命中。
  */
 public class CalcEffect {
     /**

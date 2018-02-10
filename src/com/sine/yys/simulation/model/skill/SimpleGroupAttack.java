@@ -3,14 +3,16 @@ package com.sine.yys.simulation.model.skill;
 import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.targetresolver.EnemyCampResolver;
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
+import com.sine.yys.simulation.model.AttackImpl;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**
  * 简单群攻，可多段。
  */
 public abstract class SimpleGroupAttack extends BaseSkill implements ActiveSkill {
-    public SimpleGroupAttack(Entity self) {
-        super(self);
+    @Override
+    public int getFire() {
+        return 3;
     }
 
     public int getTimes() {
@@ -27,8 +29,7 @@ public abstract class SimpleGroupAttack extends BaseSkill implements ActiveSkill
         controller.useFire(getFire());
         for (int i = 0; i < getTimes(); i++) {
             for (Entity target : controller.getEnemy().getAllAlive()) {
-                controller.setTarget(target);
-                controller.damage(target, getCoefficient());
+                controller.damage(target, new AttackImpl(getCoefficient()));
             }
         }
     }

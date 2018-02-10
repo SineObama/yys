@@ -4,17 +4,19 @@ import com.sine.yys.simulation.component.event.EventController;
 import com.sine.yys.simulation.component.event.EventControllerImpl;
 import com.sine.yys.simulation.component.operationhandler.AutoOperationHandler;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
+import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.battle.InitContext;
 import com.sine.yys.simulation.model.mitama.Mitama;
 import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
+import com.sine.yys.simulation.model.skill.CommonAttack;
 import com.sine.yys.simulation.model.skill.Skill;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 式神实体基类。
+ * 式神实体通用逻辑。
  * 可以创建固定属性的式神。
  */
 public abstract class BaseEntity implements Entity {
@@ -33,6 +35,8 @@ public abstract class BaseEntity implements Entity {
     private List<Skill> skills;
     private final Mitama mitama;
     private final EventController eventController = new EventControllerImpl();
+
+    private Camp camp;
 
     public BaseEntity(int attack, int maxLife, int defense, double speed, double critical, double criticalDamage, double effectHit, double effectDef, Mitama mitama) {
         this.attack = attack;
@@ -147,11 +151,37 @@ public abstract class BaseEntity implements Entity {
 
     @Override
     public void init(InitContext context) {
+        this.setCamp(context.getOwn());
         context.setSelf(this);
         for (Skill skill : getSkills()) {
             skill.init(context);
         }
         if (mitama != null)
             mitama.init(context);
+    }
+
+    @Override
+    public CommonAttack getCommonAttack() {
+        for (Skill skill : getSkills()) {
+            if (skill instanceof CommonAttack)
+                return (CommonAttack) skill;
+        }
+        // TODO 异常处理？
+        return null;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return life > 0;
+    }
+
+    @Override
+    public Camp getCamp() {
+        return camp;
+    }
+
+    @Override
+    public void setCamp(Camp camp) {
+        this.camp = camp;
     }
 }

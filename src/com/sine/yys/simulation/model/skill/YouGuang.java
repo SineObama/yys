@@ -6,11 +6,7 @@ import com.sine.yys.simulation.model.entity.Entity;
 /**
  * 青行灯-幽光。
  */
-public class YouGuang extends CommonAttack {
-    public YouGuang(Entity self) {
-        super(self);
-    }
-
+public class YouGuang extends BaseCommonAttack {
     @Override
     public String getName() {
         return "幽光";
@@ -24,8 +20,8 @@ public class YouGuang extends CommonAttack {
     }
 
     @Override
-    public void apply(Controller controller) {
-        super.apply(controller);
+    public void doApply(Entity target, Controller controller) {
+        super.doApply(target, controller);
         controller.randomGrab(getPct(), 1);
     }
 }

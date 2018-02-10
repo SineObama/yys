@@ -4,7 +4,7 @@ import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 
 /**
- * 主动技能
+ * 主动技能。
  */
 public interface ActiveSkill extends Skill {
     int getFire();
@@ -13,5 +13,8 @@ public interface ActiveSkill extends Skill {
 
     double getCoefficient();
 
+    /**
+     * 直接使用技能。由外部直接调用。
+     */
     void apply(Controller controller);
 }

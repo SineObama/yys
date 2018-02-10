@@ -7,6 +7,7 @@ import com.sine.yys.simulation.component.Controller;
  *
  * @param <EventType> 处理的事件类型，也是处理函数的传入参数。
  */
-public interface EventHandler<EventType> {
+public interface EventHandler<EventType extends Event> {
     void handle(EventType context, Controller controller);
+//    Class<EventType> getEventKey();
 }

@@ -5,6 +5,7 @@ import com.sine.yys.simulation.component.event.EventControllerImpl;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.entity.Shikigami;
 import com.sine.yys.simulation.util.Msg;
+import com.sine.yys.simulation.util.RandUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +101,7 @@ public class CampImpl implements Camp {
         if (fireBarPos > 5) {
             fireBarPos = 1;
             addFire(increase);
-            log.info(Msg.addFire(increase));
+            log.info(Msg.addFire(this, increase));
             if (increase < 5)
                 increase += 1;
         }
@@ -127,5 +128,10 @@ public class CampImpl implements Camp {
         for (Shikigami shikigami : allShikigami) {
             shikigami.init(context);
         }
+    }
+
+    @Override
+    public Entity randomTarget() {
+        return RandUtil.choose(getAllAlive());
     }
 }

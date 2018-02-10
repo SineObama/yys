@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.model.Attack;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**
@@ -8,12 +9,18 @@ import com.sine.yys.simulation.model.entity.Entity;
 public interface Runner {
     SpeedBar getSpeedBar();
 
-    void damage(double coefficient);
+    void damage(Attack attack);
 
     /**
      * 应用系数伤害
      */
-    void damage(Entity target, double coefficient);
+    void damage(Entity target, Attack attack);
+
+    void damageFrom(Entity self, Attack attack);
+
+    void damage(Entity self, Entity target, Attack attack);
+
+    void realDamage(Entity self, Entity target, double maxByAttack, double maxPctByMaxLife);
 
     /**
      * 随机吸取鬼火。

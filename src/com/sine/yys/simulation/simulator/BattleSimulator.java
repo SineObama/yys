@@ -3,9 +3,11 @@ package com.sine.yys.simulation.simulator;
 import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.SpeedBar;
 import com.sine.yys.simulation.component.SpeedBarImpl;
+import com.sine.yys.simulation.component.event.CriticalEvent;
 import com.sine.yys.simulation.component.event.PreDamageEvent;
 import com.sine.yys.simulation.component.event.UseFireEvent;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
+import com.sine.yys.simulation.model.Attack;
 import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.battle.InitContext;
 import com.sine.yys.simulation.model.battle.Target;
@@ -57,8 +59,6 @@ public class BattleSimulator implements Simulator, Controller {
         if (!started) {
             started = true;
 
-            Msg.setContext(this);
-
             // 初始化，为技能添加事件回调处理函数
             InitContext context = new InitContext();
             context.setOwn(camp0);
@@ -91,7 +91,7 @@ public class BattleSimulator implements Simulator, Controller {
         }
 
         round += 1;
-        log.info(Msg.turn() + " 序号 " + round);
+        log.info(Msg.info(self, "行动") + " 序号 " + round);
 
         // 推进鬼火行动条
         own.step();
@@ -117,7 +117,7 @@ public class BattleSimulator implements Simulator, Controller {
             else
                 operation = handler.handle(own, map);
             activeSkill = operation.getSkill();
-            log.info(Msg.action());
+            log.info(Msg.action(self, activeSkill));
 
             // 实现操作
             if (operation.getTarget() instanceof Entity)
@@ -213,26 +213,80 @@ public class BattleSimulator implements Simulator, Controller {
     }
 
     @Override
-    public void damage(double coefficient) {
-        damage(this.target, coefficient);
+    public void damage(Attack attack) {
+        damage(this.target, attack);
     }
 
     @Override
-    public void damage(Entity target, double coefficient) {
-        boolean critical = RandUtil.success(self.getCritical());
+    public void damage(Entity target, Attack attack) {
+        damage(this.self, target, attack);
+    }
+
+    @Override
+    public void damageFrom(Entity self, Attack attack) {
+        damage(self, this.target, attack);
+    }
+
+    /**
+     * 伤害逻辑：
+     * 1. 由攻击、伤害系数、对方防御（忽略防御）计算。
+     * 2. 根据双方buff进行增减。
+     * 3. 破盾。
+     * 4. 施加剩余伤害，添加御魂效果。
+     */
+    @Override
+    public void damage(Entity self, Entity target, Attack attack) {
+        if (!target.isAlive())  // TODO 更好的逻辑？
+            return;
+
+        // 1.
+        final boolean critical = RandUtil.success(self.getCritical());
         if (critical)
-            log.info(Msg.info("暴击"));
-        double damage = CalcDam.expect(self, target, coefficient, critical);
+            log.info(Msg.info(self, "暴击"));
+        double damage = CalcDam.expect(self, target, attack, critical);
+
+        // 4.
         PreDamageEvent event = new PreDamageEvent();
         event.setTarget(target);
         self.getEventController().trigger(PreDamageEvent.class, event, this);
         damage *= event.getCoefficient();
-        log.info(Msg.damage((int) damage));
 
+        doDamage(self, target, damage);
+
+        if (critical) {
+            CriticalEvent criticalEvent = new CriticalEvent(self, target);
+            target.getEventController().trigger(CriticalEvent.class, criticalEvent, this);
+            self.getEventController().trigger(CriticalEvent.class, criticalEvent, this);
+        }
+    }
+
+    /**
+     * 目前只有针女伤害。
+     * 1. 计算伤害。
+     * 2. 根据旗帜buff增减。
+     * 3. 破盾。
+     * 4. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
+     */
+    @Override
+    public void realDamage(Entity self, Entity target, double maxByAttack, double maxPctByMaxLife) {
+        if (!target.isAlive())
+            return;
+        // 1.
+        final double damage1 = self.getAttack() * maxByAttack;
+        final double damage2 = target.getMaxLife() * maxPctByMaxLife;
+        double damage = damage1 < damage2 ? damage1 : damage2;
+
+        // 4.
+        doDamage(self, target, damage);
+
+    }
+
+    private void doDamage(Entity self, Entity target, double damage) {
+        log.info(Msg.damage(self, target, (int) damage));
         if (target.getLife() > damage) {
             target.setLife(target.getLife() - (int) damage);
         } else {
-            log.info(Msg.kill());
+            log.info(Msg.kill(self, target));
             target.setLife(0);
             enemy.getPosition(target).setDead(true);
         }
@@ -244,16 +298,16 @@ public class BattleSimulator implements Simulator, Controller {
         if (num > 0) {
             num = enemy.grabFire(num);
             own.addFire(num);
-            log.info(Msg.grabFire(num));
+            log.info(Msg.grabFire(own, enemy, num));
         }
     }
 
     @Override
     public void useFire(int num) {
-        UseFireEvent event = new UseFireEvent(num);
+        UseFireEvent event = new UseFireEvent(this.self, num);
         own.getEventController().trigger(UseFireEvent.class, event, this);
         own.useFire(event.getCostFire());
-        log.info(Msg.useFire(event.getCostFire()));
+        log.info(Msg.useFire(self, event.getCostFire()));
     }
 
     @Override

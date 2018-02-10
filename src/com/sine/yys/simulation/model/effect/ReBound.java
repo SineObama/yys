@@ -5,5 +5,6 @@ package com.sine.yys.simulation.model.effect;
  */
 public interface ReBound extends Effect {
     double getPct();
+
     double getRatio();
 }

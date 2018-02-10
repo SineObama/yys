@@ -14,8 +14,14 @@ public interface Context {
 
     Camp getEnemy();
 
+    /**
+     * 当前行动式神。
+     */
     Entity getSelf();
 
+    /**
+     * 当前行动选定的目标。
+     */
     Entity getTarget();
 
     ActiveSkill getActiveSkill();

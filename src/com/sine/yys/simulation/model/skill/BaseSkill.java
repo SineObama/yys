@@ -5,19 +5,21 @@ import com.sine.yys.simulation.model.entity.Entity;
 
 import java.util.logging.Logger;
 
+/**
+ * 技能通用逻辑。
+ */
 public abstract class BaseSkill implements Skill {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
-    protected final Entity self;
+
+    private Entity self;
     private final int MAXCD;
     private int CD = 0;
 
-    public BaseSkill(Entity self) {
-        this.self = self;
+    public BaseSkill() {
         this.MAXCD = 0;
     }
 
-    public BaseSkill(Entity self, int MAXCD) {
-        this.self = self;
+    public BaseSkill(int MAXCD) {
         this.MAXCD = MAXCD;
     }
 
@@ -43,8 +45,16 @@ public abstract class BaseSkill implements Skill {
         return this.CD = this.CD - 1;
     }
 
+    /**
+     * 注入实体，子类记得调用。
+     */
     @Override
     public void init(InitContext context) {
+        this.self = context.getSelf();
+    }
 
+    @Override
+    public Entity getSelf() {
+        return self;
     }
 }

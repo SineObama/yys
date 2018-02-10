@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * 行动条对象。
- * 添加式神实体到行动条中（默认为初始点位置0，或者指定0~1的位置）
+ * 添加式神实体到行动条中（默认为初始点位置0，或者指定0~1的位置）。
  */
 public interface SpeedBar {
     void add(Entity entity);

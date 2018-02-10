@@ -5,10 +5,14 @@ import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.operation.Operation;
 import com.sine.yys.simulation.model.operation.SimpleOperation;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
+import com.sine.yys.simulation.util.RandUtil;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 基础AI，使用最大耗火技能，
+ */
 public class AutoOperationHandler implements OperationHandler {
     @Override
     public Operation handle(Camp own, Map<ActiveSkill, List<? extends Target>> map) {
@@ -25,6 +29,6 @@ public class AutoOperationHandler implements OperationHandler {
         if (use == null)
             return null;
         final List<? extends Target> targets = map.get(use);
-        return new SimpleOperation(targets.get(0), use);
+        return new SimpleOperation(RandUtil.choose(targets), use);
     }
 }

@@ -1,16 +1,12 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.Controller;
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.Attack;
+import com.sine.yys.simulation.model.AttackImpl;
 
 /**
- * 伞剑
+ * 姑获鸟-伞剑。
  */
-public class SanJian extends CommonAttack {
-    public SanJian(Entity self) {
-        super(self);
-    }
-
+public class SanJian extends BaseCommonAttack {
     @Override
     public String getName() {
         return "伞剑";
@@ -21,10 +17,12 @@ public class SanJian extends CommonAttack {
         return 0.8;
     }
 
-    public double ignoreDefendPct() {
+    public double getIgnoreDefendPct() {
         return 0.2;
     }
 
     @Override
-    public void apply(Controller controller) {}
+    public Attack getAttack() {
+        return new AttackImpl(getCoefficient(), getIgnoreDefendPct(), 0);
+    }
 }
