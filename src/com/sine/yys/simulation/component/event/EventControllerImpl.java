@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component.event;
 
+import com.sine.yys.simulation.component.Container;
 import com.sine.yys.simulation.component.Controller;
 
 import java.util.HashMap;
@@ -13,29 +14,6 @@ public class EventControllerImpl implements EventController {
     private final Logger log = Logger.getLogger(this.getClass().toString());
 
     private final Map<Class, Set<Container<EventHandler>>> controllerMap = new HashMap<>();
-
-    private class Container<T> implements Comparable<Container> {
-        private final int priority;
-        private final T obj;
-
-        Container(int priority, T obj) {
-            this.priority = priority;
-            this.obj = obj;
-        }
-
-        T getObj() {
-            return obj;
-        }
-
-        @Override
-        public int compareTo(Container o) {
-            if (this == o)
-                return 0;
-            if (this.priority == -1)  // 判断容器内物体。用于删除匹配
-                return this.obj == o.obj ? 0 : this.obj.hashCode() - o.obj.hashCode();  // TODO 用哈希相减做对比不好？
-            return this.priority - o.priority;
-        }
-    }
 
     @Override
     public <EventType extends Event> void add(Class<EventType> EventType, EventHandler<EventType> handler) {

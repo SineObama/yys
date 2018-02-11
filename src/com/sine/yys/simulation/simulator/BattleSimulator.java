@@ -3,6 +3,7 @@ package com.sine.yys.simulation.simulator;
 import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.SpeedBar;
 import com.sine.yys.simulation.component.SpeedBarImpl;
+import com.sine.yys.simulation.component.event.BeCriticalEvent;
 import com.sine.yys.simulation.component.event.CriticalEvent;
 import com.sine.yys.simulation.component.event.PreDamageEvent;
 import com.sine.yys.simulation.component.event.UseFireEvent;
@@ -14,6 +15,7 @@ import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.entity.BattleKoinobori;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.operation.Operation;
+import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
 import com.sine.yys.simulation.model.skill.Skill;
 import com.sine.yys.simulation.rule.CalcDam;
@@ -245,18 +247,26 @@ public class BattleSimulator implements Simulator, Controller {
             log.info(Msg.info(self, "暴击"));
         double damage = CalcDam.expect(self, target, attack, critical);
 
+        //3.
+        int remain = breakShield(target, (int) damage);
+
         // 4.
-        PreDamageEvent event = new PreDamageEvent();
-        event.setTarget(target);
-        self.getEventController().trigger(PreDamageEvent.class, event, this);
-        damage *= event.getCoefficient();
+        if (remain != 0) {
+            damage = remain;
 
-        doDamage(self, target, damage);
+            PreDamageEvent event = new PreDamageEvent();
+            event.setTarget(target);
+            self.getEventController().trigger(PreDamageEvent.class, event, this);
+            damage *= event.getCoefficient();
 
-        if (critical) {
-            CriticalEvent criticalEvent = new CriticalEvent(self, target);
-            target.getEventController().trigger(CriticalEvent.class, criticalEvent, this);
-            self.getEventController().trigger(CriticalEvent.class, criticalEvent, this);
+            doDamage(self, target, damage);
+
+            if (critical) {
+                target.getEventController().trigger(BeCriticalEvent.class, new BeCriticalEvent(target, self), this);
+                self.getEventController().trigger(CriticalEvent.class, new CriticalEvent(self, target), this);
+            }
+        } else {
+            log.info(Msg.noDamage(self, target));
         }
     }
 
@@ -276,9 +286,30 @@ public class BattleSimulator implements Simulator, Controller {
         final double damage2 = target.getMaxLife() * maxPctByMaxLife;
         double damage = damage1 < damage2 ? damage1 : damage2;
 
-        // 4.
-        doDamage(self, target, damage);
+        // 3.
+        int remain = breakShield(target, (int) damage);
 
+        // 4.
+        if (remain != 0) {
+            doDamage(self, target, damage);
+        } else {
+            log.info(Msg.noDamage(self, target));
+        }
+
+    }
+
+    /**
+     * 把伤害施加到盾上。
+     *
+     * @return 剩余伤害。
+     */
+    private int breakShield(Entity target, int damage) {
+        for (Shield shield : target.getBuffController().getShields()) {
+            damage = shield.doDamage(damage);
+            if (damage == 0)
+                break;
+        }
+        return damage;
     }
 
     private void doDamage(Entity self, Entity target, double damage) {

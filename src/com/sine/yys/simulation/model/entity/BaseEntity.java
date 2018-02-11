@@ -6,6 +6,8 @@ import com.sine.yys.simulation.component.operationhandler.AutoOperationHandler;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
 import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.battle.InitContext;
+import com.sine.yys.simulation.model.buff.BuffController;
+import com.sine.yys.simulation.model.buff.BuffControllerImpl;
 import com.sine.yys.simulation.model.mitama.Mitama;
 import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
@@ -30,11 +32,11 @@ public abstract class BaseEntity implements Entity {
     private final double effectDef;
 
     private int life;
-    private Shield shield = null;
 
     private List<Skill> skills;
     private final Mitama mitama;
     private final EventController eventController = new EventControllerImpl();
+    private final BuffController buffController = new BuffControllerImpl();
 
     private Camp camp;
 
@@ -110,16 +112,6 @@ public abstract class BaseEntity implements Entity {
     }
 
     @Override
-    public Shield getShield() {
-        return shield;
-    }
-
-    @Override
-    public void setShield(Shield shield) {
-        this.shield = shield;
-    }
-
-    @Override
     public EventController getEventController() {
         return this.eventController;
     }
@@ -183,5 +175,10 @@ public abstract class BaseEntity implements Entity {
     @Override
     public void setCamp(Camp camp) {
         this.camp = camp;
+    }
+
+    @Override
+    public BuffController getBuffController() {
+        return buffController;
     }
 }

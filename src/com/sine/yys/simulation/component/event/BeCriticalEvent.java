@@ -3,21 +3,27 @@ package com.sine.yys.simulation.component.event;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**
- * 暴击事件。必须是造成伤害的暴击，不算护盾。
+ * 被暴击事件。
  */
-public class CriticalEvent implements Event {
+public class BeCriticalEvent implements Event {
     private Entity self;
     private Entity target;
 
-    public CriticalEvent(Entity self, Entity target) {
+    public BeCriticalEvent(Entity self, Entity target) {
         this.self = self;
         this.target = target;
     }
 
+    /**
+     * 受到暴击的实体。
+     */
     public Entity getSelf() {
         return self;
     }
 
+    /**
+     * 实施伤害的实体。
+     */
     public Entity getTarget() {
         return target;
     }

@@ -32,6 +32,10 @@ public class Msg {
         return vector(self, "对", target, String.format("造成% 5d伤害", damage));
     }
 
+    public static String noDamage(Entity self, Entity target) {
+        return vector(self, "攻击", target, "未造成伤害");
+    }
+
     public static String trigger(Skill skill) {
         return info(skill.getSelf(), "触发 " + skill.getName());
     }

@@ -5,6 +5,7 @@ import com.sine.yys.simulation.component.operationhandler.OperationHandler;
 import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.battle.InitContext;
 import com.sine.yys.simulation.model.battle.Target;
+import com.sine.yys.simulation.model.buff.BuffController;
 import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
 import com.sine.yys.simulation.model.skill.CommonAttack;
@@ -49,10 +50,6 @@ public interface Entity extends Target {
 
     void setLife(int life);
 
-    Shield getShield();
-
-    void setShield(Shield shield);
-
     EventController getEventController();
 
     void init(InitContext context);
@@ -64,4 +61,6 @@ public interface Entity extends Target {
     void setCamp(Camp camp);
 
     Camp getCamp();
+
+    BuffController getBuffController();
 }
