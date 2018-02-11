@@ -3,10 +3,7 @@ package com.sine.yys.simulation.simulator;
 import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.SpeedBar;
 import com.sine.yys.simulation.component.SpeedBarImpl;
-import com.sine.yys.simulation.component.event.BeCriticalEvent;
-import com.sine.yys.simulation.component.event.CriticalEvent;
-import com.sine.yys.simulation.component.event.PreDamageEvent;
-import com.sine.yys.simulation.component.event.UseFireEvent;
+import com.sine.yys.simulation.component.event.*;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
 import com.sine.yys.simulation.model.Attack;
 import com.sine.yys.simulation.model.battle.Camp;
@@ -74,7 +71,9 @@ public class BattleSimulator implements Simulator, Controller {
             speedBar.addAll(camp0.getAllAlive());
             speedBar.addAll(camp1.getAllAlive());
 
-            // TODO 战斗开始事件
+            BattleStartEvent startEvent = new BattleStartEvent();
+            camp0.getEventController().trigger(startEvent, this);
+            camp1.getEventController().trigger(startEvent, this);
         }
 
         // 获取下一行动式神

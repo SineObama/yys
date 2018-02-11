@@ -2,6 +2,7 @@ package com.sine.yys.simulation.model.buff;
 
 import com.sine.yys.simulation.component.Container;
 import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.shield.BangJingShield;
 import com.sine.yys.simulation.model.shield.DiZangXiangShield;
 import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.util.Msg;
@@ -16,7 +17,8 @@ public class BuffControllerImpl implements BuffController {
     private static final Map<Class, Integer> prior = new HashMap<>();
 
     static {
-        prior.put(DiZangXiangShield.class, 100);
+        prior.put(BangJingShield.class, 100);
+        prior.put(DiZangXiangShield.class, 200);
     }
 
     @Override
