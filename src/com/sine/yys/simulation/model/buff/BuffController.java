@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.model.buff;
 
+import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.shield.Shield;
 
 import java.util.List;
@@ -18,4 +19,10 @@ public interface BuffController {
      * 按照消耗顺序返回。
      */
     List<Shield> getShields();
+
+    /**
+     * 行动后执行。
+     * 给效果回合数减1，减到0则移除效果。
+     */
+    void afterAction(Entity self);
 }

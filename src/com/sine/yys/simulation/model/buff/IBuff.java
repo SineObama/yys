@@ -15,4 +15,6 @@ public interface IBuff {
      * 效果持续回合数。
      */
     int getLast();
+
+    void setLast(int last);
 }

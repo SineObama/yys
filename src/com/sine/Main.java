@@ -21,15 +21,14 @@ public class Main {
         final int attack = 1240;
         for (int i = 0; i < times; i++) {
             Camp red = new CampImpl("红方", 3);
-            red.addEntity(GuHuoNiao.create(attack, 10000, 400, 170, 0.8, 1.5, 0, 0, new ZhenNv()));
+            red.addEntity(GuHuoNiao.create(attack, 10000, 400, 170, 1, 1.5, 0, 0, new ZhenNv()));
 //            red.addEntity(GuHuoNiao.create(attack, 10000, 400, 170, 0.08, 1.5, 0, 0, null));
 //            red.addEntity(QingXingDeng.create(attack, 10000, 400, 170, 0.08, 1.5, 0, 0, new PoShi()));
-            red.addEntity(QingXingDeng.create(attack, 10000, 400, 170, 0.08, 1.5, 0, 0, null));
+            red.addEntity(QingXingDeng.create(attack, 10000, 400, 170, 1, 1.5, 0, 0, null));
             Camp blue = new CampImpl("蓝方", 3);
 //            blue.addEntity(QingXingDeng.create(attack, 10000, 400, 100, 0.08, 1.5, 0, 0, null));
             blue.addEntity(QingXingDeng.create(attack, 10000, 400, 100, 0.08, 1.5, 0, 0, new DiZangXiang()));
             blue.addEntity(QingXingDeng.create(attack, 10000, 400, 100, 0.08, 1.5, 0, 0, new DiZangXiang()));
-            blue.addEntity(QingXingDeng.create(attack, 10000, 400, 100, 0.08, 1.5, 0, 0, new PoShi()));
             Simulator simulator = new BattleSimulator(red, blue);
             Camp win;
             while ((win = simulator.step()) == null) ;

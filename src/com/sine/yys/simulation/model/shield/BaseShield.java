@@ -1,12 +1,13 @@
 package com.sine.yys.simulation.model.shield;
 
-public abstract class BaseShield implements Shield {
+import com.sine.yys.simulation.model.buff.BaseIBuff;
+
+public abstract class BaseShield extends BaseIBuff implements Shield {
     private int value;
-    private int last;
 
     public BaseShield(int value, int last) {
+        super(last);
         this.value = value;
-        this.last = last;
     }
 
     @Override
@@ -17,11 +18,6 @@ public abstract class BaseShield implements Shield {
     @Override
     public int getValue() {
         return value;
-    }
-
-    @Override
-    public int getLast() {
-        return last;
     }
 
     @Override

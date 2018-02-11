@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.util;
 
 import com.sine.yys.simulation.model.battle.Camp;
+import com.sine.yys.simulation.model.buff.IBuff;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.mitama.Mitama;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
@@ -22,6 +23,10 @@ public class Msg {
         String ownn = chStr(self != null && self.getCamp() != null ? ("[" + self.getCamp().getName() + "]") : "", campWidth);
         String selfn = chStr(self != null ? self.getName() : "", entityWidth);
         return String.format("%s%s%s", ownn, selfn, msg);
+    }
+
+    public static String buffEnd(Entity self, IBuff iBuff) {
+        return info(self, iBuff.getName() + " 效果消失了");
     }
 
     public static String action(Entity self, ActiveSkill activeSkill) {

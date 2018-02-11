@@ -130,6 +130,7 @@ public class BattleSimulator implements Simulator, Controller {
         }
 
         // TODO 行动后事件
+        self.getBuffController().afterAction(self);
 
         // 简单判断胜负：无式神存活
         if (own.getAllShikigami().size() == 0)
