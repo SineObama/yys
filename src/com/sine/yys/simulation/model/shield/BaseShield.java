@@ -11,11 +11,6 @@ public abstract class BaseShield extends BaseIBuff implements Shield {
     }
 
     @Override
-    public String getName() {
-        return "盾";
-    }
-
-    @Override
     public int getValue() {
         return value;
     }

@@ -8,11 +8,6 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     @Override
-    public String getName() {
-        return "效果";
-    }
-
-    @Override
     public int getLast() {
         return last;
     }
