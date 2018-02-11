@@ -93,6 +93,7 @@ public class CampImpl implements Camp {
         fire += count;
         if (fire > 8)
             fire = 8;
+        log.info(Msg.addFire(this, count));
     }
 
     @Override
@@ -100,8 +101,8 @@ public class CampImpl implements Camp {
         fireBarPos += 1;
         if (fireBarPos > 5) {
             fireBarPos = 1;
+            log.info(Msg.fiveRound(this, increase));
             addFire(increase);
-            log.info(Msg.addFire(this, increase));
             if (increase < 5)
                 increase += 1;
         }

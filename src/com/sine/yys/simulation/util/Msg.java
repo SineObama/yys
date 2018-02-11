@@ -50,15 +50,19 @@ public class Msg {
     }
 
     public static String grabFire(Camp own, Camp enemy, int num) {
-        return vector(own, "吸取", enemy, num + " 点鬼火，还剩 " + own.getFire() + " 点");
+        return vector(own, "吸取", enemy, num + " 点鬼火，当前剩余 " + own.getFire() + " 点");
+    }
+
+    public static String fiveRound(Camp own, int num) {
+        return info(own, "行动满5回合，将回复 " + num + " 点鬼火");
     }
 
     public static String addFire(Camp own, int num) {
-        return info(own, "行动满5回合，回复 " + num + " 点鬼火，还剩 " + own.getFire() + " 点");
+        return info(own, "增加 " + num + " 点鬼火，当前剩余 " + own.getFire() + " 点");
     }
 
     public static String useFire(Entity self, int num) {
-        return info(self, "消耗了 " + num + " 点鬼火，还剩 " + self.getCamp().getFire() + " 点");
+        return info(self, "消耗了 " + num + " 点鬼火，当前剩余 " + self.getCamp().getFire() + " 点");
     }
 
     /**
