@@ -31,8 +31,8 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType extends Event> void trigger(Class<EventType> EventType, EventType event, Controller controller) {
-        for (Container<EventHandler> container : get(EventType)) {
+    public <EventType extends Event> void trigger(EventType event, Controller controller) {
+        for (Container<EventHandler> container : get(event.getClass())) {
             final EventHandler obj = container.getObj();
             obj.handle(event, controller);
         }

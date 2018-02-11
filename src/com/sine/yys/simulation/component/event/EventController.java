@@ -15,5 +15,5 @@ public interface EventController {
 
     <EventType extends Event> void remove(Class<EventType> EventType, EventHandler<EventType> handler);
 
-    <EventType extends Event> void trigger(Class<EventType> EventType, EventType event, Controller controller);
+    <EventType extends Event> void trigger(EventType event, Controller controller);
 }

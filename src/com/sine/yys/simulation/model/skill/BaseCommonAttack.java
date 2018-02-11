@@ -40,7 +40,7 @@ public abstract class BaseCommonAttack extends BaseSkill implements CommonAttack
     public final void apply(Controller controller) {
         doApply(controller.getTarget(), controller);
         // 触发普攻事件
-        controller.getOwn().getEventController().trigger(CommonAttackEvent.class, new CommonAttackEvent(getSelf(), controller.getTarget()), controller);
+        controller.getOwn().getEventController().trigger(new CommonAttackEvent(getSelf(), controller.getTarget()), controller);
     }
 
     @Override

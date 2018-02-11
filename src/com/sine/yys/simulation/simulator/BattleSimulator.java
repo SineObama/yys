@@ -257,14 +257,14 @@ public class BattleSimulator implements Simulator, Controller {
 
             PreDamageEvent event = new PreDamageEvent();
             event.setTarget(target);
-            self.getEventController().trigger(PreDamageEvent.class, event, this);
+            self.getEventController().trigger(event, this);
             damage *= event.getCoefficient();
 
             doDamage(self, target, damage);
 
             if (critical) {
-                target.getEventController().trigger(BeCriticalEvent.class, new BeCriticalEvent(target, self), this);
-                self.getEventController().trigger(CriticalEvent.class, new CriticalEvent(self, target), this);
+                target.getEventController().trigger(new BeCriticalEvent(target, self), this);
+                self.getEventController().trigger(new CriticalEvent(self, target), this);
             }
         } else {
             log.info(Msg.noDamage(self, target));
@@ -337,7 +337,7 @@ public class BattleSimulator implements Simulator, Controller {
     @Override
     public void useFire(int num) {
         UseFireEvent event = new UseFireEvent(this.self, num);
-        own.getEventController().trigger(UseFireEvent.class, event, this);
+        own.getEventController().trigger(event, this);
         own.useFire(event.getCostFire());
         log.info(Msg.useFire(self, event.getCostFire()));
     }
