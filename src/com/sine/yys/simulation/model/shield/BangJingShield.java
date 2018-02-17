@@ -5,11 +5,6 @@ package com.sine.yys.simulation.model.shield;
  */
 public class BangJingShield extends BaseShield {
     public BangJingShield(int value) {
-        super(value, 1);
-    }
-
-    @Override
-    public String getName() {
-        return "蚌精盾";
+        super(value, 1, "蚌精盾");
     }
 }

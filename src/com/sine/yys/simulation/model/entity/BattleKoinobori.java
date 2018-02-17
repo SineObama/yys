@@ -1,18 +1,21 @@
 package com.sine.yys.simulation.model.entity;
 
+import com.sine.yys.simulation.model.Property;
+
+import java.util.Collections;
+
 /**
  * 战场鲤鱼旗。
+ * 还未实现功能。
  */
 public class BattleKoinobori extends BaseEntity implements Entity {
-    private double speed;
     private double damageRatio = 1.0;
     private double cureRatio = 1.0;
     private double damageRatioAddition = 0.2;
     private double cureRatioReduction = 0.2;
 
     public BattleKoinobori(double speed) {
-        super(0, 0, 0, 0, 0, 0, 0, 0, null);
-        this.speed = speed;
+        super(new Property(0, 0, 0, speed, 0, 0, 0, 0), null, Collections.emptyList(), "战场鲤鱼旗");  // TODO 行动技能：给全体加增伤buff
     }
 
     public double getDamageRatio() {
@@ -45,19 +48,5 @@ public class BattleKoinobori extends BaseEntity implements Entity {
 
     public void setCureRatioReduction(double cureRatioReduction) {
         this.cureRatioReduction = cureRatioReduction;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    @Override
-    public double getSpeed() {
-        return this.speed;
-    }
-
-    @Override
-    public String getName() {
-        return "战场鲤鱼旗";
     }
 }

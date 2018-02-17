@@ -1,9 +1,8 @@
 package com.sine.yys.simulation.model.mitama;
 
-import com.sine.yys.simulation.component.Controller;
-import com.sine.yys.simulation.component.event.CriticalEvent;
 import com.sine.yys.simulation.component.event.EventHandler;
 import com.sine.yys.simulation.model.battle.InitContext;
+import com.sine.yys.simulation.model.event.CriticalEvent;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 
@@ -35,16 +34,15 @@ public class ZhenNv extends BaseMitama implements Mitama, EventHandler<CriticalE
     }
 
     @Override
-    public void handle(CriticalEvent context, Controller controller) {
+    public void handle(CriticalEvent event) {
         if (RandUtil.success(getPct())) {
             log.info(Msg.trigger(this));
-            controller.realDamage(context.getSelf(), context.getTarget(), getMaxDamageByAttack(), getMaxDamageByMaxLife());
+            getSelf().realDamage(event.getTarget(), getMaxDamageByAttack(), getMaxDamageByMaxLife());
         }
     }
 
     @Override
-    public void init(InitContext context) {
-        super.init(context);
-        context.getSelf().getEventController().add(CriticalEvent.class, this);
+    public void doInit(InitContext context) {
+        context.getSelf().getEventController().add(this);
     }
 }

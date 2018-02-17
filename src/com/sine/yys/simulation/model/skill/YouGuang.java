@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**
@@ -12,6 +11,11 @@ public class YouGuang extends BaseCommonAttack {
         return "幽光";
     }
 
+    @Override
+    public double getCoefficient() {
+        return 1 * 1.2;
+    }
+
     /**
      * 吸火概率
      */
@@ -20,8 +24,8 @@ public class YouGuang extends BaseCommonAttack {
     }
 
     @Override
-    public void doApply(Entity target, Controller controller) {
-        super.doApply(target, controller);
-        controller.randomGrab(getPct(), 1);
+    public void doApply(Entity target) {
+        super.doApply(target);
+        getSelf().randomGrab(getPct(), target);
     }
 }

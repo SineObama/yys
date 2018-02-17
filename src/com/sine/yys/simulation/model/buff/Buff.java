@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.model.buff;
 
 /**
- * 增益效果。
+ * 增益buff。
  */
 public interface Buff extends IBuff {
 }

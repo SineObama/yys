@@ -1,11 +1,8 @@
 package com.sine.yys.simulation.model.mitama;
 
-import com.sine.yys.simulation.component.Controller;
-import com.sine.yys.simulation.component.event.BattleStartEvent;
 import com.sine.yys.simulation.component.event.EventHandler;
 import com.sine.yys.simulation.model.battle.InitContext;
-import com.sine.yys.simulation.model.entity.Entity;
-import com.sine.yys.simulation.model.shield.BangJingShield;
+import com.sine.yys.simulation.model.event.BattleStartEvent;
 import com.sine.yys.simulation.util.Msg;
 
 /**
@@ -22,14 +19,13 @@ public class HuoLing extends BaseMitama implements Mitama, EventHandler<BattleSt
     }
 
     @Override
-    public void handle(BattleStartEvent context, Controller controller) {
+    public void handle(BattleStartEvent event) {
         log.info(Msg.trigger(this));
-        getSelf().getCamp().addFire(getFire());
+        getSelf().getFireRepo().addFire(getFire());
     }
 
     @Override
-    public void init(InitContext context) {
-        super.init(context);
-        context.getOwn().getEventController().add(BattleStartEvent.class, this);
+    public void doInit(InitContext context) {
+        context.getOwn().getEventController().add(this);
     }
 }

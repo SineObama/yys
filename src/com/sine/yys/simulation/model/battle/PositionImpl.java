@@ -6,6 +6,11 @@ public class PositionImpl implements Position {
     private final Entity source;
     private Entity current;
 
+    public PositionImpl(Entity source) {
+        this.current = source;
+        this.source = source;
+    }
+
     @Override
     public Entity getSource() {
         return source;
@@ -18,16 +23,14 @@ public class PositionImpl implements Position {
 
     @Override
     public void setDead(boolean dead) {
-        this.current = null;
+        if (dead)
+            this.current = null;
+        else
+            this.current = this.source;
     }
 
     @Override
     public Entity getCurrent() {
         return current;
-    }
-
-    public PositionImpl(Entity source) {
-        this.current = source;
-        this.source = source;
     }
 }

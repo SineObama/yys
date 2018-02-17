@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.rule;
 
-import com.sine.yys.simulation.model.Attack;
+import com.sine.yys.simulation.model.AttackInfo;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**
@@ -21,9 +21,9 @@ public class CalcDam {
      * 计算某式神攻击目标的期望伤害。
      * 包括暴击的计算（但没有反馈信息）。
      */
-    public static double expect(Entity self, Entity target, Attack attack, boolean critical) {
+    public static double expect(Entity self, Entity target, AttackInfo attackInfo, boolean critical) {
         final double criticalCoefficient = critical ? self.getCriticalDamage() : 1.0;
-        final double finalDefense = (target.getDefense() - attack.getIgnoreDefense()) * (1.0 - attack.getIgnoreDefensePct());
-        return attack.getCoefficient() * injuryPct(finalDefense) * self.getAttack() * criticalCoefficient;
+        final double finalDefense = (target.getDefense() - attackInfo.getIgnoreDefense()) * (1.0 - attackInfo.getIgnoreDefensePct());
+        return attackInfo.getCoefficient() * injuryPct(finalDefense) * self.getAttack() * criticalCoefficient;
     }
 }

@@ -1,8 +1,5 @@
 package com.sine.yys.simulation.rule;
 
-import com.sine.yys.simulation.model.constance.HitResult;
-import com.sine.yys.simulation.util.RandUtil;
-
 /**
  * 计算效果命中。
  */
@@ -13,24 +10,19 @@ public class CalcEffect {
      * @param resistance 对方效果抵抗
      * @return
      */
-    static double hitPct(double resistance) {
+    public static double hitPct(double resistance) {
         return 1.0 / (1.0 + resistance);
     }
 
     /**
-     * 计算技能效果命中结果
+     * 计算实际概率。
+     * 实际概率 = 原始概率 * （1 + 效果命中）
      *
-     * @param pro        技能本身命中率
-     * @param hit        效果命中
-     * @param resistance 对方效果抵抗
-     * @return
+     * @param pct 原始概率。
+     * @param hit 效果命中。
+     * @return 实际概率。
      */
-    public static HitResult calc(double pro, double hit, double resistance) {
-        double proHit0 = pro * (1 + hit);
-        if (RandUtil.fail(proHit0))
-            return HitResult.Miss;
-        if (proHit0 < 1)
-            proHit0 = 1;
-        return RandUtil.success(proHit0 * hitPct(resistance)) ? HitResult.Hit : HitResult.Resist;
+    public static double pct(double pct, double hit) {
+        return pct * (1 + hit);
     }
 }

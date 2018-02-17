@@ -7,12 +7,12 @@ import java.util.logging.Logger;
 
 /**
  * 技能通用逻辑。
+ * 包括CD的设定，战斗中CD的保存，所属式神的引用。
  */
 public abstract class BaseSkill implements Skill {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
-
-    private Entity self;
     private final int MAXCD;
+    private Entity self;
     private int CD = 0;
 
     public BaseSkill() {
@@ -29,12 +29,12 @@ public abstract class BaseSkill implements Skill {
     }
 
     @Override
-    public int getMAXCD() {
+    public final int getMAXCD() {
         return MAXCD;
     }
 
     @Override
-    public int getCD() {
+    public final int getCD() {
         return CD;
     }
 
@@ -45,16 +45,17 @@ public abstract class BaseSkill implements Skill {
         return this.CD = this.CD - 1;
     }
 
-    /**
-     * 注入实体，子类记得调用。
-     */
     @Override
-    public void init(InitContext context) {
+    public final void init(InitContext context) {
         this.self = context.getSelf();
+        doInit(context);
+    }
+
+    protected void doInit(InitContext context) {
     }
 
     @Override
-    public Entity getSelf() {
+    public final Entity getSelf() {
         return self;
     }
 }

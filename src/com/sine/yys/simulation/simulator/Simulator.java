@@ -1,9 +1,6 @@
 package com.sine.yys.simulation.simulator;
 
-import com.sine.yys.simulation.component.SpeedBar;
-import com.sine.yys.simulation.component.operationhandler.OperationHandler;
 import com.sine.yys.simulation.model.battle.Camp;
-import com.sine.yys.simulation.model.entity.BattleKoinobori;
 
 /**
  * 模拟器接口。
@@ -11,32 +8,14 @@ import com.sine.yys.simulation.model.entity.BattleKoinobori;
  */
 public interface Simulator {
     /**
-     * 行动一步（己方或敌方）
+     * 行动一步（一回合，己方或敌方行动）。
      *
      * @return 胜利阵营，未胜利则null。
      */
     Camp step();
 
-    Camp getCamp0();
-
-    Camp getCamp1();
-
     /**
-     * @return 战场鲤鱼旗
+     * 双方总共回合数。
      */
-    BattleKoinobori getBattleKoinobori();
-
-    boolean isAuto();
-
-    void setAuto(boolean auto);
-
-    OperationHandler getHandler();
-
-    void setHandler(OperationHandler handler);
-
-    SpeedBar getSpeedBar();
-
-    boolean isStarted();
-
     int getRound();
 }

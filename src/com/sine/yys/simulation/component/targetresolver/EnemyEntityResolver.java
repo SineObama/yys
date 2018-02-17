@@ -1,14 +1,15 @@
 package com.sine.yys.simulation.component.targetresolver;
 
-import com.sine.yys.simulation.model.battle.Camp;
-import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.entity.Entity;
 
 import java.util.List;
 
+/**
+ * 可选目标为敌方所有式神（或召唤物）。
+ */
 public class EnemyEntityResolver implements TargetResolver {
     @Override
-    public List<? extends Target> resolve(Entity self, Camp own, Camp enemy) {
-        return enemy.getAllAlive();
+    public List<? extends Entity> resolve(Entity self) {
+        return self.getCamp().getOpposite().getAllAlive();
     }
 }
