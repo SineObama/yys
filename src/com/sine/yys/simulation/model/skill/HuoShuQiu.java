@@ -27,7 +27,7 @@ public class HuoShuQiu extends BaseSkill implements PassiveSkill, EventHandler<B
     @Override
     public void handle(BeAttackEvent event) {
         if (RandUtil.success(getPct())) {
-            log.info(Msg.trigger(this));
+            log.info(Msg.trigger(getSelf(), this));
             getSelf().getFireRepo().addFire(1);
         }
     }

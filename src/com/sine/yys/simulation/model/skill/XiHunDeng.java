@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.model.entity.BaseEntity;
 import com.sine.yys.simulation.model.entity.Entity;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class XiHunDeng extends SimpleGroupAttack {
     }
 
     @Override
-    public void doApply(Entity target) {
+    public void doApply(BaseEntity target) {
         List<Entity> allAlive = getSelf().getCamp().getOpposite().getAllAlive();// XXX 未来对于召唤物的吸火检查
         super.doApply(target);
         for (Entity entity : allAlive) {// XXX 对于已死目标是否会有问题

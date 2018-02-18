@@ -36,7 +36,7 @@ public class ZhenNv extends BaseMitama implements Mitama, EventHandler<CriticalE
     @Override
     public void handle(CriticalEvent event) {
         if (RandUtil.success(getPct())) {
-            log.info(Msg.trigger(this));
+            log.info(Msg.trigger(getSelf(), this));
             getSelf().realDamage(event.getTarget(), getMaxDamageByAttack(), getMaxDamageByMaxLife());
         }
     }

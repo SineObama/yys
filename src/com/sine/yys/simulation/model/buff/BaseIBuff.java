@@ -6,8 +6,8 @@ package com.sine.yys.simulation.model.buff;
  * 默认所有数值属性为0。
  */
 public abstract class BaseIBuff implements IBuff {
-    private int last;
     private final String name;
+    private int last;
 
     /**
      * @param last 持续回合数。必须为正。

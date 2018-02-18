@@ -5,6 +5,7 @@ import com.sine.yys.simulation.model.battle.InitContext;
 import com.sine.yys.simulation.model.buff.buff.LSZYDefenseBuff;
 import com.sine.yys.simulation.model.buff.buff.LSZYEffectDefBuff;
 import com.sine.yys.simulation.model.buff.buff.LongShouZhiYuBuff;
+import com.sine.yys.simulation.model.entity.BaseEntity;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.entity.Shikigami;
 import com.sine.yys.simulation.model.event.BattleStartEvent;
@@ -33,7 +34,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill, Eve
      * 释放幻境。由于开局释放不算回合数，而技能释放时需要给last额外加1，所以独立出这个逻辑。
      */
     private void deploy(int last) {
-        Entity self = getSelf();
+        BaseEntity self = getSelf();
         LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> self.getEventController().trigger(new LongShouZhiYuOff()));  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
         log.info(Msg.info(self, "施放 " + buff.getName()));
         self.getBuffController().addBuff(buff);
@@ -57,7 +58,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill, Eve
     @Override
     public void handle(BeforeActionEvent event) {
         if (RandUtil.success(getPct())) {
-            log.info(Msg.trigger(this));
+            log.info(Msg.trigger(getSelf(), this));
             event.getTarget().getFireRepo().addFire(1);
         }
     }

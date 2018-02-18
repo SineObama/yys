@@ -1,7 +1,8 @@
 package com.sine.yys.simulation.model.skill;
 
 import com.sine.yys.simulation.model.battle.InitContext;
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.battle.Initable;
+import com.sine.yys.simulation.model.entity.BaseEntity;
 
 import java.util.logging.Logger;
 
@@ -9,10 +10,10 @@ import java.util.logging.Logger;
  * 技能通用逻辑。
  * 包括CD的设定，战斗中CD的保存，所属式神的引用。
  */
-public abstract class BaseSkill implements Skill {
+public abstract class BaseSkill implements Skill, Initable {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
     private final int MAXCD;
-    private Entity self;
+    private BaseEntity self;
     private int CD = 0;
 
     public BaseSkill() {
@@ -47,15 +48,14 @@ public abstract class BaseSkill implements Skill {
 
     @Override
     public final void init(InitContext context) {
-        this.self = context.getSelf();
+        this.self = (BaseEntity) context.getSelf();
         doInit(context);
     }
 
     protected void doInit(InitContext context) {
     }
 
-    @Override
-    public final Entity getSelf() {
+    public final BaseEntity getSelf() {
         return self;
     }
 }

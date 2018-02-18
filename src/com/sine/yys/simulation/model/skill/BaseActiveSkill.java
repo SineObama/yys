@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.model.entity.BaseEntity;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**
@@ -8,7 +9,8 @@ import com.sine.yys.simulation.model.entity.Entity;
  */
 public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override
-    public final void apply(Entity target) {
+    public final void apply(Entity target0) {
+        BaseEntity target = (BaseEntity) target0;
         getSelf().clear();
         beforeApply(target);
         doApply(target);
@@ -16,20 +18,19 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     }
 
     /**
-     * 技能实际逻辑，各技能重写的重点。
-     * 其中普通不触发普攻。
+     * 技能的具体操作。各技能重写的重点。
      */
-    public abstract void doApply(Entity target);
+    protected abstract void doApply(BaseEntity target);
 
     /**
      * 目前只用于普攻触发事件。
      */
-    protected void beforeApply(Entity target) {
+    protected void beforeApply(BaseEntity target) {
     }
 
     /**
      * 目前只用于普攻触发事件。
      */
-    protected void afterApply(Entity target) {
+    protected void afterApply(BaseEntity target) {
     }
 }

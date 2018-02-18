@@ -41,16 +41,16 @@ public class Msg {
         return info(target, "触发 " + event.toString());
     }
 
-    public static String trigger(Skill skill) {
-        return info(skill.getSelf(), "触发 " + skill.getName());
+    public static String trigger(Entity self, Skill skill) {
+        return info(self, "触发 " + skill.getName());
     }
 
     public static String trigger(Entity self, Effect effect) {
         return info(self, "触发 " + effect.getName());
     }
 
-    public static String trigger(Mitama mitama) {
-        return info(mitama.getSelf(), "触发 " + mitama.getName());
+    public static String trigger(Entity self, Mitama mitama) {
+        return info(self, "触发 " + mitama.getName());
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.entity.BaseEntity;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 
@@ -26,7 +26,7 @@ public class PengLaiYuZhi extends BaseCommonAttack {
     }
 
     @Override
-    public void doApply(Entity target) {
+    public void doApply(BaseEntity target) {
         super.doApply(target);
         if (RandUtil.success(getPct()) && target.getFireRepo().grabFire(1) > 0)
             log.info(Msg.vector(getSelf(), "打掉", target, "1 点鬼火"));

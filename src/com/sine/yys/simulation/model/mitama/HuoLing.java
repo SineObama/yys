@@ -20,7 +20,7 @@ public class HuoLing extends BaseMitama implements Mitama, EventHandler<BattleSt
 
     @Override
     public void handle(BattleStartEvent event) {
-        log.info(Msg.trigger(this));
+        log.info(Msg.trigger(getSelf(), this));
         getSelf().getFireRepo().addFire(getFire());
     }
 

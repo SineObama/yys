@@ -11,6 +11,7 @@ import com.sine.yys.simulation.model.AttackInfo;
 import com.sine.yys.simulation.model.Property;
 import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.battle.InitContext;
+import com.sine.yys.simulation.model.battle.Initable;
 import com.sine.yys.simulation.model.buff.Debuff;
 import com.sine.yys.simulation.model.buff.debuff.ControlBuff;
 import com.sine.yys.simulation.model.buff.debuff.HunLuan;
@@ -38,7 +39,7 @@ import java.util.logging.Logger;
  * <p>这里实现了程序的主体逻辑，包括行动逻辑，事件的触发等。
  * 技能或御魂通过调用这里的函数以实现自身的逻辑。</p>
  */
-public abstract class BaseEntity implements Entity {
+public abstract class BaseEntity implements Entity, Initable {
     private final Logger log = Logger.getLogger(getClass().toString());
     private final EventController eventController = new EventControllerImpl();
     private final BuffController buffController = new BuffControllerImpl();
@@ -226,10 +227,10 @@ public abstract class BaseEntity implements Entity {
         fireRepo = context.getFireRepo();
         context.setSelf(this);
         for (Skill skill : skills) {
-            skill.init(context);
+            ((Initable) skill).init(context);
         }
         for (Mitama mitama : mitamas) {
-            mitama.init(context);
+            ((Initable) mitama).init(context);
         }
     }
 
@@ -247,7 +248,6 @@ public abstract class BaseEntity implements Entity {
         return life <= 0;
     }
 
-    @Override
     public final Camp getCamp() {
         return camp;
     }
@@ -280,7 +280,8 @@ public abstract class BaseEntity implements Entity {
      * 4. 施加剩余伤害，添加御魂效果。
      */
     @Override
-    public void attack(Entity target, AttackInfo attackInfo) {
+    public void attack(Entity target0, AttackInfo attackInfo) {
+        BaseEntity target = (BaseEntity) target0;
         if (target.isDead())  // XXX 只是有时会出现目标已死。有更好的逻辑？
             return;
 
@@ -324,7 +325,8 @@ public abstract class BaseEntity implements Entity {
      * 4. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
      */
     @Override
-    public void realDamage(Entity target, double maxByAttack, double maxPctByMaxLife) {
+    public void realDamage(Entity target0, double maxByAttack, double maxPctByMaxLife) {
+        BaseEntity target = (BaseEntity) target0;
         if (target.isDead())
             return;
         // 1.
@@ -364,7 +366,7 @@ public abstract class BaseEntity implements Entity {
         return damage;
     }
 
-    private void doDamage(Entity target, int damage) {
+    private void doDamage(BaseEntity target, int damage) {
         log.info(Msg.damage(this, target, damage));
         if (target.getLife() > damage) {
             target.setLife(target.getLife() - damage);

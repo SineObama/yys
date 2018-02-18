@@ -1,8 +1,11 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.model.buff.*;
+import com.sine.yys.simulation.model.battle.Target;
+import com.sine.yys.simulation.model.buff.Buff;
+import com.sine.yys.simulation.model.buff.Debuff;
+import com.sine.yys.simulation.model.buff.IBuffProperty;
+import com.sine.yys.simulation.model.buff.UniqueIBuff;
 import com.sine.yys.simulation.model.buff.debuff.ControlBuff;
-import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.shield.Shield;
 
 import java.util.List;
@@ -31,7 +34,7 @@ public interface BuffController extends IBuffProperty {
      * 行动后执行。
      * 给效果回合数减1，减到0则移除效果。
      */
-    void step(Entity self);
+    void step(Target self);
 
     void addBuff(Buff buff);
 

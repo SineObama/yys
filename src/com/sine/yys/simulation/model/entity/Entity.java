@@ -4,8 +4,6 @@ import com.sine.yys.simulation.component.BuffController;
 import com.sine.yys.simulation.component.FireRepo;
 import com.sine.yys.simulation.component.event.EventController;
 import com.sine.yys.simulation.model.AttackInfo;
-import com.sine.yys.simulation.model.battle.Camp;
-import com.sine.yys.simulation.model.battle.InitContext;
 import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.buff.Debuff;
 import com.sine.yys.simulation.model.effect.PctEffect;
@@ -44,11 +42,7 @@ public interface Entity extends Target {
 
     EventController getEventController();
 
-    void init(InitContext context);
-
     boolean isDead();
-
-    Camp getCamp();
 
     BuffController getBuffController();
 

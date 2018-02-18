@@ -33,7 +33,7 @@ public class DiZangXiang extends BaseMitama implements Mitama, EventHandler<BeCr
 
     @Override
     public void handle(BeCriticalEvent event) {
-        log.info(Msg.trigger(this));
+        log.info(Msg.trigger(getSelf(), this));
         final int value = (int) (getSelf().getMaxLife() * getShieldByMaxLife());
         getSelf().getBuffController().addShield(new DiZangXiangShield(value));
         for (Entity entity : getSelf().getCamp().getAllAlive()) {

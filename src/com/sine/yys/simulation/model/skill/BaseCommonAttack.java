@@ -4,6 +4,7 @@ import com.sine.yys.simulation.component.targetresolver.EnemyEntityResolver;
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 import com.sine.yys.simulation.model.AttackInfo;
 import com.sine.yys.simulation.model.AttackInfoImpl;
+import com.sine.yys.simulation.model.entity.BaseEntity;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.event.CommonAttackEvent;
 
@@ -17,6 +18,9 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
         return 0;
     }
 
+    /**
+     * @return 攻击次数（段数）。
+     */
     public int getTimes() {
         return 1;
     }
@@ -26,6 +30,12 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
         return 1.0;
     }
 
+    /**
+     * 攻击信息。
+     * 默认以getCoefficient的系数，没有破防效果。
+     *
+     * @return 攻击信息。
+     */
     @Override
     public AttackInfo getAttack() {
         return new AttackInfoImpl(getCoefficient());
@@ -37,18 +47,34 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     }
 
     @Override
-    public final void afterApply(Entity target) {
+    public final void afterApply(BaseEntity target) {
         // 触发普攻事件
         getSelf().getCamp().getEventController().trigger(new CommonAttackEvent(getSelf(), target));
     }
 
     @Override
-    public void xieZhan(Entity target) {
+    public final void xieZhan(Entity target) {
+        doXieZhan((BaseEntity) target);
+    }
+
+    /**
+     * 协战的具体操作。
+     * 默认调用doApply。具体技能根据需要重写。
+     *
+     * @param target 协战目标。
+     */
+    protected void doXieZhan(BaseEntity target) {
         doApply(target);
     }
 
+    /**
+     * 普攻的具体操作。无需触发普攻事件。
+     * 默认以getAttack的攻击，对target攻击getTimes次。
+     *
+     * @param target 攻击目标。
+     */
     @Override
-    public void doApply(Entity target) {
+    protected void doApply(BaseEntity target) {
         for (int i = 0; i < getTimes(); i++) {
             if (target.isDead())
                 break;

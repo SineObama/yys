@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * PVP阵营。
  * 初始化时给式神设置唯一的鬼火仓库（自己）。
  */
-public class PVPCamp implements Camp, FireRepo {
+public class PVPCamp implements Camp, Initable, FireRepo {
     private final Logger log = Logger.getLogger(this.getClass().toString());
 
     private final EventController eventController = new EventControllerImpl();
@@ -141,7 +141,7 @@ public class PVPCamp implements Camp, FireRepo {
         context.setFireRepo(this);
         final List<Shikigami> allShikigami = getAllShikigami();
         for (Shikigami shikigami : allShikigami) {
-            shikigami.init(context);
+            ((Initable) shikigami).init(context);
         }
     }
 

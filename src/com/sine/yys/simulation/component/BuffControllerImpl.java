@@ -1,12 +1,12 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.model.battle.Target;
 import com.sine.yys.simulation.model.buff.Buff;
 import com.sine.yys.simulation.model.buff.Debuff;
 import com.sine.yys.simulation.model.buff.IBuff;
 import com.sine.yys.simulation.model.buff.UniqueIBuff;
 import com.sine.yys.simulation.model.buff.debuff.ControlBuff;
 import com.sine.yys.simulation.model.buff.debuff.HunLuan;
-import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.shield.BangJingShield;
 import com.sine.yys.simulation.model.shield.DiZangXiangShield;
 import com.sine.yys.simulation.model.shield.Shield;
@@ -62,7 +62,7 @@ public class BuffControllerImpl implements BuffController {
     }
 
     @Override
-    public void step(Entity self) {
+    public void step(Target self) {
         // XXXX 分开试试
         List<IBuff> removeList = new ArrayList<>();
         final Iterator<Container<IBuff>> iterator = set.iterator();

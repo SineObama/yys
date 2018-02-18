@@ -2,6 +2,7 @@ package com.sine.yys.simulation.simulator;
 
 import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.battle.InitContext;
+import com.sine.yys.simulation.model.battle.Initable;
 import com.sine.yys.simulation.model.entity.BattleKoinobori;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.event.BattleStartEvent;
@@ -62,10 +63,10 @@ public class BattleSimulator implements Simulator {
             InitContext context = new InitContext();
             context.setOwn(camp0);
             context.setEnemy(camp1);
-            camp0.init(context);
+            ((Initable) camp0).init(context);
             context.setOwn(camp1);
             context.setEnemy(camp0);
-            camp1.init(context);
+            ((Initable) camp1).init(context);
 
             BattleStartEvent startEvent = new BattleStartEvent();
             camp0.getEventController().trigger(startEvent);

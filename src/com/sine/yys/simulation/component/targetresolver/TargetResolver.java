@@ -1,11 +1,14 @@
 package com.sine.yys.simulation.component.targetresolver;
 
 import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.skill.ActiveSkill;
 
 import java.util.List;
 
 /**
  * 技能的可选目标查找器。由技能定义、实现此类。
+ *
+ * @see ActiveSkill
  */
 public interface TargetResolver {
     /**

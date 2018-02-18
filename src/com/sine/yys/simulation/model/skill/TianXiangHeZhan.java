@@ -3,7 +3,7 @@ package com.sine.yys.simulation.model.skill;
 import com.sine.yys.simulation.component.targetresolver.EnemyEntityResolver;
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 import com.sine.yys.simulation.model.AttackInfoImpl;
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.entity.BaseEntity;
 
 /**
  * 姑获鸟-天翔鹤斩。
@@ -34,7 +34,7 @@ public class TianXiangHeZhan extends SimpleGroupAttack {
     }
 
     @Override
-    public void doApply(Entity target) {
+    public void doApply(BaseEntity target) {
         super.doApply(target);
         getSelf().attack(target, new AttackInfoImpl(getFinalCoefficient()));
     }

@@ -25,7 +25,7 @@ public class MingDeng extends BaseSkill implements PassiveSkill, EventHandler<Us
     @Override
     public void handle(UseFireEvent event) {
         if (event.getSelf() != getSelf() && RandUtil.success(getPct())) {
-            log.info(Msg.trigger(this));
+            log.info(Msg.trigger(getSelf(), this));
             event.setCostFire(0);
         }
     }
