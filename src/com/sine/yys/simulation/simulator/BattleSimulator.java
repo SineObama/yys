@@ -1,11 +1,11 @@
 package com.sine.yys.simulation.simulator;
 
-import com.sine.yys.simulation.model.Camp;
-import com.sine.yys.simulation.model.Entity;
-import com.sine.yys.simulation.model.InitContext;
-import com.sine.yys.simulation.model.Initable;
-import com.sine.yys.simulation.model.entity.BattleKoinobori;
-import com.sine.yys.simulation.model.event.BattleStartEvent;
+import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.entity.BattleKoinobori;
+import com.sine.yys.simulation.component.model.Camp;
+import com.sine.yys.simulation.component.model.InitContext;
+import com.sine.yys.simulation.component.model.Initable;
+import com.sine.yys.simulation.component.model.event.BattleStartEvent;
 import com.sine.yys.simulation.util.Msg;
 
 import java.util.ArrayList;

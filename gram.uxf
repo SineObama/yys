@@ -549,7 +549,7 @@ m1=require
       <w>140</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>SimpleOperation</panel_attributes>
+    <panel_attributes>Operation</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

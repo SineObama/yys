@@ -1,13 +1,13 @@
 package com.sine.yys.simulation;
 
+import com.sine.yys.simulation.component.entity.GuHuoNiao;
+import com.sine.yys.simulation.component.entity.QingXingDeng;
+import com.sine.yys.simulation.component.mitama.HuoLing;
+import com.sine.yys.simulation.component.mitama.MeiYao;
+import com.sine.yys.simulation.component.mitama.ZhenNv;
 import com.sine.yys.simulation.info.Property;
-import com.sine.yys.simulation.model.Camp;
-import com.sine.yys.simulation.model.PVPCamp;
-import com.sine.yys.simulation.model.entity.GuHuoNiao;
-import com.sine.yys.simulation.model.entity.QingXingDeng;
-import com.sine.yys.simulation.model.mitama.HuoLing;
-import com.sine.yys.simulation.model.mitama.MeiYao;
-import com.sine.yys.simulation.model.mitama.ZhenNv;
+import com.sine.yys.simulation.component.model.Camp;
+import com.sine.yys.simulation.component.model.PVPCamp;
 import com.sine.yys.simulation.simulator.BattleSimulator;
 import com.sine.yys.simulation.simulator.Simulator;
 
