@@ -2,8 +2,8 @@ package com.sine.yys.simulation.model.skill;
 
 import com.sine.yys.simulation.component.targetresolver.EnemyEntityResolver;
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
-import com.sine.yys.simulation.model.AttackInfo;
-import com.sine.yys.simulation.model.AttackInfoImpl;
+import com.sine.yys.simulation.info.AttackInfo;
+import com.sine.yys.simulation.info.AttackInfoImpl;
 import com.sine.yys.simulation.model.entity.BaseEntity;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.event.CommonAttackEvent;

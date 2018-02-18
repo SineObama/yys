@@ -2,7 +2,7 @@ package com.sine.yys.simulation.model.entity;
 
 import com.sine.yys.simulation.component.operationhandler.AutoOperationHandler;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
-import com.sine.yys.simulation.model.Property;
+import com.sine.yys.simulation.info.Property;
 import com.sine.yys.simulation.model.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.simulation.model.mitama.Mitama;
 import com.sine.yys.simulation.model.operation.Operation;

@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.model;
+package com.sine.yys.simulation.info;
 
 /**
  * 定义一次攻击（一次伤害）中，只与技能本身相关的信息。

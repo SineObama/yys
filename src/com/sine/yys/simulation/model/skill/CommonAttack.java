@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.model.AttackInfo;
+import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**

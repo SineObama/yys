@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.model;
+package com.sine.yys.simulation.info;
 
 public class AttackInfoImpl implements AttackInfo {
     private final double coefficient;

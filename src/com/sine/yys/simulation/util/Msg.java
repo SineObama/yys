@@ -1,20 +1,12 @@
 package com.sine.yys.simulation.util;
 
-import com.sine.yys.simulation.model.battle.Target;
-import com.sine.yys.simulation.model.buff.IBuff;
-import com.sine.yys.simulation.model.effect.Effect;
-import com.sine.yys.simulation.model.entity.Entity;
-import com.sine.yys.simulation.model.event.Event;
-import com.sine.yys.simulation.model.mitama.Mitama;
-import com.sine.yys.simulation.model.skill.Skill;
-
-import java.util.logging.Logger;
+import com.sine.yys.simulation.info.Named;
+import com.sine.yys.simulation.info.Target;
 
 /**
  * 用于统一输出信息（对齐）。
  */
 public class Msg {
-    private static final Logger log = Logger.getLogger(Msg.class.toString());
     private static final int fullNameWidth = -16;
     private static final int predicateWidth = -10;
 
@@ -25,42 +17,24 @@ public class Msg {
         return chStr(self != null ? self.getFullName() : "", fullNameWidth) + msg;
     }
 
-    public static String damage(Entity self, Entity target, int damage) {
+    public static String damage(Target self, Target target, int damage) {
         return vector(self, "对", target, String.format("造成% 5d伤害", damage));
     }
 
-    public static String addBuff(Entity self, Entity target, IBuff buff) {
+    public static String addBuff(Target self, Target target, Named buff) {
         return vector(self, "给", target, "添加 " + buff.getName());
     }
 
-    public static String noDamage(Entity self, Entity target) {
+    public static String noDamage(Target self, Target target) {
         return vector(self, "攻击", target, "未造成伤害");
     }
 
-    public static String trigger(Target target, Event event) {
-        return info(target, "触发 " + event.toString());
-    }
-
-    public static String trigger(Entity self, Skill skill) {
-        return info(self, "触发 " + skill.getName());
-    }
-
-    public static String trigger(Entity self, Effect effect) {
-        return info(self, "触发 " + effect.getName());
-    }
-
-    public static String trigger(Entity self, Mitama mitama) {
-        return info(self, "触发 " + mitama.getName());
+    public static String trigger(Target target, Named obj) {
+        return info(target, "触发 " + obj.getName());
     }
 
     /**
      * 指向性消息。谁对谁做什么。
-     *
-     * @param self
-     * @param v      谓语
-     * @param target
-     * @param m      宾语
-     * @return
      */
     public static String vector(Target self, String v, Target target, String m) {
         String selfn = chStr(self != null ? self.getFullName() : "", fullNameWidth);

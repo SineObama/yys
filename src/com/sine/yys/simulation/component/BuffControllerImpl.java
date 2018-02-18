@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.model.battle.Target;
+import com.sine.yys.simulation.info.Target;
 import com.sine.yys.simulation.model.buff.Buff;
 import com.sine.yys.simulation.model.buff.Debuff;
 import com.sine.yys.simulation.model.buff.IBuff;

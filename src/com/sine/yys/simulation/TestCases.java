@@ -1,6 +1,6 @@
 package com.sine.yys.simulation;
 
-import com.sine.yys.simulation.model.Property;
+import com.sine.yys.simulation.info.Property;
 import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.battle.PVPCamp;
 import com.sine.yys.simulation.model.entity.GuHuoNiao;

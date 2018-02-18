@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.model.buff;
 
+import com.sine.yys.simulation.info.Named;
+
 /**
  * 式神头上的buff，分为增益和减益两大类。
  * 基本的有增加攻击、防御、抵抗等，也包括护盾、控制效果。
@@ -10,7 +12,7 @@ package com.sine.yys.simulation.model.buff;
  * 目前的处理是在对自身的buff额外增加1回合。
  * 考虑另一种实现是在回合开始时“保存”已有buff，在结束时对这些进行减1，但似乎更麻烦更慢。</p>
  */
-public interface IBuff extends IBuffProperty {
+public interface IBuff extends IBuffProperty, Named {
     /**
      * buff名称。
      */

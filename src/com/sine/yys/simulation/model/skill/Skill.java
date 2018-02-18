@@ -1,12 +1,12 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.info.Named;
+
 /**
  * 技能。
  * 获取CD等，提供step函数。
  */
-public interface Skill {
-    String getName();
-
+public interface Skill extends Named {
     String getDetail();
 
     int getCD();

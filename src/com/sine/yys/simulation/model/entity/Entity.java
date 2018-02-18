@@ -3,8 +3,9 @@ package com.sine.yys.simulation.model.entity;
 import com.sine.yys.simulation.component.BuffController;
 import com.sine.yys.simulation.component.FireRepo;
 import com.sine.yys.simulation.component.event.EventController;
-import com.sine.yys.simulation.model.AttackInfo;
-import com.sine.yys.simulation.model.battle.Target;
+import com.sine.yys.simulation.info.AttackInfo;
+import com.sine.yys.simulation.info.IProperty;
+import com.sine.yys.simulation.info.Target;
 import com.sine.yys.simulation.model.buff.Debuff;
 import com.sine.yys.simulation.model.effect.PctEffect;
 
@@ -12,33 +13,19 @@ import com.sine.yys.simulation.model.effect.PctEffect;
  * 实体（包括式神和召唤物）。
  * 包含属性，buff、事件等。
  */
-public interface Entity extends Target {
+public interface Entity extends Target, IProperty {
     /**
      * 上层通过行动条计算得到行动的式神，调用此函数。
      */
     void action();
 
-    double getAttack();
-
     double getMaxLife();
 
-    double getDefense();
-
-    double getSpeed();
-
-    double getCritical();
-
-    double getCriticalDamage();
-
-    double getEffectHit();
-
-    double getEffectDef();
-
-    int getLife();
-
-    void setLife(int life);
-
-    double getLifePct();
+    /**
+     * @return 生命百分比。
+     */
+    @Override
+    double getLife();
 
     EventController getEventController();
 

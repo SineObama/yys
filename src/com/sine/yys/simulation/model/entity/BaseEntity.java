@@ -7,8 +7,8 @@ import com.sine.yys.simulation.component.event.EventController;
 import com.sine.yys.simulation.component.event.EventControllerImpl;
 import com.sine.yys.simulation.component.operationhandler.AutoOperationHandler;
 import com.sine.yys.simulation.component.operationhandler.OperationHandler;
-import com.sine.yys.simulation.model.AttackInfo;
-import com.sine.yys.simulation.model.Property;
+import com.sine.yys.simulation.info.AttackInfo;
+import com.sine.yys.simulation.info.Property;
 import com.sine.yys.simulation.model.battle.Camp;
 import com.sine.yys.simulation.model.battle.InitContext;
 import com.sine.yys.simulation.model.battle.Initable;
@@ -188,17 +188,7 @@ public abstract class BaseEntity implements Entity, Initable {
     }
 
     @Override
-    public final int getLife() {
-        return life;
-    }
-
-    @Override
-    public final void setLife(int life) {
-        this.life = life;
-    }
-
-    @Override
-    public final double getLifePct() {
+    public final double getLife() {
         return life / property.getLife();
     }
 
@@ -368,11 +358,11 @@ public abstract class BaseEntity implements Entity, Initable {
 
     private void doDamage(BaseEntity target, int damage) {
         log.info(Msg.damage(this, target, damage));
-        if (target.getLife() > damage) {
-            target.setLife(target.getLife() - damage);
+        if (target.life > damage) {
+            target.life -= damage;
         } else {
             log.info(Msg.vector(this, "击杀", target, ""));
-            target.setLife(0);
+            target.life = 0;
             target.getCamp().getPosition(target).setDead(true);
         }
         // FIXME 死后添加debuff会有问题？
