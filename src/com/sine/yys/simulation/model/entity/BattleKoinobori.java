@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.model.entity;
 
 import com.sine.yys.simulation.info.Property;
+import com.sine.yys.simulation.model.Entity;
 
 import java.util.Collections;
 

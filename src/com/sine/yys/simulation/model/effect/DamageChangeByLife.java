@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.effect;
 
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.Entity;
 
 /**
  * 若目标生命***则伤害增/减***

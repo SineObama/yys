@@ -1,10 +1,10 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.targetresolver.EmptyResolver;
-import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 import com.sine.yys.simulation.info.AttackInfoImpl;
+import com.sine.yys.simulation.model.Entity;
+import com.sine.yys.simulation.model.TargetResolver;
 import com.sine.yys.simulation.model.entity.BaseEntity;
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.targetresolver.EmptyResolver;
 
 /**
  * 简单群攻，可多段。

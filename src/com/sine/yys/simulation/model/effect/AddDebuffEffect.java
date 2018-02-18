@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.effect;
 
-import com.sine.yys.simulation.component.event.EventHandler;
+import com.sine.yys.simulation.model.EventHandler;
 import com.sine.yys.simulation.model.buff.Debuff;
 import com.sine.yys.simulation.model.event.DamageEvent;
 

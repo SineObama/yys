@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.event;
 
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.Entity;
 
 /**
  * 包含自身和目标的事件通用逻辑。

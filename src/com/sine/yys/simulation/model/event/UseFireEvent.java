@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.event;
 
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.Entity;
 
 /**
  * 使用鬼火事件。

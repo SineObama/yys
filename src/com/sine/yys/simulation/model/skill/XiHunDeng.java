@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.model.Entity;
 import com.sine.yys.simulation.model.entity.BaseEntity;
-import com.sine.yys.simulation.model.entity.Entity;
 
 import java.util.List;
 

@@ -1,9 +1,6 @@
-package com.sine.yys.simulation.model.battle;
+package com.sine.yys.simulation.model;
 
-import com.sine.yys.simulation.component.event.EventController;
 import com.sine.yys.simulation.info.Target;
-import com.sine.yys.simulation.model.entity.Entity;
-import com.sine.yys.simulation.model.entity.Shikigami;
 
 import java.util.List;
 

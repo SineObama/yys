@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.model.Skill;
+
 /**
  * 被动技能
  */

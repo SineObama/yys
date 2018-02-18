@@ -1,12 +1,12 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.targetresolver.EnemyEntityResolver;
-import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.AttackInfoImpl;
+import com.sine.yys.simulation.model.Entity;
+import com.sine.yys.simulation.model.TargetResolver;
 import com.sine.yys.simulation.model.entity.BaseEntity;
-import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.event.CommonAttackEvent;
+import com.sine.yys.simulation.model.targetresolver.EnemyEntityResolver;
 
 /**
  * 普攻通用逻辑。

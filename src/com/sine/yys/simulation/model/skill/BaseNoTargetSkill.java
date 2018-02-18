@@ -1,7 +1,8 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.component.targetresolver.EmptyResolver;
-import com.sine.yys.simulation.component.targetresolver.TargetResolver;
+import com.sine.yys.simulation.model.ActiveSkill;
+import com.sine.yys.simulation.model.TargetResolver;
+import com.sine.yys.simulation.model.targetresolver.EmptyResolver;
 
 /**
  * 不需要目标的技能通用逻辑。

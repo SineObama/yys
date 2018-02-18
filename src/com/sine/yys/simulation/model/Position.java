@@ -1,6 +1,4 @@
-package com.sine.yys.simulation.model.battle;
-
-import com.sine.yys.simulation.model.entity.Entity;
+package com.sine.yys.simulation.model;
 
 /**
  * 一个实体的位置。

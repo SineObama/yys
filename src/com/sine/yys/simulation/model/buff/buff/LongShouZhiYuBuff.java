@@ -1,9 +1,9 @@
 package com.sine.yys.simulation.model.buff.buff;
 
-import com.sine.yys.simulation.component.CallBack;
 import com.sine.yys.simulation.model.buff.BaseIBuff;
 import com.sine.yys.simulation.model.buff.Buff;
 import com.sine.yys.simulation.model.buff.UniqueIBuff;
+import com.sine.yys.simulation.util.CallBack;
 
 /**
  * 辉夜姬身上隐藏的龙首之玉buff，代表龙首之玉幻境。

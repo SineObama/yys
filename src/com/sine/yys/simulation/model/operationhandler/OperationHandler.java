@@ -1,8 +1,8 @@
-package com.sine.yys.simulation.component.operationhandler;
+package com.sine.yys.simulation.model.operationhandler;
 
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.ActiveSkill;
+import com.sine.yys.simulation.model.Entity;
 import com.sine.yys.simulation.model.operation.Operation;
-import com.sine.yys.simulation.model.skill.ActiveSkill;
 
 import java.util.List;
 import java.util.Map;

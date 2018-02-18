@@ -1,13 +1,11 @@
-package com.sine.yys.simulation.model.entity;
+package com.sine.yys.simulation.model;
 
-import com.sine.yys.simulation.component.BuffController;
-import com.sine.yys.simulation.component.FireRepo;
-import com.sine.yys.simulation.component.event.EventController;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.IProperty;
 import com.sine.yys.simulation.info.Target;
 import com.sine.yys.simulation.model.buff.Debuff;
 import com.sine.yys.simulation.model.effect.PctEffect;
+import com.sine.yys.simulation.model.skill.CommonAttack;
 
 /**
  * 实体（包括式神和召唤物）。
@@ -57,7 +55,7 @@ public interface Entity extends Target, IProperty {
 
     /**
      * 处理协战。
-     * 最终依赖于{@link com.sine.yys.simulation.model.skill.CommonAttack#xieZhan(Entity)}
+     * 最终依赖于{@link CommonAttack#xieZhan(Entity)}
      *
      * @param target 队友普攻的目标。
      */

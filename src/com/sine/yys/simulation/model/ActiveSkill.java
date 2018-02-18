@@ -1,7 +1,4 @@
-package com.sine.yys.simulation.model.skill;
-
-import com.sine.yys.simulation.component.targetresolver.TargetResolver;
-import com.sine.yys.simulation.model.entity.Entity;
+package com.sine.yys.simulation.model;
 
 /**
  * 主动技能。

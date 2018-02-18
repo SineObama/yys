@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.simulation.model;
 
 import com.sine.yys.simulation.info.Target;
 import com.sine.yys.simulation.model.buff.Buff;

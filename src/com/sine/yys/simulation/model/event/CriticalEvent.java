@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.event;
 
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.Entity;
 
 /**
  * 暴击事件。必须是造成伤害的暴击，不算护盾。

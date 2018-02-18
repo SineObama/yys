@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.simulation.model;
 
 /**
  * 鬼火仓库，管理鬼火。

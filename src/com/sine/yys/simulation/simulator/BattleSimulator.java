@@ -1,10 +1,10 @@
 package com.sine.yys.simulation.simulator;
 
-import com.sine.yys.simulation.model.battle.Camp;
-import com.sine.yys.simulation.model.battle.InitContext;
-import com.sine.yys.simulation.model.battle.Initable;
+import com.sine.yys.simulation.model.Camp;
+import com.sine.yys.simulation.model.Entity;
+import com.sine.yys.simulation.model.InitContext;
+import com.sine.yys.simulation.model.Initable;
 import com.sine.yys.simulation.model.entity.BattleKoinobori;
-import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.event.BattleStartEvent;
 import com.sine.yys.simulation.util.Msg;
 

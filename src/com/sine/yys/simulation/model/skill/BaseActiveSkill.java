@@ -1,7 +1,8 @@
 package com.sine.yys.simulation.model.skill;
 
+import com.sine.yys.simulation.model.ActiveSkill;
+import com.sine.yys.simulation.model.Entity;
 import com.sine.yys.simulation.model.entity.BaseEntity;
-import com.sine.yys.simulation.model.entity.Entity;
 
 /**
  * 主动技能通用逻辑。

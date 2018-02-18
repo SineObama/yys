@@ -1,7 +1,8 @@
-package com.sine.yys.simulation.component.targetresolver;
+package com.sine.yys.simulation.model.targetresolver;
 
+import com.sine.yys.simulation.model.Entity;
+import com.sine.yys.simulation.model.TargetResolver;
 import com.sine.yys.simulation.model.entity.BaseEntity;
-import com.sine.yys.simulation.model.entity.Entity;
 
 import java.util.List;
 

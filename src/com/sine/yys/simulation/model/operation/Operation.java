@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.model.operation;
 
-import com.sine.yys.simulation.model.entity.Entity;
-import com.sine.yys.simulation.model.skill.ActiveSkill;
+import com.sine.yys.simulation.model.ActiveSkill;
+import com.sine.yys.simulation.model.Entity;
 
 /**
  * 描述一次行动：使用的技能和目标。

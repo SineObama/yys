@@ -1,7 +1,8 @@
 package com.sine.yys.simulation.model.mitama;
 
-import com.sine.yys.simulation.model.battle.InitContext;
-import com.sine.yys.simulation.model.battle.Initable;
+import com.sine.yys.simulation.model.InitContext;
+import com.sine.yys.simulation.model.Initable;
+import com.sine.yys.simulation.model.Mitama;
 import com.sine.yys.simulation.model.entity.BaseEntity;
 
 import java.util.logging.Logger;

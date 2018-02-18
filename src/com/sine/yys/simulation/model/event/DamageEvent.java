@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.model.event;
 
-import com.sine.yys.simulation.model.entity.Entity;
+import com.sine.yys.simulation.model.Entity;
 
 /**
  * 造成伤害时***。

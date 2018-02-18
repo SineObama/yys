@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.simulation.util;
 
 /**
  * 用作简单的回调。

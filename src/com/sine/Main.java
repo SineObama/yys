@@ -2,8 +2,8 @@ package com.sine;
 
 import com.sine.yys.simulation.TestCases;
 import com.sine.yys.simulation.info.Property;
-import com.sine.yys.simulation.model.battle.Camp;
-import com.sine.yys.simulation.model.battle.PVPCamp;
+import com.sine.yys.simulation.model.Camp;
+import com.sine.yys.simulation.model.PVPCamp;
 import com.sine.yys.simulation.model.entity.GuHuoNiao;
 import com.sine.yys.simulation.model.entity.HuiYeJi;
 import com.sine.yys.simulation.model.entity.QingXingDeng;

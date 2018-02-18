@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.simulator;
 
-import com.sine.yys.simulation.model.battle.Camp;
+import com.sine.yys.simulation.model.Camp;
 
 /**
  * 模拟器接口。
