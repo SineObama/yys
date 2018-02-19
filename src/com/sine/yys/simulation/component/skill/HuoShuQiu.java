@@ -11,7 +11,7 @@ import com.sine.yys.simulation.util.RandUtil;
 /**
  * 辉夜姬-火鼠裘。
  */
-public class HuoShuQiu extends BaseSkill implements PassiveSkill, EventHandler<BeAttackEvent> {
+public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill, EventHandler<BeAttackEvent> {
     @Override
     public String getName() {
         return "火鼠裘";

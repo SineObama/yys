@@ -15,6 +15,11 @@ public abstract class BaseMitama implements Mitama {
     private Entity self;
 
     @Override
+    public boolean isEnable() {
+        return !self.getBuffController().mitamaSealed();
+    }
+
+    @Override
     public final void init(InitContext context) {
         this.self = context.getSelf();
         doInit(context);

@@ -9,7 +9,7 @@ import com.sine.yys.simulation.util.RandUtil;
 /**
  * 青行灯-明灯。
  */
-public class MingDeng extends BaseSkill implements PassiveSkill, EventHandler<UseFireEvent> {
+public class MingDeng extends BasePassiveSkill implements PassiveSkill, EventHandler<UseFireEvent> {
     @Override
     public String getName() {
         return "明灯";

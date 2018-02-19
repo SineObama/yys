@@ -11,6 +11,7 @@ public abstract class BaseIBuff implements IBuff {
 
     /**
      * @param last 持续回合数。必须为正。
+     * @param name buff名称。
      */
     public BaseIBuff(int last, String name) {
         this.name = name;

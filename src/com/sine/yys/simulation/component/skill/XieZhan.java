@@ -9,7 +9,7 @@ import com.sine.yys.simulation.util.RandUtil;
 /**
  * 姑获鸟-协战。
  */
-public class XieZhan extends BaseSkill implements PassiveSkill, EventHandler<CommonAttackEvent> {
+public class XieZhan extends BasePassiveSkill implements PassiveSkill, EventHandler<CommonAttackEvent> {
     @Override
     public String getName() {
         return "协战";

@@ -6,6 +6,8 @@ import com.sine.yys.simulation.component.model.buff.IBuff;
 import com.sine.yys.simulation.component.model.buff.UniqueIBuff;
 import com.sine.yys.simulation.component.model.buff.debuff.ControlBuff;
 import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;
+import com.sine.yys.simulation.component.model.buff.debuff.SealMitama;
+import com.sine.yys.simulation.component.model.buff.debuff.SealPassive;
 import com.sine.yys.simulation.component.model.shield.BangJingShield;
 import com.sine.yys.simulation.component.model.shield.DiZangXiangShield;
 import com.sine.yys.simulation.component.model.shield.Shield;
@@ -96,6 +98,24 @@ public class BuffControllerImpl implements BuffController {
                 return (T) container.getObj();  // XXX 又是unchecked
         }
         return null;
+    }
+
+    @Override
+    public boolean mitamaSealed() {
+        for (Container<IBuff> iBuffContainer : set) {
+            if (iBuffContainer.getObj() instanceof SealMitama)
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean passiveSealed() {
+        for (Container<IBuff> iBuffContainer : set) {
+            if (iBuffContainer.getObj() instanceof SealPassive)
+                return true;
+        }
+        return false;
     }
 
     /**

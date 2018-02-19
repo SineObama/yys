@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.component.model;
 
 import com.sine.yys.simulation.component.model.event.Event;
+import com.sine.yys.simulation.info.Closable;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -56,6 +57,8 @@ public class EventControllerImpl implements EventController {
         if (!states.containsKey(event.getClass()) || states.get(event.getClass()))
             for (Container<EventHandler> container : get(event.getClass())) {
                 final EventHandler obj = container.getObj();
+                if (obj instanceof Closable && !((Closable) obj).isEnable())
+                    continue;
                 obj.handle(event);
             }
     }

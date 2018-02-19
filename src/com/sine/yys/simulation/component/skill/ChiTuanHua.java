@@ -10,7 +10,7 @@ import com.sine.yys.simulation.util.Msg;
 /**
  * 彼岸花-赤团华。
  */
-public class ChiTuanHua extends BaseSkill implements PassiveSkill, EventHandler<BeforeActionEvent> {
+public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventHandler<BeforeActionEvent> {
     private XueZhiHuaHai xueZhiHuaHai;
 
     @Override

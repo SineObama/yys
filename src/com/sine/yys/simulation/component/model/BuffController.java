@@ -46,6 +46,16 @@ public interface BuffController extends IBuffProperty {
     <T extends UniqueIBuff> T getUnique(Class<T> clazz);
 
     /**
+     * @return 是否存在封印御魂buff。
+     */
+    boolean mitamaSealed();
+
+    /**
+     * @return 是否存在封印被动buff。
+     */
+    boolean passiveSealed();
+
+    /**
      * 添加附加buff。
      */
     void addAttach(UniqueIBuff buff);
