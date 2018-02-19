@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component.operation;
+package com.sine.yys.simulation.component.skill.operation;
 
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.skill.ActiveSkill;
