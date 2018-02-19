@@ -1,32 +1,29 @@
-package com.sine.yys.simulation.component.skill;
+package com.sine.yys.simulation.component.entity.skill;
 
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.InitContext;
-import com.sine.yys.simulation.component.model.event.UseFireEvent;
+import com.sine.yys.simulation.component.model.event.CommonAttackEvent;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 
 /**
- * 青行灯-明灯。
+ * 姑获鸟-协战。
  */
-public class MingDeng extends BaseSkill implements PassiveSkill, EventHandler<UseFireEvent> {
+public class XieZhan extends BaseSkill implements PassiveSkill, EventHandler<CommonAttackEvent> {
     @Override
     public String getName() {
-        return "明灯";
+        return "协战";
     }
 
-    /**
-     * 队友技能不耗火概率。
-     */
     public double getPct() {
-        return 0.14;
+        return 0.3;
     }
 
     @Override
-    public void handle(UseFireEvent event) {
-        if (event.getSelf() != getSelf() && RandUtil.success(getPct())) {
+    public void handle(CommonAttackEvent event) {
+        if (event.getSelf() != getSelf() && RandUtil.success(getPct())) {  // 前者表示非自身的普攻事件
             log.info(Msg.trigger(getSelf(), this));
-            event.setCostFire(0);
+            getSelf().xieZhan(event.getTarget());
         }
     }
 

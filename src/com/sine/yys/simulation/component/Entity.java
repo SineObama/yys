@@ -1,14 +1,14 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.model.Camp;
-import com.sine.yys.simulation.info.AttackInfo;
-import com.sine.yys.simulation.info.IProperty;
-import com.sine.yys.simulation.info.Target;
 import com.sine.yys.simulation.component.model.BuffController;
+import com.sine.yys.simulation.component.model.Camp;
 import com.sine.yys.simulation.component.model.EventController;
 import com.sine.yys.simulation.component.model.FireRepo;
 import com.sine.yys.simulation.component.model.buff.Debuff;
 import com.sine.yys.simulation.component.model.effect.PctEffect;
+import com.sine.yys.simulation.info.AttackInfo;
+import com.sine.yys.simulation.info.IProperty;
+import com.sine.yys.simulation.info.Target;
 
 /**
  * 实体（包括式神和召唤物）。
@@ -27,6 +27,8 @@ public interface Entity extends Target, IProperty {
      */
     @Override
     double getLife();
+
+    void setLife(int life);
 
     OperationHandler getAI();
 
@@ -49,8 +51,6 @@ public interface Entity extends Target, IProperty {
     void realDamage(Entity target, double maxByAttack, double maxPctByMaxLife);
 
     int getLifeInt();
-
-    void setLife(int life);
 
     /**
      * 概率吸取鬼火。

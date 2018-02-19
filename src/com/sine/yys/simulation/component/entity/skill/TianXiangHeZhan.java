@@ -1,8 +1,8 @@
-package com.sine.yys.simulation.component.skill;
+package com.sine.yys.simulation.component.entity.skill;
 
-import com.sine.yys.simulation.component.entity.BaseEntity;
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.TargetResolver;
-import com.sine.yys.simulation.component.targetresolver.EnemyEntityResolver;
+import com.sine.yys.simulation.component.entity.targetresolver.EnemyEntityResolver;
 import com.sine.yys.simulation.info.AttackInfoImpl;
 
 /**
@@ -34,7 +34,7 @@ public class TianXiangHeZhan extends SimpleGroupAttack {
     }
 
     @Override
-    public void doApply(BaseEntity target) {
+    public void doApply(Entity target) {
         super.doApply(target);
         getSelf().attack(target, new AttackInfoImpl(getFinalCoefficient()));
     }

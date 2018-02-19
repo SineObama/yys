@@ -1,8 +1,6 @@
 package com.sine.yys.simulation.component.entity;
 
 import com.sine.yys.simulation.component.*;
-import com.sine.yys.simulation.info.AttackInfo;
-import com.sine.yys.simulation.info.Property;
 import com.sine.yys.simulation.component.model.*;
 import com.sine.yys.simulation.component.model.buff.Debuff;
 import com.sine.yys.simulation.component.model.buff.debuff.ControlBuff;
@@ -10,6 +8,8 @@ import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;
 import com.sine.yys.simulation.component.model.effect.PctEffect;
 import com.sine.yys.simulation.component.model.event.*;
 import com.sine.yys.simulation.component.model.shield.Shield;
+import com.sine.yys.simulation.info.AttackInfo;
+import com.sine.yys.simulation.info.Property;
 import com.sine.yys.simulation.rule.CalcDam;
 import com.sine.yys.simulation.rule.CalcEffect;
 import com.sine.yys.simulation.util.Msg;
@@ -176,6 +176,11 @@ public abstract class BaseEntity implements Entity, Initable {
     @Override
     public final double getLife() {
         return life / property.getLife();
+    }
+
+    @Override
+    public void setLife(int life) {
+        this.life = life;
     }
 
     @Override
@@ -347,11 +352,6 @@ public abstract class BaseEntity implements Entity, Initable {
     @Override
     public int getLifeInt() {
         return life;
-    }
-
-    @Override
-    public void setLife(int life){
-        this.life=life;
     }
 
     private void doDamage(Entity target, int damage) {

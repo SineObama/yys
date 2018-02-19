@@ -1,6 +1,5 @@
-package com.sine.yys.simulation.component.targetresolver;
+package com.sine.yys.simulation.component.entity.targetresolver;
 
-import com.sine.yys.simulation.component.entity.BaseEntity;
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.TargetResolver;
 
@@ -11,8 +10,7 @@ import java.util.List;
  */
 public class EnemyEntityResolver implements TargetResolver {
     @Override
-    public List<? extends Entity> resolve(Entity self0) {
-        BaseEntity self = (BaseEntity) self0;
+    public List<? extends Entity> resolve(Entity self) {
         return self.getCamp().getOpposite().getAllAlive();
     }
 }

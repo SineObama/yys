@@ -1,6 +1,6 @@
-package com.sine.yys.simulation.component.skill;
+package com.sine.yys.simulation.component.entity.skill;
 
-import com.sine.yys.simulation.component.entity.BaseEntity;
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.Skill;
 import com.sine.yys.simulation.component.model.InitContext;
 import com.sine.yys.simulation.component.model.Initable;
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public abstract class BaseSkill implements Skill, Initable {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
     private final int MAXCD;
-    private BaseEntity self;
+    private Entity self;
     private int CD = 0;
 
     public BaseSkill() {
@@ -49,14 +49,14 @@ public abstract class BaseSkill implements Skill, Initable {
 
     @Override
     public final void init(InitContext context) {
-        this.self = (BaseEntity) context.getSelf();
+        this.self = context.getSelf();
         doInit(context);
     }
 
     protected void doInit(InitContext context) {
     }
 
-    public final BaseEntity getSelf() {
+    public final Entity getSelf() {
         return self;
     }
 }

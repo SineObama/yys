@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component.targetresolver;
+package com.sine.yys.simulation.component.entity.targetresolver;
 
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.TargetResolver;

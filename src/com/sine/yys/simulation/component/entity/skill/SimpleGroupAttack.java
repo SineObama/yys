@@ -1,10 +1,9 @@
-package com.sine.yys.simulation.component.skill;
+package com.sine.yys.simulation.component.entity.skill;
 
 import com.sine.yys.simulation.component.AttackSkill;
-import com.sine.yys.simulation.component.entity.BaseEntity;
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.TargetResolver;
-import com.sine.yys.simulation.component.targetresolver.EmptyResolver;
+import com.sine.yys.simulation.component.entity.targetresolver.EmptyResolver;
 import com.sine.yys.simulation.info.AttackInfoImpl;
 
 /**
@@ -26,7 +25,7 @@ public abstract class SimpleGroupAttack extends BaseActiveSkill implements Attac
     }
 
     @Override
-    public void doApply(BaseEntity unused) {
+    public void doApply(Entity unused) {
         for (int i = 0; i < getTimes(); i++) {
             for (Entity target : getSelf().getCamp().getOpposite().getAllAlive()) {
                 getSelf().attack(target, new AttackInfoImpl(getCoefficient()));

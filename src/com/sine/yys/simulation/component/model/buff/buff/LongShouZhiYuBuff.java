@@ -8,7 +8,7 @@ import com.sine.yys.simulation.util.CallBack;
 /**
  * 辉夜姬身上隐藏的龙首之玉buff，代表龙首之玉幻境。
  *
- * @see com.sine.yys.simulation.component.skill.LongShouZhiYu
+ * @see com.sine.yys.simulation.component.entity.skill.LongShouZhiYu
  */
 public class LongShouZhiYuBuff extends BaseIBuff implements UniqueIBuff, Buff {
     private final CallBack callBack;

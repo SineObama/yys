@@ -1,6 +1,6 @@
-package com.sine.yys.simulation.component.skill;
+package com.sine.yys.simulation.component.entity.skill;
 
-import com.sine.yys.simulation.component.entity.BaseEntity;
+import com.sine.yys.simulation.component.Entity;
 
 /**
  * 青行灯-幽光。
@@ -24,7 +24,7 @@ public class YouGuang extends BaseCommonAttack {
     }
 
     @Override
-    public void doApply(BaseEntity target) {
+    public void doApply(Entity target) {
         super.doApply(target);
         getSelf().randomGrab(getPct(), target);
     }

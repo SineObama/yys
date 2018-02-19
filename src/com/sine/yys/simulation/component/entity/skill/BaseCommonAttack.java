@@ -1,13 +1,12 @@
-package com.sine.yys.simulation.component.skill;
+package com.sine.yys.simulation.component.entity.skill;
 
-import com.sine.yys.simulation.component.entity.BaseEntity;
 import com.sine.yys.simulation.component.CommonAttack;
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.TargetResolver;
-import com.sine.yys.simulation.component.targetresolver.EnemyEntityResolver;
+import com.sine.yys.simulation.component.entity.targetresolver.EnemyEntityResolver;
+import com.sine.yys.simulation.component.model.event.CommonAttackEvent;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.AttackInfoImpl;
-import com.sine.yys.simulation.component.model.event.CommonAttackEvent;
 
 /**
  * 普攻通用逻辑。
@@ -48,14 +47,14 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     }
 
     @Override
-    public final void afterApply(BaseEntity target) {
+    public final void afterApply(Entity target) {
         // 触发普攻事件
         getSelf().getCamp().getEventController().trigger(new CommonAttackEvent(getSelf(), target));
     }
 
     @Override
     public final void xieZhan(Entity target) {
-        doXieZhan((BaseEntity) target);
+        doXieZhan(target);
     }
 
     /**
@@ -64,7 +63,7 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
      *
      * @param target 协战目标。
      */
-    protected void doXieZhan(BaseEntity target) {
+    protected void doXieZhan(Entity target) {
         doApply(target);
     }
 
@@ -75,7 +74,7 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
      * @param target 攻击目标。
      */
     @Override
-    protected void doApply(BaseEntity target) {
+    protected void doApply(Entity target) {
         for (int i = 0; i < getTimes(); i++) {
             if (target.isDead())
                 break;

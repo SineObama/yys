@@ -1,9 +1,5 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.ActiveSkill;
-import com.sine.yys.simulation.component.Entity;
-import com.sine.yys.simulation.component.Operation;
-import com.sine.yys.simulation.component.OperationHandler;
 import com.sine.yys.simulation.util.RandUtil;
 
 import java.util.List;

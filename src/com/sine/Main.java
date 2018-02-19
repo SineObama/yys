@@ -4,13 +4,13 @@ import com.sine.yys.simulation.TestCases;
 import com.sine.yys.simulation.component.entity.GuHuoNiao;
 import com.sine.yys.simulation.component.entity.HuiYeJi;
 import com.sine.yys.simulation.component.entity.QingXingDeng;
-import com.sine.yys.simulation.component.mitama.DiZangXiang;
-import com.sine.yys.simulation.component.mitama.HuoLing;
-import com.sine.yys.simulation.component.mitama.MeiYao;
-import com.sine.yys.simulation.component.mitama.ZhenNv;
-import com.sine.yys.simulation.info.Property;
+import com.sine.yys.simulation.component.entity.mitama.DiZangXiang;
+import com.sine.yys.simulation.component.entity.mitama.HuoLing;
+import com.sine.yys.simulation.component.entity.mitama.MeiYao;
+import com.sine.yys.simulation.component.entity.mitama.ZhenNv;
 import com.sine.yys.simulation.component.model.Camp;
 import com.sine.yys.simulation.component.model.PVPCamp;
+import com.sine.yys.simulation.info.Property;
 import com.sine.yys.simulation.simulator.BattleSimulator;
 import com.sine.yys.simulation.simulator.Simulator;
 

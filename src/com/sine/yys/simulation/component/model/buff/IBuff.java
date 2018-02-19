@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.model.buff;
 
-import com.sine.yys.simulation.info.Named;
 import com.sine.yys.simulation.component.model.BuffController;
+import com.sine.yys.simulation.info.Named;
 
 /**
  * 式神头上的buff，分为增益和减益两大类。

@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component.model;
 
-import com.sine.yys.simulation.info.Target;
 import com.sine.yys.simulation.component.model.buff.Buff;
 import com.sine.yys.simulation.component.model.buff.Debuff;
 import com.sine.yys.simulation.component.model.buff.IBuff;
@@ -10,6 +9,7 @@ import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;
 import com.sine.yys.simulation.component.model.shield.BangJingShield;
 import com.sine.yys.simulation.component.model.shield.DiZangXiangShield;
 import com.sine.yys.simulation.component.model.shield.Shield;
+import com.sine.yys.simulation.info.Target;
 import com.sine.yys.simulation.util.Msg;
 
 import java.util.*;

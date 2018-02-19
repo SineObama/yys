@@ -1,13 +1,12 @@
 package com.sine.yys.simulation.component.entity;
 
 import com.sine.yys.simulation.component.*;
-import com.sine.yys.simulation.component.AutoOperationHandler;
-import com.sine.yys.simulation.component.skill.HuoShuQiu;
-import com.sine.yys.simulation.component.skill.LongShouZhiYu;
-import com.sine.yys.simulation.component.skill.PengLaiYuZhi;
-import com.sine.yys.simulation.info.Property;
+import com.sine.yys.simulation.component.entity.skill.HuoShuQiu;
+import com.sine.yys.simulation.component.entity.skill.LongShouZhiYu;
+import com.sine.yys.simulation.component.entity.skill.PengLaiYuZhi;
 import com.sine.yys.simulation.component.model.Shikigami;
 import com.sine.yys.simulation.component.model.buff.buff.LongShouZhiYuBuff;
+import com.sine.yys.simulation.info.Property;
 
 import java.util.Arrays;
 import java.util.List;

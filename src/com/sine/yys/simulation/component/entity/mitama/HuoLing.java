@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component.mitama;
+package com.sine.yys.simulation.component.entity.mitama;
 
 import com.sine.yys.simulation.component.Mitama;
 import com.sine.yys.simulation.component.model.EventHandler;

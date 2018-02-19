@@ -1,8 +1,8 @@
-package com.sine.yys.simulation.component.skill;
+package com.sine.yys.simulation.component.entity.skill;
 
 import com.sine.yys.simulation.component.ActiveSkill;
 import com.sine.yys.simulation.component.TargetResolver;
-import com.sine.yys.simulation.component.targetresolver.EmptyResolver;
+import com.sine.yys.simulation.component.entity.targetresolver.EmptyResolver;
 
 /**
  * 不需要目标的技能通用逻辑。
