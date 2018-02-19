@@ -4,17 +4,22 @@ import com.sine.yys.simulation.component.effect.PctEffect;
 import com.sine.yys.simulation.component.model.BuffController;
 import com.sine.yys.simulation.component.model.EventController;
 import com.sine.yys.simulation.component.model.buff.Debuff;
+import com.sine.yys.simulation.component.skill.ActiveSkill;
 import com.sine.yys.simulation.component.skill.CommonAttack;
 import com.sine.yys.simulation.component.skill.operation.OperationHandler;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.IProperty;
 import com.sine.yys.simulation.info.Target;
 
+import java.util.List;
+
 /**
  * 实体（包括式神和召唤物）。
  * 包含属性，buff、事件等。
  */
 public interface Entity extends Target, IProperty {
+    List<ActiveSkill> getActiveSkills();
+
     void init(InitContext context);
 
     /**

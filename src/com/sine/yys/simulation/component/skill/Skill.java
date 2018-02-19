@@ -18,6 +18,7 @@ public interface Skill extends Named {
 
     /**
      * 每回合调用，以减少CD。
+     * 参考彼岸花花海，暂定回合开始时调用。
      *
      * @return 剩余CD。0表示可用
      */

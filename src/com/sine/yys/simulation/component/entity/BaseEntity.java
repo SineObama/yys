@@ -71,6 +71,10 @@ public abstract class BaseEntity implements Entity {
         // 推进鬼火行动条
         fireRepo.step();
 
+        clear();
+        for (Skill skill : skills) {
+            skill.step();
+        }
         // 行动前事件
         camp.getEventController().trigger(new BeforeActionEvent(this));
 
@@ -206,7 +210,8 @@ public abstract class BaseEntity implements Entity {
         return new AutoOperationHandler();
     }
 
-    private List<ActiveSkill> getActiveSkills() {
+    @Override
+    public List<ActiveSkill> getActiveSkills() {
         List<ActiveSkill> activeSkills = new ArrayList<>();
         for (Skill skill : skills) {
             if (skill instanceof ActiveSkill) {
@@ -370,7 +375,10 @@ public abstract class BaseEntity implements Entity {
     private void doDamage(Entity target, int damage) {
         log.info(Msg.damage(this, target, damage));
         if (target.getLifeInt() > damage) {
+            double src = target.getLife();
             target.setLife(target.getLifeInt() - damage);
+            double dst = target.getLife();
+            target.getEventController().trigger(new BeDamageEvent(src, dst));
         } else {
             log.info(Msg.vector(this, "击杀", target, ""));
             target.setLife(0);

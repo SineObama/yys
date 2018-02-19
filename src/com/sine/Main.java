@@ -3,6 +3,7 @@ package com.sine;
 import com.sine.yys.simulation.TestCases;
 import com.sine.yys.simulation.component.Camp;
 import com.sine.yys.simulation.component.camp.PVPCamp;
+import com.sine.yys.simulation.component.entity.BiAnHua;
 import com.sine.yys.simulation.component.entity.GuHuoNiao;
 import com.sine.yys.simulation.component.entity.HuiYeJi;
 import com.sine.yys.simulation.component.entity.QingXingDeng;
@@ -35,7 +36,7 @@ public class Main {
         for (int i = 0; i < times; i++) {
             Camp red = new PVPCamp(TestCases.redName, 3);
             Camp blue = new PVPCamp(TestCases.buleName, 3);
-            red.addEntity(new GuHuoNiao(new Property(attack, 10000, 400, 170, 1, 1.5, 0, 0), new ZhenNv()));
+            red.addEntity(new BiAnHua(new Property(attack, 10000, 400, 170, 1, 1.5, 0, 0), new ZhenNv()));
             red.addEntity(new HuiYeJi(new Property(attack, 10000, 400, 170, 0, 1.5, 0, 0), new HuoLing()));
             blue.addEntity(new QingXingDeng(new Property(attack, 10000, 400, 170, 0.8, 1.5, 3, 0), new DiZangXiang()));
             blue.addEntity(new GuHuoNiao(new Property(attack, 10000, 400, 170, 0.8, 1.5, 3, 0), new MeiYao()));
