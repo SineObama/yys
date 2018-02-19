@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component.targetresolver;
 
-import com.sine.yys.simulation.component.BaseEntity;
+import com.sine.yys.simulation.component.entity.BaseEntity;
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.TargetResolver;
 

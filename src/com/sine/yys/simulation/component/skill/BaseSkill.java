@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component.skill;
 
-import com.sine.yys.simulation.component.BaseEntity;
+import com.sine.yys.simulation.component.entity.BaseEntity;
 import com.sine.yys.simulation.component.Skill;
 import com.sine.yys.simulation.component.model.InitContext;
 import com.sine.yys.simulation.component.model.Initable;

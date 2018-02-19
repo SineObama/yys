@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.skill;
 
 import com.sine.yys.simulation.component.AttackSkill;
-import com.sine.yys.simulation.component.BaseEntity;
+import com.sine.yys.simulation.component.entity.BaseEntity;
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.TargetResolver;
 import com.sine.yys.simulation.component.targetresolver.EmptyResolver;

@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component.entity;
 
-import com.sine.yys.simulation.component.BaseEntity;
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.info.Property;
 

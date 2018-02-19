@@ -1,5 +1,6 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.simulation.component.entity;
 
+import com.sine.yys.simulation.component.*;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.Property;
 import com.sine.yys.simulation.component.model.*;
@@ -182,6 +183,7 @@ public abstract class BaseEntity implements Entity, Initable {
         return this.eventController;
     }
 
+    @Override
     public OperationHandler getAI() {
         return new AutoOperationHandler();
     }
@@ -223,6 +225,7 @@ public abstract class BaseEntity implements Entity, Initable {
         return life <= 0;
     }
 
+    @Override
     public final Camp getCamp() {
         return camp;
     }
@@ -255,8 +258,8 @@ public abstract class BaseEntity implements Entity, Initable {
      * 4. 施加剩余伤害，添加御魂效果。
      */
     @Override
-    public void attack(Entity target0, AttackInfo attackInfo) {
-        BaseEntity target = (BaseEntity) target0;
+    public void attack(Entity target, AttackInfo attackInfo) {
+//        BaseEntity target = (BaseEntity) target0;
         if (target.isDead())  // XXX 只是有时会出现目标已死。有更好的逻辑？
             return;
 
@@ -341,13 +344,23 @@ public abstract class BaseEntity implements Entity, Initable {
         return damage;
     }
 
-    private void doDamage(BaseEntity target, int damage) {
+    @Override
+    public int getLifeInt() {
+        return life;
+    }
+
+    @Override
+    public void setLife(int life){
+        this.life=life;
+    }
+
+    private void doDamage(Entity target, int damage) {
         log.info(Msg.damage(this, target, damage));
-        if (target.life > damage) {
-            target.life -= damage;
+        if (target.getLifeInt() > damage) {
+            target.setLife(target.getLifeInt() - damage);
         } else {
             log.info(Msg.vector(this, "击杀", target, ""));
-            target.life = 0;
+            target.setLife(0);
             target.getCamp().getPosition(target).setDead(true);
         }
         // FIXME 死后添加debuff会有问题？

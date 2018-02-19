@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component.entity;
 
-import com.sine.yys.simulation.component.BaseEntity;
 import com.sine.yys.simulation.component.Mitama;
 import com.sine.yys.simulation.component.skill.SanJian;
 import com.sine.yys.simulation.component.skill.TianXiangHeZhan;

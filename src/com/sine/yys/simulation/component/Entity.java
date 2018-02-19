@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.component.model.Camp;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.IProperty;
 import com.sine.yys.simulation.info.Target;
@@ -27,9 +28,13 @@ public interface Entity extends Target, IProperty {
     @Override
     double getLife();
 
+    OperationHandler getAI();
+
     EventController getEventController();
 
     boolean isDead();
+
+    Camp getCamp();
 
     BuffController getBuffController();
 
@@ -42,6 +47,10 @@ public interface Entity extends Target, IProperty {
     void attack(Entity target, AttackInfo attackInfo);
 
     void realDamage(Entity target, double maxByAttack, double maxPctByMaxLife);
+
+    int getLifeInt();
+
+    void setLife(int life);
 
     /**
      * 概率吸取鬼火。
