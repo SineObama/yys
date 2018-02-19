@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component.model.effect;
+package com.sine.yys.simulation.component.effect;
 
 /**
  * 反弹伤害。包括反弹概率，反弹百分比。

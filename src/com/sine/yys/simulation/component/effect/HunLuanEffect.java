@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component.model.effect;
+package com.sine.yys.simulation.component.effect;
 
 import com.sine.yys.simulation.component.model.buff.Debuff;
 import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;

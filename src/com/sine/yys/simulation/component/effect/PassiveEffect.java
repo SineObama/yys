@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component.model.effect;
+package com.sine.yys.simulation.component.effect;
 
 /**
  * 被动技能效果。

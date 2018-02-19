@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.mitama;
 
 import com.sine.yys.simulation.component.InitContext;
-import com.sine.yys.simulation.component.model.effect.HunLuanEffect;
+import com.sine.yys.simulation.component.effect.HunLuanEffect;
 
 /**
  * 魅妖。

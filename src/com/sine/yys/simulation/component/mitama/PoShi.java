@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.mitama;
 
 import com.sine.yys.simulation.component.InitContext;
-import com.sine.yys.simulation.component.model.effect.DamageChangeByLife;
+import com.sine.yys.simulation.component.effect.DamageChangeByLife;
 
 /**
  * 破势。

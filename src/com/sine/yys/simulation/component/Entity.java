@@ -1,11 +1,11 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.component.effect.PctEffect;
 import com.sine.yys.simulation.component.model.BuffController;
 import com.sine.yys.simulation.component.model.EventController;
 import com.sine.yys.simulation.component.model.buff.Debuff;
-import com.sine.yys.simulation.component.model.effect.PctEffect;
-import com.sine.yys.simulation.component.skill.operation.OperationHandler;
 import com.sine.yys.simulation.component.skill.CommonAttack;
+import com.sine.yys.simulation.component.skill.operation.OperationHandler;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.IProperty;
 import com.sine.yys.simulation.info.Target;

@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component.model.effect;
+package com.sine.yys.simulation.component.effect;
 
 /**
  * 概率生效的效果，给目标添加debuff，受效果命中抵抗影响。
