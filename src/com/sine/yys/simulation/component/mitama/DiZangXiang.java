@@ -11,7 +11,7 @@ import com.sine.yys.simulation.util.RandUtil;
 /**
  * 地藏像。
  */
-public class DiZangXiang extends BaseMitama implements Mitama, EventHandler<BeCriticalEvent> {
+public class DiZangXiang extends BaseMitama implements Mitama {
     @Override
     public String getName() {
         return "地藏像";
@@ -32,23 +32,29 @@ public class DiZangXiang extends BaseMitama implements Mitama, EventHandler<BeCr
     }
 
     @Override
-    public void handle(BeCriticalEvent event) {
-        log.info(Msg.trigger(getSelf(), this));
-        final int value = (int) (getSelf().getMaxLife() * getShieldByMaxLife());
-        getSelf().getBuffController().addShield(new DiZangXiangShield(value));
-        for (Entity entity : getSelf().getCamp().getAllAlive()) {
-            if (entity == getSelf())
-                continue;
-            if (RandUtil.success(getPct())) {
-                final DiZangXiangShield diZangXiangShield = new DiZangXiangShield(value);
-                log.info(Msg.addBuff(getSelf(), entity, diZangXiangShield));
-                entity.getBuffController().addShield(diZangXiangShield);
-            }
-        }
+    public void init(InitContext context) {
+        context.getSelf().getEventController().add(new Handler(context.getSelf()));
     }
 
-    @Override
-    public void doInit(InitContext context) {
-        context.getSelf().getEventController().add(this);
+    class Handler extends SealableMitamaHandler implements EventHandler<BeCriticalEvent> {
+        Handler(Entity self) {
+            super(self);
+        }
+
+        @Override
+        public void handle(BeCriticalEvent event) {
+            log.info(Msg.trigger(self, DiZangXiang.this));
+            final int value = (int) (self.getMaxLife() * getShieldByMaxLife());
+            self.getBuffController().addShield(new DiZangXiangShield(value));
+            for (Entity entity : self.getCamp().getAllAlive()) {
+                if (entity == self)
+                    continue;
+                if (RandUtil.success(getPct())) {
+                    final DiZangXiangShield diZangXiangShield = new DiZangXiangShield(value);
+                    log.info(Msg.addBuff(self, entity, diZangXiangShield));
+                    entity.getBuffController().addShield(diZangXiangShield);
+                }
+            }
+        }
     }
 }
