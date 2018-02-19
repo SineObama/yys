@@ -1,8 +1,7 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.component.camp.position.Position;
 import com.sine.yys.simulation.component.model.EventController;
-import com.sine.yys.simulation.component.model.Position;
-import com.sine.yys.simulation.component.model.Shikigami;
 import com.sine.yys.simulation.info.Target;
 
 import java.util.List;

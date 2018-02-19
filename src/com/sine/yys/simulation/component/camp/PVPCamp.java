@@ -1,9 +1,10 @@
 package com.sine.yys.simulation.component.camp;
 
-import com.sine.yys.simulation.component.Camp;
-import com.sine.yys.simulation.component.Entity;
-import com.sine.yys.simulation.component.InitContext;
-import com.sine.yys.simulation.component.model.*;
+import com.sine.yys.simulation.component.*;
+import com.sine.yys.simulation.component.camp.position.Position;
+import com.sine.yys.simulation.component.camp.position.PositionImpl;
+import com.sine.yys.simulation.component.model.EventController;
+import com.sine.yys.simulation.component.model.EventControllerImpl;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 

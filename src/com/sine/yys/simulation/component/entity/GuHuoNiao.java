@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.entity;
 
+import com.sine.yys.simulation.component.Shikigami;
 import com.sine.yys.simulation.component.mitama.Mitama;
-import com.sine.yys.simulation.component.model.Shikigami;
 import com.sine.yys.simulation.component.skill.SanJian;
 import com.sine.yys.simulation.component.skill.TianXiangHeZhan;
 import com.sine.yys.simulation.component.skill.XieZhan;

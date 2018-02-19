@@ -2,7 +2,6 @@ package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.model.BuffController;
 import com.sine.yys.simulation.component.model.EventController;
-import com.sine.yys.simulation.component.model.FireRepo;
 import com.sine.yys.simulation.component.model.buff.Debuff;
 import com.sine.yys.simulation.component.model.effect.PctEffect;
 import com.sine.yys.simulation.component.operation.OperationHandler;

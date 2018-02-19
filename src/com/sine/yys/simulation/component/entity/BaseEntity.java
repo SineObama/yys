@@ -1,10 +1,14 @@
 package com.sine.yys.simulation.component.entity;
 
-import com.sine.yys.simulation.component.Entity;
-import com.sine.yys.simulation.component.InitContext;
 import com.sine.yys.simulation.component.Camp;
+import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.FireRepo;
+import com.sine.yys.simulation.component.InitContext;
 import com.sine.yys.simulation.component.mitama.Mitama;
-import com.sine.yys.simulation.component.model.*;
+import com.sine.yys.simulation.component.model.BuffController;
+import com.sine.yys.simulation.component.model.BuffControllerImpl;
+import com.sine.yys.simulation.component.model.EventController;
+import com.sine.yys.simulation.component.model.EventControllerImpl;
 import com.sine.yys.simulation.component.model.buff.Debuff;
 import com.sine.yys.simulation.component.model.buff.debuff.ControlBuff;
 import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;

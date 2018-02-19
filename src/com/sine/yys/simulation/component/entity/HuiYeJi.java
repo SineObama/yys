@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component.entity;
 
 import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.Shikigami;
 import com.sine.yys.simulation.component.mitama.Mitama;
-import com.sine.yys.simulation.component.model.Shikigami;
 import com.sine.yys.simulation.component.model.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.simulation.component.operation.AutoOperationHandler;
 import com.sine.yys.simulation.component.operation.Operation;
