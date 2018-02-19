@@ -10,6 +10,7 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override
     public final void apply(Entity target) {
         getSelf().clear();
+        CD = getMAXCD() + 1;
         beforeApply(target);
         doApply(target);
         afterApply(target);

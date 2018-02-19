@@ -11,17 +11,8 @@ import java.util.logging.Logger;
  */
 public abstract class BaseSkill implements Skill {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
-    private final int MAXCD;
+    protected int CD = 0; // XXXX CD设置方式？
     private Entity self;
-    private int CD = 0;
-
-    public BaseSkill() {
-        this.MAXCD = 0;
-    }
-
-    public BaseSkill(int MAXCD) {
-        this.MAXCD = MAXCD;
-    }
 
     @Override
     public String getDetail() {
@@ -29,8 +20,8 @@ public abstract class BaseSkill implements Skill {
     }
 
     @Override
-    public final int getMAXCD() {
-        return MAXCD;
+    public int getMAXCD() {
+        return 0;
     }
 
     @Override

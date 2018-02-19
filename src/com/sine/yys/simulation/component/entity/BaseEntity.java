@@ -87,6 +87,10 @@ public abstract class BaseEntity implements Entity {
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
             for (ActiveSkill activeSkill : getActiveSkills()) {
+                if (activeSkill.getCD() > 0) {
+                    log.info(Msg.info(this, "技能 " + activeSkill.getName() + " 还有CD " + activeSkill.getCD()));
+                    continue;
+                }
                 if (fireRepo.getFire() < activeSkill.getFire())
                     continue;
                 final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this);
@@ -282,9 +286,10 @@ public abstract class BaseEntity implements Entity {
      */
     @Override
     public void attack(Entity target, AttackInfo attackInfo) {
-//        BaseEntity target = (BaseEntity) target0;
         if (target.isDead())  // XXX 只是有时会出现目标已死。有更好的逻辑？
             return;
+
+        eventController.trigger(new AttackEvent(this, target));
 
         // XXXXX 像这种每次都调用是不是不好、太慢
         target.getCamp().getEventController().triggerOff(new BeAttackEvent());
@@ -326,10 +331,12 @@ public abstract class BaseEntity implements Entity {
      * 4. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
      */
     @Override
-    public void realDamage(Entity target0, double maxByAttack, double maxPctByMaxLife) {
-        BaseEntity target = (BaseEntity) target0;
+    public void realDamage(Entity target, double maxByAttack, double maxPctByMaxLife) {
         if (target.isDead())
             return;
+
+        eventController.trigger(new AttackEvent(this, target));
+
         // 1.
         final double damage1 = getAttack() * maxByAttack;
         final double damage2 = target.getMaxLife() * maxPctByMaxLife;

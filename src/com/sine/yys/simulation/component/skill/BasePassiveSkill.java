@@ -5,7 +5,7 @@ package com.sine.yys.simulation.component.skill;
  */
 public abstract class BasePassiveSkill extends BaseSkill implements PassiveSkill {
     @Override
-    public boolean isEnable() {
-        return !getSelf().getBuffController().passiveSealed();
+    public boolean sealed() {
+        return getSelf().getBuffController().passiveSealed();
     }
 }
