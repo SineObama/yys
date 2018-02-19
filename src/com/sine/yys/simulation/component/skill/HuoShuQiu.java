@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.skill;
 
+import com.sine.yys.simulation.component.InitContext;
 import com.sine.yys.simulation.component.model.EventHandler;
-import com.sine.yys.simulation.component.model.InitContext;
 import com.sine.yys.simulation.component.model.event.BeAttackEvent;
 import com.sine.yys.simulation.component.model.event.LongShouZhiYuOff;
 import com.sine.yys.simulation.component.model.event.LongShouZhiYuOn;

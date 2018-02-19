@@ -1,6 +1,8 @@
-package com.sine.yys.simulation.component.model;
+package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.model.EventController;
+import com.sine.yys.simulation.component.model.Position;
+import com.sine.yys.simulation.component.model.Shikigami;
 import com.sine.yys.simulation.info.Target;
 
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.List;
  * 一场战斗中通常分为2个阵营。
  */
 public interface Camp extends Target {
+    void init(InitContext context);
+
     void addEntity(Entity entity);
 
     List<Entity> getAllAlive();

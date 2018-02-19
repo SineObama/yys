@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component.mitama;
 
-import com.sine.yys.simulation.component.model.InitContext;
+import com.sine.yys.simulation.component.InitContext;
 import com.sine.yys.simulation.component.model.effect.HunLuanEffect;
 
 /**

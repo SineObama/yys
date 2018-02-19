@@ -1,7 +1,6 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.model.BuffController;
-import com.sine.yys.simulation.component.model.Camp;
 import com.sine.yys.simulation.component.model.EventController;
 import com.sine.yys.simulation.component.model.FireRepo;
 import com.sine.yys.simulation.component.model.buff.Debuff;
@@ -17,6 +16,8 @@ import com.sine.yys.simulation.info.Target;
  * 包含属性，buff、事件等。
  */
 public interface Entity extends Target, IProperty {
+    void init(InitContext context);
+
     /**
      * 上层通过行动条计算得到行动的式神，调用此函数。
      */

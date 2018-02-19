@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.skill;
 
+import com.sine.yys.simulation.component.InitContext;
 import com.sine.yys.simulation.component.model.EventHandler;
-import com.sine.yys.simulation.component.model.InitContext;
 import com.sine.yys.simulation.component.model.event.CommonAttackEvent;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;

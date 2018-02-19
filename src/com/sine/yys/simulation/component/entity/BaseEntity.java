@@ -1,6 +1,8 @@
 package com.sine.yys.simulation.component.entity;
 
 import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.Camp;
 import com.sine.yys.simulation.component.mitama.Mitama;
 import com.sine.yys.simulation.component.model.*;
 import com.sine.yys.simulation.component.model.buff.Debuff;
@@ -32,7 +34,7 @@ import java.util.logging.Logger;
  * <p>这里实现了程序的主体逻辑，包括行动逻辑，事件的触发等。
  * 技能或御魂通过调用这里的函数以实现自身的逻辑。</p>
  */
-public abstract class BaseEntity implements Entity, Initable {
+public abstract class BaseEntity implements Entity {
     private final Logger log = Logger.getLogger(getClass().toString());
     private final EventController eventController = new EventControllerImpl();
     private final BuffController buffController = new BuffControllerImpl();
@@ -216,10 +218,10 @@ public abstract class BaseEntity implements Entity, Initable {
         fireRepo = context.getFireRepo();
         context.setSelf(this);
         for (Skill skill : skills) {
-            ((Initable) skill).init(context);
+            skill.init(context);
         }
         for (Mitama mitama : mitamas) {
-            ((Initable) mitama).init(context);
+            mitama.init(context);
         }
     }
 

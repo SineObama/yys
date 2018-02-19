@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component.mitama;
 
 import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.InitContext;
 import com.sine.yys.simulation.component.model.EventHandler;
-import com.sine.yys.simulation.component.model.InitContext;
 import com.sine.yys.simulation.component.model.event.BeCriticalEvent;
 import com.sine.yys.simulation.component.model.shield.DiZangXiangShield;
 import com.sine.yys.simulation.util.Msg;
