@@ -1,10 +1,10 @@
 package com.sine.yys.simulation.component.entity;
 
-import com.sine.yys.simulation.component.Mitama;
-import com.sine.yys.simulation.component.entity.skill.MingDeng;
-import com.sine.yys.simulation.component.entity.skill.XiHunDeng;
-import com.sine.yys.simulation.component.entity.skill.YouGuang;
+import com.sine.yys.simulation.component.mitama.Mitama;
 import com.sine.yys.simulation.component.model.Shikigami;
+import com.sine.yys.simulation.component.skill.MingDeng;
+import com.sine.yys.simulation.component.skill.XiHunDeng;
+import com.sine.yys.simulation.component.skill.YouGuang;
 import com.sine.yys.simulation.info.Property;
 
 import java.util.Arrays;

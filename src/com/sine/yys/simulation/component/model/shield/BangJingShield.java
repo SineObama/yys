@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.model.shield;
 
 /**
- * @see com.sine.yys.simulation.component.entity.mitama.BangJing
+ * @see com.sine.yys.simulation.component.mitama.BangJing
  */
 public class BangJingShield extends BaseShield {
     public BangJingShield(int value) {

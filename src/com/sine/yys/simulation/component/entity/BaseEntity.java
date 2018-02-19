@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.component.entity;
 
-import com.sine.yys.simulation.component.*;
+import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.mitama.Mitama;
 import com.sine.yys.simulation.component.model.*;
 import com.sine.yys.simulation.component.model.buff.Debuff;
 import com.sine.yys.simulation.component.model.buff.debuff.ControlBuff;
@@ -8,6 +9,12 @@ import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;
 import com.sine.yys.simulation.component.model.effect.PctEffect;
 import com.sine.yys.simulation.component.model.event.*;
 import com.sine.yys.simulation.component.model.shield.Shield;
+import com.sine.yys.simulation.component.operation.AutoOperationHandler;
+import com.sine.yys.simulation.component.operation.Operation;
+import com.sine.yys.simulation.component.operation.OperationHandler;
+import com.sine.yys.simulation.component.skill.ActiveSkill;
+import com.sine.yys.simulation.component.skill.CommonAttack;
+import com.sine.yys.simulation.component.skill.Skill;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.Property;
 import com.sine.yys.simulation.rule.CalcDam;

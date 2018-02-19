@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.model.shield;
 
 /**
- * @see com.sine.yys.simulation.component.entity.mitama.DiZangXiang
+ * @see com.sine.yys.simulation.component.mitama.DiZangXiang
  */
 public class DiZangXiangShield extends BaseShield implements DispellableShield {
     public DiZangXiangShield(int value) {
