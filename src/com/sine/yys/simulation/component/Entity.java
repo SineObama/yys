@@ -56,7 +56,7 @@ public class Entity implements Target, IProperty {
         this.shiShen = shiShen;
         this.mitamas = new ArrayList<>();
         this.mitamas.add(mitama);
-        this.life = (int) property.getLife();
+        this.life = getMaxLife();
     }
 
     public <T extends Skill, V> V get(Class<T> clazz, Object key, V defaultValue) {
@@ -169,8 +169,8 @@ public class Entity implements Target, IProperty {
     }
 
 
-    public final double getMaxLife() {
-        return property.getLife();
+    public final int getMaxLife() {
+        return (int) property.getLife();
     }
 
 
@@ -208,7 +208,7 @@ public class Entity implements Target, IProperty {
 
 
     public final double getLife() {
-        return life / property.getLife();
+        return (double) life / getMaxLife();
     }
 
 
