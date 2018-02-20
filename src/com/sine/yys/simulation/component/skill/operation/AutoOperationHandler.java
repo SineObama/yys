@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component.skill.operation;
 
+import com.sine.yys.simulation.OperationHandler;
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.skill.ActiveSkill;
 import com.sine.yys.simulation.util.RandUtil;

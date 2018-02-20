@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component.camp.position;
+package com.sine.yys.simulation.component.position;
 
 import com.sine.yys.simulation.component.Entity;
 

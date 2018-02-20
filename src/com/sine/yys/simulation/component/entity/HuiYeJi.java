@@ -8,7 +8,7 @@ import com.sine.yys.simulation.component.skill.LongShouZhiYu;
 import com.sine.yys.simulation.component.skill.PengLaiYuZhi;
 import com.sine.yys.simulation.component.skill.operation.AutoOperationHandler;
 import com.sine.yys.simulation.component.skill.operation.Operation;
-import com.sine.yys.simulation.component.skill.operation.OperationHandler;
+import com.sine.yys.simulation.OperationHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * 辉夜姬。
  */
-public class HuiYeJi extends ShiShen {
+public class HuiYeJi extends BaseShiShen {
     public HuiYeJi() {
         super(Arrays.asList(new PengLaiYuZhi(), new HuoShuQiu(), new LongShouZhiYu()), "辉夜姬");
     }

@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.effect.PctEffect;
-import com.sine.yys.simulation.component.entity.ShiShen;
+import com.sine.yys.simulation.component.entity.BaseShiShen;
 import com.sine.yys.simulation.component.model.BuffController;
 import com.sine.yys.simulation.component.model.BuffControllerImpl;
 import com.sine.yys.simulation.component.model.EventController;
@@ -11,9 +11,9 @@ import com.sine.yys.simulation.component.model.buff.debuff.ControlBuff;
 import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;
 import com.sine.yys.simulation.component.model.event.*;
 import com.sine.yys.simulation.component.model.shield.Shield;
+import com.sine.yys.simulation.component.skill.operation.Operation;
 import com.sine.yys.simulation.component.skill.ActiveSkill;
 import com.sine.yys.simulation.component.skill.CommonAttack;
-import com.sine.yys.simulation.component.skill.operation.Operation;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.IProperty;
 import com.sine.yys.simulation.info.Target;
@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 /**
- * 战场中的实体，保存了式神信息{@link ShiShen}、属性信息{@link IProperty}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
+ * 战场中的实体，保存了式神信息{@link BaseShiShen}、属性信息{@link IProperty}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
  * <p>
  * 以下为旧内容：
  * 实体的基类。

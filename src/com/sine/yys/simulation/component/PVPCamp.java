@@ -1,8 +1,7 @@
-package com.sine.yys.simulation.component.camp;
+package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.*;
-import com.sine.yys.simulation.component.camp.position.Position;
-import com.sine.yys.simulation.component.camp.position.PositionImpl;
+import com.sine.yys.simulation.component.position.Position;
+import com.sine.yys.simulation.component.position.PositionImpl;
 import com.sine.yys.simulation.component.model.EventController;
 import com.sine.yys.simulation.component.model.EventControllerImpl;
 import com.sine.yys.simulation.util.Msg;

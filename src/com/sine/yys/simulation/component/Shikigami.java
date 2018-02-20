@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.entity.ShiShen;
+import com.sine.yys.simulation.component.entity.BaseShiShen;
 import com.sine.yys.simulation.info.IProperty;
 
 /**
