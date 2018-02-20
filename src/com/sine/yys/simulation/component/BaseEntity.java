@@ -1,26 +1,22 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.core.Camp;
-import com.sine.yys.simulation.component.core.FireRepo;
-import com.sine.yys.simulation.component.core.InitContext;
-import com.sine.yys.simulation.component.core.model.event.*;
-import com.sine.yys.simulation.component.inter.Entity;
-import com.sine.yys.simulation.component.core.mitama.Mitama;
+import com.sine.yys.simulation.component.model.event.*;
+import com.sine.yys.simulation.component.mitama.Mitama;
 import com.sine.yys.simulation.info.PctEffect;
-import com.sine.yys.simulation.component.core.model.BuffController;
-import com.sine.yys.simulation.component.core.model.BuffControllerImpl;
-import com.sine.yys.simulation.component.core.model.EventController;
-import com.sine.yys.simulation.component.core.model.EventControllerImpl;
-import com.sine.yys.simulation.component.core.model.buff.Debuff;
-import com.sine.yys.simulation.component.core.model.buff.debuff.ControlBuff;
-import com.sine.yys.simulation.component.core.model.buff.debuff.HunLuan;
-import com.sine.yys.simulation.component.core.model.shield.Shield;
-import com.sine.yys.simulation.component.core.shishen.BaseShiShen;
-import com.sine.yys.simulation.component.core.shishen.ShiShen;
-import com.sine.yys.simulation.component.core.skill.ActiveSkill;
-import com.sine.yys.simulation.component.core.skill.CommonAttack;
-import com.sine.yys.simulation.component.core.skill.Skill;
-import com.sine.yys.simulation.component.core.skill.operation.Operation;
+import com.sine.yys.simulation.component.model.BuffController;
+import com.sine.yys.simulation.component.model.BuffControllerImpl;
+import com.sine.yys.simulation.component.model.EventController;
+import com.sine.yys.simulation.component.model.EventControllerImpl;
+import com.sine.yys.simulation.component.model.buff.Debuff;
+import com.sine.yys.simulation.component.model.buff.debuff.ControlBuff;
+import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;
+import com.sine.yys.simulation.component.model.shield.Shield;
+import com.sine.yys.simulation.component.shishen.BaseShiShen;
+import com.sine.yys.simulation.component.shishen.ShiShen;
+import com.sine.yys.simulation.component.skill.ActiveSkill;
+import com.sine.yys.simulation.component.skill.CommonAttack;
+import com.sine.yys.simulation.component.skill.Skill;
+import com.sine.yys.simulation.component.skill.operation.Operation;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.IProperty;
 import com.sine.yys.simulation.info.Target;
@@ -152,7 +148,7 @@ public class BaseEntity implements Target, IProperty, Entity {
             }
 
             // 执行技能
-            activeSkill.apply(this, target);
+            activeSkill.apply(controller, this, target);
         } else {
             log.info(Msg.info(this, "无可用技能，跳过回合"));
         }
@@ -452,7 +448,7 @@ public class BaseEntity implements Target, IProperty, Entity {
             target = enemy.randomTarget();
         }
         if (target != null)
-            getCommonAttack().xieZhan(this, target);
+            getCommonAttack().xieZhan(this, this, target);
     }
 
 

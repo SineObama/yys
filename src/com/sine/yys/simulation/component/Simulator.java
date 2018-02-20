@@ -1,9 +1,6 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.core.Camp;
-import com.sine.yys.simulation.component.core.InitContext;
-import com.sine.yys.simulation.component.inter.Entity;
-import com.sine.yys.simulation.component.core.model.event.BattleStartEvent;
+import com.sine.yys.simulation.component.model.event.BattleStartEvent;
 import com.sine.yys.simulation.util.Msg;
 
 import java.util.ArrayList;
