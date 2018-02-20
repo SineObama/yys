@@ -16,9 +16,10 @@ public class Simulator {
     // 引用
     private final Camp camp0, camp1;
     private final BattleKoinobori battleKoinobori = new BattleKoinobori(128.0);
-
+    private Camp win = null;
     // 状态
     private boolean started = false;
+    private boolean ended = false;
     private int round = 0;
 
     public Simulator(final Camp camp0, final Camp camp1) {
@@ -46,7 +47,9 @@ public class Simulator {
         return rtn;
     }
 
-    public Camp step() {
+    public void step() {
+        if (ended)
+            return;
         // 初始化
         if (!started) {
             started = true;
@@ -72,7 +75,7 @@ public class Simulator {
         // TODO 战场鲤鱼旗行动
         if (self == battleKoinobori) {
             self.setPosition(0);
-            return null;
+            return;
         }
 
         round += 1;
@@ -81,11 +84,18 @@ public class Simulator {
         self.action();
 
         // XXX 简单判断胜负：无式神存活
-        if (camp0.getAllShikigami().size() == 0)
-            return camp1;
-        if (camp1.getAllShikigami().size() == 0)
-            return camp0;
-        return null;
+        if (camp0.getAllShikigami().size() == 0) {
+            win = camp1;
+            ended = true;
+        }
+        if (camp1.getAllShikigami().size() == 0) {
+            win = camp0;
+            ended = true;
+        }
+    }
+
+    public Camp getWin() {
+        return win;
     }
 
     public int getRound() {

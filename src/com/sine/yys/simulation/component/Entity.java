@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.effect.PctEffect;
+import com.sine.yys.simulation.component.entity.ShiShen;
 import com.sine.yys.simulation.component.model.BuffController;
 import com.sine.yys.simulation.component.model.BuffControllerImpl;
 import com.sine.yys.simulation.component.model.EventController;
@@ -12,12 +13,9 @@ import com.sine.yys.simulation.component.model.event.*;
 import com.sine.yys.simulation.component.model.shield.Shield;
 import com.sine.yys.simulation.component.skill.ActiveSkill;
 import com.sine.yys.simulation.component.skill.CommonAttack;
-import com.sine.yys.simulation.component.skill.operation.AutoOperationHandler;
 import com.sine.yys.simulation.component.skill.operation.Operation;
-import com.sine.yys.simulation.component.skill.operation.OperationHandler;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.IProperty;
-import com.sine.yys.simulation.info.Property;
 import com.sine.yys.simulation.info.Target;
 import com.sine.yys.simulation.rule.CalcDam;
 import com.sine.yys.simulation.rule.CalcEffect;
@@ -28,21 +26,24 @@ import java.util.*;
 import java.util.logging.Logger;
 
 /**
+ * 战场中的实体，保存了式神信息{@link ShiShen}、属性信息{@link IProperty}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
+ * <p>
+ * 以下为旧内容：
  * 实体的基类。
  * 必须含有一个普攻技能{@link CommonAttack}。
  * 调用{@link Entity#init(InitContext)}初始化指定阵营和鬼火仓库。
  * <p>这里实现了程序的主体逻辑，包括行动逻辑，事件的触发等。
  * 技能或御魂通过调用这里的函数以实现自身的逻辑。</p>
  */
-public abstract class Entity implements Target, IProperty {
+public class Entity implements Target, IProperty {
     private final Logger log = Logger.getLogger(getClass().toString());
     private final EventController eventController = new EventControllerImpl();
     private final BuffController buffController = new BuffControllerImpl();
 
-    private final Property property;
+    private final IProperty property;
     private final List<Mitama> mitamas;
-    private final List<Skill> skills;
-    private final String name;
+    private final ShiShen shiShen;
+    private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
 
     private int life;
     private double position;
@@ -50,27 +51,41 @@ public abstract class Entity implements Target, IProperty {
     private Camp camp;
     private FireRepo fireRepo;
 
-    protected Entity(Property property, Mitama mitama, List<Skill> skills, String name) {
+    public Entity(IProperty property, Mitama mitama, ShiShen shiShen) {
         this.property = property;
-        this.name = name;
+        this.shiShen = shiShen;
         this.mitamas = new ArrayList<>();
         this.mitamas.add(mitama);
-        this.skills = new ArrayList<>();
-        this.skills.addAll(skills);
         this.life = (int) property.getLife();
         this.position = 0;
     }
 
-    
-     final void action() {
+    public <T extends Skill, V> V get(Class<T> clazz, Object key, V defaultValue) {
+        if (!map.containsKey(clazz))
+            map.put(clazz, new HashMap<>());
+        Map<Object, Object> map1 = map.get(clazz);
+        if (map1.containsKey(key))
+            return (V) map1.get(key);
+        else
+            return defaultValue;
+    }
+
+    public <T extends Skill> void put(Class<T> clazz, Object key, Object value) {
+        if (!map.containsKey(clazz))
+            map.put(clazz, new HashMap<>());
+        map.get(clazz).put(key, value);
+    }
+
+    final void action() {
 
         // 推进鬼火行动条
         fireRepo.step();
 
-        clear();
-        for (Skill skill : skills) {
-            skill.step();
+        // 调用技能step。减少cd
+        for (Skill skill : shiShen.getSkills()) {
+            skill.step(this);
         }
+        clear();  // 重置攻击事件。允许对方彼岸花行动前的伤害触发事件。
         // 行动前事件
         camp.getEventController().trigger(new BeforeActionEvent(this));
 
@@ -83,8 +98,9 @@ public abstract class Entity implements Target, IProperty {
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
             for (ActiveSkill activeSkill : getActiveSkills()) {
-                if (activeSkill.getCD() > 0) {
-                    log.info(Msg.info(this, "技能 " + activeSkill.getName() + " 还有CD " + activeSkill.getCD()));
+                int cd = activeSkill.getCD(this);
+                if (cd > 0) {
+                    log.info(Msg.info(this, "技能 " + activeSkill.getName() + " 还有CD " + cd));
                     continue;
                 }
                 if (fireRepo.getFire() < activeSkill.getFire())
@@ -95,7 +111,7 @@ public abstract class Entity implements Target, IProperty {
             }
 
             if (!map.isEmpty())
-                operation = getAI().handle(this, map);
+                operation = shiShen.getAI().handle(this, map);
             else
                 operation = new Operation(null, null);
 
@@ -117,6 +133,7 @@ public abstract class Entity implements Target, IProperty {
         ActiveSkill activeSkill = operation.getSkill();
         if (activeSkill != null) {
             Entity target = operation.getTarget();
+            log.info(Msg.info(this, "当前鬼火 " + fireRepo.getFire()));
             log.info(Msg.vector(this, target != null ? "对" : "", target, "使用了 " + activeSkill.getName()));
 
             // 消耗鬼火
@@ -126,7 +143,7 @@ public abstract class Entity implements Target, IProperty {
                 camp.getEventController().trigger(event);
                 fire = event.getCostFire();
                 fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
-                log.info(Msg.info(this, "消耗 " + fire + " 点鬼火，当前剩余 " + fireRepo.getFire() + " 点"));
+                log.info(Msg.info(this, "消耗 " + fire + " 点鬼火，剩余 " + fireRepo.getFire() + " 点"));
             }
 
             // 执行技能
@@ -142,78 +159,72 @@ public abstract class Entity implements Target, IProperty {
         buffController.step(this);
     }
 
-    
+
     public final String getFullName() {
         return camp.getFullName() + getName();
     }
 
-    
+
     public final double getAttack() {
         return property.getAttack() * (1 + buffController.getAtkPct());
     }
 
-    
+
     public final double getMaxLife() {
         return property.getLife();
     }
 
-    
+
     public final double getDefense() {
         return property.getDefense() * (1 + buffController.getDefPct());
     }
 
-    
+
     public final double getSpeed() {
         return property.getSpeed() + buffController.getSpeed();
     }
 
     // XXX 可能的负值问题。
-    
+
     public final double getCritical() {
         return property.getCritical() + buffController.getCritical();
     }
 
-    
+
     public final double getCriticalDamage() {
         return property.getCriticalDamage() + buffController.getCriticalDamage();
     }
 
     // XXX 可能的负值问题。
-    
+
     public final double getEffectHit() {
         return property.getEffectHit() + buffController.getEffectHit();
     }
 
     // XXX 可能的负值问题。
-    
+
     public final double getEffectDef() {
         return property.getEffectDef() + buffController.getEffectDef();
     }
 
-    
+
     public final double getLife() {
         return life / property.getLife();
     }
 
-    
+
     private void setLife(int life) {
         this.life = life;
     }
 
-    
+
     public final EventController getEventController() {
         return this.eventController;
     }
 
-    
-    public OperationHandler getAI() {
-        return new AutoOperationHandler();
-    }
-
-    
     public List<ActiveSkill> getActiveSkills() {
         List<ActiveSkill> activeSkills = new ArrayList<>();
-        for (Skill skill : skills) {
+        for (Skill skill : shiShen.getSkills()) {
             if (skill instanceof ActiveSkill) {
                 activeSkills.add((ActiveSkill) skill);
             }
@@ -221,12 +232,12 @@ public abstract class Entity implements Target, IProperty {
         return activeSkills;
     }
 
-    
+
     public final void init(InitContext context) {
         camp = context.getOwn();
         fireRepo = context.getFireRepo();
         context.setSelf(this);
-        for (Skill skill : skills) {
+        for (Skill skill : shiShen.getSkills()) {
             skill.init(context);
         }
         for (Mitama mitama : mitamas) {
@@ -235,7 +246,7 @@ public abstract class Entity implements Target, IProperty {
     }
 
     private CommonAttack getCommonAttack() {
-        for (Skill skill : skills) {
+        for (Skill skill : shiShen.getSkills()) {
             if (skill instanceof CommonAttack)
                 return (CommonAttack) skill;
         }
@@ -243,32 +254,32 @@ public abstract class Entity implements Target, IProperty {
         throw new RuntimeException(getFullName() + " 没有普通攻击。");
     }
 
-    
+
     public final boolean isDead() {
         return life <= 0;
     }
 
-    
+
     public final Camp getCamp() {
         return camp;
     }
 
-    
+
     public final BuffController getBuffController() {
         return buffController;
     }
 
-    
+
     public final FireRepo getFireRepo() {
         return fireRepo;
     }
 
-    
+
     public double getPosition() {
         return position;
     }
 
-    
+
     public void setPosition(double position) {
         this.position = position;
     }
@@ -280,7 +291,7 @@ public abstract class Entity implements Target, IProperty {
      * 3. 破盾。
      * 4. 施加剩余伤害，添加御魂效果。
      */
-    
+
     public void attack(Entity target, AttackInfo attackInfo) {
         if (target.isDead())  // XXX 只是有时会出现目标已死。有更好的逻辑？
             return;
@@ -326,7 +337,7 @@ public abstract class Entity implements Target, IProperty {
      * 3. 破盾。
      * 4. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
      */
-    
+
     public void realDamage(Entity target, double maxByAttack, double maxPctByMaxLife) {
         if (target.isDead())
             return;
@@ -370,7 +381,7 @@ public abstract class Entity implements Target, IProperty {
         return damage;
     }
 
-    
+
     private int getLifeInt() {
         return life;
     }
@@ -391,7 +402,7 @@ public abstract class Entity implements Target, IProperty {
         eventController.trigger(new DamageEvent(this, target));
     }
 
-    
+
     public void randomGrab(double pct, Entity target) {
         if (RandUtil.success(pct)) {
             int num = target.getFireRepo().grabFire(1);
@@ -401,7 +412,7 @@ public abstract class Entity implements Target, IProperty {
         }
     }
 
-    
+
     public void applyDebuff(PctEffect effect, Entity target, Debuff debuff) {
         if (RandUtil.success(CalcEffect.pct(effect.getPct(), getEffectHit()))) {
             log.info(Msg.trigger(this, effect));
@@ -414,7 +425,7 @@ public abstract class Entity implements Target, IProperty {
         }
     }
 
-    
+
     public void xieZhan(Entity target) {
         // 目标死亡则随机攻击另一个目标
         Camp enemy = camp.getOpposite();
@@ -426,7 +437,7 @@ public abstract class Entity implements Target, IProperty {
             getCommonAttack().xieZhan(this, target);
     }
 
-    
+
     public void clear() {
         camp.getEventController().setState(BeAttackEvent.class, true);
         camp.getOpposite().getEventController().setState(BeAttackEvent.class, true);
@@ -438,8 +449,8 @@ public abstract class Entity implements Target, IProperty {
         }
     }
 
-    
+
     public final String getName() {
-        return name;
+        return shiShen.getName();
     }
 }

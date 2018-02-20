@@ -10,8 +10,7 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override
     public final void apply(Entity self, Entity target) {
         self.clear();
-        if (getMAXCD() > 0)
-            CD = getMAXCD() + 1;
+        self.put(this.getClass(), CD, getMAXCD() + 1);  // XXXX 设置技能进入CD，这个+1的操作
         beforeApply(target);
         doApply(self, target);
         afterApply(self, target);
@@ -28,7 +27,7 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     /**
      * 目前只用于普攻触发事件。
      *
-     * @param target
+     * @param target 目标。
      */
     protected void beforeApply(Entity target) {
     }
@@ -37,7 +36,7 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
      * 目前只用于普攻触发事件。
      *
      * @param self   自身
-     * @param target
+     * @param target 目标。
      */
     protected void afterApply(Entity self, Entity target) {
     }

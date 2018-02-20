@@ -46,8 +46,8 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
     }
 
     @Override
-    public int step() {
-        int rtn = super.step();
+    public int step(Entity self) {
+        int rtn = super.step(self);
         if (level > 0)
             level -= 1;
         return rtn;

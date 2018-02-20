@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.InitContext;
 import com.sine.yys.simulation.info.Named;
 
 /**

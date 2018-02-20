@@ -16,11 +16,9 @@ public class AutoOperationHandler implements OperationHandler {
         int max = 0;
         ActiveSkill use = null;
         for (ActiveSkill activeSkill : map.keySet()) {
-            if (activeSkill.getCD() == 0) {
-                if (max <= activeSkill.getFire()) {
-                    max = activeSkill.getFire();
-                    use = activeSkill;
-                }
+            if (max <= activeSkill.getFire()) {
+                max = activeSkill.getFire();
+                use = activeSkill;
             }
         }
         if (use == null)

@@ -1,8 +1,6 @@
 package com.sine.yys.simulation.component.entity;
 
 import com.sine.yys.simulation.component.Entity;
-import com.sine.yys.simulation.component.Shikigami;
-import com.sine.yys.simulation.component.Mitama;
 import com.sine.yys.simulation.component.model.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.simulation.component.skill.ActiveSkill;
 import com.sine.yys.simulation.component.skill.HuoShuQiu;
@@ -11,7 +9,6 @@ import com.sine.yys.simulation.component.skill.PengLaiYuZhi;
 import com.sine.yys.simulation.component.skill.operation.AutoOperationHandler;
 import com.sine.yys.simulation.component.skill.operation.Operation;
 import com.sine.yys.simulation.component.skill.operation.OperationHandler;
-import com.sine.yys.simulation.info.Property;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,9 +17,9 @@ import java.util.Map;
 /**
  * 辉夜姬。
  */
-public class HuiYeJi extends  Shikigami {
-    public HuiYeJi(Property property, Mitama mitama) {
-        super(property, mitama, Arrays.asList(new PengLaiYuZhi(), new HuoShuQiu(), new LongShouZhiYu()), "辉夜姬");
+public class HuiYeJi extends ShiShen {
+    public HuiYeJi() {
+        super(Arrays.asList(new PengLaiYuZhi(), new HuoShuQiu(), new LongShouZhiYu()), "辉夜姬");
     }
 
     @Override
