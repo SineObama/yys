@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.effect.PctEffect;
+import com.sine.yys.simulation.component.inter.MitamaController;
 import com.sine.yys.simulation.component.shishen.BaseShiShen;
 import com.sine.yys.simulation.component.shishen.ShiShen;
 import com.sine.yys.simulation.component.mitama.Mitama;
@@ -38,7 +39,7 @@ import java.util.logging.Logger;
  * <p>这里实现了程序的主体逻辑，包括行动逻辑，事件的触发等。
  * 技能或御魂通过调用这里的函数以实现自身的逻辑。</p>
  */
-public class Entity implements Target, IProperty {
+public class Entity implements Target, IProperty, MitamaController {
     private final Logger log = Logger.getLogger(getClass().toString());
     private final EventController eventController = new EventControllerImpl();
     private final BuffController buffController = new BuffControllerImpl();
