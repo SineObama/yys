@@ -8,7 +8,7 @@ import com.sine.yys.simulation.util.Msg;
  * 彼岸花-血之花海。
  */
 public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
-    private int level = 3;
+    private static final String LEVEL = "LEVEL";
 
     /**
      * @return 血之花海护盾，已损生命的百分比。
@@ -34,22 +34,27 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
 
     public void addLevel(Entity self, int count) {
         final int max = (int) (7 - self.getLife() * 4);
+        int level = getLevel(self);
         log.info(Msg.info(self, "原花海层数 " + level));
         level += count;
         if (level > max)
             level = max;
+        self.put(this.getClass(), LEVEL, level);
         log.info(Msg.info(self, "现花海层数 " + level));
     }
 
-    public int getLevel() {
-        return level;
+    public int getLevel(Entity self) {
+        return self.get(this.getClass(), LEVEL, 3);
     }
 
     @Override
     public int step(Entity self) {
         int rtn = super.step(self);
-        if (level > 0)
+        int level = getLevel(self);
+        if (level > 0) {
             level -= 1;
+            self.put(this.getClass(), LEVEL, level);
+        }
         return rtn;
     }
 
@@ -59,8 +64,8 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
     }
 
     public void addShield(Entity self) {
-        final int value = (int) (self.getMaxLife() * (1 - self.getLife()));
-        self.getBuffController().addShield(new XueZhiHuaHaiShield(value));
+        final double value = (int) (self.getMaxLife() * (1 - self.getLife()) * getLostLifePct());
+        self.getBuffController().addShield(new XueZhiHuaHaiShield(self.shieldValue(value)));
         log.info(Msg.info(self, "获得 " + getName()));
     }
 }

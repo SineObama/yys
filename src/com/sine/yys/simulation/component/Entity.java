@@ -231,6 +231,18 @@ public class Entity implements Target, IProperty {
         return activeSkills;
     }
 
+    /**
+     * 添加护盾时计算护盾的数值（厚度）。计算暴击。
+     *
+     * @param src 原本数值。
+     * @return 最终数值。
+     */
+    public int shieldValue(double src) {
+        if (!RandUtil.success(getCritical()))
+            return (int) src;
+        log.info(Msg.info(this, "暴击"));
+        return (int) (src * getCriticalDamage());
+    }
 
     public final void init(InitContext context) {
         camp = context.getOwn();
