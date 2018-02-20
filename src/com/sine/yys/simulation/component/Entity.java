@@ -1,7 +1,9 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.effect.PctEffect;
-import com.sine.yys.simulation.component.entity.BaseShiShen;
+import com.sine.yys.simulation.component.shishen.BaseShiShen;
+import com.sine.yys.simulation.component.shishen.ShiShen;
+import com.sine.yys.simulation.component.mitama.Mitama;
 import com.sine.yys.simulation.component.model.BuffController;
 import com.sine.yys.simulation.component.model.BuffControllerImpl;
 import com.sine.yys.simulation.component.model.EventController;
@@ -11,6 +13,7 @@ import com.sine.yys.simulation.component.model.buff.debuff.ControlBuff;
 import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;
 import com.sine.yys.simulation.component.model.event.*;
 import com.sine.yys.simulation.component.model.shield.Shield;
+import com.sine.yys.simulation.component.skill.Skill;
 import com.sine.yys.simulation.component.skill.operation.Operation;
 import com.sine.yys.simulation.component.skill.ActiveSkill;
 import com.sine.yys.simulation.component.skill.CommonAttack;

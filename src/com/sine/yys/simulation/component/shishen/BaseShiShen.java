@@ -1,7 +1,6 @@
-package com.sine.yys.simulation.component.entity;
+package com.sine.yys.simulation.component.shishen;
 
-import com.sine.yys.simulation.component.ShiShen;
-import com.sine.yys.simulation.component.Skill;
+import com.sine.yys.simulation.component.skill.Skill;
 import com.sine.yys.simulation.component.skill.operation.AutoOperationHandler;
 import com.sine.yys.simulation.component.skill.operation.OperationHandler;
 import com.sine.yys.simulation.info.Named;

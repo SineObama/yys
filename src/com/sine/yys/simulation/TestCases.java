@@ -1,7 +1,7 @@
 package com.sine.yys.simulation;
 
-import com.sine.yys.simulation.component.entity.GuHuoNiao;
-import com.sine.yys.simulation.component.entity.QingXingDeng;
+import com.sine.yys.simulation.component.shishen.GuHuoNiao;
+import com.sine.yys.simulation.component.shishen.QingXingDeng;
 import com.sine.yys.simulation.component.mitama.HuoLing;
 import com.sine.yys.simulation.component.mitama.MeiYao;
 import com.sine.yys.simulation.component.mitama.ZhenNv;

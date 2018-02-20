@@ -2,10 +2,10 @@ package com.sine;
 
 import com.sine.yys.simulation.CampInfo;
 import com.sine.yys.simulation.RedBlueSimulator;
-import com.sine.yys.simulation.component.entity.BiAnHua;
-import com.sine.yys.simulation.component.entity.BoRe;
-import com.sine.yys.simulation.component.entity.GuHuoNiao;
-import com.sine.yys.simulation.component.entity.HuiYeJi;
+import com.sine.yys.simulation.component.shishen.BiAnHua;
+import com.sine.yys.simulation.component.shishen.BoRe;
+import com.sine.yys.simulation.component.shishen.GuHuoNiao;
+import com.sine.yys.simulation.component.shishen.HuiYeJi;
 import com.sine.yys.simulation.component.mitama.DiZangXiang;
 import com.sine.yys.simulation.component.mitama.HuoLing;
 import com.sine.yys.simulation.component.mitama.MeiYao;

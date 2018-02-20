@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component.entity;
+package com.sine.yys.simulation.component.shishen;
 
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.model.buff.buff.LongShouZhiYuBuff;

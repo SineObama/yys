@@ -1,7 +1,6 @@
 package com.sine.yys.simulation.component.mitama;
 
 import com.sine.yys.simulation.component.Entity;
-import com.sine.yys.simulation.component.Mitama;
 import com.sine.yys.simulation.info.Sealable;
 
 import java.util.logging.Logger;
