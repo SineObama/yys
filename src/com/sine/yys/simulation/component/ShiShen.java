@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.OperationHandler;
+import com.sine.yys.simulation.component.skill.operation.OperationHandler;
 
 import java.util.List;
 

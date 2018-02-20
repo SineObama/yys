@@ -1,8 +1,7 @@
-package com.sine.yys.simulation;
+package com.sine.yys.simulation.component.skill.operation;
 
-import com.sine.yys.simulation.component.skill.ActiveSkill;
 import com.sine.yys.simulation.component.Entity;
-import com.sine.yys.simulation.component.skill.operation.Operation;
+import com.sine.yys.simulation.component.skill.ActiveSkill;
 
 import java.util.List;
 import java.util.Map;

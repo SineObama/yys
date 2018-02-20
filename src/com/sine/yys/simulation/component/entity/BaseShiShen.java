@@ -3,7 +3,7 @@ package com.sine.yys.simulation.component.entity;
 import com.sine.yys.simulation.component.ShiShen;
 import com.sine.yys.simulation.component.Skill;
 import com.sine.yys.simulation.component.skill.operation.AutoOperationHandler;
-import com.sine.yys.simulation.OperationHandler;
+import com.sine.yys.simulation.component.skill.operation.OperationHandler;
 import com.sine.yys.simulation.info.Named;
 
 import java.util.List;

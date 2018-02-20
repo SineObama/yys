@@ -8,7 +8,7 @@ import com.sine.yys.simulation.component.skill.LongShouZhiYu;
 import com.sine.yys.simulation.component.skill.PengLaiYuZhi;
 import com.sine.yys.simulation.component.skill.operation.AutoOperationHandler;
 import com.sine.yys.simulation.component.skill.operation.Operation;
-import com.sine.yys.simulation.OperationHandler;
+import com.sine.yys.simulation.component.skill.operation.OperationHandler;
 
 import java.util.Arrays;
 import java.util.List;
