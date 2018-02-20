@@ -26,12 +26,13 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill {
     @Override
     public void init(InitContext context) {
         Entity self = context.getSelf();
-        for (ActiveSkill activeSkill : self.getActiveSkills()) {
-            if (activeSkill instanceof XueZhiHuaHai) {
-                xueZhiHuaHai = (XueZhiHuaHai) activeSkill;
-                break;
-            }
-        }
+//        for (ActiveSkill activeSkill : self.getActiveSkills()) {
+//            if (activeSkill instanceof XueZhiHuaHai) {
+//                xueZhiHuaHai = (XueZhiHuaHai) activeSkill;
+//                break;
+//            }
+//        }
+        xueZhiHuaHai = new XueZhiHuaHai(); // TODO TODO
         if (xueZhiHuaHai == null)
             throw new RuntimeException("找不到血之花海技能");
         context.getEnemy().getEventController().add(new Handler(self));

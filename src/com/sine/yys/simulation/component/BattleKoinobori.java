@@ -1,13 +1,12 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.info.Property;
 
 /**
  * 战场鲤鱼旗。
  * 还未实现功能。
  */
-public class BattleKoinobori extends Entity {
+public class BattleKoinobori extends BaseEntity implements Entity {
     private double damageRatio = 1.0;
     private double cureRatio = 1.0;
     private double damageRatioAddition = 0.2;

@@ -82,7 +82,7 @@ public class Simulator {
         round += 1;
         log.info(Msg.info(self, "行动，序号 " + round));
 
-        self.action();
+        ((BaseEntity) self).action();
 
         // XXX 简单判断胜负：无式神存活
         if (camp0.getAllShikigami().size() == 0) {

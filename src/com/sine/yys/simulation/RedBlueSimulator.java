@@ -1,10 +1,6 @@
 package com.sine.yys.simulation;
 
-import com.sine.yys.simulation.component.BattleKoinobori;
-import com.sine.yys.simulation.component.Camp;
-import com.sine.yys.simulation.component.Shikigami;
-import com.sine.yys.simulation.component.Simulator;
-import com.sine.yys.simulation.component.PVPCamp;
+import com.sine.yys.simulation.component.*;
 
 import java.util.Collections;
 import java.util.HashMap;

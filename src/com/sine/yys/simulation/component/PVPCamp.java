@@ -1,9 +1,9 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.position.Position;
-import com.sine.yys.simulation.component.position.PositionImpl;
 import com.sine.yys.simulation.component.model.EventController;
 import com.sine.yys.simulation.component.model.EventControllerImpl;
+import com.sine.yys.simulation.component.position.Position;
+import com.sine.yys.simulation.component.position.PositionImpl;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 
