@@ -15,16 +15,17 @@ public class Simulator {
 
     // 引用
     private final Camp camp0, camp1;
-    private final BattleKoinobori battleKoinobori = new BattleKoinobori(128.0);
+    private final List<Entity> extras;  // 额外的对象，包括不属于阵营的战场鲤鱼旗。秘闻竞赛副本的鬼头？
     private Camp win = null;
     // 状态
     private boolean started = false;
     private boolean ended = false;
     private int round = 0;
 
-    public Simulator(final Camp camp0, final Camp camp1) {
+    public Simulator(final Camp camp0, final Camp camp1, List<Entity> extras) {
         this.camp0 = camp0;
         this.camp1 = camp1;
+        this.extras = extras;
     }
 
     private Entity next() {
@@ -33,7 +34,7 @@ public class Simulator {
         List<Entity> all = new ArrayList<>(15);
         all.addAll(camp0.getAllAlive());
         all.addAll(camp1.getAllAlive());
-        all.add(battleKoinobori);
+        all.addAll(extras);
         for (Entity entity : all) {
             double remain = (1 - entity.getPosition()) / entity.getSpeed();
             if (min > remain) {
@@ -73,7 +74,7 @@ public class Simulator {
         Entity self = next();
 
         // TODO 战场鲤鱼旗行动
-        if (self == battleKoinobori) {
+        if (self.getCamp() == null) {
             self.setPosition(0);
             return;
         }

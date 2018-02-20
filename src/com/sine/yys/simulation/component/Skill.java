@@ -10,8 +10,6 @@ import com.sine.yys.simulation.info.Named;
 public interface Skill extends Named {
     void init(InitContext context);
 
-    String getDetail();
-
     int getCD(Entity self);
 
     int getMAXCD();

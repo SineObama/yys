@@ -46,9 +46,9 @@ public class Entity implements Target, IProperty {
     private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
 
     private int life;
-    private double position;
+    private double position = 0;
 
-    private Camp camp;
+    private Camp camp = null;
     private FireRepo fireRepo;
 
     public Entity(IProperty property, Mitama mitama, ShiShen shiShen) {
@@ -57,7 +57,6 @@ public class Entity implements Target, IProperty {
         this.mitamas = new ArrayList<>();
         this.mitamas.add(mitama);
         this.life = (int) property.getLife();
-        this.position = 0;
     }
 
     public <T extends Skill, V> V get(Class<T> clazz, Object key, V defaultValue) {

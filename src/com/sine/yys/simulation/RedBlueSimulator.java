@@ -1,16 +1,18 @@
 package com.sine.yys.simulation;
 
+import com.sine.yys.simulation.component.BattleKoinobori;
 import com.sine.yys.simulation.component.Camp;
 import com.sine.yys.simulation.component.Shikigami;
 import com.sine.yys.simulation.component.Simulator;
 import com.sine.yys.simulation.component.camp.PVPCamp;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * 模拟对弈竞猜。
+ * 模拟对弈竞猜，计算多次结果。
  */
 public class RedBlueSimulator {
     public static final String redName = "红方";
@@ -36,7 +38,7 @@ public class RedBlueSimulator {
             for (EntityInfo info : blueInfo.infos) {
                 blue.addEntity(new Shikigami(info.property, info.mitama, info.shiShen));
             }
-            Simulator simulator = new Simulator(red, blue);
+            Simulator simulator = new Simulator(red, blue, Collections.singletonList(new BattleKoinobori(128.0)));
             while (simulator.getWin() == null)
                 simulator.step();
             String winName = simulator.getWin().getName();

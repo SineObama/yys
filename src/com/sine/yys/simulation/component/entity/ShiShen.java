@@ -8,7 +8,8 @@ import com.sine.yys.simulation.info.Named;
 import java.util.List;
 
 /**
- * 只包含特定式神这一信息，不包含属性、御魂、战斗状态。
+ * 式神。
+ * 无状态，只包含特定式神这一信息（名字、技能），不包含属性、御魂、战斗状态。
  */
 public abstract class ShiShen implements Named {
     final List<Skill> skills;
