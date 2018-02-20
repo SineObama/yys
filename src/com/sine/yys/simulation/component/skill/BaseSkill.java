@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.component.skill;
 
 import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.Skill;
 
 import java.util.logging.Logger;
 

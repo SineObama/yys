@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.component.skill;
 
 import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.Skill;
 import com.sine.yys.simulation.component.skill.targetresolver.TargetResolver;
 
 /**

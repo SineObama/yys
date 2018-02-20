@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component.mitama;
 
+import com.sine.yys.simulation.component.Mitama;
 import com.sine.yys.simulation.component.effect.AddDebuffEffect;
 import com.sine.yys.simulation.component.effect.HunLuanEffect;
 import com.sine.yys.simulation.component.effect.PctEffect;

@@ -12,8 +12,7 @@ import com.sine.yys.simulation.component.mitama.HuoLing;
 import com.sine.yys.simulation.component.mitama.MeiYao;
 import com.sine.yys.simulation.component.mitama.ZhenNv;
 import com.sine.yys.simulation.info.Property;
-import com.sine.yys.simulation.simulator.BattleSimulator;
-import com.sine.yys.simulation.simulator.Simulator;
+import com.sine.yys.simulation.component.Simulator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +39,7 @@ public class Main {
             red.addEntity(new HuiYeJi(new Property(attack, 10000, 400, 170, 0, 1.5, 0, 0), new HuoLing()));
             blue.addEntity(new BoRe(new Property(attack, 10000, 400, 170, 0.8, 1.5, 3, 0), new DiZangXiang()));
             blue.addEntity(new GuHuoNiao(new Property(attack, 10000, 400, 170, 0.8, 1.5, 3, 0), new MeiYao()));
-            Simulator simulator = new BattleSimulator(red, blue);
+            Simulator simulator = new Simulator(red, blue);
             Camp win;
             while ((win = simulator.step()) == null) ;
             log.warning(win.getName() + " 胜利");
