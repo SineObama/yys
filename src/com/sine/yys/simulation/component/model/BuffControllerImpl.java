@@ -11,6 +11,7 @@ import com.sine.yys.simulation.component.model.buff.debuff.SealPassive;
 import com.sine.yys.simulation.component.model.shield.BangJingShield;
 import com.sine.yys.simulation.component.model.shield.DiZangXiangShield;
 import com.sine.yys.simulation.component.model.shield.Shield;
+import com.sine.yys.simulation.component.model.shield.XueZhiHuaHaiShield;
 import com.sine.yys.simulation.info.Target;
 import com.sine.yys.simulation.util.Msg;
 
@@ -26,6 +27,7 @@ public class BuffControllerImpl implements BuffController {
     static {
         prior.put(BangJingShield.class, 100);
         prior.put(DiZangXiangShield.class, 200);
+        prior.put(XueZhiHuaHaiShield.class, 1000);
 
         prior.put(HunLuan.class, 100100);
     }
