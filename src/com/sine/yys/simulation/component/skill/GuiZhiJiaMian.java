@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component.skill;
 
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.model.buff.buff.KuangBao;
 
 /**
@@ -12,8 +13,8 @@ public class GuiZhiJiaMian extends BaseCommonAttack {
     }
 
     @Override
-    public int getTimes() {
-        return getSelf().getBuffController().getUnique(KuangBao.class) == null ? 1 : 2;  // XXX 般若狂暴平A两段？
+    public int getTimes(Entity self) {
+        return self.getBuffController().getUnique(KuangBao.class) == null ? 1 : 2;  // XXX 般若狂暴平A两段？
     }
 
     @Override

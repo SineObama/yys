@@ -34,8 +34,8 @@ public class TianXiangHeZhan extends SimpleGroupAttack {
     }
 
     @Override
-    public void doApply(Entity target) {
-        super.doApply(target);
-        getSelf().attack(target, new AttackInfoImpl(getFinalCoefficient()));
+    public void doApply(Entity self, Entity target) {
+        super.doApply(self, target);
+        self.attack(target, new AttackInfoImpl(getFinalCoefficient()));
     }
 }

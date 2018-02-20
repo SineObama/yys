@@ -23,22 +23,22 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
     }
 
     @Override
-    public void apply(Entity target) {
+    public void doApply(Entity self, Entity target) {
         int count = 2;
-        if (getSelf().getLife() < 0.5)
+        if (self.getLife() < 0.5)
             count += 1;
-        addLevel(count);
-        if (getSelf().getLife() < 0.75)
-            addShield();
+        addLevel(self, count);
+        if (self.getLife() < 0.75)
+            addShield(self);
     }
 
-    public void addLevel(int count) {
-        final int max = (int) (7 - getSelf().getLife() * 4);
-        log.info(Msg.info(getSelf(), "原花海层数 " + level));
+    public void addLevel(Entity self, int count) {
+        final int max = (int) (7 - self.getLife() * 4);
+        log.info(Msg.info(self, "原花海层数 " + level));
         level += count;
         if (level > max)
             level = max;
-        log.info(Msg.info(getSelf(), "现花海层数 " + level));
+        log.info(Msg.info(self, "现花海层数 " + level));
     }
 
     public int getLevel() {
@@ -58,9 +58,9 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
         return "血之花海";
     }
 
-    public void addShield() {
-        final int value = (int) (getSelf().getMaxLife() * (1 - getSelf().getLife()));
-        getSelf().getBuffController().addShield(new XueZhiHuaHaiShield(value));
-        log.info(Msg.info(getSelf(), "获得 " + getName()));
+    public void addShield(Entity self) {
+        final int value = (int) (self.getMaxLife() * (1 - self.getLife()));
+        self.getBuffController().addShield(new XueZhiHuaHaiShield(value));
+        log.info(Msg.info(self, "获得 " + getName()));
     }
 }

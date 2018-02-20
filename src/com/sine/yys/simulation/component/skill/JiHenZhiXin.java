@@ -29,11 +29,10 @@ public class JiHenZhiXin extends BasePassiveSkill implements PassiveSkill, PctEf
 
     @Override
     public void handle(AttackEvent event) {
-        getSelf().applyDebuff(this, event.getTarget(), new FengYin(getLast()));
+        event.getSelf().applyDebuff(this, event.getTarget(), new FengYin(getLast()));
     }
 
-    @Override
-    public void doInit(InitContext context) {
-        getSelf().getEventController().add(this);
+    public void init(InitContext context) {
+        context.getSelf().getEventController().add(this);
     }
 }

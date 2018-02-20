@@ -24,8 +24,8 @@ public class YouGuang extends BaseCommonAttack {
     }
 
     @Override
-    public void doApply(Entity target) {
-        super.doApply(target);
-        getSelf().randomGrab(getPct(), target);
+    public void doApply(Entity self, Entity target) {
+        super.doApply(self, target);
+        self.randomGrab(getPct(), target);
     }
 }

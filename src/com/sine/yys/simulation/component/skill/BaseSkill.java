@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component.skill;
 
-import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.InitContext;
 
 import java.util.logging.Logger;
@@ -12,7 +11,6 @@ import java.util.logging.Logger;
 public abstract class BaseSkill implements Skill {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
     protected int CD = 0; // XXXX CD设置方式？
-    private Entity self;
 
     @Override
     public String getDetail() {
@@ -37,15 +35,6 @@ public abstract class BaseSkill implements Skill {
     }
 
     @Override
-    public final void init(InitContext context) {
-        this.self = context.getSelf();
-        doInit(context);
-    }
-
-    protected void doInit(InitContext context) {
-    }
-
-    public final Entity getSelf() {
-        return self;
+    public void init(InitContext context) {
     }
 }

@@ -19,7 +19,8 @@ public interface ActiveSkill extends Skill {
      * 直接使用技能。由外部直接调用。
      * 不操作鬼火。
      *
-     * @param target 技能所选目标
+     * @param self   自身。
+     * @param target 技能所选目标。
      */
-    void apply(Entity target);
+    void apply(Entity self, Entity target);
 }

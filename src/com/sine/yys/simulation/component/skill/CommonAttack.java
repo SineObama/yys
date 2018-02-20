@@ -9,9 +9,9 @@ import com.sine.yys.simulation.info.AttackInfo;
  */
 public interface CommonAttack extends AttackSkill {
     /**
-     * 协战专用函数，默认使用与普攻同样的操作。
+     * 协战，默认使用与普攻同样的操作。
      */
-    void xieZhan(Entity target);
+    void xieZhan(Entity self, Entity target);
 
     /**
      * 获取攻击属性。

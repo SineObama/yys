@@ -8,20 +8,22 @@ import com.sine.yys.simulation.component.Entity;
  */
 public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override
-    public final void apply(Entity target) {
-        getSelf().clear();
-        CD = getMAXCD() + 1;
+    public final void apply(Entity self, Entity target) {
+        self.clear();
+        if (getMAXCD() > 0)
+            CD = getMAXCD() + 1;
         beforeApply(target);
-        doApply(target);
-        afterApply(target);
+        doApply(self, target);
+        afterApply(self, target);
     }
 
     /**
      * 技能的具体操作。各技能重写的重点。
      *
-     * @param target
+     * @param self   自身。
+     * @param target 目标。
      */
-    protected abstract void doApply(Entity target);
+    protected abstract void doApply(Entity self, Entity target);
 
     /**
      * 目前只用于普攻触发事件。
@@ -34,8 +36,9 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     /**
      * 目前只用于普攻触发事件。
      *
+     * @param self   自身
      * @param target
      */
-    protected void afterApply(Entity target) {
+    protected void afterApply(Entity self, Entity target) {
     }
 }

@@ -134,7 +134,7 @@ public abstract class BaseEntity implements Entity {
             }
 
             // 执行技能
-            activeSkill.apply(target);
+            activeSkill.apply(this, target);
         } else {
             log.info(Msg.info(this, "无可用技能，跳过回合"));
         }
@@ -427,7 +427,7 @@ public abstract class BaseEntity implements Entity {
             target = enemy.randomTarget();
         }
         if (target != null)
-            getCommonAttack().xieZhan(target);
+            getCommonAttack().xieZhan(this, target);
     }
 
     @Override

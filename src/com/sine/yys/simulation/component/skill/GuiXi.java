@@ -28,8 +28,8 @@ public class GuiXi extends SimpleGroupAttack {
     }
 
     @Override
-    public void doApply(Entity unused) {
-        super.doApply(unused);
-        getSelf().getBuffController().addBuff(new KuangBao());
+    public void doApply(Entity self, Entity unused) {
+        super.doApply(self, unused);
+        self.getBuffController().addBuff(new KuangBao());
     }
 }

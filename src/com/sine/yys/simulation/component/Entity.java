@@ -73,7 +73,7 @@ public interface Entity extends Target, IProperty {
 
     /**
      * 处理协战。
-     * 最终依赖于{@link CommonAttack#xieZhan(Entity)}
+     * 最终依赖于{@link CommonAttack#xieZhan(Entity, Entity)}
      *
      * @param target 队友普攻的目标。
      */
