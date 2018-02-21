@@ -1,7 +1,9 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.component.mitama.BaseMitama;
 import com.sine.yys.simulation.component.model.event.*;
 import com.sine.yys.simulation.component.mitama.Mitama;
+import com.sine.yys.simulation.component.skill.BaseSkill;
 import com.sine.yys.simulation.info.PctEffect;
 import com.sine.yys.simulation.component.model.BuffController;
 import com.sine.yys.simulation.component.model.BuffControllerImpl;
@@ -43,7 +45,7 @@ public class BaseEntity implements Target, IProperty, Entity {
     private final BuffController buffController = new BuffControllerImpl();
 
     private final IProperty property;
-    private final List<Mitama> mitamas;
+    private final List<BaseMitama> mitamas;
     private final ShiShen shiShen;
     private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
 
@@ -53,7 +55,7 @@ public class BaseEntity implements Target, IProperty, Entity {
     private Camp camp = null;
     private FireRepo fireRepo;
 
-    public BaseEntity(IProperty property, Mitama mitama, ShiShen shiShen) {
+    public BaseEntity(IProperty property, BaseMitama mitama, ShiShen shiShen) {
         this.property = property;
         this.shiShen = shiShen;
         this.mitamas = new ArrayList<>();
@@ -250,10 +252,10 @@ public class BaseEntity implements Target, IProperty, Entity {
         camp = context.getOwn();
         fireRepo = context.getFireRepo();
         context.setSelf(this);
-        for (Skill skill : shiShen.getSkills()) {
+        for (BaseSkill skill : shiShen.getSkills()) {
             skill.init(context);
         }
-        for (Mitama mitama : mitamas) {
+        for (BaseMitama mitama : mitamas) {
             mitama.init(context);
         }
     }

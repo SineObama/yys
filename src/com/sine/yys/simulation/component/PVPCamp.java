@@ -21,7 +21,7 @@ public class PVPCamp implements Camp, FireRepo {
     private final EventController eventController = new EventControllerImpl();
     private final String name;
     private final String fullName;
-    private final List<Position> positions = new ArrayList<>();
+    private final List<PositionImpl> positions = new ArrayList<>();
     private int fire;
     private int fireBarPos = 0;
     private int increase = 3;
@@ -44,7 +44,7 @@ public class PVPCamp implements Camp, FireRepo {
     }
 
     @Override
-    public void addEntity(Entity entity) {
+    public void addEntity(BaseEntity entity) {
         positions.add(new PositionImpl(entity));
     }
 
@@ -54,6 +54,15 @@ public class PVPCamp implements Camp, FireRepo {
         for (Position position : positions) {
             if (position.getCurrent() != null)
                 entities.add(position.getCurrent());
+        }
+        return entities;
+    }
+
+    public List<BaseEntity> getAllAlive2() {
+        List<BaseEntity> entities = new ArrayList<>();
+        for (PositionImpl position : positions) {
+            if (position.getCurrent() != null)
+                entities.add(position.getCurrent2());
         }
         return entities;
     }
@@ -134,7 +143,6 @@ public class PVPCamp implements Camp, FireRepo {
         return eventController;
     }
 
-    @Override
     public void init(InitContext context) {
         opposite = context.getEnemy();
         context.setFireRepo(this);

@@ -6,10 +6,6 @@ import com.sine.yys.simulation.info.PctEffect;
 
 public interface Controller {
 
-    double getPosition();
-
-    void setPosition(double position);
-
     void attack(Entity target, AttackInfo attackInfo);
 
     void realDamage(Entity target, double maxByAttack, double maxPctByMaxLife);

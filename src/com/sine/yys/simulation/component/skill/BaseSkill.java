@@ -36,7 +36,6 @@ public abstract class BaseSkill implements Skill {
         return cd;
     }
 
-    @Override
     public void init(InitContext context) {
     }
 }

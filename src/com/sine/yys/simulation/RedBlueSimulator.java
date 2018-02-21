@@ -29,8 +29,8 @@ public class RedBlueSimulator {
 
     public void test(int times) {
         for (int i = 0; i < times; i++) {
-            Camp red = new PVPCamp(redName, 3);
-            Camp blue = new PVPCamp(buleName, 3);
+            PVPCamp red = new PVPCamp(redName, 3);
+            PVPCamp blue = new PVPCamp(buleName, 3);
             for (EntityInfo info : redInfo.infos) {
                 red.addEntity(new Shikigami(info.property, info.mitama, info.shiShen));
             }

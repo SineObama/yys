@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component.shishen;
 
+import com.sine.yys.simulation.component.skill.BaseSkill;
 import com.sine.yys.simulation.component.skill.Skill;
 import com.sine.yys.simulation.component.skill.operation.OperationHandler;
 
@@ -10,5 +11,5 @@ public interface ShiShen {
 
     OperationHandler getAI();
 
-    List<Skill> getSkills();
+    List<BaseSkill> getSkills();
 }

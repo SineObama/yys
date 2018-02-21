@@ -31,4 +31,8 @@ public interface Entity extends Target, IProperty {
     BuffController getBuffController();
 
     FireRepo getFireRepo();
+
+    double getPosition();
+
+    void setPosition(double position);
 }

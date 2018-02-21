@@ -1,12 +1,13 @@
 package com.sine.yys.simulation.component.position;
 
+import com.sine.yys.simulation.component.BaseEntity;
 import com.sine.yys.simulation.component.Entity;
 
 public class PositionImpl implements Position {
-    private final Entity source;
-    private Entity current;
+    private final BaseEntity source;
+    private BaseEntity current;
 
-    public PositionImpl(Entity source) {
+    public PositionImpl(BaseEntity source) {
         this.current = source;
         this.source = source;
     }
@@ -31,6 +32,10 @@ public class PositionImpl implements Position {
 
     @Override
     public Entity getCurrent() {
+        return current;
+    }
+
+    public BaseEntity getCurrent2() {
         return current;
     }
 }
