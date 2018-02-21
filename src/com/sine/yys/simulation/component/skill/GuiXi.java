@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component.skill;
 
 import com.sine.yys.simulation.component.Controller;
-import com.sine.yys.simulation.component.model.buff.buff.KuangBao;
 import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.model.buff.buff.KuangBao;
 
 /**
  * 般若-鬼袭。

@@ -1,10 +1,9 @@
 package com.sine.yys.simulation.component.mitama;
 
-import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.effect.AddDebuffEffect;
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.event.DamageEvent;
-import com.sine.yys.simulation.component.Entity;
 
 /**
  * 附加debuff的御魂效果通用逻辑。
@@ -18,13 +17,13 @@ public abstract class BaseDebuffMitama extends BaseMitama implements Mitama {
     abstract AddDebuffEffect getEffect();
 
     @Override
-    public void init(InitContext context) {
-        context.getSelf().getEventController().add(new AddDebuffHandler(context.getSelf()));
+    public void init(Controller controller) {
+        controller.getEventController().add(new AddDebuffHandler(controller));
     }
 
     class AddDebuffHandler extends SealableMitamaHandler implements EventHandler<DamageEvent> {
-        AddDebuffHandler(Entity self) {
-            super(self);
+        AddDebuffHandler(Controller controller) {
+            super(controller);
         }
 
         @Override

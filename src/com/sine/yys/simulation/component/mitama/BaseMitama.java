@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.mitama;
 
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.Entity;
-import com.sine.yys.simulation.component.InitContext;
 import com.sine.yys.simulation.info.Sealable;
 
 import java.util.logging.Logger;
@@ -14,14 +14,16 @@ import java.util.logging.Logger;
 public abstract class BaseMitama implements Mitama {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
 
-    public void init(InitContext context) {
+    public void init(Controller controller) {
     }
 
     class SealableMitamaHandler implements Sealable {
-        protected Entity self;
+        protected final Entity self;
+        protected final Controller controller;
 
-        SealableMitamaHandler(Entity self) {
-            this.self = self;
+        SealableMitamaHandler(Controller controller) {
+            this.controller = controller;
+            this.self = controller.getSelf();
         }
 
         @Override

@@ -1,9 +1,9 @@
 package com.sine.yys.simulation.component.mitama;
 
-import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.Controller;
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.event.BattleStartEvent;
-import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.model.shield.BangJingShield;
 import com.sine.yys.simulation.util.Msg;
 
@@ -24,13 +24,13 @@ public class BangJing extends BaseMitama implements Mitama {
     }
 
     @Override
-    public void init(InitContext context) {
-        context.getOwn().getEventController().add(new Handler(context.getSelf()));
+    public void init(Controller controller) {
+        controller.getOwn().getEventController().add(new Handler(controller));
     }
 
     class Handler extends SealableMitamaHandler implements EventHandler<BattleStartEvent> {
-        Handler(Entity self) {
-            super(self);
+        Handler(Controller controller) {
+            super(controller);
         }
 
         @Override

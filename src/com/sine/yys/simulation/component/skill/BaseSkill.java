@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component.skill;
 
-import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.Entity;
 
 import java.util.logging.Logger;
@@ -36,6 +36,6 @@ public abstract class BaseSkill implements Skill {
         return cd;
     }
 
-    public void init(InitContext context) {
+    public void init(Controller controller) {
     }
 }

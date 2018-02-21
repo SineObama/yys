@@ -1,33 +1,26 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.mitama.BaseMitama;
-import com.sine.yys.simulation.component.model.event.*;
 import com.sine.yys.simulation.component.mitama.Mitama;
-import com.sine.yys.simulation.component.skill.BaseSkill;
-import com.sine.yys.simulation.info.PctEffect;
 import com.sine.yys.simulation.component.model.BuffController;
 import com.sine.yys.simulation.component.model.BuffControllerImpl;
 import com.sine.yys.simulation.component.model.EventController;
 import com.sine.yys.simulation.component.model.EventControllerImpl;
-import com.sine.yys.simulation.component.model.buff.Debuff;
-import com.sine.yys.simulation.component.model.buff.debuff.ControlBuff;
-import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;
-import com.sine.yys.simulation.component.model.shield.Shield;
 import com.sine.yys.simulation.component.shishen.BaseShiShen;
 import com.sine.yys.simulation.component.shishen.ShiShen;
 import com.sine.yys.simulation.component.skill.ActiveSkill;
+import com.sine.yys.simulation.component.skill.BaseSkill;
 import com.sine.yys.simulation.component.skill.CommonAttack;
 import com.sine.yys.simulation.component.skill.Skill;
-import com.sine.yys.simulation.component.skill.operation.Operation;
-import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.IProperty;
 import com.sine.yys.simulation.info.Target;
-import com.sine.yys.simulation.rule.CalcDam;
-import com.sine.yys.simulation.rule.CalcEffect;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -40,20 +33,29 @@ import java.util.logging.Logger;
  * 技能或御魂通过调用这里的函数以实现自身的逻辑。</p>
  */
 public class BaseEntity implements Target, IProperty, Entity {
+    final EventController eventController = new EventControllerImpl();
+    final BuffController buffController = new BuffControllerImpl();
+    final ShiShen shiShen;
     private final Logger log = Logger.getLogger(getClass().toString());
-    private final EventController eventController = new EventControllerImpl();
-    private final BuffController buffController = new BuffControllerImpl();
-
     private final IProperty property;
-    private final List<BaseMitama> mitamas;
-    private final ShiShen shiShen;
+    final List<BaseMitama> mitamas;
     private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
 
-    private int life;
-    private double position = 0;
+    int life;
+    double position = 0;
 
-    private Camp camp = null;
-    private FireRepo fireRepo;
+    // XXXX 两者的设置由谁负责比较好？
+    Camp camp = null;
+    FireRepo fireRepo;
+
+    public void setCamp(Camp camp) {
+        this.camp = camp;
+    }
+
+    public void setFireRepo(FireRepo fireRepo) {
+        this.fireRepo = fireRepo;
+    }
+
 
     public BaseEntity(IProperty property, BaseMitama mitama, ShiShen shiShen) {
         this.property = property;
@@ -79,89 +81,6 @@ public class BaseEntity implements Target, IProperty, Entity {
         map.get(clazz).put(key, value);
     }
 
-    final void action() {
-
-        // 推进鬼火行动条
-        fireRepo.step();
-
-        // 调用技能step。减少cd
-        for (Skill skill : shiShen.getSkills()) {
-            skill.step(this);
-        }
-        clear();  // 重置攻击事件。允许对方彼岸花行动前的伤害触发事件。
-        // 行动前事件
-        camp.getEventController().trigger(new BeforeActionEvent(this));
-
-        // 行动开始
-
-        final Operation operation;
-        // 判断是否有行动控制debuff，进行相关操作。
-        final List<ControlBuff> controlBuffs = buffController.getControlBuffs();
-        if (controlBuffs.isEmpty()) {  // 无行动控制debuff
-            // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
-            Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
-            for (ActiveSkill activeSkill : getActiveSkills()) {
-                int cd = activeSkill.getCD(this);
-                if (cd > 0) {
-                    log.info(Msg.info(this, "技能 " + activeSkill.getName() + " 还有CD " + cd));
-                    continue;
-                }
-                if (fireRepo.getFire() < activeSkill.getFire())
-                    continue;
-                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this);
-                if (targets != null)
-                    map.put(activeSkill, targets);
-            }
-
-            if (!map.isEmpty())
-                operation = shiShen.getAI().handle(this, map);
-            else
-                operation = new Operation(null, null);
-
-        } else {  // 受行动控制debuff影响
-
-            ControlBuff controlBuff = controlBuffs.get(0);
-            log.info(Msg.info(this, "受行动控制debuff " + controlBuff.getName() + " 影响"));
-            if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
-                final List<Entity> allAlive = camp.getAllAlive();
-                allAlive.addAll(camp.getOpposite().getAllAlive());
-                allAlive.remove(this);
-                operation = new Operation(RandUtil.choose(allAlive), getCommonAttack());
-            } else {
-                operation = new Operation(null, null);
-            }
-
-        }
-        // 执行操作
-        ActiveSkill activeSkill = operation.getSkill();
-        if (activeSkill != null) {
-            Entity target = operation.getTarget();
-            log.info(Msg.info(this, "当前鬼火 " + fireRepo.getFire()));
-            log.info(Msg.vector(this, target != null ? "对" : "", target, "使用了 " + activeSkill.getName()));
-
-            // 消耗鬼火
-            int fire = activeSkill.getFire();
-            if (fire > 0) {
-                UseFireEvent event = new UseFireEvent(this, fire);
-                camp.getEventController().trigger(event);
-                fire = event.getCostFire();
-                fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
-                log.info(Msg.info(this, "消耗 " + fire + " 点鬼火，剩余 " + fireRepo.getFire() + " 点"));
-            }
-
-            // 执行技能
-            activeSkill.apply(controller, this, target);
-        } else {
-            log.info(Msg.info(this, "无可用技能，跳过回合"));
-        }
-
-        // 重置行动条
-        setPosition(0);
-
-        // TODO 行动后事件
-        buffController.step(this);
-    }
-
 
     public final String getFullName() {
         return camp.getFullName() + getName();
@@ -175,6 +94,11 @@ public class BaseEntity implements Target, IProperty, Entity {
 
     public final int getMaxLife() {
         return (int) property.getLife();
+    }
+
+    @Override
+    public int getLifeInt() {
+        return life;
     }
 
 
@@ -216,7 +140,7 @@ public class BaseEntity implements Target, IProperty, Entity {
     }
 
 
-    private void setLife(int life) {
+    void setLife(int life) {
         this.life = life;
     }
 
@@ -248,19 +172,7 @@ public class BaseEntity implements Target, IProperty, Entity {
         return (int) (src * getCriticalDamage());
     }
 
-    public final void init(InitContext context) {
-        camp = context.getOwn();
-        fireRepo = context.getFireRepo();
-        context.setSelf(this);
-        for (BaseSkill skill : shiShen.getSkills()) {
-            skill.init(context);
-        }
-        for (BaseMitama mitama : mitamas) {
-            mitama.init(context);
-        }
-    }
-
-    private CommonAttack getCommonAttack() {
+    CommonAttack getCommonAttack() {
         for (Skill skill : shiShen.getSkills()) {
             if (skill instanceof CommonAttack)
                 return (CommonAttack) skill;
@@ -299,173 +211,7 @@ public class BaseEntity implements Target, IProperty, Entity {
         this.position = position;
     }
 
-    /**
-     * 伤害逻辑：
-     * 1. 由攻击、伤害系数、对方防御（忽略防御）计算。
-     * 2. 根据双方buff进行增减。
-     * 3. 破盾。
-     * 4. 施加剩余伤害，添加御魂效果。
-     */
-
-    public void attack(Entity target, AttackInfo attackInfo) {
-        if (target.isDead())  // XXX 只是有时会出现目标已死。有更好的逻辑？
-            return;
-
-        eventController.trigger(new AttackEvent(this, target));
-
-        // XXXXX 像这种每次都调用是不是不好、太慢
-        target.getCamp().getEventController().triggerOff(new BeAttackEvent());
-        target.getEventController().triggerOff(new BeAttackEvent());
-
-        // 1.
-        final boolean critical = RandUtil.success(getCritical());
-        if (critical)
-            log.info(Msg.info(this, "暴击"));
-        double damage = CalcDam.expect(this, target, attackInfo, critical);
-
-        //3.
-        int remain = breakShield(target, (int) damage);
-
-        // 4.
-        if (remain != 0) {
-            damage = remain;
-
-            PreDamageEvent event = new PreDamageEvent(this, target);
-            eventController.trigger(event);
-            damage *= event.getCoefficient();
-
-            doDamage(target, (int) damage);
-
-            if (critical) {
-                target.getEventController().trigger(new BeCriticalEvent(target, this));
-                eventController.trigger(new CriticalEvent(this, target));
-            }
-        } else {
-            log.info(Msg.noDamage(this, target));
-        }
-    }
-
-    /**
-     * 目前只有针女伤害。
-     * 1. 计算伤害。
-     * 2. 根据旗帜buff增减。
-     * 3. 破盾。
-     * 4. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
-     */
-
-    public void realDamage(Entity target, double maxByAttack, double maxPctByMaxLife) {
-        if (target.isDead())
-            return;
-
-        eventController.trigger(new AttackEvent(this, target));
-
-        // 1.
-        final double damage1 = getAttack() * maxByAttack;
-        final double damage2 = target.getMaxLife() * maxPctByMaxLife;
-        double damage = damage1 < damage2 ? damage1 : damage2;
-
-        // 3.
-        int remain = breakShield(target, (int) damage);
-
-        // 4.
-        if (remain != 0) {
-            doDamage(target, (int) damage);
-        } else {
-            log.info(Msg.noDamage(this, target));
-        }
-
-    }
-
-    /**
-     * 把伤害施加到盾上。
-     *
-     * @return 剩余伤害。
-     */
-    private int breakShield(Entity target, int damage) {
-        Iterator<Shield> iterator = target.getBuffController().getShields().iterator();
-        for (; iterator.hasNext(); ) {
-            Shield shield = iterator.next();
-            damage = shield.doDamage(damage);
-            if (damage == -1)
-                break;
-            target.getBuffController().removeShield(shield);
-            log.info(Msg.info(target, shield.getName() + " 被击破"));
-        }
-        if (damage == -1)
-            damage = 0;
-        return damage;
-    }
-
-
-    private int getLifeInt() {
-        return life;
-    }
-
-    private void doDamage(Entity target, int damage) {
-        log.info(Msg.damage(this, target, damage));
-//        if (target.getLifeInt() > damage) {
-//            double src = target.getLife();
-//            target.setLife(target.getLifeInt() - damage);
-//            double dst = target.getLife();
-//            target.getEventController().trigger(new BeDamageEvent(src, dst));
-//        } else {
-//            log.info(Msg.vector(this, "击杀", target, ""));
-//            target.setLife(0);
-//            target.getCamp().getPosition(target).setDead(true);
-//        }
-        // TODO TODO
-        // FIXME 死后添加debuff会有问题？
-        eventController.trigger(new DamageEvent(this, target));
-    }
-
-
-    public void randomGrab(double pct, Entity target) {
-        if (RandUtil.success(pct)) {
-            int num = target.getFireRepo().grabFire(1);
-            if (num > 0)
-                log.info(Msg.vector(this, "吸取", target, num + " 点鬼火"));
-            fireRepo.addFire(num);
-        }
-    }
-
-
-    public void applyDebuff(PctEffect effect, Entity target, Debuff debuff) {
-        if (RandUtil.success(CalcEffect.pct(effect.getPct(), getEffectHit()))) {
-            log.info(Msg.trigger(this, effect));
-            if (RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
-                log.info(Msg.info(target, "获得负面效果 " + debuff.getName()));
-                target.getBuffController().addDebuff(debuff);
-            } else {
-                log.info(Msg.info(target, "抵抗了负面效果 " + debuff.getName()));
-            }
-        }
-    }
-
-
-    public void xieZhan(Entity target) {
-        // 目标死亡则随机攻击另一个目标
-        Camp enemy = camp.getOpposite();
-        if (!enemy.contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
-            log.info(Msg.vector(target, "不在", this, "敌对阵营中，随机协战"));
-            target = enemy.randomTarget();
-        }
-        if (target != null)
-            getCommonAttack().xieZhan(this, this, target);
-    }
-
-
-    public void clear() {
-        camp.getEventController().setState(BeAttackEvent.class, true);
-        camp.getOpposite().getEventController().setState(BeAttackEvent.class, true);
-        for (Entity entity : camp.getAllAlive()) {
-            entity.getEventController().setState(BeAttackEvent.class, true);
-        }
-        for (Entity entity : camp.getOpposite().getAllAlive()) {
-            entity.getEventController().setState(BeAttackEvent.class, true);
-        }
-    }
-
-
+    @Override
     public final String getName() {
         return shiShen.getName();
     }

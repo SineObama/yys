@@ -1,10 +1,10 @@
 package com.sine.yys.simulation.component.mitama;
 
-import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.Controller;
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.event.BeCriticalEvent;
 import com.sine.yys.simulation.component.model.shield.DiZangXiangShield;
-import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 
@@ -32,13 +32,13 @@ public class DiZangXiang extends BaseMitama implements Mitama {
     }
 
     @Override
-    public void init(InitContext context) {
-        context.getSelf().getEventController().add(new Handler(context.getSelf()));
+    public void init(Controller controller) {
+        controller.getEventController().add(new Handler(controller));
     }
 
     class Handler extends SealableMitamaHandler implements EventHandler<BeCriticalEvent> {
-        Handler(Entity self) {
-            super(self);
+        Handler(Controller controller) {
+            super(controller);
         }
 
         @Override

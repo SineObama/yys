@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.shishen;
 
-import com.sine.yys.simulation.component.model.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.model.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.simulation.component.skill.ActiveSkill;
 import com.sine.yys.simulation.component.skill.HuoShuQiu;
 import com.sine.yys.simulation.component.skill.LongShouZhiYu;

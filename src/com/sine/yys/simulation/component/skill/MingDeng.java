@@ -1,9 +1,9 @@
 package com.sine.yys.simulation.component.skill;
 
-import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.Controller;
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.event.UseFireEvent;
-import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 
@@ -24,8 +24,8 @@ public class MingDeng extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(InitContext context) {
-        context.getOwn().getEventController().add(new Handler(context.getSelf()));
+    public void init(Controller controller) {
+        controller.getOwn().getEventController().add(new Handler(controller.getSelf()));
     }
 
     class Handler extends SealablePassiveHandler implements EventHandler<UseFireEvent> {

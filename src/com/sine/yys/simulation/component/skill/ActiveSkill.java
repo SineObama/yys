@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component.skill;
 
 import com.sine.yys.simulation.component.Controller;
-import com.sine.yys.simulation.component.skill.targetresolver.TargetResolver;
 import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.skill.targetresolver.TargetResolver;
 
 /**
  * 主动技能。
@@ -21,8 +21,8 @@ public interface ActiveSkill extends Skill {
      * 不操作鬼火。
      *
      * @param controller 控制器。
-     * @param self   自身。
-     * @param target 技能所选目标。
+     * @param self       自身。
+     * @param target     技能所选目标。
      */
     void apply(Controller controller, Entity self, Entity target);
 }

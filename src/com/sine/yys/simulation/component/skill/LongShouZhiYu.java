@@ -1,7 +1,6 @@
 package com.sine.yys.simulation.component.skill;
 
-import com.sine.yys.simulation.component.Controller;
-import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.*;
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.buff.buff.LSZYDefenseBuff;
 import com.sine.yys.simulation.component.model.buff.buff.LSZYEffectDefBuff;
@@ -10,8 +9,6 @@ import com.sine.yys.simulation.component.model.event.BattleStartEvent;
 import com.sine.yys.simulation.component.model.event.BeforeActionEvent;
 import com.sine.yys.simulation.component.model.event.LongShouZhiYuOff;
 import com.sine.yys.simulation.component.model.event.LongShouZhiYuOn;
-import com.sine.yys.simulation.component.Entity;
-import com.sine.yys.simulation.component.Shikigami;
 import com.sine.yys.simulation.info.Sealable;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
@@ -35,14 +32,14 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
      * 释放幻境。由于开局释放不算回合数，而技能释放时需要给last额外加1，所以独立出这个逻辑。
      */
     private void deploy(Entity self, int last) {
-        LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> self.getEventController().trigger(new LongShouZhiYuOff()));  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
+        LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> self.getCamp().getEventController(self).trigger(new LongShouZhiYuOff()));  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
         log.info(Msg.info(self, "施放 " + buff.getName()));
         self.getBuffController().addBuff(buff);
         for (Shikigami shikigami : self.getCamp().getAllShikigami()) {  // DESIGN 给式神不包括召唤物加buff
             shikigami.getBuffController().addAttach(new LSZYDefenseBuff(getDefPct()));
             shikigami.getBuffController().addAttach(new LSZYEffectDefBuff(getEffectDef()));
         }
-        self.getEventController().trigger(new LongShouZhiYuOn());
+        self.getCamp().getEventController(self).trigger(new LongShouZhiYuOn());
     }
 
     @Override
@@ -51,21 +48,23 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
     }
 
     @Override
-    public void init(InitContext context) {
-        Entity self = context.getSelf();
-        self.getCamp().getEventController().add(new EventHandler<BattleStartEvent>() {
+    public void init(Controller controller) {
+        Entity self = controller.getSelf();
+        Camp own = controller.getOwn();
+        own.getEventController().add(new EventHandler<BattleStartEvent>() {
             @Override
             public void handle(BattleStartEvent event) {
                 // XXX 实际上会触发招财猫（甚至是一个回合，因为在行动条上显示了辉夜姬），然而感觉很bug
                 // 然而又不能算一个回合（没有触发彼岸花被动？也不会触发御馔津吧？），因为鬼火进度条没变……
+                // 好像还会触发匣中少女的盾，无语。还是可以考虑定义一个新概念。
                 deploy(self, getLast());
             }
         });
         LongShouZhiYu instance = this;
-        self.getEventController().add(new EventHandler<LongShouZhiYuOff>() {
+        own.getEventController(self).add(new EventHandler<LongShouZhiYuOff>() {
             @Override
             public void handle(LongShouZhiYuOff event) {
-                for (Shikigami shikigami : self.getCamp().getAllShikigami()) {
+                for (Shikigami shikigami : own.getAllShikigami()) {
                     shikigami.getBuffController().removeAttach(LSZYDefenseBuff.class);
                     shikigami.getBuffController().removeAttach(LSZYEffectDefBuff.class);
                 }

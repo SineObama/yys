@@ -1,7 +1,6 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.mitama.BaseMitama;
-import com.sine.yys.simulation.component.mitama.Mitama;
 import com.sine.yys.simulation.component.shishen.ShiShen;
 import com.sine.yys.simulation.info.IProperty;
 

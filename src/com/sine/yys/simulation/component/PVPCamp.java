@@ -1,89 +1,26 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.model.EventController;
-import com.sine.yys.simulation.component.model.EventControllerImpl;
-import com.sine.yys.simulation.component.position.Position;
-import com.sine.yys.simulation.component.position.PositionImpl;
 import com.sine.yys.simulation.util.Msg;
-import com.sine.yys.simulation.util.RandUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * PVP阵营。
  * 初始化时给式神设置唯一的鬼火仓库（自己）。
  */
-public class PVPCamp implements Camp, FireRepo {
-    private final Logger log = Logger.getLogger(this.getClass().toString());
-
-    private final EventController eventController = new EventControllerImpl();
-    private final String name;
-    private final String fullName;
-    private final List<PositionImpl> positions = new ArrayList<>();
+public class PVPCamp extends BaseCamp implements Camp, FireRepo {
     private int fire;
     private int fireBarPos = 0;
     private int increase = 3;
-    private Camp opposite;
 
     public PVPCamp(String name, int fire) {
-        this.name = name;
-        this.fullName = "[" + name + "]";
+        super(name);
         this.fire = fire;
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getFullName() {
-        return fullName;
-    }
-
-    @Override
-    public void addEntity(BaseEntity entity) {
-        positions.add(new PositionImpl(entity));
-    }
-
-    @Override
-    public List<Entity> getAllAlive() {
-        List<Entity> entities = new ArrayList<>();
-        for (Position position : positions) {
-            if (position.getCurrent() != null)
-                entities.add(position.getCurrent());
+    public void init(Camp enemy) {
+        super.init(enemy);
+        for (Shikigami shikigami : getAllShikigami()) {
+            shikigami.setFireRepo(this);
         }
-        return entities;
-    }
-
-    public List<BaseEntity> getAllAlive2() {
-        List<BaseEntity> entities = new ArrayList<>();
-        for (PositionImpl position : positions) {
-            if (position.getCurrent() != null)
-                entities.add(position.getCurrent2());
-        }
-        return entities;
-    }
-
-    @Override
-    public List<Shikigami> getAllShikigami() {
-        List<Shikigami> entities = new ArrayList<>();
-        for (Position position : positions) {
-            if (position.getCurrent() instanceof Shikigami)
-                entities.add((Shikigami) position.getCurrent());
-        }
-        return entities;
-    }
-
-    @Override
-    public boolean contain(Entity entity) {
-        for (Position position : positions) {
-            if (position.getCurrent() == entity)
-                return true;
-        }
-        return false;
     }
 
     @Override
@@ -127,38 +64,5 @@ public class PVPCamp implements Camp, FireRepo {
             if (increase < 5)
                 increase += 1;
         }
-    }
-
-    @Override
-    public Position getPosition(Entity entity) {
-        for (Position position : positions) {
-            if (position.getCurrent() == entity)
-                return position;
-        }
-        return null;
-    }
-
-    @Override
-    public EventController getEventController() {
-        return eventController;
-    }
-
-    public void init(InitContext context) {
-        opposite = context.getEnemy();
-        context.setFireRepo(this);
-        final List<Shikigami> allShikigami = getAllShikigami();
-        for (Shikigami shikigami : allShikigami) {
-            shikigami.init(context);
-        }
-    }
-
-    @Override
-    public Entity randomTarget() {
-        return RandUtil.choose(getAllAlive());
-    }
-
-    @Override
-    public Camp getOpposite() {
-        return opposite;
     }
 }

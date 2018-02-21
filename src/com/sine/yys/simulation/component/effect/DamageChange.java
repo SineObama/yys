@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component.effect;
 
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.event.PreDamageEvent;
-import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.util.Msg;
 
 /**

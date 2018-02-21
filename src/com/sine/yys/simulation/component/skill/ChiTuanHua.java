@@ -1,10 +1,10 @@
 package com.sine.yys.simulation.component.skill;
 
-import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.Controller;
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.event.BeDamageEvent;
 import com.sine.yys.simulation.component.model.event.BeforeActionEvent;
-import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.info.AttackInfoImpl;
 import com.sine.yys.simulation.util.Msg;
 
@@ -24,19 +24,18 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(InitContext context) {
-        Entity self = context.getSelf();
-//        for (ActiveSkill activeSkill : self.getActiveSkills()) {
-//            if (activeSkill instanceof XueZhiHuaHai) {
-//                xueZhiHuaHai = (XueZhiHuaHai) activeSkill;
-//                break;
-//            }
-//        }
-        xueZhiHuaHai = new XueZhiHuaHai(); // TODO TODO
+    public void init(Controller controller) {
+        Entity self = controller.getSelf();
+        for (ActiveSkill activeSkill : self.getActiveSkills()) {
+            if (activeSkill instanceof XueZhiHuaHai) {
+                xueZhiHuaHai = (XueZhiHuaHai) activeSkill;
+                break;
+            }
+        }
         if (xueZhiHuaHai == null)
             throw new RuntimeException("找不到血之花海技能");
-        context.getEnemy().getEventController().add(new Handler(self));
-        self.getEventController().add(new Handler2(self));
+        controller.getEnemy().getEventController().add(new Handler(self));
+        controller.getOwn().getEventController(self).add(new Handler2(self));
     }
 
     class Handler extends SealablePassiveHandler implements EventHandler<BeforeActionEvent> {

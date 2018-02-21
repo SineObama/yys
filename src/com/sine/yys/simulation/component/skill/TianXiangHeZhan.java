@@ -1,9 +1,9 @@
 package com.sine.yys.simulation.component.skill;
 
 import com.sine.yys.simulation.component.Controller;
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.skill.targetresolver.EnemyEntityResolver;
 import com.sine.yys.simulation.component.skill.targetresolver.TargetResolver;
-import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.info.AttackInfoImpl;
 
 /**

@@ -1,10 +1,10 @@
 package com.sine.yys.simulation.component.skill;
 
-import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.Controller;
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.simulation.component.model.event.BeAttackEvent;
-import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 
@@ -25,8 +25,8 @@ public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(InitContext context) {
-        Entity self = context.getSelf();
+    public void init(Controller controller) {
+        Entity self = controller.getSelf();
         self.getEventController().add(new Handler(self, false));
         self.getCamp().getEventController().add(new Handler(self, true));
     }

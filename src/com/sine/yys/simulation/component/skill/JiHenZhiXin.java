@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component.skill;
 
-import com.sine.yys.simulation.component.InitContext;
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.buff.debuff.FengYin;
 import com.sine.yys.simulation.component.model.event.AttackEvent;
@@ -32,7 +32,7 @@ public class JiHenZhiXin extends BasePassiveSkill implements PassiveSkill, PctEf
         event.getSelf().applyDebuff(this, event.getTarget(), new FengYin(getLast()));
     }
 
-    public void init(InitContext context) {
-        context.getSelf().getEventController().add(this);
+    public void init(Controller controller) {
+        controller.getSelf().getEventController().add(this);
     }
 }

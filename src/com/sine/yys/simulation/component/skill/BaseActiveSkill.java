@@ -21,8 +21,8 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
      * 技能的具体操作。各技能重写的重点。
      *
      * @param controller
-     * @param self   自身。
-     * @param target 目标。
+     * @param self       自身。
+     * @param target     目标。
      */
     protected abstract void doApply(Controller controller, Entity self, Entity target);
 

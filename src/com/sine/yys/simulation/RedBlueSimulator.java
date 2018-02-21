@@ -1,9 +1,6 @@
 package com.sine.yys.simulation;
 
 import com.sine.yys.simulation.component.*;
-import com.sine.yys.simulation.component.Camp;
-import com.sine.yys.simulation.component.PVPCamp;
-import com.sine.yys.simulation.component.Shikigami;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,8 +26,8 @@ public class RedBlueSimulator {
 
     public void test(int times) {
         for (int i = 0; i < times; i++) {
-            PVPCamp red = new PVPCamp(redName, 3);
-            PVPCamp blue = new PVPCamp(buleName, 3);
+            BaseCamp red = new PVPCamp(redName, 3);
+            BaseCamp blue = new PVPCamp(buleName, 3);
             for (EntityInfo info : redInfo.infos) {
                 red.addEntity(new Shikigami(info.property, info.mitama, info.shiShen));
             }

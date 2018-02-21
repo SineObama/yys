@@ -1,10 +1,10 @@
 package com.sine.yys.simulation.component.skill;
 
 import com.sine.yys.simulation.component.Controller;
+import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.model.event.CommonAttackEvent;
 import com.sine.yys.simulation.component.skill.targetresolver.EnemyEntityResolver;
 import com.sine.yys.simulation.component.skill.targetresolver.TargetResolver;
-import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.AttackInfoImpl;
 
@@ -56,9 +56,10 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     /**
      * 协战的具体操作。
      * 默认调用doApply。具体技能根据需要重写。
+     *
      * @param controller
-     * @param self   自身。
-     * @param target 协战目标。
+     * @param self       自身。
+     * @param target     协战目标。
      */
     @Override
     public void xieZhan(Controller controller, Entity self, Entity target) {
@@ -70,8 +71,8 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
      * 默认以getAttack的攻击，对target攻击getTimes次。
      *
      * @param controller
-     * @param self   自身。
-     * @param target 攻击目标。
+     * @param self       自身。
+     * @param target     攻击目标。
      */
     @Override
     protected void doApply(Controller controller, Entity self, Entity target) {

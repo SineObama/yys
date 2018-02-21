@@ -25,6 +25,8 @@ public interface Camp extends Target {
 
     EventController getEventController();
 
+    EventController getEventController(Entity entity);
+
     Entity randomTarget();
 
     Camp getOpposite();
