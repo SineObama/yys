@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.model.battle;
 
-import com.sine.yys.simulation.component.FireRepo;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**

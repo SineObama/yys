@@ -2,24 +2,22 @@ package com.sine.yys.simulation.model.entity;
 
 import com.sine.yys.simulation.component.BuffController;
 import com.sine.yys.simulation.component.BuffControllerImpl;
-import com.sine.yys.simulation.component.FireRepo;
 import com.sine.yys.simulation.component.event.EventController;
 import com.sine.yys.simulation.component.event.EventControllerImpl;
-import com.sine.yys.simulation.component.operationhandler.AutoOperationHandler;
-import com.sine.yys.simulation.component.operationhandler.OperationHandler;
+import com.sine.yys.simulation.component.operation.AutoOperationHandler;
+import com.sine.yys.simulation.component.operation.Operation;
+import com.sine.yys.simulation.component.operation.OperationHandler;
 import com.sine.yys.simulation.model.AttackInfo;
 import com.sine.yys.simulation.model.Property;
 import com.sine.yys.simulation.model.battle.Camp;
+import com.sine.yys.simulation.model.battle.FireRepo;
 import com.sine.yys.simulation.model.battle.InitContext;
-import com.sine.yys.simulation.model.battle.Initable;
 import com.sine.yys.simulation.model.buff.Debuff;
 import com.sine.yys.simulation.model.buff.debuff.ControlBuff;
 import com.sine.yys.simulation.model.buff.debuff.HunLuan;
 import com.sine.yys.simulation.model.effect.PctEffect;
 import com.sine.yys.simulation.model.event.*;
 import com.sine.yys.simulation.model.mitama.Mitama;
-import com.sine.yys.simulation.model.operation.Operation;
-import com.sine.yys.simulation.model.operation.SimpleOperation;
 import com.sine.yys.simulation.model.shield.Shield;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
 import com.sine.yys.simulation.model.skill.CommonAttack;
@@ -39,7 +37,7 @@ import java.util.logging.Logger;
  * <p>这里实现了程序的主体逻辑，包括行动逻辑，事件的触发等。
  * 技能或御魂通过调用这里的函数以实现自身的逻辑。</p>
  */
-public abstract class BaseEntity implements Entity, Initable {
+public abstract class BaseEntity implements Entity {
     private final Logger log = Logger.getLogger(getClass().toString());
     private final EventController eventController = new EventControllerImpl();
     private final BuffController buffController = new BuffControllerImpl();
@@ -62,7 +60,7 @@ public abstract class BaseEntity implements Entity, Initable {
         this.mitamas.add(mitama);
         this.skills = new ArrayList<>();
         this.skills.addAll(skills);
-        this.life = (int) property.getLife();
+        this.life = getMaxLife();
         this.position = 0;
     }
 
@@ -72,6 +70,10 @@ public abstract class BaseEntity implements Entity, Initable {
         // 推进鬼火行动条
         fireRepo.step();
 
+        clear();
+        for (Skill skill : skills) {
+            skill.step();
+        }
         // 行动前事件
         camp.getEventController().trigger(new BeforeActionEvent(this));
 
@@ -84,6 +86,10 @@ public abstract class BaseEntity implements Entity, Initable {
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
             for (ActiveSkill activeSkill : getActiveSkills()) {
+                if (activeSkill.getCD() > 0) {
+                    log.info(Msg.info(this, "技能 " + activeSkill.getName() + " 还有CD " + activeSkill.getCD()));
+                    continue;
+                }
                 if (fireRepo.getFire() < activeSkill.getFire())
                     continue;
                 final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this);
@@ -94,7 +100,7 @@ public abstract class BaseEntity implements Entity, Initable {
             if (!map.isEmpty())
                 operation = getAI().handle(this, map);
             else
-                operation = new SimpleOperation(null, null);
+                operation = new Operation(null, null);
 
         } else {  // 受行动控制debuff影响
 
@@ -104,9 +110,9 @@ public abstract class BaseEntity implements Entity, Initable {
                 final List<Entity> allAlive = camp.getAllAlive();
                 allAlive.addAll(camp.getOpposite().getAllAlive());
                 allAlive.remove(this);
-                operation = new SimpleOperation(RandUtil.choose(allAlive), getCommonAttack());
+                operation = new Operation(RandUtil.choose(allAlive), getCommonAttack());
             } else {
-                operation = new SimpleOperation(null, null);
+                operation = new Operation(null, null);
             }
 
         }
@@ -127,7 +133,7 @@ public abstract class BaseEntity implements Entity, Initable {
             }
 
             // 执行技能
-            activeSkill.apply(target);
+            activeSkill.apply(this, target);
         } else {
             log.info(Msg.info(this, "无可用技能，跳过回合"));
         }
@@ -150,8 +156,8 @@ public abstract class BaseEntity implements Entity, Initable {
     }
 
     @Override
-    public final double getMaxLife() {
-        return property.getLife();
+    public final int getMaxLife() {
+        return (int) property.getLife();
     }
 
     @Override
@@ -188,18 +194,13 @@ public abstract class BaseEntity implements Entity, Initable {
     }
 
     @Override
-    public final int getLife() {
-        return life;
-    }
-
-    @Override
-    public final void setLife(int life) {
-        this.life = life;
-    }
-
-    @Override
-    public final double getLifePct() {
+    public final double getLife() {
         return life / property.getLife();
+    }
+
+    @Override
+    public void setLife(int life) {
+        this.life = life;
     }
 
     @Override
@@ -207,11 +208,13 @@ public abstract class BaseEntity implements Entity, Initable {
         return this.eventController;
     }
 
+    @Override
     public OperationHandler getAI() {
         return new AutoOperationHandler();
     }
 
-    private List<ActiveSkill> getActiveSkills() {
+    @Override
+    public List<ActiveSkill> getActiveSkills() {
         List<ActiveSkill> activeSkills = new ArrayList<>();
         for (Skill skill : skills) {
             if (skill instanceof ActiveSkill) {
@@ -227,10 +230,10 @@ public abstract class BaseEntity implements Entity, Initable {
         fireRepo = context.getFireRepo();
         context.setSelf(this);
         for (Skill skill : skills) {
-            ((Initable) skill).init(context);
+            skill.init(context);
         }
         for (Mitama mitama : mitamas) {
-            ((Initable) mitama).init(context);
+            mitama.init(context);
         }
     }
 
@@ -248,6 +251,7 @@ public abstract class BaseEntity implements Entity, Initable {
         return life <= 0;
     }
 
+    @Override
     public final Camp getCamp() {
         return camp;
     }
@@ -280,10 +284,11 @@ public abstract class BaseEntity implements Entity, Initable {
      * 4. 施加剩余伤害，添加御魂效果。
      */
     @Override
-    public void attack(Entity target0, AttackInfo attackInfo) {
-        BaseEntity target = (BaseEntity) target0;
+    public void attack(Entity target, AttackInfo attackInfo) {
         if (target.isDead())  // XXX 只是有时会出现目标已死。有更好的逻辑？
             return;
+
+        eventController.trigger(new AttackEvent(this, target));
 
         // XXXXX 像这种每次都调用是不是不好、太慢
         target.getCamp().getEventController().triggerOff(new BeAttackEvent());
@@ -325,10 +330,12 @@ public abstract class BaseEntity implements Entity, Initable {
      * 4. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
      */
     @Override
-    public void realDamage(Entity target0, double maxByAttack, double maxPctByMaxLife) {
-        BaseEntity target = (BaseEntity) target0;
+    public void realDamage(Entity target, double maxByAttack, double maxPctByMaxLife) {
         if (target.isDead())
             return;
+
+        eventController.trigger(new AttackEvent(this, target));
+
         // 1.
         final double damage1 = getAttack() * maxByAttack;
         final double damage2 = target.getMaxLife() * maxPctByMaxLife;
@@ -366,10 +373,18 @@ public abstract class BaseEntity implements Entity, Initable {
         return damage;
     }
 
-    private void doDamage(BaseEntity target, int damage) {
+    @Override
+    public int getLifeInt() {
+        return life;
+    }
+
+    private void doDamage(Entity target, int damage) {
         log.info(Msg.damage(this, target, damage));
-        if (target.getLife() > damage) {
-            target.setLife(target.getLife() - damage);
+        if (target.getLifeInt() > damage) {
+            double src = target.getLife();
+            target.setLife(target.getLifeInt() - damage);
+            double dst = target.getLife();
+            target.getEventController().trigger(new BeDamageEvent(src, dst));
         } else {
             log.info(Msg.vector(this, "击杀", target, ""));
             target.setLife(0);
@@ -411,7 +426,7 @@ public abstract class BaseEntity implements Entity, Initable {
             target = enemy.randomTarget();
         }
         if (target != null)
-            getCommonAttack().xieZhan(target);
+            getCommonAttack().xieZhan(this, target);
     }
 
     @Override
@@ -424,6 +439,14 @@ public abstract class BaseEntity implements Entity, Initable {
         for (Entity entity : camp.getOpposite().getAllAlive()) {
             entity.getEventController().setState(BeAttackEvent.class, true);
         }
+    }
+
+    @Override
+    public int shieldValue(double src) {
+        if (!RandUtil.success(getCritical()))
+            return (int) src;
+        log.info(Msg.info(this, "暴击"));
+        return (int) (src * getCriticalDamage());
     }
 
     @Override

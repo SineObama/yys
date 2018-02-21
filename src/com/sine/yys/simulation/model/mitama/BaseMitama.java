@@ -1,30 +1,28 @@
 package com.sine.yys.simulation.model.mitama;
 
-import com.sine.yys.simulation.model.battle.InitContext;
-import com.sine.yys.simulation.model.battle.Initable;
-import com.sine.yys.simulation.model.entity.BaseEntity;
+import com.sine.yys.simulation.model.battle.Sealable;
+import com.sine.yys.simulation.model.entity.Entity;
 
 import java.util.logging.Logger;
 
 /**
  * 御魂通用逻辑。
- * 保存了所属式神的引用。
+ * 使用嵌套类作为事件监听器。
+ * 御魂不再与式神一一关联，只在初始化时把式神传递给监听器。
  */
-public abstract class BaseMitama implements Mitama, Initable {
+public abstract class BaseMitama implements Mitama {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
 
-    private BaseEntity self;
+    class SealableMitamaHandler implements Sealable {
+        protected Entity self;
 
-    @Override
-    public final void init(InitContext context) {
-        this.self = (BaseEntity) context.getSelf();
-        doInit(context);
-    }
+        SealableMitamaHandler(Entity self) {
+            this.self = self;
+        }
 
-    protected void doInit(InitContext context) {
-    }
-
-    public final BaseEntity getSelf() {
-        return self;
+        @Override
+        public boolean sealed() {
+            return self.getBuffController().mitamaSealed();
+        }
     }
 }

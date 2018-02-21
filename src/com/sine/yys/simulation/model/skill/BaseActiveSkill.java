@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.model.skill;
 
-import com.sine.yys.simulation.model.entity.BaseEntity;
 import com.sine.yys.simulation.model.entity.Entity;
 
 /**
@@ -9,28 +8,37 @@ import com.sine.yys.simulation.model.entity.Entity;
  */
 public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override
-    public final void apply(Entity target0) {
-        BaseEntity target = (BaseEntity) target0;
-        getSelf().clear();
+    public final void apply(Entity self, Entity target) {
+        self.clear();
+        if (getMAXCD() > 0)
+            CD = getMAXCD() + 1;
         beforeApply(target);
-        doApply(target);
-        afterApply(target);
+        doApply(self, target);
+        afterApply(self, target);
     }
 
     /**
      * 技能的具体操作。各技能重写的重点。
+     *
+     * @param self   自身。
+     * @param target 目标。
      */
-    protected abstract void doApply(BaseEntity target);
+    protected abstract void doApply(Entity self, Entity target);
 
     /**
      * 目前只用于普攻触发事件。
+     *
+     * @param target
      */
-    protected void beforeApply(BaseEntity target) {
+    protected void beforeApply(Entity target) {
     }
 
     /**
      * 目前只用于普攻触发事件。
+     *
+     * @param self   自身
+     * @param target
      */
-    protected void afterApply(BaseEntity target) {
+    protected void afterApply(Entity self, Entity target) {
     }
 }

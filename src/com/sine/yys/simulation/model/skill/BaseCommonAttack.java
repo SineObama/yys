@@ -4,7 +4,6 @@ import com.sine.yys.simulation.component.targetresolver.EnemyEntityResolver;
 import com.sine.yys.simulation.component.targetresolver.TargetResolver;
 import com.sine.yys.simulation.model.AttackInfo;
 import com.sine.yys.simulation.model.AttackInfoImpl;
-import com.sine.yys.simulation.model.entity.BaseEntity;
 import com.sine.yys.simulation.model.entity.Entity;
 import com.sine.yys.simulation.model.event.CommonAttackEvent;
 
@@ -19,9 +18,10 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     }
 
     /**
+     * @param self 自身
      * @return 攻击次数（段数）。
      */
-    public int getTimes() {
+    public int getTimes(Entity self) {
         return 1;
     }
 
@@ -47,38 +47,36 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     }
 
     @Override
-    public final void afterApply(BaseEntity target) {
+    public final void afterApply(Entity self, Entity target) {
         // 触发普攻事件
-        getSelf().getCamp().getEventController().trigger(new CommonAttackEvent(getSelf(), target));
-    }
-
-    @Override
-    public final void xieZhan(Entity target) {
-        doXieZhan((BaseEntity) target);
+        self.getCamp().getEventController().trigger(new CommonAttackEvent(self, target));
     }
 
     /**
      * 协战的具体操作。
      * 默认调用doApply。具体技能根据需要重写。
      *
+     * @param self   自身。
      * @param target 协战目标。
      */
-    protected void doXieZhan(BaseEntity target) {
-        doApply(target);
+    @Override
+    public void xieZhan(Entity self, Entity target) {
+        doApply(self, target);
     }
 
     /**
      * 普攻的具体操作。无需触发普攻事件。
      * 默认以getAttack的攻击，对target攻击getTimes次。
      *
+     * @param self   自身。
      * @param target 攻击目标。
      */
     @Override
-    protected void doApply(BaseEntity target) {
-        for (int i = 0; i < getTimes(); i++) {
+    protected void doApply(Entity self, Entity target) {
+        for (int i = 0; i < getTimes(self); i++) {
             if (target.isDead())
                 break;
-            getSelf().attack(target, getAttack());
+            self.attack(target, getAttack());
         }
     }
 }

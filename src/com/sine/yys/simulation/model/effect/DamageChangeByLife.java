@@ -23,7 +23,7 @@ public class DamageChangeByLife extends DamageChange implements Effect {
 
     @Override
     public double judge(Entity target) {
-        if (target.getLifePct() >= begin && target.getLifePct() <= end)
+        if (target.getLife() >= begin && target.getLife() <= end)
             return getCoefficient();
         else
             return 1.0;

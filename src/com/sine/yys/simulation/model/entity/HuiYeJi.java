@@ -1,12 +1,11 @@
 package com.sine.yys.simulation.model.entity;
 
-import com.sine.yys.simulation.component.operationhandler.AutoOperationHandler;
-import com.sine.yys.simulation.component.operationhandler.OperationHandler;
+import com.sine.yys.simulation.component.operation.AutoOperationHandler;
+import com.sine.yys.simulation.component.operation.Operation;
+import com.sine.yys.simulation.component.operation.OperationHandler;
 import com.sine.yys.simulation.model.Property;
 import com.sine.yys.simulation.model.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.simulation.model.mitama.Mitama;
-import com.sine.yys.simulation.model.operation.Operation;
-import com.sine.yys.simulation.model.operation.SimpleOperation;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
 import com.sine.yys.simulation.model.skill.HuoShuQiu;
 import com.sine.yys.simulation.model.skill.LongShouZhiYu;
@@ -39,7 +38,7 @@ public class HuiYeJi extends BaseEntity implements Shikigami {
             for (ActiveSkill activeSkill : map.keySet()) {
                 if (activeSkill instanceof LongShouZhiYu) {
                     if (buff == null || buff.getLast() <= 1) {
-                        return new SimpleOperation(null, activeSkill);
+                        return new Operation(null, activeSkill);
                     } else {
                         map.remove(activeSkill);
                         break;

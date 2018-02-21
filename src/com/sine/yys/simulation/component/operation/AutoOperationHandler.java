@@ -1,8 +1,6 @@
-package com.sine.yys.simulation.component.operationhandler;
+package com.sine.yys.simulation.component.operation;
 
 import com.sine.yys.simulation.model.entity.Entity;
-import com.sine.yys.simulation.model.operation.Operation;
-import com.sine.yys.simulation.model.operation.SimpleOperation;
 import com.sine.yys.simulation.model.skill.ActiveSkill;
 import com.sine.yys.simulation.util.RandUtil;
 
@@ -26,8 +24,8 @@ public class AutoOperationHandler implements OperationHandler {
             }
         }
         if (use == null)
-            return new SimpleOperation(null, null);
+            return new Operation(null, null);
         final List<? extends Entity> targets = map.get(use);
-        return new SimpleOperation(RandUtil.choose(targets), use);
+        return new Operation(RandUtil.choose(targets), use);
     }
 }

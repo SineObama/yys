@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.model.battle;
 
-import com.sine.yys.simulation.component.FireRepo;
 import com.sine.yys.simulation.component.event.EventController;
 import com.sine.yys.simulation.component.event.EventControllerImpl;
 import com.sine.yys.simulation.model.entity.Entity;
@@ -16,7 +15,7 @@ import java.util.logging.Logger;
  * PVP阵营。
  * 初始化时给式神设置唯一的鬼火仓库（自己）。
  */
-public class PVPCamp implements Camp, Initable, FireRepo {
+public class PVPCamp implements Camp, FireRepo {
     private final Logger log = Logger.getLogger(this.getClass().toString());
 
     private final EventController eventController = new EventControllerImpl();
@@ -141,7 +140,7 @@ public class PVPCamp implements Camp, Initable, FireRepo {
         context.setFireRepo(this);
         final List<Shikigami> allShikigami = getAllShikigami();
         for (Shikigami shikigami : allShikigami) {
-            ((Initable) shikigami).init(context);
+            shikigami.init(context);
         }
     }
 
