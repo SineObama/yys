@@ -1,8 +1,8 @@
 package com.sine.yys.simulation;
 
-import com.sine.yys.simulation.component.mitama.BaseMitama;
-import com.sine.yys.simulation.component.shishen.BaseShiShen;
-import com.sine.yys.simulation.info.IProperty;
+import com.sine.yys.info.IProperty;
+import com.sine.yys.mitama.BaseMitama;
+import com.sine.yys.shishen.BaseShiShen;
 
 public class EntityInfo {
     BaseShiShen shiShen;

@@ -1,21 +1,15 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.buff.Buff;
-import com.sine.yys.simulation.component.buff.Debuff;
-import com.sine.yys.simulation.component.buff.IBuff;
-import com.sine.yys.simulation.component.buff.UniqueIBuff;
-import com.sine.yys.simulation.component.buff.debuff.ControlBuff;
-import com.sine.yys.simulation.component.buff.debuff.HunLuan;
-import com.sine.yys.simulation.component.buff.debuff.SealMitama;
-import com.sine.yys.simulation.component.buff.debuff.SealPassive;
-import com.sine.yys.simulation.component.buff.shield.BangJingShield;
-import com.sine.yys.simulation.component.buff.shield.DiZangXiangShield;
-import com.sine.yys.simulation.component.buff.shield.Shield;
-import com.sine.yys.simulation.component.buff.shield.XueZhiHuaHaiShield;
-import com.sine.yys.simulation.component.inter.BuffController;
-import com.sine.yys.simulation.info.Container;
-import com.sine.yys.simulation.info.Target;
-import com.sine.yys.simulation.util.Msg;
+import com.sine.yys.buff.debuff.HunLuan;
+import com.sine.yys.buff.debuff.SealMitama;
+import com.sine.yys.buff.debuff.SealPassive;
+import com.sine.yys.buff.shield.BangJingShield;
+import com.sine.yys.buff.shield.DiZangXiangShield;
+import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
+import com.sine.yys.info.Container;
+import com.sine.yys.info.Target;
+import com.sine.yys.inter.buff.*;
+import com.sine.yys.util.Msg;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -36,7 +30,7 @@ public class BuffControllerImpl implements BuffController {
 
     private final Logger log = Logger.getLogger(getClass().toString());
     private final Set<Container<IBuff>> set = new TreeSet<>();
-    private final Set<Container<UniqueIBuff>> attach = new TreeSet<>(); // 附属buff，如龙首之玉的防御和抵抗，所有式神公用一个引用。
+    private final Set<Container<IBuff>> attach = new TreeSet<>(); // 附属buff，如龙首之玉的防御和抵抗
 
     @Override
     public void addShield(Shield shield) {
@@ -86,17 +80,22 @@ public class BuffControllerImpl implements BuffController {
     }
 
     @Override
-    public void addBuff(Buff buff) {
-        addIBuff(buff);
+    public void addIBuff(IBuff iBuff) {
+        if (iBuff instanceof UniqueIBuff) {
+            Class clz = iBuff.getClass();
+            for (Container<IBuff> buffContainer : set) {
+                if (buffContainer.getObj().getClass() == clz) {
+                    if (buffContainer.getObj().getLast() < iBuff.getLast())
+                        buffContainer.setObj(iBuff);
+                    return;
+                }
+            }
+        }
+        set.add(new Container<>(prior.get(iBuff.getClass()), iBuff));
     }
 
     @Override
-    public void addDebuff(Debuff debuff) {
-        addIBuff(debuff);
-    }
-
-    @Override
-    public <T extends UniqueIBuff> T getUnique(Class<T> clazz) {
+    public <T extends IBuff> T getUnique(Class<T> clazz) {
         for (Container<IBuff> container : set) {
             if (container.getObj().getClass() == clazz)
                 return (T) container.getObj();  // XXX 又是unchecked
@@ -126,28 +125,14 @@ public class BuffControllerImpl implements BuffController {
      * 暂定只有一个buff生效，不会进行替换。
      */
     @Override
-    public void addAttach(UniqueIBuff buff) {
+    public void addAttach(IBuff buff) {
         Class clz = buff.getClass();
-        for (Container<UniqueIBuff> buffContainer : attach) {
+        for (Container<IBuff> buffContainer : attach) {
             if (buffContainer.getObj().getClass() == clz) {
                 return;
             }
         }
         attach.add(new Container<>(prior.get(buff.getClass()), buff));
-    }
-
-    private void addIBuff(IBuff iBuff) {
-        if (iBuff instanceof UniqueIBuff) {
-            Class clz = iBuff.getClass();
-            for (Container<IBuff> buffContainer : set) {
-                if (buffContainer.getObj().getClass() == clz) {
-                    if (buffContainer.getObj().getLast() < iBuff.getLast())
-                        buffContainer.setObj(iBuff);
-                    return;
-                }
-            }
-        }
-        set.add(new Container<>(prior.get(iBuff.getClass()), iBuff));
     }
 
     @Override
@@ -162,8 +147,8 @@ public class BuffControllerImpl implements BuffController {
     }
 
     @Override
-    public <T extends UniqueIBuff> void removeAttach(Class<T> clazz) {
-        for (Container<UniqueIBuff> iBuffContainer : attach) {
+    public <T extends IBuff> void removeAttach(Class<T> clazz) {
+        for (Container<IBuff> iBuffContainer : attach) {
             if (iBuffContainer.getObj().getClass() == clazz) {
                 attach.remove(iBuffContainer);
                 return;
@@ -176,7 +161,7 @@ public class BuffControllerImpl implements BuffController {
         double sum = 0;
         for (Container<IBuff> container : set)
             sum += container.getObj().getAtkPct();
-        for (Container<UniqueIBuff> container : attach)
+        for (Container<IBuff> container : attach)
             sum += container.getObj().getAtkPct();
         return sum;
     }
@@ -186,7 +171,7 @@ public class BuffControllerImpl implements BuffController {
         double sum = 0;
         for (Container<IBuff> container : set)
             sum += container.getObj().getDefPct();
-        for (Container<UniqueIBuff> container : attach)
+        for (Container<IBuff> container : attach)
             sum += container.getObj().getDefPct();
         return sum;
     }
@@ -196,7 +181,7 @@ public class BuffControllerImpl implements BuffController {
         double sum = 0;
         for (Container<IBuff> container : set)
             sum += container.getObj().getSpeed();
-        for (Container<UniqueIBuff> container : attach)
+        for (Container<IBuff> container : attach)
             sum += container.getObj().getSpeed();
         return sum;
     }
@@ -206,7 +191,7 @@ public class BuffControllerImpl implements BuffController {
         double sum = 0;
         for (Container<IBuff> container : set)
             sum += container.getObj().getCritical();
-        for (Container<UniqueIBuff> container : attach)
+        for (Container<IBuff> container : attach)
             sum += container.getObj().getCritical();
         return sum;
     }
@@ -216,7 +201,7 @@ public class BuffControllerImpl implements BuffController {
         double sum = 0;
         for (Container<IBuff> container : set)
             sum += container.getObj().getCriticalDamage();
-        for (Container<UniqueIBuff> container : attach)
+        for (Container<IBuff> container : attach)
             sum += container.getObj().getCriticalDamage();
         return sum;
     }
@@ -226,7 +211,7 @@ public class BuffControllerImpl implements BuffController {
         double sum = 0;
         for (Container<IBuff> container : set)
             sum += container.getObj().getEffectHit();
-        for (Container<UniqueIBuff> container : attach)
+        for (Container<IBuff> container : attach)
             sum += container.getObj().getEffectHit();
         return sum;
     }
@@ -236,7 +221,7 @@ public class BuffControllerImpl implements BuffController {
         double sum = 0;
         for (Container<IBuff> container : set)
             sum += container.getObj().getEffectDef();
-        for (Container<UniqueIBuff> container : attach)
+        for (Container<IBuff> container : attach)
             sum += container.getObj().getEffectDef();
         return sum;
     }

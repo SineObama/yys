@@ -1,18 +1,18 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.buff.Debuff;
-import com.sine.yys.simulation.component.buff.shield.Shield;
-import com.sine.yys.simulation.component.event.*;
-import com.sine.yys.simulation.component.inter.Camp;
-import com.sine.yys.simulation.component.inter.Controller;
-import com.sine.yys.simulation.component.inter.Entity;
-import com.sine.yys.simulation.event.EventController;
-import com.sine.yys.simulation.info.AttackInfo;
-import com.sine.yys.simulation.info.PctEffect;
-import com.sine.yys.simulation.rule.CalcDam;
-import com.sine.yys.simulation.rule.CalcEffect;
-import com.sine.yys.simulation.util.Msg;
-import com.sine.yys.simulation.util.RandUtil;
+import com.sine.yys.event.*;
+import com.sine.yys.info.AttackInfo;
+import com.sine.yys.info.PctEffect;
+import com.sine.yys.inter.Camp;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventController;
+import com.sine.yys.inter.buff.Debuff;
+import com.sine.yys.inter.buff.Shield;
+import com.sine.yys.rule.CalcDam;
+import com.sine.yys.rule.CalcEffect;
+import com.sine.yys.util.Msg;
+import com.sine.yys.util.RandUtil;
 
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -184,7 +184,7 @@ public class ControllerImpl implements Controller {
             log.info(Msg.trigger(self, effect));
             if (RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
                 log.info(Msg.info(target, "获得负面效果 " + debuff.getName()));
-                target.getBuffController().addDebuff(debuff);
+                target.getBuffController().addIBuff(debuff);
             } else {
                 log.info(Msg.info(target, "抵抗了负面效果 " + debuff.getName()));
             }

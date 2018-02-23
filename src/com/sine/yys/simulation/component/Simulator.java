@@ -1,20 +1,20 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.buff.debuff.ControlBuff;
-import com.sine.yys.simulation.component.buff.debuff.HunLuan;
-import com.sine.yys.simulation.component.event.BattleStartEvent;
-import com.sine.yys.simulation.component.event.BeforeActionEvent;
-import com.sine.yys.simulation.component.event.UseFireEvent;
-import com.sine.yys.simulation.component.inter.Camp;
-import com.sine.yys.simulation.component.inter.Controller;
-import com.sine.yys.simulation.component.inter.Entity;
-import com.sine.yys.simulation.component.mitama.BaseMitama;
-import com.sine.yys.simulation.component.skill.ActiveSkill;
-import com.sine.yys.simulation.component.skill.BaseSkill;
-import com.sine.yys.simulation.component.skill.Skill;
-import com.sine.yys.simulation.component.skill.operation.Operation;
-import com.sine.yys.simulation.util.Msg;
-import com.sine.yys.simulation.util.RandUtil;
+import com.sine.yys.buff.debuff.HunLuan;
+import com.sine.yys.event.BattleStartEvent;
+import com.sine.yys.event.BeforeActionEvent;
+import com.sine.yys.event.UseFireEvent;
+import com.sine.yys.inter.Camp;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.buff.ControlBuff;
+import com.sine.yys.mitama.BaseMitama;
+import com.sine.yys.skill.ActiveSkill;
+import com.sine.yys.skill.BaseSkill;
+import com.sine.yys.skill.Skill;
+import com.sine.yys.skill.operation.Operation;
+import com.sine.yys.util.Msg;
+import com.sine.yys.util.RandUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,16 +1,16 @@
 package com.sine;
 
+import com.sine.yys.info.Property;
+import com.sine.yys.mitama.DiZangXiang;
+import com.sine.yys.mitama.HuoLing;
+import com.sine.yys.mitama.MeiYao;
+import com.sine.yys.mitama.ZhenNv;
+import com.sine.yys.shishen.BiAnHua;
+import com.sine.yys.shishen.BoRe;
+import com.sine.yys.shishen.GuHuoNiao;
+import com.sine.yys.shishen.HuiYeJi;
 import com.sine.yys.simulation.CampInfo;
 import com.sine.yys.simulation.RedBlueSimulator;
-import com.sine.yys.simulation.component.mitama.DiZangXiang;
-import com.sine.yys.simulation.component.mitama.HuoLing;
-import com.sine.yys.simulation.component.mitama.MeiYao;
-import com.sine.yys.simulation.component.mitama.ZhenNv;
-import com.sine.yys.simulation.component.shishen.BiAnHua;
-import com.sine.yys.simulation.component.shishen.BoRe;
-import com.sine.yys.simulation.component.shishen.GuHuoNiao;
-import com.sine.yys.simulation.component.shishen.HuiYeJi;
-import com.sine.yys.simulation.info.Property;
 
 public class Main {
     static {

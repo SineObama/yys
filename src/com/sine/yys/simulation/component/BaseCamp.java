@@ -1,11 +1,10 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.inter.Camp;
-import com.sine.yys.simulation.component.inter.Entity;
-import com.sine.yys.simulation.component.inter.Position;
-import com.sine.yys.simulation.event.EventController;
-import com.sine.yys.simulation.event.EventControllerImpl;
-import com.sine.yys.simulation.util.RandUtil;
+import com.sine.yys.inter.Camp;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventController;
+import com.sine.yys.inter.Position;
+import com.sine.yys.util.RandUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.inter.Camp;
-import com.sine.yys.simulation.component.inter.FireRepo;
-import com.sine.yys.simulation.util.Msg;
+import com.sine.yys.inter.Camp;
+import com.sine.yys.inter.FireRepo;
+import com.sine.yys.util.Msg;
 
 /**
  * PVP阵营。

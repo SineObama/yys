@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.inter.Entity;
-import com.sine.yys.simulation.info.Property;
+import com.sine.yys.info.Property;
+import com.sine.yys.inter.Entity;
 
 /**
  * 战场鲤鱼旗。

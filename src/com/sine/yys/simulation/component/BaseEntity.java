@@ -1,21 +1,20 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.inter.BuffController;
-import com.sine.yys.simulation.component.inter.Camp;
-import com.sine.yys.simulation.component.inter.Entity;
-import com.sine.yys.simulation.component.inter.FireRepo;
-import com.sine.yys.simulation.component.mitama.BaseMitama;
-import com.sine.yys.simulation.component.mitama.Mitama;
-import com.sine.yys.simulation.component.shishen.BaseShiShen;
-import com.sine.yys.simulation.component.skill.ActiveSkill;
-import com.sine.yys.simulation.component.skill.CommonAttack;
-import com.sine.yys.simulation.component.skill.Skill;
-import com.sine.yys.simulation.event.EventController;
-import com.sine.yys.simulation.event.EventControllerImpl;
-import com.sine.yys.simulation.info.IProperty;
-import com.sine.yys.simulation.info.Target;
-import com.sine.yys.simulation.util.Msg;
-import com.sine.yys.simulation.util.RandUtil;
+import com.sine.yys.info.IProperty;
+import com.sine.yys.info.Target;
+import com.sine.yys.inter.Camp;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventController;
+import com.sine.yys.inter.FireRepo;
+import com.sine.yys.inter.buff.BuffController;
+import com.sine.yys.mitama.BaseMitama;
+import com.sine.yys.mitama.Mitama;
+import com.sine.yys.shishen.BaseShiShen;
+import com.sine.yys.skill.ActiveSkill;
+import com.sine.yys.skill.CommonAttack;
+import com.sine.yys.skill.Skill;
+import com.sine.yys.util.Msg;
+import com.sine.yys.util.RandUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

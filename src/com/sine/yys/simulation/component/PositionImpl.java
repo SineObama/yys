@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.inter.Entity;
-import com.sine.yys.simulation.component.inter.Position;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.Position;
 
 public class PositionImpl implements Position {
     private final Entity source;
