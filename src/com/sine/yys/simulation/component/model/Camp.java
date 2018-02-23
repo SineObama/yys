@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component.model;
 
-import com.sine.yys.simulation.component.Position;
 import com.sine.yys.simulation.event.EventController;
 import com.sine.yys.simulation.info.Target;
 

@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component.model;
 
-import com.sine.yys.simulation.component.model.shishen.skill.Skill;
-import com.sine.yys.simulation.component.model.shishen.skill.operation.OperationHandler;
+import com.sine.yys.simulation.component.model.skill.Skill;
+import com.sine.yys.simulation.component.model.skill.operation.OperationHandler;
 
 import java.util.List;
 

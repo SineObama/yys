@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component.model.shishen;
 
-import com.sine.yys.simulation.component.model.shishen.skill.SanJian;
-import com.sine.yys.simulation.component.model.shishen.skill.TianXiangHeZhan;
-import com.sine.yys.simulation.component.model.shishen.skill.XieZhan;
+import com.sine.yys.simulation.component.model.skill.SanJian;
+import com.sine.yys.simulation.component.model.skill.TianXiangHeZhan;
+import com.sine.yys.simulation.component.model.skill.XieZhan;
 
 import java.util.Arrays;
 

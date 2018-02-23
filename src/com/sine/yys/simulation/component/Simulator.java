@@ -9,10 +9,10 @@ import com.sine.yys.simulation.component.model.event.BattleStartEvent;
 import com.sine.yys.simulation.component.model.event.BeforeActionEvent;
 import com.sine.yys.simulation.component.model.event.UseFireEvent;
 import com.sine.yys.simulation.component.model.mitama.BaseMitama;
-import com.sine.yys.simulation.component.model.shishen.skill.ActiveSkill;
-import com.sine.yys.simulation.component.model.shishen.skill.BaseSkill;
-import com.sine.yys.simulation.component.model.shishen.skill.Skill;
-import com.sine.yys.simulation.component.model.shishen.skill.operation.Operation;
+import com.sine.yys.simulation.component.model.skill.ActiveSkill;
+import com.sine.yys.simulation.component.model.skill.BaseSkill;
+import com.sine.yys.simulation.component.model.skill.Skill;
+import com.sine.yys.simulation.component.model.skill.operation.Operation;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 

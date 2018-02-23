@@ -3,7 +3,7 @@ package com.sine.yys.simulation.component.model.mitama;
 import com.sine.yys.simulation.component.model.Controller;
 import com.sine.yys.simulation.component.model.Entity;
 import com.sine.yys.simulation.component.model.event.BattleStartEvent;
-import com.sine.yys.simulation.component.model.shield.BangJingShield;
+import com.sine.yys.simulation.component.model.buff.shield.BangJingShield;
 import com.sine.yys.simulation.event.EventHandler;
 import com.sine.yys.simulation.util.Msg;
 

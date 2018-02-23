@@ -2,6 +2,8 @@ package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.model.Camp;
 import com.sine.yys.simulation.component.model.Entity;
+import com.sine.yys.simulation.component.model.Position;
+import com.sine.yys.simulation.component.model.PositionImpl;
 import com.sine.yys.simulation.event.EventController;
 import com.sine.yys.simulation.event.EventControllerImpl;
 import com.sine.yys.simulation.util.RandUtil;
@@ -56,7 +58,7 @@ public abstract class BaseCamp implements Camp {
         List<BaseEntity> entities = new ArrayList<>();
         for (PositionImpl position : positions) {
             if (position.getCurrent() != null)
-                entities.add(position.getCurrent2());
+                entities.add((BaseEntity) position.getCurrent());
         }
         return entities;
     }
@@ -107,7 +109,7 @@ public abstract class BaseCamp implements Camp {
     public final EventController getEventController(Entity entity) {
         for (PositionImpl position : positions) {
             if (position.getCurrent() == entity)
-                return position.getCurrent2().getEventController();
+                return position.getCurrent().getEventController();
         }
         return null;
     }

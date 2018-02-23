@@ -3,7 +3,7 @@ package com.sine.yys.simulation.component.model.buff.buff;
 import com.sine.yys.simulation.component.model.buff.BaseIBuff;
 import com.sine.yys.simulation.component.model.buff.Buff;
 import com.sine.yys.simulation.component.model.buff.UniqueIBuff;
-import com.sine.yys.simulation.component.model.shishen.skill.LongShouZhiYu;
+import com.sine.yys.simulation.component.model.skill.LongShouZhiYu;
 import com.sine.yys.simulation.util.CallBack;
 
 /**

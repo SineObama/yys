@@ -1,12 +1,14 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.model.*;
+import com.sine.yys.simulation.component.model.BuffController;
+import com.sine.yys.simulation.component.model.BuffControllerImpl;
 import com.sine.yys.simulation.component.model.mitama.BaseMitama;
 import com.sine.yys.simulation.component.model.mitama.Mitama;
 import com.sine.yys.simulation.component.model.shishen.BaseShiShen;
-import com.sine.yys.simulation.component.model.shishen.skill.ActiveSkill;
-import com.sine.yys.simulation.component.model.shishen.skill.CommonAttack;
-import com.sine.yys.simulation.component.model.shishen.skill.Skill;
+import com.sine.yys.simulation.component.model.skill.ActiveSkill;
+import com.sine.yys.simulation.component.model.skill.CommonAttack;
+import com.sine.yys.simulation.component.model.skill.Skill;
 import com.sine.yys.simulation.event.EventController;
 import com.sine.yys.simulation.event.EventControllerImpl;
 import com.sine.yys.simulation.info.IProperty;

@@ -1,10 +1,10 @@
 package com.sine.yys.simulation.component.model.shishen;
 
 import com.sine.yys.simulation.component.model.ShiShen;
-import com.sine.yys.simulation.component.model.shishen.skill.BaseSkill;
-import com.sine.yys.simulation.component.model.shishen.skill.Skill;
-import com.sine.yys.simulation.component.model.shishen.skill.operation.AutoOperationHandler;
-import com.sine.yys.simulation.component.model.shishen.skill.operation.OperationHandler;
+import com.sine.yys.simulation.component.model.skill.BaseSkill;
+import com.sine.yys.simulation.component.model.skill.Skill;
+import com.sine.yys.simulation.component.model.skill.operation.AutoOperationHandler;
+import com.sine.yys.simulation.component.model.skill.operation.OperationHandler;
 import com.sine.yys.simulation.info.Named;
 
 import java.util.List;

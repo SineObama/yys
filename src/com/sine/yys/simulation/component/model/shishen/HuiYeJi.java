@@ -2,13 +2,13 @@ package com.sine.yys.simulation.component.model.shishen;
 
 import com.sine.yys.simulation.component.model.Entity;
 import com.sine.yys.simulation.component.model.buff.buff.LongShouZhiYuBuff;
-import com.sine.yys.simulation.component.model.shishen.skill.ActiveSkill;
-import com.sine.yys.simulation.component.model.shishen.skill.HuoShuQiu;
-import com.sine.yys.simulation.component.model.shishen.skill.LongShouZhiYu;
-import com.sine.yys.simulation.component.model.shishen.skill.PengLaiYuZhi;
-import com.sine.yys.simulation.component.model.shishen.skill.operation.AutoOperationHandler;
-import com.sine.yys.simulation.component.model.shishen.skill.operation.Operation;
-import com.sine.yys.simulation.component.model.shishen.skill.operation.OperationHandler;
+import com.sine.yys.simulation.component.model.skill.ActiveSkill;
+import com.sine.yys.simulation.component.model.skill.HuoShuQiu;
+import com.sine.yys.simulation.component.model.skill.LongShouZhiYu;
+import com.sine.yys.simulation.component.model.skill.PengLaiYuZhi;
+import com.sine.yys.simulation.component.model.skill.operation.AutoOperationHandler;
+import com.sine.yys.simulation.component.model.skill.operation.Operation;
+import com.sine.yys.simulation.component.model.skill.operation.OperationHandler;
 
 import java.util.Arrays;
 import java.util.List;
