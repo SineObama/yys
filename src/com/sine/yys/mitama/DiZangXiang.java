@@ -5,6 +5,7 @@ import com.sine.yys.event.BeCriticalEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.Mitama;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 

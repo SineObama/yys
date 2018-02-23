@@ -1,6 +1,7 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
+import com.sine.yys.inter.ActiveSkill;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.util.Msg;

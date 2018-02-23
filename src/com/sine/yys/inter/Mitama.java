@@ -1,8 +1,6 @@
-package com.sine.yys.mitama;
+package com.sine.yys.inter;
 
 import com.sine.yys.info.Named;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
 
 /**
  * 御魂。

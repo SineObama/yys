@@ -1,9 +1,10 @@
 package com.sine.yys.shikigami;
 
 import com.sine.yys.info.Named;
-import com.sine.yys.skill.Skill;
+import com.sine.yys.inter.OperationHandler;
+import com.sine.yys.inter.Shikigami;
+import com.sine.yys.inter.Skill;
 import com.sine.yys.skill.operation.AutoOperationHandler;
-import com.sine.yys.skill.operation.OperationHandler;
 
 import java.util.List;
 

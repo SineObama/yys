@@ -11,18 +11,12 @@ import com.sine.yys.info.PctEffect;
  * 比如进行攻击、附加效果等。
  */
 public interface Controller {
-//    Entity getSelf();
-
-//    Camp getOwn();
-
-    Camp getCamp(Entity entity);
-
-//    Camp getEnemy();
-
     /**
-     * 所属式神的{@link EventController}事件控制器。
+     * 获取式神所在的阵营。
+     * <p>
+     * 由于从阵营可以获取式神，为了避免双向引用，强行写成这样。
      */
-//    EventController getEventController();
+    Camp getCamp(Entity entity);
 
     void attack(Entity self0, Entity target, AttackInfo attackInfo);
 

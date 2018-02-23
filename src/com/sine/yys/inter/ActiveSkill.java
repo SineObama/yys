@@ -1,8 +1,4 @@
-package com.sine.yys.skill;
-
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.skill.targetresolver.TargetResolver;
+package com.sine.yys.inter;
 
 /**
  * 主动技能。

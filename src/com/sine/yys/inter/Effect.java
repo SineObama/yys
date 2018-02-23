@@ -1,4 +1,4 @@
-package com.sine.yys.effect;
+package com.sine.yys.inter;
 
 import com.sine.yys.info.Named;
 

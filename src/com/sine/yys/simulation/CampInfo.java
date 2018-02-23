@@ -1,8 +1,8 @@
 package com.sine.yys.simulation;
 
 import com.sine.yys.info.Property;
-import com.sine.yys.mitama.Mitama;
-import com.sine.yys.shikigami.Shikigami;
+import com.sine.yys.inter.Mitama;
+import com.sine.yys.inter.Shikigami;
 
 import java.util.ArrayList;
 import java.util.List;

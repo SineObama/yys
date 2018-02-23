@@ -1,5 +1,6 @@
 package com.sine.yys.effect;
 
+import com.sine.yys.inter.Effect;
 import com.sine.yys.inter.Entity;
 
 /**

@@ -1,5 +1,7 @@
 package com.sine.yys.effect;
 
+import com.sine.yys.inter.Effect;
+
 import java.util.logging.Logger;
 
 public abstract class BaseEffect implements Effect {

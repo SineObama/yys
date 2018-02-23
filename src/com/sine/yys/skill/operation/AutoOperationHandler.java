@@ -1,7 +1,9 @@
 package com.sine.yys.skill.operation;
 
+import com.sine.yys.inter.ActiveSkill;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.skill.ActiveSkill;
+import com.sine.yys.inter.Operation;
+import com.sine.yys.inter.OperationHandler;
 import com.sine.yys.util.RandUtil;
 
 import java.util.List;

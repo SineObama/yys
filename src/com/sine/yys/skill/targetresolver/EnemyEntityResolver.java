@@ -1,7 +1,8 @@
 package com.sine.yys.skill.targetresolver;
 
-import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.TargetResolver;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class EnemyEntityResolver implements TargetResolver {
     @Override
-    public List<? extends Entity> resolve(Controller controller, Entity self) {
-        return controller.getCamp(self).getOpposite().getAllAlive();
+    public List<? extends Entity> resolve(Camp own, Entity self) {
+        return own.getOpposite().getAllAlive();
     }
 }

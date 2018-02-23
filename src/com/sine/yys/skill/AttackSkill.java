@@ -1,5 +1,7 @@
 package com.sine.yys.skill;
 
+import com.sine.yys.inter.ActiveSkill;
+
 /**
  * 攻击技能。
  */

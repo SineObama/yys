@@ -1,7 +1,4 @@
-package com.sine.yys.skill.operation;
-
-import com.sine.yys.inter.Entity;
-import com.sine.yys.skill.ActiveSkill;
+package com.sine.yys.inter;
 
 import java.util.List;
 import java.util.Map;

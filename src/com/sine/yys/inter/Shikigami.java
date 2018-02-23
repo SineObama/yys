@@ -1,7 +1,4 @@
-package com.sine.yys.shikigami;
-
-import com.sine.yys.skill.Skill;
-import com.sine.yys.skill.operation.OperationHandler;
+package com.sine.yys.inter;
 
 import java.util.List;
 

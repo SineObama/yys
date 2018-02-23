@@ -1,7 +1,8 @@
 package com.sine.yys.skill;
 
+import com.sine.yys.inter.ActiveSkill;
+import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.targetresolver.EmptyResolver;
-import com.sine.yys.skill.targetresolver.TargetResolver;
 
 /**
  * 不需要选择目标的主动技能通用逻辑。

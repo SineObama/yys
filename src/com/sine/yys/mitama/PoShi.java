@@ -5,6 +5,7 @@ import com.sine.yys.event.PreDamageEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.Mitama;
 
 /**
  * 破势。

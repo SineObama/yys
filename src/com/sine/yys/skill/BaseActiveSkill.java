@@ -1,5 +1,6 @@
 package com.sine.yys.skill;
 
+import com.sine.yys.inter.ActiveSkill;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 

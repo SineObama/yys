@@ -3,6 +3,7 @@ package com.sine.yys.mitama;
 import com.sine.yys.effect.AddDebuffEffect;
 import com.sine.yys.effect.HunLuanEffect;
 import com.sine.yys.info.PctEffect;
+import com.sine.yys.inter.Mitama;
 
 /**
  * 魅妖。

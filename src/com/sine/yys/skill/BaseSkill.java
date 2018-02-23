@@ -2,6 +2,7 @@ package com.sine.yys.skill;
 
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.Skill;
 
 import java.util.logging.Logger;
 

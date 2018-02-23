@@ -1,7 +1,4 @@
-package com.sine.yys.skill.operation;
-
-import com.sine.yys.inter.Entity;
-import com.sine.yys.skill.ActiveSkill;
+package com.sine.yys.inter;
 
 public class Operation {
     private final Entity target;

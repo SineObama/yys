@@ -1,17 +1,11 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.buff.debuff.ControlBuff;
+import com.sine.yys.buff.IBuff;
 import com.sine.yys.buff.debuff.HunLuan;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;
 import com.sine.yys.event.UseFireEvent;
-import com.sine.yys.inter.Camp;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.mitama.Mitama;
-import com.sine.yys.skill.ActiveSkill;
-import com.sine.yys.skill.Skill;
-import com.sine.yys.skill.operation.Operation;
+import com.sine.yys.inter.*;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
@@ -145,7 +139,7 @@ public class Simulator {
 
         final Operation operation;
         // 判断是否有行动控制debuff，进行相关操作。
-        final List<ControlBuff> controlBuffs = self.buffController.getControlBuffs();
+        final List<IBuff> controlBuffs = self.buffController.getControlBuffs();
         if (controlBuffs.isEmpty()) {  // 无行动控制debuff
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
@@ -157,7 +151,7 @@ public class Simulator {
                 }
                 if (self.fireRepo.getFire() < activeSkill.getFire())
                     continue;
-                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(controller, self);
+                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(self.getCamp(), self);
                 if (targets != null)
                     map.put(activeSkill, targets);
             }
@@ -169,7 +163,7 @@ public class Simulator {
 
         } else {  // 受行动控制debuff影响
 
-            ControlBuff controlBuff = controlBuffs.get(0);
+            IBuff controlBuff = controlBuffs.get(0);
             log.info(Msg.info(self, "受行动控制debuff " + controlBuff.getName() + " 影响"));
             if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
                 final List<Entity> allAlive = self.camp.getAllAlive();

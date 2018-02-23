@@ -8,10 +8,7 @@ import com.sine.yys.event.BeforeActionEvent;
 import com.sine.yys.event.LongShouZhiYuOff;
 import com.sine.yys.event.LongShouZhiYuOn;
 import com.sine.yys.info.Sealable;
-import com.sine.yys.inter.Camp;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.*;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 

@@ -1,6 +1,7 @@
 package com.sine.yys.effect;
 
 import com.sine.yys.event.PreDamageEvent;
+import com.sine.yys.inter.Effect;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.util.Msg;

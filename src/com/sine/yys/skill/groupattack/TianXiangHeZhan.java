@@ -2,9 +2,9 @@ package com.sine.yys.skill.groupattack;
 
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.model.AttackInfoImpl;
 import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
-import com.sine.yys.skill.targetresolver.TargetResolver;
 
 /**
  * 姑获鸟-天翔鹤斩。

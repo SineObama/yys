@@ -2,11 +2,11 @@ package com.sine.yys.skill.groupattack;
 
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.AttackSkill;
 import com.sine.yys.skill.BaseActiveSkill;
 import com.sine.yys.skill.model.AttackInfoImpl;
 import com.sine.yys.skill.targetresolver.EmptyResolver;
-import com.sine.yys.skill.targetresolver.TargetResolver;
 
 /**
  * 简单群攻，可多段。
