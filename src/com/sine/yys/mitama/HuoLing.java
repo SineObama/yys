@@ -2,6 +2,7 @@ package com.sine.yys.mitama;
 
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.util.Msg;
 
@@ -19,13 +20,13 @@ public class HuoLing extends BaseMitama implements Mitama {
     }
 
     @Override
-    public void init(Controller controller) {
-        controller.getOwn().getEventController().add(new Handler(controller));
+    public void init(Controller controller, Entity self) {
+        controller.getCamp(self).getEventController().add(new Handler(self));
     }
 
     class Handler extends SealableMitamaHandler implements EventHandler<BattleStartEvent> {
-        Handler(Controller controller) {
-            super(controller);
+        Handler(Entity self) {
+            super(self);
         }
 
         @Override

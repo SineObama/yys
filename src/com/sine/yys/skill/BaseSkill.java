@@ -36,6 +36,7 @@ public abstract class BaseSkill implements Skill {
         return cd;
     }
 
-    public void init(Controller controller) {
+    @Override
+    public void init(Controller controller, Entity self) {
     }
 }

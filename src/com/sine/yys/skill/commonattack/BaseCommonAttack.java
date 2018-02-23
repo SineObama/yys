@@ -5,7 +5,6 @@ import com.sine.yys.info.AttackInfo;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.skill.BaseActiveSkill;
-import com.sine.yys.skill.commonattack.CommonAttack;
 import com.sine.yys.skill.model.AttackInfoImpl;
 import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 import com.sine.yys.skill.targetresolver.TargetResolver;
@@ -81,7 +80,7 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
         for (int i = 0; i < getTimes(self); i++) {
             if (target.isDead())
                 break;
-            controller.attack(target, getAttack());
+            controller.attack(self, target, getAttack());
         }
     }
 }

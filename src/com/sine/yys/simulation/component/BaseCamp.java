@@ -38,7 +38,7 @@ public abstract class BaseCamp implements Camp {
         return fullName;
     }
 
-    public final void addEntity(BaseEntity entity) {
+    public final void addEntity(EntityImpl entity) {
         positions.add(new PositionImpl(entity));
     }
 
@@ -52,11 +52,11 @@ public abstract class BaseCamp implements Camp {
         return entities;
     }
 
-    public final List<BaseEntity> getAllAlive2() {
-        List<BaseEntity> entities = new ArrayList<>();
+    public final List<EntityImpl> getAllAlive2() {
+        List<EntityImpl> entities = new ArrayList<>();
         for (PositionImpl position : positions) {
             if (position.getCurrent() != null)
-                entities.add((BaseEntity) position.getCurrent());
+                entities.add((EntityImpl) position.getCurrent());
         }
         return entities;
     }
@@ -65,17 +65,17 @@ public abstract class BaseCamp implements Camp {
     public final List<Entity> getAllShikigami() {
         List<Entity> entities = new ArrayList<>();
         for (Position position : positions) {
-            if (position.getCurrent() instanceof Shikigami)
+            if (position.getCurrent() instanceof ShikigamiImpl)
                 entities.add(position.getCurrent());
         }
         return entities;
     }
 
-    protected final List<Shikigami> getAllShikigami2() {
-        List<Shikigami> entities = new ArrayList<>();
+    protected final List<ShikigamiImpl> getAllShikigami2() {
+        List<ShikigamiImpl> entities = new ArrayList<>();
         for (Position position : positions) {
-            if (position.getCurrent() instanceof Shikigami)
-                entities.add((Shikigami) position.getCurrent());
+            if (position.getCurrent() instanceof ShikigamiImpl)
+                entities.add((ShikigamiImpl) position.getCurrent());
         }
         return entities;
     }
@@ -103,18 +103,9 @@ public abstract class BaseCamp implements Camp {
         return eventController;
     }
 
-    @Override
-    public final EventController getEventController(Entity entity) {
-        for (PositionImpl position : positions) {
-            if (position.getCurrent() == entity)
-                return position.getCurrent().getEventController();
-        }
-        return null;
-    }
-
     public void init(Camp enemy) {
         opposite = enemy;
-        for (Shikigami shikigami : getAllShikigami2()) {
+        for (ShikigamiImpl shikigami : getAllShikigami2()) {
             shikigami.setCamp(this);
         }
     }

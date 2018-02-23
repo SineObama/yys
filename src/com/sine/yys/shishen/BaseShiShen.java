@@ -35,8 +35,4 @@ public abstract class BaseShiShen implements Named, ShiShen {
     public List<? extends Skill> getSkills() {
         return skills;
     }
-
-    public List<BaseSkill> getSkills2() {
-        return skills;
-    }
 }

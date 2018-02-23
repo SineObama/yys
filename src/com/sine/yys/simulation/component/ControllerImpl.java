@@ -8,7 +8,6 @@ import com.sine.yys.info.PctEffect;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.EventController;
 import com.sine.yys.rule.CalcDam;
 import com.sine.yys.rule.CalcEffect;
 import com.sine.yys.util.Msg;
@@ -19,38 +18,16 @@ import java.util.logging.Logger;
 
 public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().toString());
-    private final BaseEntity self;
-    private final BaseCamp own, enemy;
+    private final BaseCamp camp0, camp1;
 
-    public ControllerImpl(BaseEntity self, BaseCamp own, BaseCamp enemy) {
-        this.self = self;
-        this.own = own;
-        this.enemy = enemy;
-    }
-
-    @Override
-    public Entity getSelf() {
-        return self;
-    }
-
-    @Override
-    public Camp getOwn() {
-        return own;
+    public ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
+        this.camp0 = camp0;
+        this.camp1 = camp1;
     }
 
     @Override
     public Camp getCamp(Entity entity) {
-        return ((BaseEntity) entity).getCamp();
-    }
-
-    @Override
-    public Camp getEnemy() {
-        return enemy;
-    }
-
-    @Override
-    public EventController getEventController() {
-        return self.getEventController();
+        return ((EntityImpl) entity).getCamp();
     }
 
     /**
@@ -61,8 +38,9 @@ public class ControllerImpl implements Controller {
      * 4. 施加剩余伤害，添加御魂效果。
      */
     @Override
-    public void attack(Entity target0, AttackInfo attackInfo) {
-        BaseEntity target = (BaseEntity) target0;
+    public void attack(Entity self0, Entity target0, AttackInfo attackInfo) {
+        EntityImpl self = (EntityImpl) self0;
+        EntityImpl target = (EntityImpl) target0;
         if (target.isDead())  // XXX 只是有时会出现目标已死。有更好的逻辑？
             return;
 
@@ -89,7 +67,7 @@ public class ControllerImpl implements Controller {
             self.eventController.trigger(event);
             damage *= event.getCoefficient();
 
-            doDamage(target, (int) damage);
+            doDamage(self, target, (int) damage);
 
             if (critical) {
                 target.getEventController().trigger(new BeCriticalEvent(this, target, self));
@@ -108,8 +86,9 @@ public class ControllerImpl implements Controller {
      * 4. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
      */
     @Override
-    public void realDamage(Entity target0, double maxByAttack, double maxPctByMaxLife) {
-        BaseEntity target = (BaseEntity) target0;
+    public void realDamage(Entity self0, Entity target0, double maxByAttack, double maxPctByMaxLife) {
+        EntityImpl self = (EntityImpl) self0;
+        EntityImpl target = (EntityImpl) target0;
         if (target.isDead())
             return;
 
@@ -125,7 +104,7 @@ public class ControllerImpl implements Controller {
 
         // 4.
         if (remain != 0) {
-            doDamage(target, (int) damage);
+            doDamage(self, target, (int) damage);
         } else {
             log.info(Msg.noDamage(self, target));
         }
@@ -152,7 +131,7 @@ public class ControllerImpl implements Controller {
         return damage;
     }
 
-    private void doDamage(BaseEntity target, int damage) {
+    private void doDamage(EntityImpl self, EntityImpl target, int damage) {
         log.info(Msg.damage(self, target, damage));
         if (target.getLifeInt() > damage) {
             double src = target.getLife();
@@ -162,24 +141,24 @@ public class ControllerImpl implements Controller {
         } else {
             log.info(Msg.vector(self, "击杀", target, ""));
             target.setLife(0);
-            this.getCamp(target).getPosition(target).setDead(true);
+            this.getCamp(target).getPosition(target).setCurrent(null);
         }
         // FIXME 死后添加debuff会有问题？
         self.eventController.trigger(new DamageEvent(this, self, target));
     }
 
     @Override
-    public void randomGrab(double pct, Entity target) {
+    public void randomGrab(Entity self, Entity target, double pct) {
         if (RandUtil.success(pct)) {
             int num = target.getFireRepo().grabFire(1);
             if (num > 0)
                 log.info(Msg.vector(self, "吸取", target, num + " 点鬼火"));
-            self.fireRepo.addFire(num);
+            self.getFireRepo().addFire(num);
         }
     }
 
     @Override
-    public void applyDebuff(PctEffect effect, Entity target, Debuff debuff) {
+    public void applyDebuff(Entity self, PctEffect effect, Entity target, Debuff debuff) {
         if (RandUtil.success(CalcEffect.pct(effect.getPct(), self.getEffectHit()))) {
             log.info(Msg.trigger(self, effect));
             if (RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
@@ -192,24 +171,25 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void xieZhan(Entity target) {
+    public void xieZhan(Entity self, Entity target) {
         // 目标死亡则随机攻击另一个目标
-        if (!enemy.contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
-            log.info(Msg.vector(target, "不在", self, "敌对阵营中，随机协战"));
-            target = enemy.randomTarget();
+        Camp own = getCamp(self);
+        if (own.contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
+            log.info(Msg.vector(target, "在", self, "己方阵营中，随机协战"));
+            target = own.getOpposite().randomTarget();
         }
         if (target != null)
-            self.getCommonAttack().xieZhan(this, self, target);
+            ((EntityImpl) self).getCommonAttack().xieZhan(this, self, target);
     }
 
     @Override
     public void clear() {
-        own.getEventController().setState(BeAttackEvent.class, true);
-        enemy.getEventController().setState(BeAttackEvent.class, true);
-        for (BaseEntity entity : own.getAllAlive2()) {
+        camp0.getEventController().setState(BeAttackEvent.class, true);
+        camp1.getEventController().setState(BeAttackEvent.class, true);
+        for (EntityImpl entity : camp0.getAllAlive2()) {
             entity.getEventController().setState(BeAttackEvent.class, true);
         }
-        for (BaseEntity entity : enemy.getAllAlive2()) {
+        for (EntityImpl entity : camp1.getAllAlive2()) {
             entity.getEventController().setState(BeAttackEvent.class, true);
         }
     }

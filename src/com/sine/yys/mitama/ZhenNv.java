@@ -2,6 +2,7 @@ package com.sine.yys.mitama;
 
 import com.sine.yys.event.CriticalEvent;
 import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -34,20 +35,20 @@ public class ZhenNv extends BaseMitama implements Mitama {
     }
 
     @Override
-    public void init(Controller controller) {
-        controller.getEventController().add(new Handler(controller));
+    public void init(Controller controller, Entity self) {
+        self.getEventController().add(new Handler(self));
     }
 
     class Handler extends SealableMitamaHandler implements EventHandler<CriticalEvent> {
-        Handler(Controller controller) {
-            super(controller);
+        Handler(Entity self) {
+            super(self);
         }
 
         @Override
         public void handle(CriticalEvent event) {
             if (RandUtil.success(getPct())) {
                 log.info(Msg.trigger(self, ZhenNv.this));
-                controller.realDamage(event.getTarget(), getMaxDamageByAttack(), getMaxDamageByMaxLife());
+                event.getController().realDamage(self, event.getTarget(), getMaxDamageByAttack(), getMaxDamageByMaxLife());
             }
         }
     }

@@ -30,7 +30,7 @@ public abstract class SimpleGroupAttack extends BaseActiveSkill implements Attac
     public void doApply(Controller controller, Entity self, Entity unused) {
         for (int i = 0; i < getTimes(); i++) {
             for (Entity target : controller.getCamp(self).getOpposite().getAllAlive()) {
-                controller.attack(target, new AttackInfoImpl(getCoefficient()));
+                controller.attack(self, target, new AttackInfoImpl(getCoefficient()));
             }
         }
     }

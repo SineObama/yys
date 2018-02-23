@@ -8,9 +8,8 @@ import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.mitama.BaseMitama;
+import com.sine.yys.mitama.Mitama;
 import com.sine.yys.skill.ActiveSkill;
-import com.sine.yys.skill.BaseSkill;
 import com.sine.yys.skill.Skill;
 import com.sine.yys.skill.operation.Operation;
 import com.sine.yys.util.Msg;
@@ -30,17 +29,20 @@ public class Simulator {
 
     // 引用
     private final BaseCamp camp0, camp1;
-    private final List<BaseEntity> extras;  // 额外的对象，包括不属于阵营的战场鲤鱼旗。秘闻竞赛副本的鬼头？
+    private final List<EntityImpl> extras;  // 额外的对象，包括不属于阵营的战场鲤鱼旗。秘闻竞赛副本的鬼头？
     private Camp win = null;
     // 状态
     private boolean started = false;
     private boolean ended = false;
     private int round = 0;
 
-    public Simulator(final BaseCamp camp0, final BaseCamp camp1, List<BaseEntity> extras) {
+    ControllerImpl controller;
+
+    public Simulator(final BaseCamp camp0, final BaseCamp camp1, List<EntityImpl> extras) {
         this.camp0 = camp0;
         this.camp1 = camp1;
         this.extras = extras;
+        controller = new ControllerImpl(camp0, camp1);
     }
 
     /**
@@ -53,33 +55,33 @@ public class Simulator {
      * @param own   己方。
      * @param enemy 敌方。
      */
-    private static void init(BaseCamp own, BaseCamp enemy) {
+    private void init(BaseCamp own, BaseCamp enemy) {
         own.init(enemy);
-        for (BaseEntity baseEntity : own.getAllAlive2()) {
-            for (BaseSkill baseSkill : baseEntity.shiShen.getSkills2()) {
-                baseSkill.init(new ControllerImpl(baseEntity, own, enemy));
+        for (EntityImpl baseEntity : own.getAllAlive2()) {
+            for (Skill skill : baseEntity.shiShen.getSkills()) {
+                skill.init(controller, baseEntity);
             }
-            for (BaseMitama mitama : baseEntity.mitamas) {
-                mitama.init(new ControllerImpl(baseEntity, own, enemy));
+            for (Mitama mitama : baseEntity.mitamas) {
+                mitama.init(controller,baseEntity );
             }
         }
     }
 
-    private BaseEntity next() {
-        BaseEntity rtn = null;
+    private EntityImpl next() {
+        EntityImpl rtn = null;
         double min = 1;  // 不可能达到的较大值
-        List<BaseEntity> all = new ArrayList<>(15);
+        List<EntityImpl> all = new ArrayList<>(15);
         all.addAll(camp0.getAllAlive2());
         all.addAll(camp1.getAllAlive2());
         all.addAll(extras);
-        for (BaseEntity entity : all) {
+        for (EntityImpl entity : all) {
             double remain = (1 - entity.getPosition()) / entity.getSpeed();
             if (min > remain) {
                 min = remain;
                 rtn = entity;
             }
         }
-        for (BaseEntity entity : all) {
+        for (EntityImpl entity : all) {
             entity.setPosition(entity.getPosition() + min * entity.getSpeed());
         }
         return rtn;
@@ -92,8 +94,8 @@ public class Simulator {
         started = true;
         init(camp0, camp1);
         init(camp1, camp0);
-        camp0.getEventController().trigger(new BattleStartEvent());
-        camp1.getEventController().trigger(new BattleStartEvent());
+        camp0.getEventController().trigger(new BattleStartEvent(controller));
+        camp1.getEventController().trigger(new BattleStartEvent(controller));
     }
 
     public void step() {
@@ -103,7 +105,7 @@ public class Simulator {
             init();
 
         // 获取下一行动式神
-        BaseEntity self = next();
+        EntityImpl self = next();
 
         // TODO 战场鲤鱼旗行动
         if (self.getCamp() == null) {
@@ -127,9 +129,7 @@ public class Simulator {
         }
     }
 
-    private void action(BaseEntity self) {
-
-        ControllerImpl controller = new ControllerImpl(self, (BaseCamp) self.camp, (BaseCamp) self.camp.getOpposite());
+    private void action(EntityImpl self) {
 
         // 推进鬼火行动条
         self.fireRepo.step();

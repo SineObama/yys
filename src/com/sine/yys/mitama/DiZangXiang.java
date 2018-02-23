@@ -32,13 +32,13 @@ public class DiZangXiang extends BaseMitama implements Mitama {
     }
 
     @Override
-    public void init(Controller controller) {
-        controller.getEventController().add(new Handler(controller));
+    public void init(Controller controller, Entity self) {
+        self.getEventController().add(new Handler(self));
     }
 
     class Handler extends SealableMitamaHandler implements EventHandler<BeCriticalEvent> {
-        Handler(Controller controller) {
-            super(controller);
+        Handler(Entity self) {
+            super(self);
         }
 
         @Override
@@ -46,7 +46,7 @@ public class DiZangXiang extends BaseMitama implements Mitama {
             log.info(Msg.trigger(self, DiZangXiang.this));
             final double value = self.getMaxLife() * getShieldByMaxLife();
             self.getBuffController().addShield(new DiZangXiangShield(self.shieldValue(value)));
-            for (Entity entity : controller.getCamp(self).getAllAlive()) {
+            for (Entity entity : event.getController().getCamp(self).getAllAlive()) {
                 if (entity == self)
                     continue;
                 if (RandUtil.success(getPct())) {

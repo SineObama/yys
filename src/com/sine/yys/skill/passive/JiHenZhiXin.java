@@ -4,6 +4,7 @@ import com.sine.yys.buff.debuff.FengYin;
 import com.sine.yys.event.AttackEvent;
 import com.sine.yys.info.PctEffect;
 import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 
 /**
@@ -29,10 +30,10 @@ public class JiHenZhiXin extends BasePassiveSkill implements PassiveSkill, PctEf
 
     @Override
     public void handle(AttackEvent event) {
-        event.getController().applyDebuff(this, event.getTarget(), new FengYin(getLast()));
+        event.getController().applyDebuff(event.getEntity(), this, event.getTarget(), new FengYin(getLast()));
     }
 
-    public void init(Controller controller) {
-        controller.getEventController().add(this);
+    public void init(Controller controller, Entity self) {
+        self.getEventController().add(this);
     }
 }

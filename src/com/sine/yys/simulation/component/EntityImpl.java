@@ -6,6 +6,7 @@ import com.sine.yys.inter.*;
 import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.mitama.Mitama;
 import com.sine.yys.shishen.BaseShiShen;
+import com.sine.yys.shishen.ShiShen;
 import com.sine.yys.skill.ActiveSkill;
 import com.sine.yys.skill.commonattack.CommonAttack;
 import com.sine.yys.skill.Skill;
@@ -27,11 +28,11 @@ import java.util.logging.Logger;
  * <p>这里实现了程序的主体逻辑，包括行动逻辑，事件的触发等。
  * 技能或御魂通过调用这里的函数以实现自身的逻辑。</p>
  */
-public class BaseEntity implements Target, IProperty, Entity {
+public class EntityImpl implements Target, IProperty, Entity {
     final EventController eventController = new EventControllerImpl();
     final BuffController buffController = new BuffControllerImpl();
-    final BaseShiShen shiShen;
-    final List<BaseMitama> mitamas;
+    final ShiShen shiShen;
+    final List<Mitama> mitamas;
     private final Logger log = Logger.getLogger(getClass().toString());
     private final IProperty property;
     private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
@@ -43,7 +44,7 @@ public class BaseEntity implements Target, IProperty, Entity {
     Camp camp = null;
     FireRepo fireRepo;
 
-    public BaseEntity(IProperty property, BaseMitama mitama, BaseShiShen shiShen) {
+    public EntityImpl(IProperty property, BaseMitama mitama, ShiShen shiShen) {
         this.property = property;
         this.shiShen = shiShen;
         this.mitamas = new ArrayList<>();

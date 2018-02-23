@@ -21,8 +21,8 @@ public class XieZhan extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(Controller controller) {
-        controller.getOwn().getEventController().add(new Handler(controller.getSelf()));
+    public void init(Controller controller, Entity self) {
+        controller.getCamp(self).getEventController().add(new Handler(self));
     }
 
     class Handler extends SealablePassiveHandler implements EventHandler<CommonAttackEvent> {
@@ -34,7 +34,7 @@ public class XieZhan extends BasePassiveSkill implements PassiveSkill {
         public void handle(CommonAttackEvent event) {
             if (event.getEntity() != self && RandUtil.success(getPct())) {  // 前者表示非自身的普攻事件
                 log.info(Msg.trigger(self, XieZhan.this));
-                event.getController().xieZhan(event.getTarget());
+                event.getController().xieZhan(event.getEntity(), event.getTarget());
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.info.Named;
+import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -9,6 +10,8 @@ import com.sine.yys.inter.Entity;
  * 获取CD等，提供step函数。
  */
 public interface Skill extends Named {
+    void init(Controller controller, Entity self);
+
     int getCD(Entity self);
 
     int getMAXCD();

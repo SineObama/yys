@@ -18,16 +18,8 @@ public class PositionImpl implements Position {
     }
 
     @Override
-    public boolean isDead() {
-        return current != source;
-    }
-
-    @Override
-    public void setDead(boolean dead) {
-        if (dead)
-            this.current = null;
-        else
-            this.current = this.source;
+    public void setCurrent(Entity entity) {
+        current = entity;
     }
 
     @Override

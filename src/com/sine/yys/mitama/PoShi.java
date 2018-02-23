@@ -3,6 +3,7 @@ package com.sine.yys.mitama;
 import com.sine.yys.effect.DamageChangeByLife;
 import com.sine.yys.event.PreDamageEvent;
 import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 
 /**
@@ -17,13 +18,13 @@ public class PoShi extends BaseMitama implements Mitama {
     }
 
     @Override
-    public void init(Controller controller) {
-        controller.getEventController().add(new Handler(controller));
+    public void init(Controller controller, Entity self) {
+        self.getEventController().add(new Handler(self));
     }
 
     class Handler extends SealableMitamaHandler implements EventHandler<PreDamageEvent> {
-        Handler(Controller controller) {
-            super(controller);
+        Handler(Entity self) {
+            super(self);
         }
 
         @Override

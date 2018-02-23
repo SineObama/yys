@@ -20,7 +20,7 @@ public class PVPCamp extends BaseCamp implements Camp, FireRepo {
 
     public void init(Camp enemy) {
         super.init(enemy);
-        for (Shikigami shikigami : getAllShikigami2()) {
+        for (ShikigamiImpl shikigami : getAllShikigami2()) {
             shikigami.setFireRepo(this);
         }
     }
@@ -30,7 +30,6 @@ public class PVPCamp extends BaseCamp implements Camp, FireRepo {
         return fire;
     }
 
-    @Override
     public int getIncrease() {
         return increase;
     }

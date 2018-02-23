@@ -24,20 +24,20 @@ public class BangJing extends BaseMitama implements Mitama {
     }
 
     @Override
-    public void init(Controller controller) {
-        controller.getOwn().getEventController().add(new Handler(controller));
+    public void init(Controller controller, Entity self) {
+        controller.getCamp(self).getEventController().add(new Handler(self));
     }
 
     class Handler extends SealableMitamaHandler implements EventHandler<BattleStartEvent> {
-        Handler(Controller controller) {
-            super(controller);
+        Handler(Entity self) {
+            super(self);
         }
 
         @Override
         public void handle(BattleStartEvent event) {
             log.info(Msg.trigger(self, BangJing.this));
             final double value = self.getMaxLife() * getShieldByMaxLife();
-            for (Entity entity : controller.getCamp(self).getAllAlive()) {
+            for (Entity entity : event.getController().getCamp(self).getAllAlive()) {
                 entity.getBuffController().addShield(new BangJingShield(self.shieldValue(value)));
             }
         }

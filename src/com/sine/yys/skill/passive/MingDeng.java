@@ -24,8 +24,8 @@ public class MingDeng extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(Controller controller) {
-        controller.getOwn().getEventController().add(new Handler(controller.getSelf()));
+    public void init(Controller controller, Entity self) {
+        controller.getCamp(self).getEventController().add(new Handler(self));
     }
 
     class Handler extends SealablePassiveHandler implements EventHandler<UseFireEvent> {

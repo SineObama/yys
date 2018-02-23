@@ -34,14 +34,14 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
      * 释放幻境。由于开局释放不算回合数，而技能释放时需要给last额外加1，所以独立出这个逻辑。
      */
     private void deploy(Controller controller, Entity self, int last) {
-        LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> controller.getCamp(self).getEventController(self).trigger(new LongShouZhiYuOff()));  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
+        LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> self.getEventController().trigger(new LongShouZhiYuOff()));  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
         log.info(Msg.info(self, "施放 " + buff.getName()));
         self.getBuffController().addIBuff(buff);
         for (Entity shikigami : controller.getCamp(self).getAllShikigami()) {  // DESIGN 给式神不包括召唤物加buff
             shikigami.getBuffController().addAttach(new LSZYDefenseBuff(getDefPct()));
             shikigami.getBuffController().addAttach(new LSZYEffectDefBuff(getEffectDef()));
         }
-        controller.getCamp(self).getEventController(self).trigger(new LongShouZhiYuOn());
+        self.getEventController().trigger(new LongShouZhiYuOn());
     }
 
     @Override
@@ -50,9 +50,8 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
     }
 
     @Override
-    public void init(Controller controller) {
-        Entity self = controller.getSelf();
-        Camp own = controller.getOwn();
+    public void init(Controller controller, Entity self) {
+        Camp own = controller.getCamp(self);
         own.getEventController().add(new EventHandler<BattleStartEvent>() {
             @Override
             public void handle(BattleStartEvent event) {
@@ -62,8 +61,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
                 deploy(controller, self, getLast());
             }
         });
-        LongShouZhiYu instance = this;
-        own.getEventController(self).add(new EventHandler<LongShouZhiYuOff>() {
+        self.getEventController().add(new EventHandler<LongShouZhiYuOff>() {
             @Override
             public void handle(LongShouZhiYuOff event) {
                 for (Entity shikigami : own.getAllShikigami()) {
@@ -102,6 +100,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
         return 2;
     }
 
+    // XXXX 实现方式：是移除监听器，还是这样封印好？
     class Handler implements Sealable, EventHandler<BeforeActionEvent> {
         private final Entity self;
 

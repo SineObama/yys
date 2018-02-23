@@ -14,16 +14,15 @@ import java.util.logging.Logger;
 public abstract class BaseMitama implements Mitama {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
 
-    public void init(Controller controller) {
+    @Override
+    public void init(Controller controller, Entity self) {
     }
 
     class SealableMitamaHandler implements Sealable {
         protected final Entity self;
-        protected final Controller controller;
 
-        SealableMitamaHandler(Controller controller) {
-            this.controller = controller;
-            this.self = controller.getSelf();
+        SealableMitamaHandler(Entity self) {
+            this.self = self;
         }
 
         @Override

@@ -25,8 +25,7 @@ public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(Controller controller) {
-        Entity self = controller.getSelf();
+    public void init(Controller controller, Entity self) {
         self.getEventController().add(new Handler(self, false));
         controller.getCamp(self).getEventController().add(new Handler(self, true));
     }

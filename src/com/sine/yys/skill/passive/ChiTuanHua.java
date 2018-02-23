@@ -25,10 +25,9 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(Controller controller) {
-        Entity self = controller.getSelf();
-        controller.getEnemy().getEventController().add(new Handler(self));
-        controller.getOwn().getEventController(self).add(new Handler2(self));
+    public void init(Controller controller, Entity self) {
+        controller.getCamp(self).getOpposite().getEventController().add(new Handler(self));
+        self.getEventController().add(new Handler2(self));
     }
 
     class Handler extends SealablePassiveHandler implements EventHandler<BeforeActionEvent> {
@@ -41,7 +40,7 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill {
             int level = xueZhiHuaHai.getLevel(self);
             if (!self.isDead() && level > 0) {
                 log.info(Msg.trigger(self, ChiTuanHua.this));
-                event.getController().attack(event.getEntity(), new AttackInfoImpl(getCoefficient() * level));
+                event.getController().attack(self, event.getEntity(), new AttackInfoImpl(getCoefficient() * level));
             }
         }
     }
