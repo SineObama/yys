@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component.model.shield;
 
-import com.sine.yys.simulation.component.mitama.BangJing;
+import com.sine.yys.simulation.component.model.mitama.BangJing;
 
 /**
  * @see BangJing

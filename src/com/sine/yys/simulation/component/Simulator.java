@@ -1,15 +1,18 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.event.BattleStartEvent;
-import com.sine.yys.simulation.component.event.BeforeActionEvent;
-import com.sine.yys.simulation.component.event.UseFireEvent;
-import com.sine.yys.simulation.component.mitama.BaseMitama;
+import com.sine.yys.simulation.component.model.Camp;
+import com.sine.yys.simulation.component.model.Controller;
+import com.sine.yys.simulation.component.model.Entity;
 import com.sine.yys.simulation.component.model.buff.debuff.ControlBuff;
 import com.sine.yys.simulation.component.model.buff.debuff.HunLuan;
-import com.sine.yys.simulation.component.shishen.skill.ActiveSkill;
-import com.sine.yys.simulation.component.shishen.skill.BaseSkill;
-import com.sine.yys.simulation.component.shishen.skill.Skill;
-import com.sine.yys.simulation.component.shishen.skill.operation.Operation;
+import com.sine.yys.simulation.component.model.event.BattleStartEvent;
+import com.sine.yys.simulation.component.model.event.BeforeActionEvent;
+import com.sine.yys.simulation.component.model.event.UseFireEvent;
+import com.sine.yys.simulation.component.model.mitama.BaseMitama;
+import com.sine.yys.simulation.component.model.shishen.skill.ActiveSkill;
+import com.sine.yys.simulation.component.model.shishen.skill.BaseSkill;
+import com.sine.yys.simulation.component.model.shishen.skill.Skill;
+import com.sine.yys.simulation.component.model.shishen.skill.operation.Operation;
 import com.sine.yys.simulation.util.Msg;
 import com.sine.yys.simulation.util.RandUtil;
 

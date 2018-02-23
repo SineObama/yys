@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.component.model.Entity;
+
 public class PositionImpl implements Position {
     private final BaseEntity source;
     private BaseEntity current;

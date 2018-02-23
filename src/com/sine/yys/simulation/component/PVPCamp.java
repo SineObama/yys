@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.component.model.Camp;
+import com.sine.yys.simulation.component.model.FireRepo;
 import com.sine.yys.simulation.util.Msg;
 
 /**

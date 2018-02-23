@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.component.model.Camp;
+import com.sine.yys.simulation.component.model.Entity;
 import com.sine.yys.simulation.event.EventController;
 import com.sine.yys.simulation.event.EventControllerImpl;
 import com.sine.yys.simulation.util.RandUtil;

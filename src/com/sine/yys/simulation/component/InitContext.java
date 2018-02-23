@@ -1,5 +1,9 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.component.model.Camp;
+import com.sine.yys.simulation.component.model.Entity;
+import com.sine.yys.simulation.component.model.FireRepo;
+
 /**
  * 阵营、式神、技能、御魂等对象进行战斗初始化时所用的上下文对象。
  * 比如在上下文设置当前式神，然后把对象传递给技能，由技能自己设置所属的式神。

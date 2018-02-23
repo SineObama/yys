@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.simulation.component.model.Entity;
+
 /**
  * 一个实体的位置。
  * 不包含逻辑，实体死亡需要由外界调用控制。
