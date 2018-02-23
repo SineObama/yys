@@ -1,8 +1,8 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.buff.debuff.Debuff;
 import com.sine.yys.info.AttackInfo;
 import com.sine.yys.info.PctEffect;
-import com.sine.yys.inter.buff.Debuff;
 
 /**
  * 控制器，技能和御魂实现操作所调用的接口。

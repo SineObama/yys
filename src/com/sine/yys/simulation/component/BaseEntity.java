@@ -2,11 +2,7 @@ package com.sine.yys.simulation.component;
 
 import com.sine.yys.info.IProperty;
 import com.sine.yys.info.Target;
-import com.sine.yys.inter.Camp;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.EventController;
-import com.sine.yys.inter.FireRepo;
-import com.sine.yys.inter.buff.BuffController;
+import com.sine.yys.inter.*;
 import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.mitama.Mitama;
 import com.sine.yys.shishen.BaseShiShen;

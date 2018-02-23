@@ -1,7 +1,7 @@
 package com.sine.yys.effect;
 
+import com.sine.yys.buff.debuff.Debuff;
 import com.sine.yys.buff.debuff.HunLuan;
-import com.sine.yys.inter.buff.Debuff;
 
 /**
  * @see HunLuan

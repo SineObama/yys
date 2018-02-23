@@ -1,7 +1,7 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.info.AttackInfo;
-import com.sine.yys.info.AttackInfoImpl;
+import com.sine.yys.skill.model.AttackInfoImpl;
 
 /**
  * 姑获鸟-伞剑。

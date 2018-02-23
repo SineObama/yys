@@ -1,7 +1,6 @@
 package com.sine.yys.buff.shield;
 
 import com.sine.yys.buff.buff.DispellableBuff;
-import com.sine.yys.inter.buff.Shield;
 
 /**
  * 可驱散的护盾。

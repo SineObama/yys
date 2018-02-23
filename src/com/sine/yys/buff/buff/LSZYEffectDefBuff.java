@@ -1,7 +1,6 @@
 package com.sine.yys.buff.buff;
 
-import com.sine.yys.inter.buff.Buff;
-import com.sine.yys.inter.buff.UniqueIBuff;
+import com.sine.yys.buff.UniqueIBuff;
 
 /**
  * 龙首之玉效果抵抗buff。

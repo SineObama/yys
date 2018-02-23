@@ -1,4 +1,4 @@
-package com.sine.yys.info;
+package com.sine.yys.simulation.component;
 
 /**
  * 包装对象，以实现优先级排序。

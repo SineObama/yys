@@ -1,7 +1,6 @@
 package com.sine.yys.buff.shield;
 
 import com.sine.yys.buff.BaseIBuff;
-import com.sine.yys.inter.buff.Shield;
 
 /**
  * 盾通用逻辑。

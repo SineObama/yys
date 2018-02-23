@@ -1,7 +1,5 @@
 package com.sine.yys.buff;
 
-import com.sine.yys.inter.buff.IBuff;
-
 /**
  * buff通用逻辑。
  * 保存buff名字、持续回合数，提供每回合调用接口step()。

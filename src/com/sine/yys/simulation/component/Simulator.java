@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.debuff.HunLuan;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;
@@ -7,7 +8,6 @@ import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.buff.ControlBuff;
 import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.skill.ActiveSkill;
 import com.sine.yys.skill.BaseSkill;

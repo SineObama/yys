@@ -1,8 +1,7 @@
 package com.sine.yys.buff.buff;
 
 import com.sine.yys.buff.BaseIBuff;
-import com.sine.yys.inter.buff.Buff;
-import com.sine.yys.inter.buff.UniqueIBuff;
+import com.sine.yys.buff.UniqueIBuff;
 
 /**
  * 般若的狂暴状态，隐藏buff。

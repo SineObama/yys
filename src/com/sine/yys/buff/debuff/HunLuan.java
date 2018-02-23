@@ -1,7 +1,6 @@
 package com.sine.yys.buff.debuff;
 
 import com.sine.yys.buff.BaseIBuff;
-import com.sine.yys.inter.buff.ControlBuff;
 
 /**
  * 混乱。

@@ -1,5 +1,9 @@
-package com.sine.yys.inter.buff;
+package com.sine.yys.inter;
 
+import com.sine.yys.buff.IBuff;
+import com.sine.yys.buff.debuff.ControlBuff;
+import com.sine.yys.buff.shield.Shield;
+import com.sine.yys.info.IBuffProperty;
 import com.sine.yys.info.Target;
 
 import java.util.List;

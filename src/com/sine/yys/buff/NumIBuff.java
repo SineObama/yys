@@ -1,7 +1,5 @@
 package com.sine.yys.buff;
 
-import com.sine.yys.inter.buff.IBuff;
-
 /**
  * 单数值buff。
  * 包括攻击、防御、速度、命中抵抗等等。

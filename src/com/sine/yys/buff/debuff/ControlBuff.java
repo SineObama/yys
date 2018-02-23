@@ -1,4 +1,6 @@
-package com.sine.yys.inter.buff;
+package com.sine.yys.buff.debuff;
+
+import com.sine.yys.buff.UniqueIBuff;
 
 /**
  * 行动控制debuff。

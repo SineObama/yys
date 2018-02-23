@@ -1,11 +1,11 @@
 package com.sine.yys.simulation;
 
-import com.sine.yys.info.Property;
 import com.sine.yys.mitama.HuoLing;
 import com.sine.yys.mitama.MeiYao;
 import com.sine.yys.mitama.ZhenNv;
 import com.sine.yys.shishen.GuHuoNiao;
 import com.sine.yys.shishen.QingXingDeng;
+import com.sine.yys.simulation.component.Property;
 
 /**
  * 保存一些测试样例。

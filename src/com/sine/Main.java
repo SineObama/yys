@@ -1,6 +1,5 @@
 package com.sine;
 
-import com.sine.yys.info.Property;
 import com.sine.yys.mitama.DiZangXiang;
 import com.sine.yys.mitama.HuoLing;
 import com.sine.yys.mitama.MeiYao;
@@ -11,6 +10,7 @@ import com.sine.yys.shishen.GuHuoNiao;
 import com.sine.yys.shishen.HuiYeJi;
 import com.sine.yys.simulation.CampInfo;
 import com.sine.yys.simulation.RedBlueSimulator;
+import com.sine.yys.simulation.component.Property;
 
 public class Main {
     static {

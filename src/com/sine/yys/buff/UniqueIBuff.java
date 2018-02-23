@@ -1,4 +1,4 @@
-package com.sine.yys.inter.buff;
+package com.sine.yys.buff;
 
 /**
  * 只能存在一个的buff。

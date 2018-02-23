@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.info.Property;
 import com.sine.yys.inter.Entity;
 
 /**

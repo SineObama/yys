@@ -1,4 +1,7 @@
-package com.sine.yys.inter.buff;
+package com.sine.yys.buff.shield;
+
+import com.sine.yys.buff.UniqueIBuff;
+import com.sine.yys.buff.buff.Buff;
 
 /**
  * 盾。

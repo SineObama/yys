@@ -1,4 +1,6 @@
-package com.sine.yys.info;
+package com.sine.yys.simulation.component;
+
+import com.sine.yys.info.IProperty;
 
 /**
  * 式神属性。

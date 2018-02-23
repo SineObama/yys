@@ -2,9 +2,9 @@ package com.sine.yys.skill;
 
 import com.sine.yys.event.CommonAttackEvent;
 import com.sine.yys.info.AttackInfo;
-import com.sine.yys.info.AttackInfoImpl;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.skill.model.AttackInfoImpl;
 import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 import com.sine.yys.skill.targetresolver.TargetResolver;
 

@@ -2,7 +2,6 @@ package com.sine.yys.inter;
 
 import com.sine.yys.info.IProperty;
 import com.sine.yys.info.Target;
-import com.sine.yys.inter.buff.BuffController;
 
 public interface Entity extends Target, IProperty {
     <T, V> V get(Class<T> clazz, Object key, V defaultValue);
