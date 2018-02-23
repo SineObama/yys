@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.model.EventController;
 import com.sine.yys.simulation.component.model.buff.Debuff;
+import com.sine.yys.simulation.event.EventController;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.PctEffect;
 

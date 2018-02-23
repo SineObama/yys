@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component.mitama;
 
 import com.sine.yys.simulation.component.Controller;
-import com.sine.yys.simulation.component.model.EventHandler;
-import com.sine.yys.simulation.component.model.event.BattleStartEvent;
+import com.sine.yys.simulation.component.event.BattleStartEvent;
+import com.sine.yys.simulation.event.EventHandler;
 import com.sine.yys.simulation.util.Msg;
 
 /**

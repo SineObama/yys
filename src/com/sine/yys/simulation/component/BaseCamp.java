@@ -1,9 +1,7 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.model.EventController;
-import com.sine.yys.simulation.component.model.EventControllerImpl;
-import com.sine.yys.simulation.component.position.Position;
-import com.sine.yys.simulation.component.position.PositionImpl;
+import com.sine.yys.simulation.event.EventController;
+import com.sine.yys.simulation.event.EventControllerImpl;
 import com.sine.yys.simulation.util.RandUtil;
 
 import java.util.ArrayList;
@@ -38,7 +36,6 @@ public abstract class BaseCamp implements Camp {
         return fullName;
     }
 
-    @Override
     public final void addEntity(BaseEntity entity) {
         positions.add(new PositionImpl(entity));
     }
@@ -63,7 +60,16 @@ public abstract class BaseCamp implements Camp {
     }
 
     @Override
-    public final List<Shikigami> getAllShikigami() {
+    public final List<Entity> getAllShikigami() {
+        List<Entity> entities = new ArrayList<>();
+        for (Position position : positions) {
+            if (position.getCurrent() instanceof Shikigami)
+                entities.add(position.getCurrent());
+        }
+        return entities;
+    }
+
+    protected final List<Shikigami> getAllShikigami2() {
         List<Shikigami> entities = new ArrayList<>();
         for (Position position : positions) {
             if (position.getCurrent() instanceof Shikigami)
@@ -106,7 +112,7 @@ public abstract class BaseCamp implements Camp {
 
     public void init(Camp enemy) {
         opposite = enemy;
-        for (Shikigami shikigami : getAllShikigami()) {
+        for (Shikigami shikigami : getAllShikigami2()) {
             shikigami.setCamp(this);
         }
     }

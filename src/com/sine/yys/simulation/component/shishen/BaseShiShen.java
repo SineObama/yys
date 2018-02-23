@@ -1,8 +1,10 @@
 package com.sine.yys.simulation.component.shishen;
 
-import com.sine.yys.simulation.component.skill.BaseSkill;
-import com.sine.yys.simulation.component.skill.operation.AutoOperationHandler;
-import com.sine.yys.simulation.component.skill.operation.OperationHandler;
+import com.sine.yys.simulation.component.ShiShen;
+import com.sine.yys.simulation.component.shishen.skill.BaseSkill;
+import com.sine.yys.simulation.component.shishen.skill.Skill;
+import com.sine.yys.simulation.component.shishen.skill.operation.AutoOperationHandler;
+import com.sine.yys.simulation.component.shishen.skill.operation.OperationHandler;
 import com.sine.yys.simulation.info.Named;
 
 import java.util.List;
@@ -31,7 +33,11 @@ public abstract class BaseShiShen implements Named, ShiShen {
     }
 
     @Override
-    public List<BaseSkill> getSkills() {
+    public List<? extends Skill> getSkills() {
+        return skills;
+    }
+
+    public List<BaseSkill> getSkills2() {
         return skills;
     }
 }

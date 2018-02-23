@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component.shishen;
 
-import com.sine.yys.simulation.component.skill.MingDeng;
-import com.sine.yys.simulation.component.skill.XiHunDeng;
-import com.sine.yys.simulation.component.skill.YouGuang;
+import com.sine.yys.simulation.component.shishen.skill.MingDeng;
+import com.sine.yys.simulation.component.shishen.skill.XiHunDeng;
+import com.sine.yys.simulation.component.shishen.skill.YouGuang;
 
 import java.util.Arrays;
 

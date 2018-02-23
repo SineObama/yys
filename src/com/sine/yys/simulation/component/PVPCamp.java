@@ -18,7 +18,7 @@ public class PVPCamp extends BaseCamp implements Camp, FireRepo {
 
     public void init(Camp enemy) {
         super.init(enemy);
-        for (Shikigami shikigami : getAllShikigami()) {
+        for (Shikigami shikigami : getAllShikigami2()) {
             shikigami.setFireRepo(this);
         }
     }

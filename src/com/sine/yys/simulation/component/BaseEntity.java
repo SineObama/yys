@@ -4,13 +4,12 @@ import com.sine.yys.simulation.component.mitama.BaseMitama;
 import com.sine.yys.simulation.component.mitama.Mitama;
 import com.sine.yys.simulation.component.model.BuffController;
 import com.sine.yys.simulation.component.model.BuffControllerImpl;
-import com.sine.yys.simulation.component.model.EventController;
-import com.sine.yys.simulation.component.model.EventControllerImpl;
 import com.sine.yys.simulation.component.shishen.BaseShiShen;
-import com.sine.yys.simulation.component.shishen.ShiShen;
-import com.sine.yys.simulation.component.skill.ActiveSkill;
-import com.sine.yys.simulation.component.skill.CommonAttack;
-import com.sine.yys.simulation.component.skill.Skill;
+import com.sine.yys.simulation.component.shishen.skill.ActiveSkill;
+import com.sine.yys.simulation.component.shishen.skill.CommonAttack;
+import com.sine.yys.simulation.component.shishen.skill.Skill;
+import com.sine.yys.simulation.event.EventController;
+import com.sine.yys.simulation.event.EventControllerImpl;
 import com.sine.yys.simulation.info.IProperty;
 import com.sine.yys.simulation.info.Target;
 import com.sine.yys.simulation.util.Msg;
@@ -34,7 +33,7 @@ import java.util.logging.Logger;
 public class BaseEntity implements Target, IProperty, Entity {
     final EventController eventController = new EventControllerImpl();
     final BuffController buffController = new BuffControllerImpl();
-    final ShiShen shiShen;
+    final BaseShiShen shiShen;
     final List<BaseMitama> mitamas;
     private final Logger log = Logger.getLogger(getClass().toString());
     private final IProperty property;
@@ -47,7 +46,7 @@ public class BaseEntity implements Target, IProperty, Entity {
     Camp camp = null;
     FireRepo fireRepo;
 
-    public BaseEntity(IProperty property, BaseMitama mitama, ShiShen shiShen) {
+    public BaseEntity(IProperty property, BaseMitama mitama, BaseShiShen shiShen) {
         this.property = property;
         this.shiShen = shiShen;
         this.mitamas = new ArrayList<>();

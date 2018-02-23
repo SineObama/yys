@@ -2,8 +2,8 @@ package com.sine.yys.simulation.component.mitama;
 
 import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.effect.AddDebuffEffect;
-import com.sine.yys.simulation.component.model.EventHandler;
-import com.sine.yys.simulation.component.model.event.DamageEvent;
+import com.sine.yys.simulation.component.event.DamageEvent;
+import com.sine.yys.simulation.event.EventHandler;
 
 /**
  * 附加debuff的御魂效果通用逻辑。

@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component.effect;
 
-import com.sine.yys.simulation.component.model.EventHandler;
+import com.sine.yys.simulation.component.event.DamageEvent;
 import com.sine.yys.simulation.component.model.buff.Debuff;
-import com.sine.yys.simulation.component.model.event.DamageEvent;
+import com.sine.yys.simulation.event.EventHandler;
 import com.sine.yys.simulation.info.PctEffect;
 
 /**

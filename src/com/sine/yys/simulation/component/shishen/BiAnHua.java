@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component.shishen;
 
-import com.sine.yys.simulation.component.skill.ChiTuanHua;
-import com.sine.yys.simulation.component.skill.SiWangZhiHua;
-import com.sine.yys.simulation.component.skill.XueZhiHuaHai;
+import com.sine.yys.simulation.component.shishen.skill.ChiTuanHua;
+import com.sine.yys.simulation.component.shishen.skill.SiWangZhiHua;
+import com.sine.yys.simulation.component.shishen.skill.XueZhiHuaHai;
 
 import java.util.Arrays;
 

@@ -2,8 +2,8 @@ package com.sine.yys.simulation.component.mitama;
 
 import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.effect.DamageChangeByLife;
-import com.sine.yys.simulation.component.model.EventHandler;
-import com.sine.yys.simulation.component.model.event.PreDamageEvent;
+import com.sine.yys.simulation.component.event.PreDamageEvent;
+import com.sine.yys.simulation.event.EventHandler;
 
 /**
  * 心眼。
