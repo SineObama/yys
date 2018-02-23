@@ -1,4 +1,4 @@
-package com.sine.yys.skill;
+package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.info.AttackInfo;
 import com.sine.yys.skill.model.AttackInfoImpl;

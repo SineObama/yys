@@ -1,8 +1,9 @@
-package com.sine.yys.skill;
+package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.info.AttackInfo;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.skill.AttackSkill;
 
 /**
  * 普通攻击。

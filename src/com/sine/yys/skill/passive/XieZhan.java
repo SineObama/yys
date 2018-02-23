@@ -1,4 +1,4 @@
-package com.sine.yys.skill;
+package com.sine.yys.skill.passive;
 
 import com.sine.yys.event.CommonAttackEvent;
 import com.sine.yys.inter.Controller;

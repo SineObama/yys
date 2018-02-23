@@ -1,8 +1,8 @@
 package com.sine.yys.shishen;
 
-import com.sine.yys.skill.MingDeng;
-import com.sine.yys.skill.XiHunDeng;
-import com.sine.yys.skill.YouGuang;
+import com.sine.yys.skill.passive.MingDeng;
+import com.sine.yys.skill.groupattack.XiHunDeng;
+import com.sine.yys.skill.commonattack.YouGuang;
 
 import java.util.Arrays;
 

@@ -1,7 +1,7 @@
 package com.sine.yys.shishen;
 
-import com.sine.yys.skill.ChiTuanHua;
-import com.sine.yys.skill.SiWangZhiHua;
+import com.sine.yys.skill.passive.ChiTuanHua;
+import com.sine.yys.skill.commonattack.SiWangZhiHua;
 import com.sine.yys.skill.XueZhiHuaHai;
 
 import java.util.Arrays;

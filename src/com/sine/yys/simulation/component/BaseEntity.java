@@ -7,7 +7,7 @@ import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.mitama.Mitama;
 import com.sine.yys.shishen.BaseShiShen;
 import com.sine.yys.skill.ActiveSkill;
-import com.sine.yys.skill.CommonAttack;
+import com.sine.yys.skill.commonattack.CommonAttack;
 import com.sine.yys.skill.Skill;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;

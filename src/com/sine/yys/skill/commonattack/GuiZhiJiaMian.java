@@ -1,4 +1,4 @@
-package com.sine.yys.skill;
+package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.buff.buff.KuangBao;
 import com.sine.yys.inter.Entity;

@@ -1,8 +1,8 @@
 package com.sine.yys.shishen;
 
-import com.sine.yys.skill.SanJian;
-import com.sine.yys.skill.TianXiangHeZhan;
-import com.sine.yys.skill.XieZhan;
+import com.sine.yys.skill.commonattack.SanJian;
+import com.sine.yys.skill.groupattack.TianXiangHeZhan;
+import com.sine.yys.skill.passive.XieZhan;
 
 import java.util.Arrays;
 
