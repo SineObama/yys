@@ -16,6 +16,14 @@ import java.util.logging.Logger;
 
 public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().toString());
+    private final BaseEntity self;
+    private final BaseCamp own, enemy;
+
+    public ControllerImpl(BaseEntity self, BaseCamp own, BaseCamp enemy) {
+        this.self = self;
+        this.own = own;
+        this.enemy = enemy;
+    }
 
     @Override
     public Entity getSelf() {
@@ -30,15 +38,6 @@ public class ControllerImpl implements Controller {
     @Override
     public Camp getEnemy() {
         return enemy;
-    }
-
-    private final BaseEntity self;
-    private final BaseCamp own, enemy;
-
-    public ControllerImpl(BaseEntity self, BaseCamp own, BaseCamp enemy) {
-        this.self = self;
-        this.own = own;
-        this.enemy = enemy;
     }
 
     @Override
@@ -59,11 +58,11 @@ public class ControllerImpl implements Controller {
         if (target.isDead())  // XXX 只是有时会出现目标已死。有更好的逻辑？
             return;
 
-        self.eventController.trigger(new AttackEvent(self, target));
+        self.eventController.trigger(new AttackEvent(this, self, target));
 
         // XXXXX 像这种每次都调用是不是不好、太慢
-        target.getCamp().getEventController().triggerOff(new BeAttackEvent());
-        target.getEventController().triggerOff(new BeAttackEvent());
+        target.getCamp().getEventController().triggerOff(new BeAttackEvent(this));
+        target.getEventController().triggerOff(new BeAttackEvent(this));
 
         // 1.
         final boolean critical = RandUtil.success(self.getCritical());
@@ -78,15 +77,15 @@ public class ControllerImpl implements Controller {
         if (remain != 0) {
             damage = remain;
 
-            PreDamageEvent event = new PreDamageEvent(self, target);
+            PreDamageEvent event = new PreDamageEvent(this, self, target);
             self.eventController.trigger(event);
             damage *= event.getCoefficient();
 
             doDamage(target, (int) damage);
 
             if (critical) {
-                target.getEventController().trigger(new BeCriticalEvent(target, self));
-                self.eventController.trigger(new CriticalEvent(self, target));
+                target.getEventController().trigger(new BeCriticalEvent(this, target, self));
+                self.eventController.trigger(new CriticalEvent(this, self, target));
             }
         } else {
             log.info(Msg.noDamage(self, target));
@@ -106,7 +105,7 @@ public class ControllerImpl implements Controller {
         if (target.isDead())
             return;
 
-        self.eventController.trigger(new AttackEvent(self, target));
+        self.eventController.trigger(new AttackEvent(this, self, target));
 
         // 1.
         final double damage1 = self.getAttack() * maxByAttack;
@@ -151,14 +150,14 @@ public class ControllerImpl implements Controller {
             double src = target.getLife();
             target.setLife(target.getLifeInt() - damage);
             double dst = target.getLife();
-            target.getEventController().trigger(new BeDamageEvent(src, dst));
+            target.getEventController().trigger(new BeDamageEvent(this, src, dst));
         } else {
             log.info(Msg.vector(self, "击杀", target, ""));
             target.setLife(0);
             target.getCamp().getPosition(target).setDead(true);
         }
         // FIXME 死后添加debuff会有问题？
-        self.eventController.trigger(new DamageEvent(self, target));
+        self.eventController.trigger(new DamageEvent(this, self, target));
     }
 
     @Override

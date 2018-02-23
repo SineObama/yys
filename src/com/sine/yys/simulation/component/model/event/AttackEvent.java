@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component.model.event;
 
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.Entity;
 
 /**
@@ -7,7 +8,7 @@ import com.sine.yys.simulation.component.Entity;
  * 用于附加效果，目前在攻击前触发。
  */
 public class AttackEvent extends BaseVectorEvent {
-    public AttackEvent(Entity self, Entity target) {
-        super(self, target);
+    public AttackEvent(Controller controller, Entity entity, Entity target) {
+        super(controller, entity, target);
     }
 }

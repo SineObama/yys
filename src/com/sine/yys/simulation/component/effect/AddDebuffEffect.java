@@ -28,6 +28,6 @@ public abstract class AddDebuffEffect extends BaseEffect implements PctEffect, E
 
     @Override
     public void handle(DamageEvent event) {
-        event.getSelf().applyDebuff(this, event.getTarget(), getDebuff());
+        event.getController().applyDebuff(this, event.getTarget(), getDebuff());
     }
 }

@@ -35,7 +35,7 @@ public class MingDeng extends BasePassiveSkill implements PassiveSkill {
 
         @Override
         public void handle(UseFireEvent event) {
-            if (event.getSelf() != self && RandUtil.success(getPct())) {
+            if (event.getEntity() != self && RandUtil.success(getPct())) {
                 log.info(Msg.trigger(self, MingDeng.this));
                 event.setCostFire(0);
             }

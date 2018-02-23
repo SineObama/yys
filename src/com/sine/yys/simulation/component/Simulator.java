@@ -40,26 +40,6 @@ public class Simulator {
         this.extras = extras;
     }
 
-    private BaseEntity next() {
-        BaseEntity rtn = null;
-        double min = 1;  // 不可能达到的较大值
-        List<BaseEntity> all = new ArrayList<>(15);
-        all.addAll(camp0.getAllAlive2());
-        all.addAll(camp1.getAllAlive2());
-        all.addAll(extras);
-        for (BaseEntity entity : all) {
-            double remain = (1 - entity.getPosition()) / entity.getSpeed();
-            if (min > remain) {
-                min = remain;
-                rtn = entity;
-            }
-        }
-        for (BaseEntity entity : all) {
-            entity.setPosition(entity.getPosition() + min * entity.getSpeed());
-        }
-        return rtn;
-    }
-
     /**
      * 双方阵营的初始化。因为对称，提取为函数。
      * <p>
@@ -80,6 +60,26 @@ public class Simulator {
                 mitama.init(new ControllerImpl(baseEntity, own, enemy));
             }
         }
+    }
+
+    private BaseEntity next() {
+        BaseEntity rtn = null;
+        double min = 1;  // 不可能达到的较大值
+        List<BaseEntity> all = new ArrayList<>(15);
+        all.addAll(camp0.getAllAlive2());
+        all.addAll(camp1.getAllAlive2());
+        all.addAll(extras);
+        for (BaseEntity entity : all) {
+            double remain = (1 - entity.getPosition()) / entity.getSpeed();
+            if (min > remain) {
+                min = remain;
+                rtn = entity;
+            }
+        }
+        for (BaseEntity entity : all) {
+            entity.setPosition(entity.getPosition() + min * entity.getSpeed());
+        }
+        return rtn;
     }
 
     /**
@@ -137,7 +137,7 @@ public class Simulator {
         }
         controller.clear();  // 重置攻击事件。允许对方彼岸花行动前的伤害触发事件。
         // 行动前事件
-        self.camp.getEventController().trigger(new BeforeActionEvent(self));
+        self.camp.getEventController().trigger(new BeforeActionEvent(controller, self));
 
         // 行动开始
 
@@ -190,7 +190,7 @@ public class Simulator {
             // 消耗鬼火
             int fire = activeSkill.getFire();
             if (fire > 0) {
-                UseFireEvent event = new UseFireEvent(self, fire);
+                UseFireEvent event = new UseFireEvent(controller, self, fire);
                 self.camp.getEventController().trigger(event);
                 fire = event.getCostFire();
                 self.fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改

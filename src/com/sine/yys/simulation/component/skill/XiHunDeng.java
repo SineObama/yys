@@ -36,7 +36,7 @@ public class XiHunDeng extends SimpleGroupAttack {
         List<Entity> allAlive = self.getCamp().getOpposite().getAllAlive();// XXX 未来对于召唤物的吸火检查
         super.doApply(controller, self, target);
         for (Entity entity : allAlive) {// XXX 对于已死目标是否会有问题
-            self.randomGrab(getPct(), entity);
+            controller.randomGrab(getPct(), entity);
         }
     }
 }

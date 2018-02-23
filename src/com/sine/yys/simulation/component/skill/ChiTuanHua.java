@@ -48,7 +48,7 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill {
             int level = xueZhiHuaHai.getLevel(self);
             if (!self.isDead() && level > 0) {
                 log.info(Msg.trigger(self, ChiTuanHua.this));
-                self.attack(event.getTarget(), new AttackInfoImpl(getCoefficient() * level));
+                event.getController().attack(event.getEntity(), new AttackInfoImpl(getCoefficient() * level));
             }
         }
     }

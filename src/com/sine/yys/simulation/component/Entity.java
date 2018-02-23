@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.model.BuffController;
+import com.sine.yys.simulation.component.model.EventController;
 import com.sine.yys.simulation.component.skill.ActiveSkill;
 import com.sine.yys.simulation.info.IProperty;
 import com.sine.yys.simulation.info.Target;
@@ -31,4 +32,6 @@ public interface Entity extends Target, IProperty {
     void setPosition(double position);
 
     List<ActiveSkill> getActiveSkills();
+
+    EventController getEventController();
 }

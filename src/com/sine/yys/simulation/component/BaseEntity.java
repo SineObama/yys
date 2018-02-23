@@ -9,7 +9,6 @@ import com.sine.yys.simulation.component.model.EventControllerImpl;
 import com.sine.yys.simulation.component.shishen.BaseShiShen;
 import com.sine.yys.simulation.component.shishen.ShiShen;
 import com.sine.yys.simulation.component.skill.ActiveSkill;
-import com.sine.yys.simulation.component.skill.BaseSkill;
 import com.sine.yys.simulation.component.skill.CommonAttack;
 import com.sine.yys.simulation.component.skill.Skill;
 import com.sine.yys.simulation.info.IProperty;
@@ -36,9 +35,9 @@ public class BaseEntity implements Target, IProperty, Entity {
     final EventController eventController = new EventControllerImpl();
     final BuffController buffController = new BuffControllerImpl();
     final ShiShen shiShen;
+    final List<BaseMitama> mitamas;
     private final Logger log = Logger.getLogger(getClass().toString());
     private final IProperty property;
-    final List<BaseMitama> mitamas;
     private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
 
     int life;
@@ -47,15 +46,6 @@ public class BaseEntity implements Target, IProperty, Entity {
     // XXXX 两者的设置由谁负责比较好？
     Camp camp = null;
     FireRepo fireRepo;
-
-    public void setCamp(Camp camp) {
-        this.camp = camp;
-    }
-
-    public void setFireRepo(FireRepo fireRepo) {
-        this.fireRepo = fireRepo;
-    }
-
 
     public BaseEntity(IProperty property, BaseMitama mitama, ShiShen shiShen) {
         this.property = property;
@@ -81,16 +71,13 @@ public class BaseEntity implements Target, IProperty, Entity {
         map.get(clazz).put(key, value);
     }
 
-
     public final String getFullName() {
         return camp.getFullName() + getName();
     }
 
-
     public final double getAttack() {
         return property.getAttack() * (1 + buffController.getAtkPct());
     }
-
 
     public final int getMaxLife() {
         return (int) property.getLife();
@@ -101,22 +88,17 @@ public class BaseEntity implements Target, IProperty, Entity {
         return life;
     }
 
-
     public final double getDefense() {
         return property.getDefense() * (1 + buffController.getDefPct());
     }
-
 
     public final double getSpeed() {
         return property.getSpeed() + buffController.getSpeed();
     }
 
-    // XXX 可能的负值问题。
-
     public final double getCritical() {
         return property.getCritical() + buffController.getCritical();
     }
-
 
     public final double getCriticalDamage() {
         return property.getCriticalDamage() + buffController.getCriticalDamage();
@@ -128,22 +110,21 @@ public class BaseEntity implements Target, IProperty, Entity {
         return property.getEffectHit() + buffController.getEffectHit();
     }
 
-    // XXX 可能的负值问题。
-
     public final double getEffectDef() {
         return property.getEffectDef() + buffController.getEffectDef();
     }
 
+    // XXX 可能的负值问题。
 
     public final double getLife() {
         return (double) life / getMaxLife();
     }
 
+    // XXX 可能的负值问题。
 
     void setLife(int life) {
         this.life = life;
     }
-
 
     public final EventController getEventController() {
         return this.eventController;
@@ -181,26 +162,29 @@ public class BaseEntity implements Target, IProperty, Entity {
         throw new RuntimeException(getFullName() + " 没有普通攻击。");
     }
 
-
     public final boolean isDead() {
         return life <= 0;
     }
-
 
     public final Camp getCamp() {
         return camp;
     }
 
+    public void setCamp(Camp camp) {
+        this.camp = camp;
+    }
 
     public final BuffController getBuffController() {
         return buffController;
     }
 
-
     public final FireRepo getFireRepo() {
         return fireRepo;
     }
 
+    public void setFireRepo(FireRepo fireRepo) {
+        this.fireRepo = fireRepo;
+    }
 
     public double getPosition() {
         return position;

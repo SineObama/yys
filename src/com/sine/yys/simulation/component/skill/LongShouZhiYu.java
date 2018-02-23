@@ -1,6 +1,9 @@
 package com.sine.yys.simulation.component.skill;
 
-import com.sine.yys.simulation.component.*;
+import com.sine.yys.simulation.component.Camp;
+import com.sine.yys.simulation.component.Controller;
+import com.sine.yys.simulation.component.Entity;
+import com.sine.yys.simulation.component.Shikigami;
 import com.sine.yys.simulation.component.model.EventHandler;
 import com.sine.yys.simulation.component.model.buff.buff.LSZYDefenseBuff;
 import com.sine.yys.simulation.component.model.buff.buff.LSZYEffectDefBuff;
@@ -120,7 +123,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
         public void handle(BeforeActionEvent event) {
             if (RandUtil.success(getPct())) {
                 log.info(Msg.trigger(self, LongShouZhiYu.this));
-                event.getTarget().getFireRepo().addFire(1);
+                event.getEntity().getFireRepo().addFire(1);
             }
         }
     }

@@ -26,7 +26,7 @@ public abstract class DamageChange extends BaseEffect implements Effect, EventHa
     public final void handle(PreDamageEvent event) {
         double coefficient = judge(event.getTarget());
         if (coefficient != 1.0) {
-            log.info(Msg.trigger(event.getSelf(), this));
+            log.info(Msg.trigger(event.getController().getSelf(), this));
             event.multiplyCoefficient(coefficient);
         }
     }

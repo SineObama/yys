@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component.model;
 
-import com.sine.yys.simulation.component.model.event.Event;
 import com.sine.yys.simulation.info.Sealable;
 
 import java.lang.reflect.ParameterizedType;
@@ -28,7 +27,7 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType extends T, T extends Event> void add(Class<EventType> clazz, EventHandler<T> handler) {
+    public <EventType extends T, T> void add(Class<EventType> clazz, EventHandler<T> handler) {
         get(clazz).add(new Container<>(Integer.MAX_VALUE, handler));
     }
 
@@ -38,7 +37,7 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType extends T, T extends Event> void add(Class<EventType> clazz, EventHandler<T> handler, int priority) {
+    public <EventType extends T, T> void add(Class<EventType> clazz, EventHandler<T> handler, int priority) {
         get(clazz).add(new Container<>(priority, handler));
     }
 
@@ -48,12 +47,12 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType extends Event> void setState(Class<EventType> clazz, boolean state) {
+    public <EventType> void setState(Class<EventType> clazz, boolean state) {
         states.put(clazz, state);
     }
 
     @Override
-    public <EventType extends Event> void trigger(EventType event) {
+    public <EventType> void trigger(EventType event) {
         if (!states.containsKey(event.getClass()) || states.get(event.getClass()))
             for (Container<EventHandler> container : get(event.getClass())) {
                 final EventHandler obj = container.getObj();
@@ -64,7 +63,7 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType extends Event> void triggerOff(EventType event) {
+    public <EventType> void triggerOff(EventType event) {
         trigger(event);
         states.put(event.getClass(), false);
     }
@@ -75,7 +74,7 @@ public class EventControllerImpl implements EventController {
         return controllerMap.get(T);
     }
 
-    private <EventType extends Event> Class<EventType> getEventType(EventHandler<EventType> handler) {
+    private <EventType> Class<EventType> getEventType(EventHandler<EventType> handler) {
         Class clazz = handler.getClass();
         do {  // 往上查找父类
             Type[] types = clazz.getGenericInterfaces();

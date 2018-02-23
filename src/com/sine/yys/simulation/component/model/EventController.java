@@ -14,23 +14,23 @@ import com.sine.yys.simulation.component.model.event.Event;
 public interface EventController {
     void add(EventHandler<?> handler);
 
-    <EventType extends T, T extends Event> void add(Class<EventType> clazz, EventHandler<T> handler);
+    <EventType extends T, T> void add(Class<EventType> clazz, EventHandler<T> handler);
 
     void add(EventHandler<?> handler, int priority);
 
-    <EventType extends T, T extends Event> void add(Class<EventType> clazz, EventHandler<T> handler, int priority);
+    <EventType extends T, T> void add(Class<EventType> clazz, EventHandler<T> handler, int priority);
 
     void remove(EventHandler<?> handler);
 
     /**
      * 设置事件状态，开启或关闭。
      */
-    <EventType extends Event> void setState(Class<EventType> clazz, boolean state);
+    <EventType> void setState(Class<EventType> clazz, boolean state);
 
-    <EventType extends Event> void trigger(EventType event);
+    <EventType> void trigger(EventType event);
 
     /**
      * 触发，然后关闭事件。
      */
-    <EventType extends Event> void triggerOff(EventType event);
+    <EventType> void triggerOff(EventType event);
 }
