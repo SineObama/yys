@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component.model;
+package com.sine.yys.simulation.component.model.shishen;
 
 import com.sine.yys.simulation.component.model.skill.Skill;
 import com.sine.yys.simulation.component.model.skill.operation.OperationHandler;

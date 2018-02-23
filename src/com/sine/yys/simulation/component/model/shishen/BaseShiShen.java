@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component.model.shishen;
 
-import com.sine.yys.simulation.component.model.ShiShen;
 import com.sine.yys.simulation.component.model.skill.BaseSkill;
 import com.sine.yys.simulation.component.model.skill.Skill;
 import com.sine.yys.simulation.component.model.skill.operation.AutoOperationHandler;

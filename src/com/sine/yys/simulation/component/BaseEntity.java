@@ -1,8 +1,6 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.simulation.component.model.*;
-import com.sine.yys.simulation.component.model.BuffController;
-import com.sine.yys.simulation.component.model.BuffControllerImpl;
 import com.sine.yys.simulation.component.model.mitama.BaseMitama;
 import com.sine.yys.simulation.component.model.mitama.Mitama;
 import com.sine.yys.simulation.component.model.shishen.BaseShiShen;
