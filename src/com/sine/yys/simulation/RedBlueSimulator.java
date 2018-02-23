@@ -29,10 +29,10 @@ public class RedBlueSimulator {
             BaseCamp red = new PVPCamp(redName, 3);
             BaseCamp blue = new PVPCamp(buleName, 3);
             for (EntityInfo info : redInfo.infos) {
-                red.addEntity(new ShikigamiImpl(info.property, info.mitama, info.shiShen));
+                red.addEntity(new ShikigamiEntityImpl(info.property, info.mitama, info.shiShen));
             }
             for (EntityInfo info : blueInfo.infos) {
-                blue.addEntity(new ShikigamiImpl(info.property, info.mitama, info.shiShen));
+                blue.addEntity(new ShikigamiEntityImpl(info.property, info.mitama, info.shiShen));
             }
             Simulator simulator = new Simulator(red, blue, Collections.singletonList(new BattleKoinobori(128.0)));
             while (simulator.getWin() == null)

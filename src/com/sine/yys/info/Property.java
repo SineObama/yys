@@ -1,6 +1,6 @@
 package com.sine.yys.info;
 
-public interface IProperty {
+public interface Property {
     double getAttack();
 
     double getLife();

@@ -30,13 +30,12 @@ public class Simulator {
     // 引用
     private final BaseCamp camp0, camp1;
     private final List<EntityImpl> extras;  // 额外的对象，包括不属于阵营的战场鲤鱼旗。秘闻竞赛副本的鬼头？
+    ControllerImpl controller;
     private Camp win = null;
     // 状态
     private boolean started = false;
     private boolean ended = false;
     private int round = 0;
-
-    ControllerImpl controller;
 
     public Simulator(final BaseCamp camp0, final BaseCamp camp1, List<EntityImpl> extras) {
         this.camp0 = camp0;
@@ -58,11 +57,11 @@ public class Simulator {
     private void init(BaseCamp own, BaseCamp enemy) {
         own.init(enemy);
         for (EntityImpl baseEntity : own.getAllAlive2()) {
-            for (Skill skill : baseEntity.shiShen.getSkills()) {
+            for (Skill skill : baseEntity.shikigami.getSkills()) {
                 skill.init(controller, baseEntity);
             }
             for (Mitama mitama : baseEntity.mitamas) {
-                mitama.init(controller,baseEntity );
+                mitama.init(controller, baseEntity);
             }
         }
     }
@@ -135,7 +134,7 @@ public class Simulator {
         self.fireRepo.step();
 
         // 调用技能step。减少cd
-        for (Skill skill : self.shiShen.getSkills()) {
+        for (Skill skill : self.shikigami.getSkills()) {
             skill.step(self);
         }
         controller.clear();  // 重置攻击事件。允许对方彼岸花行动前的伤害触发事件。
@@ -164,7 +163,7 @@ public class Simulator {
             }
 
             if (!map.isEmpty())
-                operation = self.shiShen.getAI().handle(self, map);
+                operation = self.shikigami.getAI().handle(self, map);
             else
                 operation = new Operation(null, null);
 

@@ -1,14 +1,14 @@
-package com.sine.yys.shishen;
+package com.sine.yys.shikigami;
 
 import com.sine.yys.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.skill.ActiveSkill;
-import com.sine.yys.skill.passive.HuoShuQiu;
 import com.sine.yys.skill.LongShouZhiYu;
 import com.sine.yys.skill.commonattack.PengLaiYuZhi;
 import com.sine.yys.skill.operation.AutoOperationHandler;
 import com.sine.yys.skill.operation.Operation;
 import com.sine.yys.skill.operation.OperationHandler;
+import com.sine.yys.skill.passive.HuoShuQiu;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * 辉夜姬。
  */
-public class HuiYeJi extends BaseShiShen {
+public class HuiYeJi extends BaseShikigami {
     public HuiYeJi() {
         super(Arrays.asList(new PengLaiYuZhi(), new HuoShuQiu(), new LongShouZhiYu()), "辉夜姬");
     }

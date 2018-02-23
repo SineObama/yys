@@ -13,7 +13,7 @@ public class BattleKoinobori extends EntityImpl implements Entity {
     private double cureRatioReduction = 0.2;
 
     public BattleKoinobori(double speed) {
-        super(new Property(0, 0, 0, speed, 0, 0, 0, 0), null, null);  // TODO 行动技能：给全体加增伤buff
+        super(new PropertyImpl(0, 0, 0, speed, 0, 0, 0, 0), null, null);  // TODO 行动技能：给全体加增伤buff
     }
 
     public double getDamageRatio() {

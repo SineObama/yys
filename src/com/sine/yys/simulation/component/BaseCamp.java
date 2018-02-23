@@ -65,17 +65,17 @@ public abstract class BaseCamp implements Camp {
     public final List<Entity> getAllShikigami() {
         List<Entity> entities = new ArrayList<>();
         for (Position position : positions) {
-            if (position.getCurrent() instanceof ShikigamiImpl)
+            if (position.getCurrent() instanceof ShikigamiEntityImpl)
                 entities.add(position.getCurrent());
         }
         return entities;
     }
 
-    protected final List<ShikigamiImpl> getAllShikigami2() {
-        List<ShikigamiImpl> entities = new ArrayList<>();
+    protected final List<ShikigamiEntityImpl> getAllShikigami2() {
+        List<ShikigamiEntityImpl> entities = new ArrayList<>();
         for (Position position : positions) {
-            if (position.getCurrent() instanceof ShikigamiImpl)
-                entities.add((ShikigamiImpl) position.getCurrent());
+            if (position.getCurrent() instanceof ShikigamiEntityImpl)
+                entities.add((ShikigamiEntityImpl) position.getCurrent());
         }
         return entities;
     }
@@ -105,7 +105,7 @@ public abstract class BaseCamp implements Camp {
 
     public void init(Camp enemy) {
         opposite = enemy;
-        for (ShikigamiImpl shikigami : getAllShikigami2()) {
+        for (ShikigamiEntityImpl shikigami : getAllShikigami2()) {
             shikigami.setCamp(this);
         }
     }

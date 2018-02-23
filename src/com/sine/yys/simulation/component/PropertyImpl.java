@@ -1,13 +1,13 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.info.IProperty;
+import com.sine.yys.info.Property;
 
 /**
  * 式神属性。
  * 创建式神时已经固定的各项属性。
  * 依次为：攻击，生命，防御，速度，暴击，暴击伤害，效果命中，效果抵抗。
  */
-public class Property implements IProperty {
+public class PropertyImpl implements Property {
     private final double attack;
     private final double life;
     private final double defense;
@@ -17,7 +17,7 @@ public class Property implements IProperty {
     private final double effectHit;
     private final double effectDef;
 
-    public Property(double attack, double life, double defense, double speed, double critical, double criticalDamage, double effectHit, double effectDef) {
+    public PropertyImpl(double attack, double life, double defense, double speed, double critical, double criticalDamage, double effectHit, double effectDef) {
         this.attack = attack;
         this.life = life;
         this.defense = defense;

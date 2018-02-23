@@ -1,6 +1,6 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.info.IProperty;
+import com.sine.yys.info.Property;
 import com.sine.yys.info.Target;
 
 /**
@@ -11,7 +11,7 @@ import com.sine.yys.info.Target;
  * 全局广泛使用的接口，主要作存储功能。
  * 可获取战斗时属性（包括buff加成），设置行动条位置，获取buff和事件控制器，还为技能保存变量。
  */
-public interface Entity extends Target, IProperty {
+public interface Entity extends Target, Property {
     /**
      * 获取技能保存的变量。没有时使用默认值。
      *

@@ -1,11 +1,11 @@
 package com.sine.yys.simulation;
 
-import com.sine.yys.info.IProperty;
-import com.sine.yys.mitama.BaseMitama;
-import com.sine.yys.shishen.BaseShiShen;
+import com.sine.yys.info.Property;
+import com.sine.yys.mitama.Mitama;
+import com.sine.yys.shikigami.Shikigami;
 
 public class EntityInfo {
-    BaseShiShen shiShen;
-    IProperty property;
-    BaseMitama mitama;
+    Shikigami shiShen;
+    Property property;
+    Mitama mitama;
 }

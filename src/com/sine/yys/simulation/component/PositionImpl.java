@@ -18,12 +18,12 @@ public class PositionImpl implements Position {
     }
 
     @Override
-    public void setCurrent(Entity entity) {
-        current = entity;
+    public Entity getCurrent() {
+        return current;
     }
 
     @Override
-    public Entity getCurrent() {
-        return current;
+    public void setCurrent(Entity entity) {
+        current = entity;
     }
 }

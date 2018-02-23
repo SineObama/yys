@@ -1,15 +1,14 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.info.IProperty;
+import com.sine.yys.info.Property;
 import com.sine.yys.info.Target;
 import com.sine.yys.inter.*;
-import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.mitama.Mitama;
-import com.sine.yys.shishen.BaseShiShen;
-import com.sine.yys.shishen.ShiShen;
+import com.sine.yys.shikigami.BaseShikigami;
+import com.sine.yys.shikigami.Shikigami;
 import com.sine.yys.skill.ActiveSkill;
-import com.sine.yys.skill.commonattack.CommonAttack;
 import com.sine.yys.skill.Skill;
+import com.sine.yys.skill.commonattack.CommonAttack;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
@@ -20,7 +19,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * 战场中的实体，保存了式神信息{@link BaseShiShen}、属性信息{@link IProperty}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
+ * 战场中的实体，保存了式神信息{@link BaseShikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
  * <p>
  * 以下为旧内容：
  * 实体的基类。
@@ -28,13 +27,13 @@ import java.util.logging.Logger;
  * <p>这里实现了程序的主体逻辑，包括行动逻辑，事件的触发等。
  * 技能或御魂通过调用这里的函数以实现自身的逻辑。</p>
  */
-public class EntityImpl implements Target, IProperty, Entity {
+public class EntityImpl implements Target, Property, Entity {
     final EventController eventController = new EventControllerImpl();
     final BuffController buffController = new BuffControllerImpl();
-    final ShiShen shiShen;
+    final Shikigami shikigami;
     final List<Mitama> mitamas;
     private final Logger log = Logger.getLogger(getClass().toString());
-    private final IProperty property;
+    private final Property property;
     private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
 
     int life;
@@ -44,9 +43,9 @@ public class EntityImpl implements Target, IProperty, Entity {
     Camp camp = null;
     FireRepo fireRepo;
 
-    public EntityImpl(IProperty property, BaseMitama mitama, ShiShen shiShen) {
+    public EntityImpl(Property property, Mitama mitama, Shikigami shikigami) {
         this.property = property;
-        this.shiShen = shiShen;
+        this.shikigami = shikigami;
         this.mitamas = new ArrayList<>();
         this.mitamas.add(mitama);
         this.life = getMaxLife();
@@ -129,7 +128,7 @@ public class EntityImpl implements Target, IProperty, Entity {
 
     public List<ActiveSkill> getActiveSkills() {
         List<ActiveSkill> activeSkills = new ArrayList<>();
-        for (Skill skill : shiShen.getSkills()) {
+        for (Skill skill : shikigami.getSkills()) {
             if (skill instanceof ActiveSkill) {
                 activeSkills.add((ActiveSkill) skill);
             }
@@ -151,7 +150,7 @@ public class EntityImpl implements Target, IProperty, Entity {
     }
 
     CommonAttack getCommonAttack() {
-        for (Skill skill : shiShen.getSkills()) {
+        for (Skill skill : shikigami.getSkills()) {
             if (skill instanceof CommonAttack)
                 return (CommonAttack) skill;
         }
@@ -194,6 +193,6 @@ public class EntityImpl implements Target, IProperty, Entity {
 
     @Override
     public final String getName() {
-        return shiShen.getName();
+        return shikigami.getName();
     }
 }

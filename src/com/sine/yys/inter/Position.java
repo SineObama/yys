@@ -13,14 +13,14 @@ public interface Position {
     Entity getCurrent();
 
     /**
-     * @return 位置上原本的实体。
-     */
-    Entity getSource();
-
-    /**
      * 设置当前位置的实体。
      *
      * @param entity 实体。
      */
     void setCurrent(Entity entity);
+
+    /**
+     * @return 位置上原本的实体。
+     */
+    Entity getSource();
 }
