@@ -1,0 +1,27 @@
+package com.sine.yys.simulation.component.buff.buff;
+
+import com.sine.yys.simulation.component.buff.BaseIBuff;
+import com.sine.yys.simulation.component.buff.Buff;
+import com.sine.yys.simulation.component.buff.UniqueIBuff;
+import com.sine.yys.simulation.component.skill.LongShouZhiYu;
+import com.sine.yys.simulation.util.CallBack;
+
+/**
+ * 辉夜姬身上隐藏的龙首之玉buff，代表龙首之玉幻境。
+ *
+ * @see LongShouZhiYu
+ */
+public class LongShouZhiYuBuff extends BaseIBuff implements UniqueIBuff, Buff {
+    private final CallBack callBack;
+
+    public LongShouZhiYuBuff(int last, CallBack callBack) {
+        super(last, "龙首之玉幻境");
+        this.callBack = callBack;
+    }
+
+    @Override
+    protected void afterStep() {
+        if (getLast() == 0)
+            callBack.call();
+    }
+}

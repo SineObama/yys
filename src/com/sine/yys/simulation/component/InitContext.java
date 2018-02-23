@@ -1,8 +1,8 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.model.Camp;
-import com.sine.yys.simulation.component.model.Entity;
-import com.sine.yys.simulation.component.model.FireRepo;
+import com.sine.yys.simulation.component.inter.Camp;
+import com.sine.yys.simulation.component.inter.Entity;
+import com.sine.yys.simulation.component.inter.FireRepo;
 
 /**
  * 阵营、式神、技能、御魂等对象进行战斗初始化时所用的上下文对象。

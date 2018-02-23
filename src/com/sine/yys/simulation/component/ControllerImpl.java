@@ -1,11 +1,11 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.component.model.Camp;
-import com.sine.yys.simulation.component.model.Controller;
-import com.sine.yys.simulation.component.model.Entity;
-import com.sine.yys.simulation.component.model.buff.Debuff;
-import com.sine.yys.simulation.component.model.buff.shield.Shield;
-import com.sine.yys.simulation.component.model.event.*;
+import com.sine.yys.simulation.component.buff.Debuff;
+import com.sine.yys.simulation.component.buff.shield.Shield;
+import com.sine.yys.simulation.component.event.*;
+import com.sine.yys.simulation.component.inter.Camp;
+import com.sine.yys.simulation.component.inter.Controller;
+import com.sine.yys.simulation.component.inter.Entity;
 import com.sine.yys.simulation.event.EventController;
 import com.sine.yys.simulation.info.AttackInfo;
 import com.sine.yys.simulation.info.PctEffect;
