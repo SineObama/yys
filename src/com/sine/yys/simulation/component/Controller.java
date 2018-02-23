@@ -15,6 +15,8 @@ public interface Controller {
 
     Camp getOwn();
 
+    Camp getCamp(Entity entity);
+
     Camp getEnemy();
 
     /**

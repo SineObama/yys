@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component.shishen.skill.targetresolver;
 
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.Entity;
 import com.sine.yys.simulation.component.shishen.skill.ActiveSkill;
 
@@ -12,8 +13,9 @@ import java.util.List;
  */
 public interface TargetResolver {
     /**
+     * @param controller 控制器。
      * @param self 当前行动的式神。
      * @return 空列表：不需要选择目标的情况返回。null：技能无目标可选。
      */
-    List<? extends Entity> resolve(Entity self);
+    List<? extends Entity> resolve(Controller controller, Entity self);
 }

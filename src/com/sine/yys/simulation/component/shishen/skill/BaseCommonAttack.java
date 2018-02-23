@@ -50,7 +50,7 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     @Override
     public final void afterApply(Controller controller, Entity self, Entity target) {
         // 触发普攻事件
-        self.getCamp().getEventController().trigger(new CommonAttackEvent(controller, self, target));
+        controller.getCamp(self).getEventController().trigger(new CommonAttackEvent(controller, self, target));
     }
 
     /**

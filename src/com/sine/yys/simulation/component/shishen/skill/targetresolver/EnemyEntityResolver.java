@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component.shishen.skill.targetresolver;
 
+import com.sine.yys.simulation.component.Controller;
 import com.sine.yys.simulation.component.Entity;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public class EnemyEntityResolver implements TargetResolver {
     @Override
-    public List<? extends Entity> resolve(Entity self) {
-        return self.getCamp().getOpposite().getAllAlive();
+    public List<? extends Entity> resolve(Controller controller, Entity self) {
+        return controller.getCamp(self).getOpposite().getAllAlive();
     }
 }

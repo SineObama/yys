@@ -36,6 +36,11 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
+    public Camp getCamp(Entity entity) {
+        return ((BaseEntity) entity).getCamp();
+    }
+
+    @Override
     public Camp getEnemy() {
         return enemy;
     }
@@ -61,7 +66,7 @@ public class ControllerImpl implements Controller {
         self.eventController.trigger(new AttackEvent(this, self, target));
 
         // XXXXX 像这种每次都调用是不是不好、太慢
-        target.getCamp().getEventController().triggerOff(new BeAttackEvent(this));
+        this.getCamp(target).getEventController().triggerOff(new BeAttackEvent(this));
         target.getEventController().triggerOff(new BeAttackEvent(this));
 
         // 1.
@@ -154,7 +159,7 @@ public class ControllerImpl implements Controller {
         } else {
             log.info(Msg.vector(self, "击杀", target, ""));
             target.setLife(0);
-            target.getCamp().getPosition(target).setDead(true);
+            this.getCamp(target).getPosition(target).setDead(true);
         }
         // FIXME 死后添加debuff会有问题？
         self.eventController.trigger(new DamageEvent(this, self, target));

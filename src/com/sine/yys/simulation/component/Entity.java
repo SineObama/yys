@@ -18,8 +18,6 @@ public interface Entity extends Target, IProperty {
 
     boolean isDead();
 
-    Camp getCamp();
-
     BuffController getBuffController();
 
     FireRepo getFireRepo();

@@ -155,7 +155,7 @@ public class Simulator {
                 }
                 if (self.fireRepo.getFire() < activeSkill.getFire())
                     continue;
-                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(self);
+                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(controller, self);
                 if (targets != null)
                     map.put(activeSkill, targets);
             }

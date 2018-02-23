@@ -27,21 +27,21 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
 
     @Override
     public void doApply(Controller controller, Entity self, Entity target) {
-        deploy(self, getLast() + 1);
+        deploy(controller, self, getLast() + 1);
     }
 
     /**
      * 释放幻境。由于开局释放不算回合数，而技能释放时需要给last额外加1，所以独立出这个逻辑。
      */
-    private void deploy(Entity self, int last) {
-        LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> self.getCamp().getEventController(self).trigger(new LongShouZhiYuOff()));  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
+    private void deploy(Controller controller, Entity self, int last) {
+        LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> controller.getCamp(self).getEventController(self).trigger(new LongShouZhiYuOff()));  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
         log.info(Msg.info(self, "施放 " + buff.getName()));
         self.getBuffController().addBuff(buff);
-        for (Entity shikigami : self.getCamp().getAllShikigami()) {  // DESIGN 给式神不包括召唤物加buff
+        for (Entity shikigami : controller.getCamp(self).getAllShikigami()) {  // DESIGN 给式神不包括召唤物加buff
             shikigami.getBuffController().addAttach(new LSZYDefenseBuff(getDefPct()));
             shikigami.getBuffController().addAttach(new LSZYEffectDefBuff(getEffectDef()));
         }
-        self.getCamp().getEventController(self).trigger(new LongShouZhiYuOn());
+        controller.getCamp(self).getEventController(self).trigger(new LongShouZhiYuOn());
     }
 
     @Override
@@ -59,7 +59,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
                 // XXX 实际上会触发招财猫（甚至是一个回合，因为在行动条上显示了辉夜姬），然而感觉很bug
                 // 然而又不能算一个回合（没有触发彼岸花被动？也不会触发御馔津吧？），因为鬼火进度条没变……
                 // 好像还会触发匣中少女的盾，无语。还是可以考虑定义一个新概念。
-                deploy(self, getLast());
+                deploy(controller, self, getLast());
             }
         });
         LongShouZhiYu instance = this;
