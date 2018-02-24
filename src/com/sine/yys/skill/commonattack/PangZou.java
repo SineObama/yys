@@ -1,11 +1,11 @@
 package com.sine.yys.skill.commonattack;
 
-import com.sine.yys.buff.debuff.Debuff;
 import com.sine.yys.buff.debuff.PctDoT;
 import com.sine.yys.buff.debuff.ReduceDefense;
 import com.sine.yys.buff.debuff.XuanYun;
 import com.sine.yys.info.PctEffect;
 import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Debuff;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.util.RandUtil;
 

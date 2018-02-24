@@ -1,7 +1,6 @@
 package com.sine.yys.inter;
 
 import com.sine.yys.info.Combinable;
-import com.sine.yys.info.IBuffProperty;
 
 /**
  * buff和debuff控制器（包括护盾），包括添加、查找等操作。

@@ -1,6 +1,6 @@
 package com.sine.yys.rule.buff;
 
-import com.sine.yys.buff.IBuff;
+import com.sine.yys.inter.IBuff;
 
 public class DefPct extends BaseComposition {
     @Override

@@ -1,6 +1,5 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.buff.debuff.Debuff;
 import com.sine.yys.info.AttackInfo;
 import com.sine.yys.info.PctEffect;
 
@@ -10,7 +9,7 @@ import com.sine.yys.info.PctEffect;
  * 附带当前所属式神、阵营的信息等。
  * 比如进行攻击、附加效果等。
  */
-public interface Controller {
+public interface Controller extends DamageController {
     /**
      * 获取式神所在的阵营。
      * <p>
@@ -41,16 +40,6 @@ public interface Controller {
      * 与一般的攻击{@link #attack(Entity, Entity, AttackInfo)}有很多相似之处，要注意同步。
      */
     void realDamage(Entity self0, Entity target, double damage);
-
-    /**
-     * 直接造成伤害，不再计算任何buff加成效果，可被护盾减免，不受椒图分摊。
-     * <p>
-     * 用于实现持续伤害效果。
-     * 未来也可实现椒图分摊后的伤害。
-     *
-     * @param damage 伤害值。
-     */
-    void directDamage(Entity self, int damage);
 
     /**
      * 概率吸取鬼火。

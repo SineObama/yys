@@ -1,7 +1,8 @@
 package com.sine.yys.buff;
 
-import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.DamageController;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.IBuff;
 
 /**
  * 一般的buff。
@@ -27,12 +28,12 @@ public abstract class BaseCommonIBuff extends BaseIBuff implements IBuff {
     }
 
     @Override
-    protected final int doBeforeAction(Controller controller, Entity self) {
+    protected final int doBeforeAction(DamageController controller, Entity self) {
         return last;
     }
 
     @Override
-    protected final int doAfterAction(Controller controller, Entity self) {
+    protected final int doAfterAction(DamageController controller, Entity self) {
         if (last > 0)
             last -= 1;
         afterStep();

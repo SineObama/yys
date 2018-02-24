@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.buff.IBuff;
 import com.sine.yys.buff.debuff.*;
 import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
@@ -11,6 +10,7 @@ import com.sine.yys.info.IBuffProperty;
 import com.sine.yys.inter.BuffController;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.IBuff;
 import com.sine.yys.rule.buff.*;
 import com.sine.yys.util.Msg;
 

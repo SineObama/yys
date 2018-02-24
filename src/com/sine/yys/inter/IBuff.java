@@ -1,10 +1,8 @@
-package com.sine.yys.buff;
+package com.sine.yys.inter;
 
 import com.sine.yys.info.Combinable;
 import com.sine.yys.info.IBuffProperty;
 import com.sine.yys.info.Named;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
 
 /**
  * 式神头上的buff，分为增益和减益两大类。
@@ -28,7 +26,7 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
      * @param controller
      * @param self       式神自身。
      */
-    int beforeAction(Controller controller, Entity self);
+    int beforeAction(DamageController controller, Entity self);
 
     /**
      * 每回合结束调用，返回剩余持续回合数，0表示效果消失，应当被移除。
@@ -36,7 +34,7 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
      * @param controller
      * @param self       式神自身。
      */
-    int afterAction(Controller controller, Entity self);
+    int afterAction(DamageController controller, Entity self);
 
     /**
      * @return 持续回合数。永久buff以（接近）整数最大值表示。

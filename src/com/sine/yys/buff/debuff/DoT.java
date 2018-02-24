@@ -1,5 +1,6 @@
 package com.sine.yys.buff.debuff;
 
+import com.sine.yys.inter.Debuff;
 import com.sine.yys.inter.Entity;
 
 /**

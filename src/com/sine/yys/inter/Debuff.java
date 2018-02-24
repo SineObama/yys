@@ -1,6 +1,4 @@
-package com.sine.yys.buff.debuff;
-
-import com.sine.yys.buff.IBuff;
+package com.sine.yys.inter;
 
 /**
  * 减益buff。

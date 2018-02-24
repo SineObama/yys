@@ -1,7 +1,8 @@
 package com.sine.yys.buff;
 
-import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.DamageController;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.IBuff;
 
 import java.util.logging.Logger;
 
@@ -33,7 +34,7 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     @Override
-    public final int beforeAction(Controller controller, Entity self) {
+    public final int beforeAction(DamageController controller, Entity self) {
         if (prepared) {
             log.severe("异常调用beforeAction()");
             return getLast();
@@ -43,16 +44,16 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     @Override
-    public final int afterAction(Controller controller, Entity self) {
+    public final int afterAction(DamageController controller, Entity self) {
         if (!prepared)
             return getLast();
         prepared = false;
         return doAfterAction(controller, self);
     }
 
-    protected abstract int doBeforeAction(Controller controller, Entity self);
+    protected abstract int doBeforeAction(DamageController controller, Entity self);
 
-    protected abstract int doAfterAction(Controller controller, Entity self);
+    protected abstract int doAfterAction(DamageController controller, Entity self);
 
     public abstract int getLast();
 

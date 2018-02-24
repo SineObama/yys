@@ -1,7 +1,7 @@
 package com.sine.yys.buff.debuff;
 
 import com.sine.yys.buff.BaseIBuff;
-import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.DamageController;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.util.Msg;
 
@@ -28,9 +28,12 @@ public abstract class BaseDoT extends BaseIBuff implements DoT {
     }
 
     @Override
-    protected final int doBeforeAction(Controller controller, Entity self) {
-        if (last > 0)
-            last -= 1;
+    protected final int doBeforeAction(DamageController controller, Entity self) {
+        if (last <= 0) {
+            log.severe("异常调用beforeAction()，buff已结束");
+            return 0;
+        }
+        last -= 1;
         log.info(Msg.info(self, "受到持续伤害效果 " + getName()));
         double damage = handle(self);
         controller.directDamage(self, (int) damage);
@@ -38,7 +41,7 @@ public abstract class BaseDoT extends BaseIBuff implements DoT {
     }
 
     @Override
-    protected final int doAfterAction(Controller controller, Entity self) {
+    protected final int doAfterAction(DamageController controller, Entity self) {
         return last;
     }
 }
