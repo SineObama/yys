@@ -1,7 +1,6 @@
 package com.sine.yys.buff.buff;
 
 import com.sine.yys.buff.BaseIBuff;
-import com.sine.yys.buff.UniqueIBuff;
 import com.sine.yys.util.CallBack;
 
 /**
@@ -9,7 +8,7 @@ import com.sine.yys.util.CallBack;
  *
  * @see com.sine.yys.skill.LongShouZhiYu
  */
-public class LongShouZhiYuBuff extends BaseIBuff implements UniqueIBuff, Buff {
+public class LongShouZhiYuBuff extends BaseIBuff implements Buff {
     private final CallBack callBack;
 
     public LongShouZhiYuBuff(int last, CallBack callBack) {

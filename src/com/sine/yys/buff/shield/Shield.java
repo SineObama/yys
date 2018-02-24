@@ -1,12 +1,11 @@
 package com.sine.yys.buff.shield;
 
-import com.sine.yys.buff.UniqueIBuff;
 import com.sine.yys.buff.buff.Buff;
 
 /**
  * 盾。
  */
-public interface Shield extends UniqueIBuff, Buff {
+public interface Shield extends Buff {
     /**
      * 护盾剩余值。
      */

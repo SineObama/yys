@@ -1,7 +1,6 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.buff.IBuff;
-import com.sine.yys.buff.UniqueIBuff;
 import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.debuff.HunLuan;
 import com.sine.yys.buff.debuff.SealMitama;
@@ -84,14 +83,12 @@ public class BuffControllerImpl implements BuffController {
 
     @Override
     public void addIBuff(IBuff iBuff) {
-        if (iBuff instanceof UniqueIBuff) {
-            Class clz = iBuff.getClass();
-            for (Container<IBuff> buffContainer : set) {
-                if (buffContainer.getObj().getClass() == clz) {
-                    if (buffContainer.getObj().getLast() < iBuff.getLast())
-                        buffContainer.setObj(iBuff);
-                    return;
-                }
+        Class clz = iBuff.getClass();
+        for (Container<IBuff> buffContainer : set) {
+            if (buffContainer.getObj().getClass() == clz) {
+                if (buffContainer.getObj().getLast() < iBuff.getLast())
+                    buffContainer.setObj(iBuff);
+                return;
             }
         }
         set.add(new Container<>(prior.get(iBuff.getClass()), iBuff));
