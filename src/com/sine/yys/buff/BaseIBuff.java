@@ -28,7 +28,7 @@ public abstract class BaseIBuff implements IBuff {
     @Override
     public final int beforeAction(Controller controller, Entity self) {
         if (prepared) {
-            log.severe("异常调用ready()");
+            log.severe("异常调用beforeAction()");
             return getLast();
         }
         prepared = true;
