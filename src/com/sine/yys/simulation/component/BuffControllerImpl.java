@@ -48,7 +48,7 @@ public class BuffControllerImpl implements BuffController {
     }
 
     public void removeShield(Object shield) {
-        set.remove(new Container<>((IBuff) shield));
+        set.remove(new Container<>(prior.get(shield.getClass()), (IBuff) shield));
     }
 
     /**
