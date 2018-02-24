@@ -22,30 +22,33 @@ public class EventControllerImpl implements EventController {
 
     private final Map<Class, Set<Container<EventHandler>>> controllerMap = new HashMap<>();
     private final Map<Class, Boolean> states = new HashMap<>();
+    private final Map<EventHandler, Integer> prior = new HashMap<>();
 
     @Override
     public void add(EventHandler<?> handler) {
-        get(getEventType(handler)).add(new Container<>(Integer.MAX_VALUE, handler));
+        get(getEventType(handler)).add(new Container<>(null, handler));
     }
 
     @Override
     public <EventType extends T, T> void add(Class<EventType> clazz, EventHandler<T> handler) {
-        get(clazz).add(new Container<>(Integer.MAX_VALUE, handler));
+        get(clazz).add(new Container<>(null, handler));
     }
 
     @Override
     public void add(EventHandler<?> handler, int priority) {
+        prior.put(handler, priority);
         get(getEventType(handler)).add(new Container<>(priority, handler));
     }
 
     @Override
     public <EventType extends T, T> void add(Class<EventType> clazz, EventHandler<T> handler, int priority) {
+        prior.put(handler, priority);
         get(clazz).add(new Container<>(priority, handler));
     }
 
     @Override
     public void remove(EventHandler<?> handler) {
-        get(getEventType(handler)).remove(new Container<>(handler));
+        get(getEventType(handler)).remove(new Container<>(prior.get(handler), handler));
     }
 
     @Override
