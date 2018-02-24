@@ -197,7 +197,7 @@ public class Simulator {
             // 执行技能
             activeSkill.apply(controller, self, target);
         } else {
-            log.info(Msg.info(self, "无可用技能，跳过回合"));
+            log.info(Msg.info(self, "无法行动。"));
         }
 
         // 重置行动条
