@@ -171,7 +171,7 @@ public class ControllerImpl implements Controller {
     public void xieZhan(Entity self, Entity target) {
         // 目标死亡则随机攻击另一个目标
         Camp own = getCamp(self);
-        if (own.contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
+        if (!own.getOpposite().contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
             log.info(Msg.vector(target, "在", self, "己方阵营中，随机协战"));
             target = own.getOpposite().randomTarget();
         }
