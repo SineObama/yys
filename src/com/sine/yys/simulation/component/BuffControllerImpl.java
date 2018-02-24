@@ -11,6 +11,7 @@ import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
 import com.sine.yys.info.Target;
 import com.sine.yys.inter.BuffController;
+import com.sine.yys.rule.buff.*;
 import com.sine.yys.util.Msg;
 
 import java.util.*;
@@ -164,71 +165,36 @@ public class BuffControllerImpl implements BuffController {
 
     @Override
     public double getAtkPct() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getAtkPct();
-        for (Container<IBuff> container : attach)
-            sum += container.getObj().getAtkPct();
-        return sum;
+        return new AtkPct().calc(set, attach);
     }
 
     @Override
     public double getDefPct() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getDefPct();
-        for (Container<IBuff> container : attach)
-            sum += container.getObj().getDefPct();
-        return sum;
+        return new DefPct().calc(set, attach);
     }
 
     @Override
     public double getSpeed() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getSpeed();
-        for (Container<IBuff> container : attach)
-            sum += container.getObj().getSpeed();
-        return sum;
+        return new Speed().calc(set, attach);
     }
 
     @Override
     public double getCritical() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getCritical();
-        for (Container<IBuff> container : attach)
-            sum += container.getObj().getCritical();
-        return sum;
+        return new Critical().calc(set, attach);
     }
 
     @Override
     public double getCriticalDamage() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getCriticalDamage();
-        for (Container<IBuff> container : attach)
-            sum += container.getObj().getCriticalDamage();
-        return sum;
+        return new CriticalDamage().calc(set, attach);
     }
 
     @Override
     public double getEffectHit() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getEffectHit();
-        for (Container<IBuff> container : attach)
-            sum += container.getObj().getEffectHit();
-        return sum;
+        return new EffectHit().calc(set, attach);
     }
 
     @Override
     public double getEffectDef() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getEffectDef();
-        for (Container<IBuff> container : attach)
-            sum += container.getObj().getEffectDef();
-        return sum;
+        return new EffectDef().calc(set, attach);
     }
 }
