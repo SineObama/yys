@@ -5,9 +5,12 @@ import com.sine.yys.info.IBuffProperty;
 
 /**
  * buff和debuff控制器（包括护盾），包括添加、查找等操作。
- * 通过{@link IBuffProperty}接口返回所有buff相应属性的合计。
+ * 同类型的buff只能存在一个，buff应当实现叠加（或理解为选择）的逻辑。
  */
-public interface BuffController extends IBuffProperty {
+public interface BuffController {
+    /**
+     * 添加buff。叠加逻辑由buff实现。
+     */
     <T> void add(Combinable<T> buff);
 
     /**

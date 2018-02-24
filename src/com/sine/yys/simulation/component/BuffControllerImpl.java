@@ -7,6 +7,7 @@ import com.sine.yys.buff.shield.DiZangXiangShield;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
 import com.sine.yys.info.Combinable;
+import com.sine.yys.info.IBuffProperty;
 import com.sine.yys.inter.BuffController;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
@@ -18,8 +19,9 @@ import java.util.logging.Logger;
 
 /**
  * 给主逻辑提供行动前后调用的接口。
+ * 通过{@link IBuffProperty}接口返回所有buff相应属性的合计。
  */
-public class BuffControllerImpl implements BuffController {
+public class BuffControllerImpl implements BuffController, IBuffProperty {
     private static final Map<Class, Integer> prior = new HashMap<>();// TODO buff存储方式
 
     /*
@@ -58,7 +60,7 @@ public class BuffControllerImpl implements BuffController {
     }
 
     public void beforeAction(Controller controller, Entity self) {
-        Collection<IBuff> buffs = map.values();
+        Collection<IBuff> buffs = new ArrayList<>(map.values());
         for (IBuff buff : buffs) {
             if (buff.beforeAction(controller, self) == 0) {
                 map.remove(buff.getClass());
@@ -68,7 +70,7 @@ public class BuffControllerImpl implements BuffController {
     }
 
     public void afterAction(Controller controller, Entity self) {
-        Collection<IBuff> buffs = map.values();
+        Collection<IBuff> buffs = new ArrayList<>(map.values());
         for (IBuff buff : buffs) {
             if (buff.afterAction(controller, self) == 0) {
                 map.remove(buff.getClass());
@@ -82,9 +84,10 @@ public class BuffControllerImpl implements BuffController {
     public <T> void add(Combinable<T> buff) {
         IBuff buff0 = map.get(buff.getClass());
         if (buff0 != null) {
-            buff0 = (IBuff) buff.combineWith((T) buff0);
+            map.put(buff.getClass(), (IBuff) buff.combineWith((T) buff0));
+        } else {
+            map.put(buff.getClass(), (IBuff) buff);
         }
-        map.put(buff.getClass(), buff0);
     }
 
     @Override
