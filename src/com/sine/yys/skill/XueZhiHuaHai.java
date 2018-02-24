@@ -8,6 +8,7 @@ import com.sine.yys.util.Msg;
 
 /**
  * 彼岸花-血之花海。
+ * 当前在回合前减1层。
  */
 public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
     private static final String LEVEL = "LEVEL";
@@ -50,14 +51,12 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
     }
 
     @Override
-    public int step(Entity self) {
-        int rtn = super.step(self);
+    public void doBeforeAction(Controller controller, Entity self) {
         int level = getLevel(self);
         if (level > 0) {
             level -= 1;
             self.put(this.getClass(), LEVEL, level);
         }
-        return rtn;
     }
 
     @Override

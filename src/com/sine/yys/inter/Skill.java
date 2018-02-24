@@ -15,11 +15,18 @@ public interface Skill extends Named {
     int getMAXCD();
 
     /**
-     * 每回合调用，以减少CD。
-     * 参考彼岸花花海，暂定回合开始时调用。
+     * 每回合开始调用。
      *
-     * @param self 自身。
-     * @return 剩余CD。0表示可用。
+     * @param controller 控制器。
+     * @param self       式神自身。
      */
-    int step(Entity self);
+    void beforeAction(Controller controller, Entity self);
+
+    /**
+     * 每回合结束调用。
+     *
+     * @param controller 控制器。
+     * @param self       式神自身。
+     */
+    int afterAction(Controller controller, Entity self);
 }

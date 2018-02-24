@@ -141,12 +141,11 @@ public class Simulator {
 
             controller.clear();  // 重置攻击事件。允许对方彼岸花行动前的伤害触发事件。
 
-            // 调用技能step。减少cd
-            for (Skill skill : self.shikigami.getSkills()) {
-                skill.step(self);
-            }
+            for (Skill skill : self.shikigami.getSkills())
+                skill.beforeAction(controller, self);
 
             // 行动前事件
+            // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
             self.camp.getEventController().trigger(new BeforeActionEvent(controller, self));
             self.eventController.trigger(new BeforeActionEvent(controller, self));
 
@@ -164,10 +163,14 @@ public class Simulator {
             self.camp.getEventController().trigger(new AfterActionEvent(controller, self));
             self.eventController.trigger(new AfterActionEvent(controller, self));
 
+            for (Skill skill : self.shikigami.getSkills())
+                skill.afterAction(controller, self);
+
             // 完成推进鬼火行动条
             self.fireRepo.finish();
 
             // TODO 行动后行为，反击等。
+            // FIXME 触发新回合后被反击打死，行动条还在1
         } while (self.position == 1.0 && !self.isDead());
     }
 
