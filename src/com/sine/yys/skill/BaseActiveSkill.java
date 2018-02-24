@@ -11,7 +11,7 @@ import com.sine.yys.inter.Entity;
 public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override
     public final void apply(Controller controller, Entity self, Entity target) {
-        controller.clear();
+        controller.clear();  // XXXX 寻找clear()适合的调用位置
         self.put(this.getClass(), CD, getMAXCD() + 1);  // XXXX 设置技能进入CD，这个+1的操作
         beforeApply(target);
         doApply(controller, self, target);

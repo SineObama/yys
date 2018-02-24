@@ -183,15 +183,15 @@ public class EntityImpl implements Target, Property, Entity {
         return position;
     }
 
+    public void setPosition(double position) {
+        this.position = position;
+    }
+
     @Override
     public void addPosition(double count) {
         this.position += count;
         if (this.position > 1.0)
             this.position = 1.0;
-    }
-
-    public void setPosition(double position) {
-        this.position = position;
     }
 
     @Override

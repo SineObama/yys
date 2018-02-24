@@ -1,11 +1,11 @@
 package com.sine.yys.buff.debuff;
 
-import com.sine.yys.buff.BaseIBuff;
+import com.sine.yys.buff.BaseCommonIBuff;
 
 /**
  * 防御减少debuff。
  */
-public class ReduceDefense extends BaseIBuff implements DispellableDebuff {
+public class ReduceDefense extends BaseCommonIBuff implements DispellableDebuff {
     private final double defPct;
 
     /**

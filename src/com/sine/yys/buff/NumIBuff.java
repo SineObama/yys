@@ -5,7 +5,7 @@ package com.sine.yys.buff;
  * 包括攻击、防御、速度、命中抵抗等等。
  * 具体语义由子类给出。
  */
-public abstract class NumIBuff extends BaseIBuff implements IBuff {
+public abstract class NumIBuff extends BaseCommonIBuff implements IBuff {
     protected final double value;
 
     /**

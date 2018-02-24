@@ -24,7 +24,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
 
     @Override
     public void doApply(Controller controller, Entity self, Entity target) {
-        deploy(controller, self, getLast() + 1);
+        deploy(controller, self, getLast());
     }
 
     /**

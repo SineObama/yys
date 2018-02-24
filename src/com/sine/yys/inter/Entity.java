@@ -57,12 +57,12 @@ public interface Entity extends Target, Property {
      */
     double getPosition();
 
+    void setPosition(double position);
+
     /**
      * 增加行动条（拉条）。
      */
     void addPosition(double count);
-
-    void setPosition(double position);
 
     EventController getEventController();
 }

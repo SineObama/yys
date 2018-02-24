@@ -127,7 +127,8 @@ public class Simulator {
     }
 
     /**
-     * 整个行动，包括鬼火处理、技能处理、事件触发。
+     * 整个行动，包括鬼火处理、技能处理、事件触发、行动后的反击等。
+     * 多次行动不会返回。
      */
     private void action(EntityImpl self) {
 
@@ -146,20 +147,26 @@ public class Simulator {
             for (Skill skill : self.shikigami.getSkills()) {
                 skill.step(self);
             }
+
             // 行动前事件
             self.camp.getEventController().trigger(new BeforeActionEvent(controller, self));
+            self.eventController.trigger(new BeforeActionEvent(controller, self));
 
-            doAction(self);
+            // XXXX 行动前事件死了的影响
+            // 包括执行持续伤害
+            self.buffController.beforeAction(controller, self);
 
-            // 重置行动条
-            self.setPosition(0);
+            if (!self.isDead())
+                doAction(self);
+
+            // 一般buff回合数-1
+            self.buffController.afterAction(controller, self);
 
             // 完成推进鬼火行动条
             self.fireRepo.finish();
 
-            self.buffController.step(self);
-
             // 行动后事件
+            self.camp.getEventController().trigger(new AfterActionEvent(controller, self));
             self.eventController.trigger(new AfterActionEvent(controller, self));
 
             // TODO 行动后行为，反击等。

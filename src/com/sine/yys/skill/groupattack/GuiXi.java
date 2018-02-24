@@ -28,9 +28,13 @@ public class GuiXi extends SimpleGroupAttack {
         return 2;
     }
 
+    public int getLast() {
+        return 2;
+    }
+
     @Override
     public void doApply(Controller controller, Entity self, Entity unused) {
         super.doApply(controller, self, unused);
-        self.getBuffController().addIBuff(new KuangBao());
+        self.getBuffController().addIBuff(new KuangBao(getLast()));
     }
 }

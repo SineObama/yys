@@ -1,12 +1,11 @@
 package com.sine.yys.buff.debuff;
 
-import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.inter.Entity;
 
 /**
  * 按最大生命百分比的持续伤害。
  */
-public abstract class PctDoT extends BaseIBuff implements DoT, DispellableDebuff {
+public abstract class PctDoT extends BaseDoT implements DoT, DispellableDebuff {
     private final double pct;
 
     /**

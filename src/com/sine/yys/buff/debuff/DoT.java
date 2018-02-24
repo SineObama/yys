@@ -4,6 +4,7 @@ import com.sine.yys.inter.Entity;
 
 /**
  * 持续伤害。
+ * 有持续回合数，在回合开始时减1，并施加伤害。
  */
 public interface DoT extends Debuff {
     /**

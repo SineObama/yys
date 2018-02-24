@@ -12,7 +12,7 @@ public abstract class BaseComposition implements Composition {
     /**
      * 用于保存中间数值。子类对此变量进行修改。
      */
-    protected double product;
+    protected double product = 0;
 
     @Override
     public final double calc(Set<Container<IBuff>>... lists) {

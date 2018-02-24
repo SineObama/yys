@@ -19,6 +19,6 @@ public class GuiZhiJiaMian extends BaseCommonAttack {
 
     @Override
     public double getCoefficient() {
-        return 1 * 1.2;
+        return 1.0 * 1.2;
     }
 }

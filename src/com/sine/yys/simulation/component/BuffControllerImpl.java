@@ -6,8 +6,9 @@ import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
-import com.sine.yys.info.Target;
 import com.sine.yys.inter.BuffController;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
 import com.sine.yys.rule.buff.*;
 import com.sine.yys.util.Msg;
 
@@ -63,24 +64,28 @@ public class BuffControllerImpl implements BuffController {
         return list;
     }
 
-    /**
-     * 行动后执行。
-     * 给效果回合数减1，减到0则移除效果。
-     */
-    public void step(Target self) {
-        // XXXX 分开试试
-        List<IBuff> removeList = new ArrayList<>();
-        final Iterator<Container<IBuff>> iterator = set.iterator();
+    public void beforeAction(Controller controller, Entity self) {
+        Set<Container<IBuff>> temp = new TreeSet<>(set);
+        final Iterator<Container<IBuff>> iterator = temp.iterator();
         for (; iterator.hasNext(); ) {
             final Container<IBuff> buffContainer = iterator.next();
-            if (buffContainer.getObj().step() == 0) {
-                removeList.add(buffContainer.getObj());
-                // TODO 输出信息移到buff中？
+            if (buffContainer.getObj().beforeAction(controller, self) == 0) {
+                set.remove(buffContainer);
                 log.info(Msg.info(self, buffContainer.getObj().getName() + " 效果消失了"));
             }
         }
-        for (IBuff iBuff : removeList) {
-            set.remove(new Container<>(iBuff));
+    }
+
+    public void afterAction(Controller controller, Entity self) {
+        Set<Container<IBuff>> temp = new TreeSet<>(set);
+        final Iterator<Container<IBuff>> iterator = temp.iterator();
+        for (; iterator.hasNext(); ) {
+            final Container<IBuff> buffContainer = iterator.next();
+            if (buffContainer.getObj().afterAction(controller, self) == 0) {
+                set.remove(buffContainer);
+                // TODO 输出信息移到buff中？
+                log.info(Msg.info(self, buffContainer.getObj().getName() + " 效果消失了"));
+            }
         }
     }
 
