@@ -168,7 +168,7 @@ public class Simulator {
             self.fireRepo.finish();
 
             // TODO 行动后行为，反击等。
-        } while (self.position == 1.0);
+        } while (self.position == 1.0 && !self.isDead());
     }
 
     /**

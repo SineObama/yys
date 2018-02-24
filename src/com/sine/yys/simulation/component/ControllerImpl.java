@@ -102,6 +102,8 @@ public class ControllerImpl implements Controller {
     }
 
     public void directDamage(Entity self0, int damage) {
+        if (self0.isDead())  // XXXX 每次都判断死亡是不是太难看
+            return;
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
         doDamage(self, damage);
