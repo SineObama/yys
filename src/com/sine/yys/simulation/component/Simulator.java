@@ -76,6 +76,7 @@ public class Simulator {
         for (EntityImpl entity : all) {
             entity.setPosition(entity.getPosition() + min * entity.getSpeed());
         }
+        rtn.setPosition(1.0);
         return rtn;
     }
 
@@ -133,7 +134,7 @@ public class Simulator {
         self.fireRepo.ready();
 
         // 用于多次行动
-        while (self.position == 1.0) {
+        do {
 
             // 重置行动条
             self.setPosition(0);
@@ -167,7 +168,7 @@ public class Simulator {
             self.fireRepo.finish();
 
             // TODO 行动后行为，反击等。
-        }
+        } while (self.position == 1.0);
     }
 
     /**
