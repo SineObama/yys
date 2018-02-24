@@ -131,27 +131,35 @@ public class Simulator {
         // 预备推进鬼火行动条
         self.fireRepo.ready();
 
-        // 调用技能step。减少cd
-        for (Skill skill : self.shikigami.getSkills()) {
-            skill.step(self);
+        // 用于多次行动
+        while (self.position == 1.0) {
+
+            // 重置行动条
+            setPosition(0);
+
+            controller.clear();  // 重置攻击事件。允许对方彼岸花行动前的伤害触发事件。
+
+            // 调用技能step。减少cd
+            for (Skill skill : self.shikigami.getSkills()) {
+                skill.step(self);
+            }
+            // 行动前事件
+            self.camp.getEventController().trigger(new BeforeActionEvent(controller, self));
+
+            doAction(self);
+
+            // 重置行动条
+            self.setPosition(0);
+
+            // 完成推进鬼火行动条
+            self.fireRepo.finish();
+
+            self.buffController.step(self);
+
+            // TODO 行动后事件
+
+            // TODO 行动后行为，反击等。
         }
-        controller.clear();  // 重置攻击事件。允许对方彼岸花行动前的伤害触发事件。
-        // 行动前事件
-        self.camp.getEventController().trigger(new BeforeActionEvent(controller, self));
-
-        doAction(self);
-
-        // 重置行动条
-        self.setPosition(0);
-
-        // 完成推进鬼火行动条
-        self.fireRepo.finish();
-        
-        self.buffController.step(self);
-
-        // TODO 行动后事件
-
-        // TODO 行动后行为，反击等。
     }
 
     /**

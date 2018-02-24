@@ -39,7 +39,7 @@ public interface Entity extends Target, Property {
      */
     @Override
     double getLife();
-    
+
     int getMaxLife();
 
     int getLifeInt();

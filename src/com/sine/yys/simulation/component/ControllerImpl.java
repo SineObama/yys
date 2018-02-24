@@ -60,7 +60,12 @@ public class ControllerImpl implements Controller {
             self.eventController.trigger(event);
             damage *= event.getCoefficient();
 
-            doDamage(self, target, (int) damage);
+            // 附加效果
+            self.eventController.trigger(new DamageEvent(this, self, target));
+            log.info(Msg.damage(self, target, (int) damage));
+            doDamage(target, (int) damage);
+            if (target.getLifeInt() == 0)
+                log.info(Msg.vector(self, "击杀", target, ""));
 
             if (critical) {
                 target.getEventController().trigger(new BeCriticalEvent(this, target, self));
@@ -80,19 +85,55 @@ public class ControllerImpl implements Controller {
 
         self.eventController.trigger(new AttackEvent(this, self, target));
 
-        // 3.
+        // 2.
         int remain = breakShield(target, (int) damage);
 
-        // 4.
+        // 3.
         if (remain != 0) {
-            doDamage(self, target, (int) damage);
+            // 附加效果
+            self.eventController.trigger(new DamageEvent(this, self, target));
+            log.info(Msg.damage(self, target, (int) damage));
+            doDamage(target, (int) damage);
+            if (target.getLifeInt() == 0)
+                log.info(Msg.vector(self, "击杀", target, ""));
         } else {
             log.info(Msg.noDamage(self, target));
         }
     }
 
     /**
-     * 把伤害施加到盾上。
+     * 直接造成伤害，不再计算任何buff加成效果，可被护盾减免，不受椒图分摊。
+     * <p>
+     * 用于实现持续伤害效果。
+     * 未来也可实现椒图分摊后的伤害。
+     *
+     * @param damage 伤害值。
+     */
+    private void directDamage(EntityImpl self, int damage) {
+        damage = breakShield(self, damage);
+        doDamage(self, damage);
+    }
+
+    /**
+     * 直接减少目标生命，触发{@link BeDamageEvent}事件。
+     * <p>
+     * 未来可能进行死亡处理，如匣中少女的被动，立即复活并回复状态，不会计算击杀。
+     */
+    private void doDamage(Entity target, int damage) {
+        if (target.getLifeInt() > damage) {
+            double src = target.getLife();
+            target.setLife(target.getLifeInt() - damage);
+            double dst = target.getLife();
+            target.getEventController().trigger(new BeDamageEvent(src, dst));
+        } else {
+            target.setLife(0);
+            target.getCamp().getPosition(target).setDead(true);
+            slog.info(Msg.info(target, "死亡"));
+        }
+    }
+
+    /**
+     * 进行护盾的伤害减免计算。
      *
      * @return 剩余伤害。
      */
@@ -109,22 +150,6 @@ public class ControllerImpl implements Controller {
         if (damage == -1)
             damage = 0;
         return damage;
-    }
-
-    private void doDamage(EntityImpl self, EntityImpl target, int damage) {
-        log.info(Msg.damage(self, target, damage));
-        if (target.getLifeInt() > damage) {
-            double src = target.getLife();
-            target.setLife(target.getLifeInt() - damage);
-            double dst = target.getLife();
-            target.getEventController().trigger(new BeDamageEvent(this, src, dst));
-        } else {
-            log.info(Msg.vector(self, "击杀", target, ""));
-            target.setLife(0);
-            this.getCamp(target).getPosition(target).setCurrent(null);
-        }
-        // FIXME 死后添加debuff会有问题？
-        self.eventController.trigger(new DamageEvent(this, self, target));
     }
 
     @Override
