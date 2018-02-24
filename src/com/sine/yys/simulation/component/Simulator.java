@@ -112,6 +112,8 @@ public class Simulator {
 
         action(self);
 
+        log.info(Msg.info(self, "行动结束，序号 " + round));
+
         // XXX 简单判断胜负：无式神存活
         if (camp0.getAllShikigami().size() == 0) {
             win = camp1;
