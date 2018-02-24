@@ -15,4 +15,12 @@ public abstract class NumIBuff extends BaseCommonIBuff implements IBuff {
         super(last, name);
         this.value = value;
     }
+
+    @Override
+    public IBuff overlying(IBuff o) {
+        final double ovalue = ((NumIBuff) o).value;
+        if (value == ovalue)
+            return super.overlying(o);
+        return value > ovalue ? this : o;
+    }
 }

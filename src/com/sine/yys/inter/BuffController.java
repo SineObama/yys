@@ -1,5 +1,6 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.info.Combinable;
 import com.sine.yys.info.IBuffProperty;
 
 /**
@@ -9,13 +10,7 @@ import com.sine.yys.info.IBuffProperty;
  * 通过{@link IBuffProperty}接口返回所有buff相应属性的合计。
  */
 public interface BuffController extends IBuffProperty {
-    /**
-     * 不同的盾不会互相排斥。
-     * 相同的盾如果容量更大会进行替换。
-     */
-    void addShield(Object shield);
-
-    void addIBuff(Object ibuff);
+    <T> void addIBuff(Combinable<T> ibuff);
 
     /**
      * 获取唯一的buff，不包括附加buff。

@@ -39,7 +39,7 @@ public class BangJing extends BaseMitama implements Mitama {
             log.info(Msg.trigger(self, BangJing.this));
             final double value = self.getMaxLife() * getShieldByMaxLife();
             for (Entity entity : event.getController().getCamp(self).getAllAlive()) {
-                entity.getBuffController().addShield(new BangJingShield(self.shieldValue(value)));
+                entity.getBuffController().addIBuff(new BangJingShield(self.shieldValue(value)));
             }
         }
     }

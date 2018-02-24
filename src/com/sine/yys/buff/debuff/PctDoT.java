@@ -3,9 +3,9 @@ package com.sine.yys.buff.debuff;
 import com.sine.yys.inter.Entity;
 
 /**
- * 按最大生命百分比的持续伤害。
+ * 镰鼬-胖揍-按最大生命百分比的持续伤害。
  */
-public abstract class PctDoT extends BaseDoT implements DoT, DispellableDebuff {
+public class PctDoT extends BaseDoT implements DoT, DispellableDebuff {
     private final double pct;
 
     /**

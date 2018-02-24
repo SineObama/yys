@@ -26,6 +26,13 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     @Override
+    public IBuff overlying(IBuff o) {
+        if (getLast() > o.getLast())
+            return this;
+        return o;
+    }
+
+    @Override
     public final int beforeAction(Controller controller, Entity self) {
         if (prepared) {
             log.severe("异常调用beforeAction()");

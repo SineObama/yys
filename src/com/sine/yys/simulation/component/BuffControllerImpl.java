@@ -6,6 +6,7 @@ import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
+import com.sine.yys.info.Combinable;
 import com.sine.yys.inter.BuffController;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
@@ -33,19 +34,6 @@ public class BuffControllerImpl implements BuffController {
     private final Logger log = Logger.getLogger(getClass().toString());
     private final Set<Container<IBuff>> set = new TreeSet<>();
     private final Set<Container<IBuff>> attach = new TreeSet<>(); // 附属buff，如龙首之玉的防御和抵抗
-
-    @Override
-    public void addShield(Object shield) {
-        Class clz = shield.getClass();
-        for (Container<IBuff> buffContainer : set) {
-            if (buffContainer.getObj().getClass() == clz) {
-                if (((Shield) buffContainer.getObj()).getValue() < shield.getValue())
-                    buffContainer.setObj(shield);
-                return;
-            }
-        }
-        set.add(new Container<>(prior.get(shield.getClass()), shield));
-    }
 
     public void removeShield(Object shield) {
         set.remove(new Container<>(prior.get(shield.getClass()), (IBuff) shield));
@@ -90,16 +78,15 @@ public class BuffControllerImpl implements BuffController {
     }
 
     @Override
-    public void addIBuff(Object iBuff) {
+    public <T> void addIBuff(Combinable<T> iBuff) {
         Class clz = iBuff.getClass();
         for (Container<IBuff> buffContainer : set) {
             if (buffContainer.getObj().getClass() == clz) {
-                if (buffContainer.getObj().getLast() < iBuff.getLast())
-                    buffContainer.setObj(iBuff);
+                buffContainer.setObj((IBuff) iBuff.overlying((T) buffContainer.getObj()));
                 return;
             }
         }
-        set.add(new Container<>(prior.get(iBuff.getClass()), iBuff));
+        set.add(new Container<IBuff>(prior.get(iBuff.getClass()), (IBuff) iBuff));
     }
 
     @Override
@@ -140,7 +127,7 @@ public class BuffControllerImpl implements BuffController {
                 return;
             }
         }
-        attach.add(new Container<>(prior.get(buff.getClass()), buff));
+        attach.add(new Container<IBuff>(prior.get(buff.getClass()), (IBuff) buff));
     }
 
     /**

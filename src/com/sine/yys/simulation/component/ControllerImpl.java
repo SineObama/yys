@@ -114,16 +114,16 @@ public class ControllerImpl implements Controller {
      * <p>
      * 未来可能进行死亡处理，如匣中少女的被动，立即复活并回复状态，不会计算击杀。
      */
-    private void doDamage(Entity target, int damage) {
+    private void doDamage(EntityImpl target, int damage) {
         if (target.getLifeInt() > damage) {
             double src = target.getLife();
             target.setLife(target.getLifeInt() - damage);
             double dst = target.getLife();
-            target.getEventController().trigger(new BeDamageEvent(src, dst));
+            target.getEventController().trigger(new BeDamageEvent(this, src, dst));
         } else {
             target.setLife(0);
-            target.getCamp().getPosition(target).setDead(true);
-            slog.info(Msg.info(target, "死亡"));
+            target.getCamp().getPosition(target).setCurrent(null);
+            log.info(Msg.info(target, "死亡"));
         }
     }
 
