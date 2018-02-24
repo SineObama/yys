@@ -42,7 +42,7 @@ public class RenDuoShiZhong extends BasePassiveSkill implements PassiveSkill {
 
         @Override
         public void handle(AfterActionEvent event) {
-            if (RandUtil.success(getPct())) {
+            if (!self.isDead() && RandUtil.success(getPct())) {
                 self.setPosition(1.0);
             }
         }
