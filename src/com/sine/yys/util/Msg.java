@@ -21,6 +21,12 @@ public class Msg {
         return vector(self, "对", target, String.format("造成% 5d伤害", damage));
     }
 
+    public static String damage(Target self, Target target, int damage, boolean critical) {
+        if (critical)
+            return vector(self, "对", target, String.format("造成% 5d暴击伤害", damage));
+        return vector(self, "对", target, String.format("造成% 5d伤害", damage));
+    }
+
     public static String addBuff(Target self, Target target, Named buff) {
         return vector(self, "给", target, "添加 " + buff.getName());
     }
