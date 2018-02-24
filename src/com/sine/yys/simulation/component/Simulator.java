@@ -2,10 +2,7 @@ package com.sine.yys.simulation.component;
 
 import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.debuff.HunLuan;
-import com.sine.yys.event.AfterActionEvent;
-import com.sine.yys.event.BattleStartEvent;
-import com.sine.yys.event.BeforeActionEvent;
-import com.sine.yys.event.UseFireEvent;
+import com.sine.yys.event.*;
 import com.sine.yys.inter.*;
 import com.sine.yys.skill.operation.OperationImpl;
 import com.sine.yys.util.Msg;
@@ -162,12 +159,12 @@ public class Simulator {
             // 一般buff回合数-1
             self.buffController.afterAction(controller, self);
 
-            // 完成推进鬼火行动条
-            self.fireRepo.finish();
-
             // 行动后事件
             self.camp.getEventController().trigger(new AfterActionEvent(controller, self));
             self.eventController.trigger(new AfterActionEvent(controller, self));
+
+            // 完成推进鬼火行动条
+            self.fireRepo.finish();
 
             // TODO 行动后行为，反击等。
         }
@@ -235,6 +232,8 @@ public class Simulator {
 
             // 执行技能
             activeSkill.apply(controller, self, target);
+
+            self.eventController.trigger(new FinishActionEvent());
         } else {
             log.info(Msg.info(self, "无法行动。"));
         }

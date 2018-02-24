@@ -1,6 +1,6 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.event.AfterActionEvent;
+import com.sine.yys.event.FinishActionEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -35,13 +35,13 @@ public class RenDuoShiZhong extends BasePassiveSkill implements PassiveSkill {
         self.getEventController().add(new Handler(self));
     }
 
-    class Handler extends SealablePassiveHandler implements EventHandler<AfterActionEvent> {
+    class Handler extends SealablePassiveHandler implements EventHandler<FinishActionEvent> {
         Handler(Entity self) {
             super(self);
         }
 
         @Override
-        public void handle(AfterActionEvent event) {
+        public void handle(FinishActionEvent event) {
             if (!self.isDead() && RandUtil.success(getPct())) {
                 self.setPosition(1.0);
             }
