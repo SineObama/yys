@@ -2,6 +2,7 @@ package com.sine.yys.simulation.component;
 
 import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.debuff.HunLuan;
+import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;
 import com.sine.yys.event.UseFireEvent;
@@ -137,7 +138,7 @@ public class Simulator {
         while (self.position == 1.0) {
 
             // 重置行动条
-            setPosition(0);
+            self.setPosition(0);
 
             controller.clear();  // 重置攻击事件。允许对方彼岸花行动前的伤害触发事件。
 
@@ -158,7 +159,8 @@ public class Simulator {
 
             self.buffController.step(self);
 
-            // TODO 行动后事件
+            // 行动后事件
+            self.eventController.trigger(new AfterActionEvent(controller, self));
 
             // TODO 行动后行为，反击等。
         }
