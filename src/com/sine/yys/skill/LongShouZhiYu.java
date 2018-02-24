@@ -49,6 +49,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
     @Override
     public void init(Controller controller, Entity self) {
         Camp own = controller.getCamp(self);
+        controller.getCamp(self).getEventController().add(new Handler(self));
         own.getEventController().add(new EventHandler<BattleStartEvent>() {
             @Override
             public void handle(BattleStartEvent event) {
