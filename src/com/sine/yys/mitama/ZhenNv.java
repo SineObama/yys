@@ -49,7 +49,10 @@ public class ZhenNv extends BaseMitama implements Mitama {
         public void handle(CriticalEvent event) {
             if (RandUtil.success(getPct())) {
                 log.info(Msg.trigger(self, ZhenNv.this));
-                event.getController().realDamage(self, event.getTarget(), getMaxDamageByAttack(), getMaxDamageByMaxLife());
+                final double damage1 = self.getAttack() * getMaxDamageByAttack();
+                final double damage2 = event.getTarget().getMaxLife() * getMaxDamageByMaxLife();
+                double damage = damage1 < damage2 ? damage1 : damage2;
+                event.getController().realDamage(self, event.getTarget(), damage);
             }
         }
     }

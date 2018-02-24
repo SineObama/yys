@@ -86,18 +86,13 @@ public class ControllerImpl implements Controller {
      * 4. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
      */
     @Override
-    public void realDamage(Entity self0, Entity target0, double maxByAttack, double maxPctByMaxLife) {
+    public void realDamage(Entity self0, Entity target0, double damage) {
         EntityImpl self = (EntityImpl) self0;
         EntityImpl target = (EntityImpl) target0;
         if (target.isDead())
             return;
 
         self.eventController.trigger(new AttackEvent(this, self, target));
-
-        // 1.
-        final double damage1 = self.getAttack() * maxByAttack;
-        final double damage2 = target.getMaxLife() * maxPctByMaxLife;
-        double damage = damage1 < damage2 ? damage1 : damage2;
 
         // 3.
         int remain = breakShield(target, (int) damage);
@@ -108,7 +103,6 @@ public class ControllerImpl implements Controller {
         } else {
             log.info(Msg.noDamage(self, target));
         }
-
     }
 
     /**

@@ -20,7 +20,7 @@ public interface Controller {
 
     void attack(Entity self0, Entity target, AttackInfo attackInfo);
 
-    void realDamage(Entity self0, Entity target, double maxByAttack, double maxPctByMaxLife);
+    void realDamage(Entity self0, Entity target, double damage);
 
     void randomGrab(Entity self, Entity target, double pct);
 
