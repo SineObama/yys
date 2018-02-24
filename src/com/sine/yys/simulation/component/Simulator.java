@@ -6,6 +6,7 @@ import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;
 import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.*;
+import com.sine.yys.skill.operation.OperationImpl;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
@@ -159,7 +160,7 @@ public class Simulator {
             if (!map.isEmpty())
                 operation = self.shikigami.getAI().handle(self, map);
             else
-                operation = new Operation(null, null);
+                operation = new OperationImpl(null, null);
 
         } else {  // 受行动控制debuff影响
 
@@ -169,9 +170,9 @@ public class Simulator {
                 final List<Entity> allAlive = self.camp.getAllAlive();
                 allAlive.addAll(self.camp.getOpposite().getAllAlive());
                 allAlive.remove(self);
-                operation = new Operation(RandUtil.choose(allAlive), self.getCommonAttack());
+                operation = new OperationImpl(RandUtil.choose(allAlive), self.getCommonAttack());
             } else {
-                operation = new Operation(null, null);
+                operation = new OperationImpl(null, null);
             }
 
         }

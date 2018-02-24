@@ -24,8 +24,8 @@ public class AutoOperationHandler implements OperationHandler {
             }
         }
         if (use == null)
-            return new Operation(null, null);
+            return new OperationImpl(null, null);
         final List<? extends Entity> targets = map.get(use);
-        return new Operation(RandUtil.choose(targets), use);
+        return new OperationImpl(RandUtil.choose(targets), use);
     }
 }

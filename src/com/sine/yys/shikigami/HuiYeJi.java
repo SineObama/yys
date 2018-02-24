@@ -4,6 +4,7 @@ import com.sine.yys.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.inter.ActiveSkill;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.Operation;
+import com.sine.yys.skill.operation.OperationImpl;
 import com.sine.yys.inter.OperationHandler;
 import com.sine.yys.skill.LongShouZhiYu;
 import com.sine.yys.skill.commonattack.PengLaiYuZhi;
@@ -37,7 +38,7 @@ public class HuiYeJi extends BaseShikigami {
             for (ActiveSkill activeSkill : map.keySet()) {
                 if (activeSkill instanceof LongShouZhiYu) {
                     if (buff == null || buff.getLast() <= 1) {
-                        return new Operation(null, activeSkill);
+                        return new OperationImpl(null, activeSkill);
                     } else {
                         map.remove(activeSkill);
                         break;
