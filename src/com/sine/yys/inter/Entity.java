@@ -51,8 +51,16 @@ public interface Entity extends Target, Property {
     BuffController getBuffController();
 
     FireRepo getFireRepo();
-
+    
+    /**
+     * @return 行动位置，范围0-1。
+     */
     double getPosition();
+
+    /**
+     * 增加行动条（拉条）。
+     */
+    void addPosition(double count);
 
     void setPosition(double position);
 

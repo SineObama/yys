@@ -33,7 +33,7 @@ public class EntityImpl implements Target, Property, Entity {
     private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
 
     int life;
-    double position = 0;
+    double position = 0;  // 行动位置，范围0-1。
 
     // XXXX 两者的设置由谁负责比较好？
     Camp camp = null;
@@ -183,6 +183,12 @@ public class EntityImpl implements Target, Property, Entity {
         return position;
     }
 
+    @Override
+    public void addPosition(double count) {
+        this.position += count;
+        if (this.position > 1.0)
+            this.position = 1.0;
+    }
 
     public void setPosition(double position) {
         this.position = position;
