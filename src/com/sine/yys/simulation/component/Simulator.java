@@ -123,10 +123,13 @@ public class Simulator {
         }
     }
 
+    /**
+     * 整个行动，包括鬼火处理、技能处理、事件触发。
+     */
     private void action(EntityImpl self) {
 
-        // 推进鬼火行动条
-        self.fireRepo.step();
+        // 预备推进鬼火行动条
+        self.fireRepo.ready();
 
         // 调用技能step。减少cd
         for (Skill skill : self.shikigami.getSkills()) {
@@ -136,8 +139,25 @@ public class Simulator {
         // 行动前事件
         self.camp.getEventController().trigger(new BeforeActionEvent(controller, self));
 
-        // 行动开始
+        doAction(self);
 
+        // 重置行动条
+        self.setPosition(0);
+
+        // 完成推进鬼火行动条
+        self.fireRepo.finish();
+        
+        self.buffController.step(self);
+
+        // TODO 行动后事件
+
+        // TODO 行动后行为，反击等。
+    }
+
+    /**
+     * 式神自身的行动逻辑。
+     */
+    private void doAction(EntityImpl self) {
         final Operation operation;
         // 判断是否有行动控制debuff，进行相关操作。
         final List<ControlBuff> controlBuffs = self.buffController.getControlBuffs();
@@ -199,12 +219,6 @@ public class Simulator {
         } else {
             log.info(Msg.info(self, "无法行动。"));
         }
-
-        // 重置行动条
-        self.setPosition(0);
-
-        // TODO 行动后事件
-        self.buffController.step(self);
     }
 
     public Camp getWin() {

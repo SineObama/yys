@@ -10,8 +10,10 @@ import com.sine.yys.util.Msg;
  */
 public class PVPCamp extends BaseCamp implements Camp, FireRepo {
     private int fire;
-    private int fireBarPos = 0;
-    private int increase = 3;
+    private int fireBarPos = 0;  // 鬼火行动条位置，代表点亮的格数（包括闪烁），范围0-5
+    private boolean prepared = false;  // 调用ready()后为true。在2个状态之间转换
+    private int increase = 3;  // 每次行动满5回合的回复鬼火数。此数字依次增长，最高5点：3 4 5 5 5...
+
 
     public PVPCamp(String name, int fire) {
         super(name);
@@ -56,10 +58,23 @@ public class PVPCamp extends BaseCamp implements Camp, FireRepo {
     }
 
     @Override
-    public void step() {
+    public void ready() {
+        if (prepared) {
+            log.severe("异常调用ready()");
+            return;
+        }
+        prepared = true;
         fireBarPos += 1;
-        if (fireBarPos > 5) {
-            fireBarPos = 1;
+        log.info(Msg.info(this, "鬼火行动条位置 " + fireBarPos));
+    }
+
+    @Override
+    public void finish() {
+        if (!prepared)
+            return;
+        prepared = false;
+        if (fireBarPos >= 5) {
+            fireBarPos = 0;
             log.info(Msg.info(this, "行动满5回合，将回复 " + increase + " 点鬼火"));
             addFire(increase);
             if (increase < 5)
