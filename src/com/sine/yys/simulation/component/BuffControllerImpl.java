@@ -35,7 +35,7 @@ public class BuffControllerImpl implements BuffController {
     private final Set<Container<IBuff>> attach = new TreeSet<>(); // 附属buff，如龙首之玉的防御和抵抗
 
     @Override
-    public void addShield(Shield shield) {
+    public void addShield(Object shield) {
         Class clz = shield.getClass();
         for (Container<IBuff> buffContainer : set) {
             if (buffContainer.getObj().getClass() == clz) {
@@ -47,12 +47,13 @@ public class BuffControllerImpl implements BuffController {
         set.add(new Container<>(prior.get(shield.getClass()), shield));
     }
 
-    @Override
-    public void removeShield(Shield shield) {
+    public void removeShield(Object shield) {
         set.remove(new Container<>((IBuff) shield));
     }
 
-    @Override
+    /**
+     * 按照消耗顺序返回。
+     */
     public List<Shield> getShields() {
         List<Shield> list = new ArrayList<>();
         for (Container<IBuff> buffContainer : set) {
@@ -63,7 +64,10 @@ public class BuffControllerImpl implements BuffController {
         return list;
     }
 
-    @Override
+    /**
+     * 行动后执行。
+     * 给效果回合数减1，减到0则移除效果。
+     */
     public void step(Target self) {
         // XXXX 分开试试
         List<IBuff> removeList = new ArrayList<>();
@@ -82,7 +86,7 @@ public class BuffControllerImpl implements BuffController {
     }
 
     @Override
-    public void addIBuff(IBuff iBuff) {
+    public void addIBuff(Object iBuff) {
         Class clz = iBuff.getClass();
         for (Container<IBuff> buffContainer : set) {
             if (buffContainer.getObj().getClass() == clz) {
@@ -95,7 +99,7 @@ public class BuffControllerImpl implements BuffController {
     }
 
     @Override
-    public <T extends IBuff> T getUnique(Class<T> clazz) {
+    public <T> T getUnique(Class<T> clazz) {
         for (Container<IBuff> container : set) {
             if (container.getObj().getClass() == clazz)
                 return (T) container.getObj();  // XXX 又是unchecked
@@ -125,7 +129,7 @@ public class BuffControllerImpl implements BuffController {
      * 暂定只有一个buff生效，不会进行替换。
      */
     @Override
-    public void addAttach(IBuff buff) {
+    public void addAttach(Object buff) {
         Class clz = buff.getClass();
         for (Container<IBuff> buffContainer : attach) {
             if (buffContainer.getObj().getClass() == clz) {
@@ -135,7 +139,9 @@ public class BuffControllerImpl implements BuffController {
         attach.add(new Container<>(prior.get(buff.getClass()), buff));
     }
 
-    @Override
+    /**
+     * 获取行动控制效果，按控制优先级返回。
+     */
     public List<ControlBuff> getControlBuffs() {
         List<ControlBuff> list = new ArrayList<>();
         for (Container<IBuff> buffContainer : set) {
@@ -147,7 +153,7 @@ public class BuffControllerImpl implements BuffController {
     }
 
     @Override
-    public <T extends IBuff> void removeAttach(Class<T> clazz) {
+    public <T> void removeAttach(Class<T> clazz) {
         for (Container<IBuff> iBuffContainer : attach) {
             if (iBuffContainer.getObj().getClass() == clazz) {
                 attach.remove(iBuffContainer);

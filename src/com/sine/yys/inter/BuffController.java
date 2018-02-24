@@ -1,12 +1,6 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.buff.IBuff;
-import com.sine.yys.buff.debuff.ControlBuff;
-import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.info.IBuffProperty;
-import com.sine.yys.info.Target;
-
-import java.util.List;
 
 /**
  * buff和debuff控制器（包括护盾），包括添加、查找等操作。
@@ -19,27 +13,14 @@ public interface BuffController extends IBuffProperty {
      * 不同的盾不会互相排斥。
      * 相同的盾如果容量更大会进行替换。
      */
-    void addShield(Shield shield);
+    void addShield(Object shield);
 
-    void removeShield(Shield shield);
-
-    /**
-     * 按照消耗顺序返回。
-     */
-    List<Shield> getShields();
-
-    /**
-     * 行动后执行。
-     * 给效果回合数减1，减到0则移除效果。
-     */
-    void step(Target self);
-
-    void addIBuff(IBuff ibuff);
+    void addIBuff(Object ibuff);
 
     /**
      * 获取唯一的buff，不包括附加buff。
      */
-    <T extends IBuff> T getUnique(Class<T> clazz);
+    <T> T getUnique(Class<T> clazz);
 
     /**
      * @return 是否存在封印御魂buff。
@@ -54,15 +35,10 @@ public interface BuffController extends IBuffProperty {
     /**
      * 添加附加buff。
      */
-    void addAttach(IBuff buff);
-
-    /**
-     * 获取行动控制效果，按控制优先级返回。
-     */
-    List<ControlBuff> getControlBuffs();
+    void addAttach(Object buff);
 
     /**
      * 移除附加buff。
      */
-    <T extends IBuff> void removeAttach(Class<T> clazz);
+    <T> void removeAttach(Class<T> clazz);
 }

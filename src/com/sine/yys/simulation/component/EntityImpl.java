@@ -24,8 +24,8 @@ import java.util.logging.Logger;
  * 技能或御魂通过调用这里的函数以实现自身的逻辑。</p>
  */
 public class EntityImpl implements Target, Property, Entity {
-    final EventController eventController = new EventControllerImpl();
-    final BuffController buffController = new BuffControllerImpl();
+    final EventControllerImpl eventController = new EventControllerImpl();
+    final BuffControllerImpl buffController = new BuffControllerImpl();
     final Shikigami shikigami;
     final List<Mitama> mitamas;
     private final Logger log = Logger.getLogger(getClass().toString());

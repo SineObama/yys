@@ -116,14 +116,14 @@ public class ControllerImpl implements Controller {
      *
      * @return 剩余伤害。
      */
-    private int breakShield(Entity target, int damage) {
-        Iterator<Shield> iterator = target.getBuffController().getShields().iterator();
+    private int breakShield(EntityImpl target, int damage) {
+        Iterator<Shield> iterator = target.buffController.getShields().iterator();
         for (; iterator.hasNext(); ) {
             Shield shield = iterator.next();
             damage = shield.doDamage(damage);
             if (damage == -1)
                 break;
-            target.getBuffController().removeShield(shield);
+            target.buffController.removeShield(shield);
             log.info(Msg.info(target, shield.getName() + " 被击破"));
         }
         if (damage == -1)
