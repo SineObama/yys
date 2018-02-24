@@ -82,7 +82,7 @@ public class BuffControllerImpl implements BuffController {
         Class clz = iBuff.getClass();
         for (Container<IBuff> buffContainer : set) {
             if (buffContainer.getObj().getClass() == clz) {
-                buffContainer.setObj((IBuff) iBuff.overlying((T) buffContainer.getObj()));
+                buffContainer.setObj((IBuff) iBuff.combineWith((T) buffContainer.getObj()));
                 return;
             }
         }

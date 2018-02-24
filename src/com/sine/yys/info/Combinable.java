@@ -5,5 +5,5 @@ package com.sine.yys.info;
  * 也可当做对比使用，返回被留下的对象。
  */
 public interface Combinable<T> {
-    T overlying(T o);
+    T combineWith(T o);
 }

@@ -17,10 +17,10 @@ public abstract class NumIBuff extends BaseCommonIBuff implements IBuff {
     }
 
     @Override
-    public IBuff overlying(IBuff o) {
+    public IBuff combineWith(IBuff o) {
         final double ovalue = ((NumIBuff) o).value;
         if (value == ovalue)
-            return super.overlying(o);
+            return super.combineWith(o);
         return value > ovalue ? this : o;
     }
 }

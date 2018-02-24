@@ -51,5 +51,5 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
      * @param o 与实例同类型的buff。
      * @return 被留下的实例。
      */
-    IBuff overlying(IBuff o);
+    IBuff combineWith(IBuff o);
 }
