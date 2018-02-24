@@ -1,6 +1,7 @@
 package com.sine.yys.inter;
 
 import com.sine.yys.buff.IBuff;
+import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.info.IBuffProperty;
 import com.sine.yys.info.Target;
@@ -58,7 +59,7 @@ public interface BuffController extends IBuffProperty {
     /**
      * 获取行动控制效果，按控制优先级返回。
      */
-    List<IBuff> getControlBuffs();
+    List<ControlBuff> getControlBuffs();
 
     /**
      * 移除附加buff。

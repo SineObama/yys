@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.buff.IBuff;
+import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.debuff.HunLuan;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;
@@ -139,7 +139,7 @@ public class Simulator {
 
         final Operation operation;
         // 判断是否有行动控制debuff，进行相关操作。
-        final List<IBuff> controlBuffs = self.buffController.getControlBuffs();
+        final List<ControlBuff> controlBuffs = self.buffController.getControlBuffs();
         if (controlBuffs.isEmpty()) {  // 无行动控制debuff
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
@@ -163,7 +163,7 @@ public class Simulator {
 
         } else {  // 受行动控制debuff影响
 
-            IBuff controlBuff = controlBuffs.get(0);
+            ControlBuff controlBuff = controlBuffs.get(0);
             log.info(Msg.info(self, "受行动控制debuff " + controlBuff.getName() + " 影响"));
             if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
                 final List<Entity> allAlive = self.camp.getAllAlive();

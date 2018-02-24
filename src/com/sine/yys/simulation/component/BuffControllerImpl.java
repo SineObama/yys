@@ -139,11 +139,11 @@ public class BuffControllerImpl implements BuffController {
     }
 
     @Override
-    public List<IBuff> getControlBuffs() {
-        List<IBuff> list = new ArrayList<>();
+    public List<ControlBuff> getControlBuffs() {
+        List<ControlBuff> list = new ArrayList<>();
         for (Container<IBuff> buffContainer : set) {
             if (buffContainer.getObj() instanceof ControlBuff) {
-                list.add(buffContainer.getObj());
+                list.add((ControlBuff) buffContainer.getObj());
             }
         }
         return list;
