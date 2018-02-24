@@ -2,8 +2,9 @@ package com.sine.yys.skill.operation;
 
 import com.sine.yys.inter.ActiveSkill;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.Operation;
 
-public class OperationImpl implements com.sine.yys.inter.Operation {
+public class OperationImpl implements Operation {
     private final Entity target;
     private final ActiveSkill skill;
 
