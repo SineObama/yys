@@ -43,7 +43,8 @@ public class EntityImpl implements Target, Property, Entity {
         this.property = property;
         this.shikigami = shikigami;
         this.mitamas = new ArrayList<>();
-        this.mitamas.add(mitama);
+        if (mitama != null)
+            this.mitamas.add(mitama);
         this.life = getMaxLife();
     }
 
