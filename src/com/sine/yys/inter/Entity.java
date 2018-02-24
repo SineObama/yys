@@ -34,6 +34,12 @@ public interface Entity extends Target, Property {
      */
     <T> void put(Class<T> clazz, Object key, Object value);
 
+    /**
+     * @return 生命百分比。
+     */
+    @Override
+    double getLife();
+    
     int getMaxLife();
 
     int getLifeInt();

@@ -30,13 +30,6 @@ public class ControllerImpl implements Controller {
         return ((EntityImpl) entity).getCamp();
     }
 
-    /**
-     * 伤害逻辑：
-     * 1. 由攻击、伤害系数、对方防御（忽略防御）计算。
-     * 2. 根据双方buff进行增减。
-     * 3. 破盾。
-     * 4. 施加剩余伤害，添加御魂效果。
-     */
     @Override
     public void attack(Entity self0, Entity target0, AttackInfo attackInfo) {
         EntityImpl self = (EntityImpl) self0;
@@ -78,13 +71,6 @@ public class ControllerImpl implements Controller {
         }
     }
 
-    /**
-     * 目前只有针女伤害。
-     * 1. 计算伤害。
-     * 2. 根据旗帜buff增减。
-     * 3. 破盾。
-     * 4. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
-     */
     @Override
     public void realDamage(Entity self0, Entity target0, double damage) {
         EntityImpl self = (EntityImpl) self0;
