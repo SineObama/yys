@@ -43,7 +43,7 @@ public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
 
         @Override
         public boolean sealed() {
-            return super.sealed() || (self.getBuffController().getUnique(LongShouZhiYuBuff.class) == null ^ flag);
+            return super.sealed() || (self.getBuffController().get(LongShouZhiYuBuff.class) == null ^ flag);
         }
 
         @Override

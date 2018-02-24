@@ -23,7 +23,7 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
     String getName();
 
     /**
-     * 每回合结束调用，返回剩余持续回合数，0表示消失。
+     * 每回合结束调用，返回剩余持续回合数，0表示效果消失，应当被移除。
      *
      * @param controller
      * @param self       式神自身。
@@ -31,7 +31,7 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
     int beforeAction(Controller controller, Entity self);
 
     /**
-     * 每回合结束调用，返回剩余持续回合数，0表示消失。
+     * 每回合结束调用，返回剩余持续回合数，0表示效果消失，应当被移除。
      *
      * @param controller
      * @param self       式神自身。

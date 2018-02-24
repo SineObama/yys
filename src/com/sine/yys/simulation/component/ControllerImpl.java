@@ -13,7 +13,6 @@ import com.sine.yys.rule.CalcEffect;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 public class ControllerImpl implements Controller {
@@ -133,13 +132,11 @@ public class ControllerImpl implements Controller {
      * @return 剩余伤害。
      */
     private int breakShield(EntityImpl target, int damage) {
-        Iterator<Shield> iterator = target.buffController.getShields().iterator();
-        for (; iterator.hasNext(); ) {
-            Shield shield = iterator.next();
+        for (Shield shield : target.buffController.getShields()) {
             damage = shield.doDamage(damage);
             if (damage == -1)
                 break;
-            target.buffController.removeShield(shield);
+            target.buffController.remove(shield);
             log.info(Msg.info(target, shield.getName() + " 被击破"));
         }
         if (damage == -1)
@@ -163,7 +160,7 @@ public class ControllerImpl implements Controller {
             log.info(Msg.trigger(self, effect));
             if (RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
                 log.info(Msg.info(target, "获得负面效果 " + debuff.getName()));
-                target.getBuffController().addIBuff(debuff);
+                target.getBuffController().add(debuff);
             } else {
                 log.info(Msg.info(target, "抵抗了负面效果 " + debuff.getName()));
             }

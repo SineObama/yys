@@ -17,11 +17,17 @@ import java.util.*;
 import java.util.logging.Logger;
 
 /**
- * XXX 实现代码上有些冗余。
+ * 给主逻辑提供行动前后调用的接口。
  */
 public class BuffControllerImpl implements BuffController {
     private static final Map<Class, Integer> prior = new HashMap<>();// TODO buff存储方式
 
+    /*
+     * 优先级小的在前面。
+     * 对于护盾，先消耗前面的。
+     * 对于控制效果，前面的先生效。
+     * 以后还可能用于驱散？
+     */
     static {
         prior.put(BangJingShield.class, 100);
         prior.put(DiZangXiangShield.class, 200);
@@ -32,76 +38,64 @@ public class BuffControllerImpl implements BuffController {
     }
 
     private final Logger log = Logger.getLogger(getClass().toString());
-    private final Set<Container<IBuff>> set = new TreeSet<>();
-    private final Set<Container<IBuff>> attach = new TreeSet<>(); // 附属buff，如龙首之玉的防御和抵抗
 
-    public void removeShield(Object shield) {
-        set.remove(new Container<>(prior.get(shield.getClass()), (IBuff) shield));
+    private final Map<Class, IBuff> map = new HashMap<>();
+
+    public Object remove(Object shield) {
+        return map.remove(shield.getClass());
     }
 
     /**
      * 按照消耗顺序返回。
      */
-    public List<Shield> getShields() {
-        List<Shield> list = new ArrayList<>();
-        for (Container<IBuff> buffContainer : set) {
-            if (buffContainer.getObj() instanceof Shield) {
-                list.add((Shield) buffContainer.getObj());
-            }
+    public Collection<Shield> getShields() {
+        Map<Integer, Shield> sorted = new TreeMap<>();
+        for (Object o : map.values()) {
+            if (o instanceof Shield)
+                sorted.put(prior.get(o.getClass()), (Shield) o);
         }
-        return list;
+        return sorted.values();
     }
 
     public void beforeAction(Controller controller, Entity self) {
-        Set<Container<IBuff>> temp = new TreeSet<>(set);
-        final Iterator<Container<IBuff>> iterator = temp.iterator();
-        for (; iterator.hasNext(); ) {
-            final Container<IBuff> buffContainer = iterator.next();
-            if (buffContainer.getObj().beforeAction(controller, self) == 0) {
-                set.remove(buffContainer);
-                log.info(Msg.info(self, buffContainer.getObj().getName() + " 效果消失了"));
+        Collection<IBuff> buffs = map.values();
+        for (IBuff buff : buffs) {
+            if (buff.beforeAction(controller, self) == 0) {
+                map.remove(buff.getClass());
+                log.info(Msg.info(self, buff.getName() + " 效果消失了"));
             }
         }
     }
 
     public void afterAction(Controller controller, Entity self) {
-        Set<Container<IBuff>> temp = new TreeSet<>(set);
-        final Iterator<Container<IBuff>> iterator = temp.iterator();
-        for (; iterator.hasNext(); ) {
-            final Container<IBuff> buffContainer = iterator.next();
-            if (buffContainer.getObj().afterAction(controller, self) == 0) {
-                set.remove(buffContainer);
+        Collection<IBuff> buffs = map.values();
+        for (IBuff buff : buffs) {
+            if (buff.afterAction(controller, self) == 0) {
+                map.remove(buff.getClass());
                 // TODO 输出信息移到buff中？
-                log.info(Msg.info(self, buffContainer.getObj().getName() + " 效果消失了"));
+                log.info(Msg.info(self, buff.getName() + " 效果消失了"));
             }
         }
     }
 
     @Override
-    public <T> void addIBuff(Combinable<T> iBuff) {
-        Class clz = iBuff.getClass();
-        for (Container<IBuff> buffContainer : set) {
-            if (buffContainer.getObj().getClass() == clz) {
-                buffContainer.setObj((IBuff) iBuff.combineWith((T) buffContainer.getObj()));
-                return;
-            }
+    public <T> void add(Combinable<T> buff) {
+        IBuff buff0 = map.get(buff.getClass());
+        if (buff0 != null) {
+            buff0 = (IBuff) buff.combineWith((T) buff0);
         }
-        set.add(new Container<IBuff>(prior.get(iBuff.getClass()), (IBuff) iBuff));
+        map.put(buff.getClass(), buff0);
     }
 
     @Override
-    public <T> T getUnique(Class<T> clazz) {
-        for (Container<IBuff> container : set) {
-            if (container.getObj().getClass() == clazz)
-                return (T) container.getObj();  // XXX 又是unchecked
-        }
-        return null;
+    public <T> T get(Class<T> clazz) {
+        return (T) map.get(clazz);
     }
 
     @Override
     public boolean mitamaSealed() {
-        for (Container<IBuff> iBuffContainer : set) {
-            if (iBuffContainer.getObj() instanceof SealMitama)
+        for (IBuff iBuff : map.values()) {
+            if (iBuff instanceof SealMitama)
                 return true;
         }
         return false;
@@ -109,25 +103,11 @@ public class BuffControllerImpl implements BuffController {
 
     @Override
     public boolean passiveSealed() {
-        for (Container<IBuff> iBuffContainer : set) {
-            if (iBuffContainer.getObj() instanceof SealPassive)
+        for (IBuff iBuff : map.values()) {
+            if (iBuff instanceof SealPassive)
                 return true;
         }
         return false;
-    }
-
-    /**
-     * 暂定只有一个buff生效，不会进行替换。
-     */
-    @Override
-    public void addAttach(Object buff) {
-        Class clz = buff.getClass();
-        for (Container<IBuff> buffContainer : attach) {
-            if (buffContainer.getObj().getClass() == clz) {
-                return;
-            }
-        }
-        attach.add(new Container<IBuff>(prior.get(buff.getClass()), (IBuff) buff));
     }
 
     /**
@@ -135,56 +115,50 @@ public class BuffControllerImpl implements BuffController {
      */
     public List<ControlBuff> getControlBuffs() {
         List<ControlBuff> list = new ArrayList<>();
-        for (Container<IBuff> buffContainer : set) {
-            if (buffContainer.getObj() instanceof ControlBuff) {
-                list.add((ControlBuff) buffContainer.getObj());
-            }
+        for (IBuff buff : map.values()) {
+            if (buff instanceof ControlBuff)
+                list.add((ControlBuff) buff);
         }
         return list;
     }
 
     @Override
-    public <T> void removeAttach(Class<T> clazz) {
-        for (Container<IBuff> iBuffContainer : attach) {
-            if (iBuffContainer.getObj().getClass() == clazz) {
-                attach.remove(iBuffContainer);
-                return;
-            }
-        }
+    public <T> void remove(Class<T> clazz) {
+        map.remove(clazz);
     }
 
     @Override
     public double getAtkPct() {
-        return new AtkPct().calc(set, attach);
+        return new AtkPct().calc(map.values());
     }
 
     @Override
     public double getDefPct() {
-        return new DefPct().calc(set, attach);
+        return new DefPct().calc(map.values());
     }
 
     @Override
     public double getSpeed() {
-        return new Speed().calc(set, attach);
+        return new Speed().calc(map.values());
     }
 
     @Override
     public double getCritical() {
-        return new Critical().calc(set, attach);
+        return new Critical().calc(map.values());
     }
 
     @Override
     public double getCriticalDamage() {
-        return new CriticalDamage().calc(set, attach);
+        return new CriticalDamage().calc(map.values());
     }
 
     @Override
     public double getEffectHit() {
-        return new EffectHit().calc(set, attach);
+        return new EffectHit().calc(map.values());
     }
 
     @Override
     public double getEffectDef() {
-        return new EffectDef().calc(set, attach);
+        return new EffectDef().calc(map.values());
     }
 }

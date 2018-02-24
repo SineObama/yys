@@ -33,10 +33,10 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
     private void deploy(Controller controller, Entity self, int last) {
         LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> self.getEventController().trigger(new LongShouZhiYuOff()));  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
         log.info(Msg.info(self, "施放 " + buff.getName()));
-        self.getBuffController().addIBuff(buff);
+        self.getBuffController().add(buff);
         for (Entity shikigami : controller.getCamp(self).getAllShikigami()) {  // DESIGN 给式神不包括召唤物加buff
-            shikigami.getBuffController().addAttach(new LSZYDefenseBuff(getDefPct()));
-            shikigami.getBuffController().addAttach(new LSZYEffectDefBuff(getEffectDef()));
+            shikigami.getBuffController().add(new LSZYDefenseBuff(getDefPct()));
+            shikigami.getBuffController().add(new LSZYEffectDefBuff(getEffectDef()));
         }
         self.getEventController().trigger(new LongShouZhiYuOn());
     }
@@ -63,8 +63,8 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
             @Override
             public void handle(LongShouZhiYuOff event) {
                 for (Entity shikigami : own.getAllShikigami()) {
-                    shikigami.getBuffController().removeAttach(LSZYDefenseBuff.class);
-                    shikigami.getBuffController().removeAttach(LSZYEffectDefBuff.class);
+                    shikigami.getBuffController().remove(LSZYDefenseBuff.class);
+                    shikigami.getBuffController().remove(LSZYEffectDefBuff.class);
                 }
             }
         });
@@ -108,7 +108,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
 
         @Override
         public boolean sealed() {
-            return self.getBuffController().getUnique(LongShouZhiYuBuff.class) == null;
+            return self.getBuffController().get(LongShouZhiYuBuff.class) == null;
         }
 
         /**

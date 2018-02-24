@@ -34,7 +34,7 @@ public class HuiYeJi extends BaseShikigami {
     class HuiYeJiAI extends AutoOperationHandler implements OperationHandler {
         @Override
         public Operation handle(Entity self, Map<ActiveSkill, List<? extends Entity>> map) {
-            LongShouZhiYuBuff buff = self.getBuffController().getUnique(LongShouZhiYuBuff.class);
+            LongShouZhiYuBuff buff = self.getBuffController().get(LongShouZhiYuBuff.class);
             for (ActiveSkill activeSkill : map.keySet()) {
                 if (activeSkill instanceof LongShouZhiYu) {
                     if (buff == null || buff.getLast() <= 1) {

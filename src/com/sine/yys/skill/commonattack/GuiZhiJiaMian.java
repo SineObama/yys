@@ -14,7 +14,7 @@ public class GuiZhiJiaMian extends BaseCommonAttack {
 
     @Override
     public int getTimes(Entity self) {
-        return self.getBuffController().getUnique(KuangBao.class) == null ? 1 : 2;  // XXX 般若狂暴平A两段？
+        return self.getBuffController().get(KuangBao.class) == null ? 1 : 2;  // XXX 般若狂暴平A两段？
     }
 
     @Override
