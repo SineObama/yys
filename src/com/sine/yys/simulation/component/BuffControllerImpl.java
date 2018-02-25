@@ -84,7 +84,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     public <T> void add(Combinable<T> buff) {
         IBuff buff0 = map.get(buff.getClass());
         if (buff0 != null) {
-            map.put(buff.getClass(), (IBuff) buff.combineWith((T) buff0));
+            map.put(buff.getClass(), buff0.combineWith((IBuff) buff));
         } else {
             map.put(buff.getClass(), (IBuff) buff);
         }

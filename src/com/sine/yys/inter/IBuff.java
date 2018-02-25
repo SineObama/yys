@@ -45,8 +45,10 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
      * 重复添加同类型buff时调用，因为不能同时存在2个buff。
      * 判断被留下的实例（比如回合数大的保留，或者数值大的保留）。
      * 也可进行回合数叠加（然后返回自己）。
+     * <p>
+     * 由于在价值相同（一般是回合数相同）的情况下，新buff会替代旧buff（根据UI表现推断），所以约定参数是新的实例。
      *
-     * @param o 与实例同类型的buff。
+     * @param o 与实例同类型的buff（新）。
      * @return 被留下的实例。
      */
     IBuff combineWith(IBuff o);
