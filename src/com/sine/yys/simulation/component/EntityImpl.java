@@ -27,13 +27,11 @@ public class EntityImpl implements Target, Property, Entity {
     final List<Mitama> mitamas;
     private final Property property;
     private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
-
-    private int life;
-    private double position = 0;  // 行动位置，范围0-1。
-
     // XXXX 两者的设置由谁负责比较好？
     Camp camp = null;
     FireRepo fireRepo;
+    private int life;
+    private double position = 0;  // 行动位置，范围0-1。
 
     public EntityImpl(Property property, Mitama mitama, Shikigami shikigami) {
         this.property = property;

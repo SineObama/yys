@@ -16,7 +16,8 @@ public interface Skill extends Named {
 
     /**
      * 每回合开始调用。
-     *  @param controller 控制器。
+     *
+     * @param controller 控制器。
      * @param self       式神自身。
      */
     int beforeAction(Controller controller, Entity self);
