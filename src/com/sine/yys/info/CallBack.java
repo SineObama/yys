@@ -1,4 +1,4 @@
-package com.sine.yys.util;
+package com.sine.yys.info;
 
 /**
  * 用作简单的回调。
