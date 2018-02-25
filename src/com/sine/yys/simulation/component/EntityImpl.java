@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * 战场中的实体，保存了式神信息{@link BaseShikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
@@ -29,8 +28,8 @@ public class EntityImpl implements Target, Property, Entity {
     private final Property property;
     private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
 
-    int life;
-    double position = 0;  // 行动位置，范围0-1。
+    private int life;
+    private double position = 0;  // 行动位置，范围0-1。
 
     // XXXX 两者的设置由谁负责比较好？
     Camp camp = null;

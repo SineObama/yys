@@ -171,7 +171,7 @@ public class Simulator {
 
             // TODO 行动后行为，反击等。
             // FIXME 触发新回合后被反击打死，行动条还在1
-        } while (self.position == 1.0 && !self.isDead());
+        } while (self.getPosition() == 1.0 && !self.isDead());
     }
 
     /**
