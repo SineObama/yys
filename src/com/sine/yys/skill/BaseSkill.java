@@ -26,13 +26,14 @@ public abstract class BaseSkill implements Skill {
     }
 
     @Override
-    public final void beforeAction(Controller controller, Entity self) {
+    public final int beforeAction(Controller controller, Entity self) {
         if (prepared) {
             log.severe("异常调用beforeAction()");
-            return;
+            return getCD(self);
         }
         prepared = true;
         doBeforeAction(controller, self);
+        return getCD(self);
     }
 
     @Override
