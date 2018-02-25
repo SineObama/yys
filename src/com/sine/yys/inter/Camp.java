@@ -12,9 +12,9 @@ import java.util.List;
  * 一场战斗中通常分为2个阵营。
  */
 public interface Camp extends Target {
-    List<Entity> getAllAlive();
+    List<? extends Entity> getAllAlive();
 
-    List<Entity> getAllShikigami();
+    List<? extends ShikigamiEntity> getAllShikigami();
 
     boolean contain(Entity entity);
 

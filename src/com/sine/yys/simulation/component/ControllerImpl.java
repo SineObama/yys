@@ -183,17 +183,17 @@ public class ControllerImpl implements Controller {
     public void clear() {
         camp0.getEventController().setState(BeAttackEvent.class, true);
         camp1.getEventController().setState(BeAttackEvent.class, true);
-        for (EntityImpl entity : camp0.getAllAlive2()) {
+        for (EntityImpl entity : camp0.getAllAlive()) {
             entity.getEventController().setState(BeAttackEvent.class, true);
         }
-        for (EntityImpl entity : camp1.getAllAlive2()) {
+        for (EntityImpl entity : camp1.getAllAlive()) {
             entity.getEventController().setState(BeAttackEvent.class, true);
         }
     }
 
     @Override
     public void actionChance(Entity self0) {
-        EntityImpl self = (EntityImpl)self0;
+        EntityImpl self = (EntityImpl) self0;
         self.setPosition(1.0);
     }
 }

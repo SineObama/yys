@@ -49,7 +49,7 @@ public class Simulator {
      */
     private void init(BaseCamp own, BaseCamp enemy) {
         own.init(enemy);
-        for (EntityImpl baseEntity : own.getAllAlive2()) {
+        for (EntityImpl baseEntity : own.getAllAlive()) {
             for (Skill skill : baseEntity.shikigami.getSkills()) {
                 skill.init(controller, baseEntity);
             }
@@ -63,8 +63,8 @@ public class Simulator {
         EntityImpl rtn = null;
         double min = 1;  // 不可能达到的较大值
         List<EntityImpl> all = new ArrayList<>(15);
-        all.addAll(camp0.getAllAlive2());
-        all.addAll(camp1.getAllAlive2());
+        all.addAll(camp0.getAllAlive());
+        all.addAll(camp1.getAllAlive());
         all.addAll(extras);
         for (EntityImpl entity : all) {
             double remain = (1 - entity.getPosition()) / entity.getSpeed();
@@ -207,7 +207,8 @@ public class Simulator {
             ControlBuff controlBuff = controlBuffs.get(0);
             log.info(Msg.info(self, "受行动控制debuff " + controlBuff.getName() + " 影响"));
             if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
-                final List<Entity> allAlive = self.camp.getAllAlive();
+                final List<Entity> allAlive = new ArrayList<>();
+                allAlive.addAll(self.camp.getAllAlive());
                 allAlive.addAll(self.camp.getOpposite().getAllAlive());
                 allAlive.remove(self);
                 operation = new OperationImpl(RandUtil.choose(allAlive), self.getCommonAttack());

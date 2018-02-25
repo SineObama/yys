@@ -10,17 +10,17 @@ public interface Position {
     /**
      * @return 当前位置上的实体。
      */
-    Entity getCurrent();
+    <T extends Entity> T getCurrent();
 
     /**
      * 设置当前位置的实体。
      *
      * @param entity 实体。
      */
-    void setCurrent(Entity entity);
+    <T extends Entity> void setCurrent(T entity);
 
     /**
      * @return 位置上原本的实体。
      */
-    Entity getSource();
+    <T extends Entity> T getSource();
 }
