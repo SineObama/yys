@@ -1,6 +1,7 @@
 package com.sine.yys.buff.shield;
 
 import com.sine.yys.buff.BaseCommonIBuff;
+import com.sine.yys.inter.IBuff;
 
 /**
  * 盾通用逻辑。
@@ -25,5 +26,12 @@ public abstract class BaseShield extends BaseCommonIBuff implements Shield {
         if (value > 0)
             return -1;
         return -value;
+    }
+
+    @Override
+    public IBuff combineWith(IBuff o) {
+        if (getLast() == o.getLast())
+            return getValue() > ((Shield) o).getValue() ? this : o;
+        return super.combineWith(o);
     }
 }
