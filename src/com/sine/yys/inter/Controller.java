@@ -65,4 +65,9 @@ public interface Controller extends DamageController {
      * 技能调用此函数以重置状态。
      */
     void clear();
+
+    /**
+     * 获得一次行动机会
+     */
+    void actionChance(Entity self);
 }

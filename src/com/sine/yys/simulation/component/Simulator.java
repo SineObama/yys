@@ -237,7 +237,7 @@ public class Simulator {
             // 执行技能
             activeSkill.apply(controller, self, target);
 
-            self.eventController.trigger(new FinishActionEvent());
+            self.eventController.trigger(new FinishActionEvent(controller));
         } else {
             log.info(Msg.info(self, "无法行动。"));
         }

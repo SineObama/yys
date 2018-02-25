@@ -190,4 +190,10 @@ public class ControllerImpl implements Controller {
             entity.getEventController().setState(BeAttackEvent.class, true);
         }
     }
+
+    @Override
+    public void actionChance(Entity self0) {
+        EntityImpl self = (EntityImpl)self0;
+        self.setPosition(1.0);
+    }
 }
