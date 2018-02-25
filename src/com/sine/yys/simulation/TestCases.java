@@ -35,7 +35,7 @@ public class TestCases {
         CampInfo blue = new CampInfo();
         red.add(new BiAnHua(), new PropertyImpl(attack, 10000, 400, 173, 1, 1.5, 0, 0), new ZhenNv());
         red.add(new HuiYeJi(), new PropertyImpl(attack, 10000, 400, 172, 0, 1.5, 0, 0), new HuoLing());
-        blue.add(new BoRe(), new PropertyImpl(attack, 10000, 400, 171, 0.8, 1.5, 0.9, 0), new DiZangXiang());  // 效果命中影响大
+        blue.add(new BoRe(), new PropertyImpl(attack, 10000, 400, 171, 0.8, 1.5, 0.3, 0), new DiZangXiang());  // 效果命中影响大
         blue.add(new GuHuoNiao(), new PropertyImpl(attack, 10000, 400, 170, 0.8, 1.5, 3, 0), new MeiYao());
         return new RedBlueSimulator(red, blue);
     }
