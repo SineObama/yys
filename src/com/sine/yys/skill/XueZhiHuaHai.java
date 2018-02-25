@@ -32,7 +32,7 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
             count += 1;
         addLevel(self, count);
         if (self.getLife() < 0.75)
-            addShield(self);
+            addShield(controller, self);
     }
 
     public void addLevel(Entity self, int count) {
@@ -64,9 +64,9 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
         return "血之花海";
     }
 
-    public void addShield(Entity self) {
+    public void addShield(Controller controller, Entity self) {
         final double value = self.getMaxLife() * (1 - self.getLife()) * getLostLifePct();
-        self.getBuffController().add(new XueZhiHuaHaiShield(self.shieldValue(value)));
+        self.getBuffController().add(new XueZhiHuaHaiShield(controller.shieldValue(self, value)));
         log.info(Msg.info(self, "获得 " + getName()));
     }
 }

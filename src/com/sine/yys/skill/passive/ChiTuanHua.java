@@ -57,7 +57,7 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill {
             if (src != 4 && src != dst) {
                 log.info(Msg.trigger(self, self));
                 xueZhiHuaHai.addLevel(self, src - dst);
-                xueZhiHuaHai.addShield(self);
+                xueZhiHuaHai.addShield(event.getController(), self);
             }
         }
     }
