@@ -196,4 +196,12 @@ public class ControllerImpl implements Controller {
         EntityImpl self = (EntityImpl) self0;
         self.setPosition(1.0);
     }
+
+    @Override
+    public int shieldValue(Entity self, double src) {
+        if (!RandUtil.success(self.getCritical()))
+            return (int) src;
+        log.info(Msg.info(self, "暴击"));
+        return (int) (src * self.getCriticalDamage());
+    }
 }

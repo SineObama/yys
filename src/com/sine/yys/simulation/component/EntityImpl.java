@@ -5,8 +5,6 @@ import com.sine.yys.info.Target;
 import com.sine.yys.inter.*;
 import com.sine.yys.shikigami.BaseShikigami;
 import com.sine.yys.skill.commonattack.CommonAttack;
-import com.sine.yys.util.Msg;
-import com.sine.yys.util.RandUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +26,6 @@ public class EntityImpl implements Target, Property, Entity {
     final BuffControllerImpl buffController = new BuffControllerImpl();
     final Shikigami shikigami;
     final List<Mitama> mitamas;
-    private final Logger log = Logger.getLogger(getClass().toString());
     private final Property property;
     private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
 
@@ -131,19 +128,6 @@ public class EntityImpl implements Target, Property, Entity {
             }
         }
         return activeSkills;
-    }
-
-    /**
-     * 添加护盾时计算护盾的数值（厚度）。计算暴击。
-     *
-     * @param src 原本数值。
-     * @return 最终数值。
-     */
-    public int shieldValue(double src) {
-        if (!RandUtil.success(getCritical()))
-            return (int) src;
-        log.info(Msg.info(this, "暴击"));
-        return (int) (src * getCriticalDamage());
     }
 
     CommonAttack getCommonAttack() {

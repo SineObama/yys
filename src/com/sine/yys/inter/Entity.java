@@ -44,8 +44,6 @@ public interface Entity extends Target, Property {
 
     int getLifeInt();
 
-    int shieldValue(double src);
-
     boolean isDead();
 
     BuffController getBuffController();
