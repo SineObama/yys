@@ -80,7 +80,7 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
         for (int i = 0; i < getTimes(self); i++) {
             if (target.isDead())
                 break;
-            controller.attack(self, target, getAttack());
+            controller.attack(self, target, getAttack(), getDebuffEffects());
         }
     }
 }

@@ -1,7 +1,8 @@
 package com.sine.yys.inter;
 
 import com.sine.yys.info.AttackInfo;
-import com.sine.yys.info.PctEffect;
+
+import java.util.Collection;
 
 /**
  * 控制器，提供给技能和御魂实现操作。
@@ -29,7 +30,7 @@ public interface Controller extends DamageController {
      * 3. 破盾。
      * 4. 施加剩余伤害，添加御魂效果。
      */
-    void attack(Entity self0, Entity target, AttackInfo attackInfo);
+    void attack(Entity self0, Entity target, AttackInfo attackInfo, Collection<DebuffEffect> debuffEffects);
 
     /**
      * 目前只用于施加针女伤害（会被椒图或薙魂分担，不会被金鱼分担，不受一般buff和御魂影响）。
@@ -37,7 +38,7 @@ public interface Controller extends DamageController {
      * 2. 破盾。
      * 3. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
      * <p>
-     * 与一般的攻击{@link #attack(Entity, Entity, AttackInfo)}有很多相似之处，要注意同步。
+     * 与一般的攻击{@link #attack(Entity, Entity, AttackInfo, Collection)}有很多相似之处，要注意同步。
      */
     void realDamage(Entity self0, Entity target, double damage);
 
@@ -51,7 +52,7 @@ public interface Controller extends DamageController {
      * 包括计算效果命中和抵抗。
      * 未来将会涉及相关事件，比如抵抗反击事件、花鸟卷的被动抵抗。
      */
-    void applyDebuff(Entity self, PctEffect effect, Entity target, Debuff debuff);
+    void applyDebuff(Entity self, Entity target, DebuffEffect effect);
 
     /**
      * 处理协战（可能目标已死亡，或者自己被嘲讽）。

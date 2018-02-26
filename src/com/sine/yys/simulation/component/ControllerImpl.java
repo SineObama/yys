@@ -3,16 +3,13 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.event.*;
 import com.sine.yys.info.AttackInfo;
-import com.sine.yys.info.PctEffect;
-import com.sine.yys.inter.Camp;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Debuff;
-import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.*;
 import com.sine.yys.rule.CalcDam;
 import com.sine.yys.rule.CalcEffect;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 
 public class ControllerImpl implements Controller {
@@ -30,11 +27,17 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void attack(Entity self0, Entity target0, AttackInfo attackInfo) {
+    public void attack(Entity self0, Entity target0, AttackInfo attackInfo, Collection<DebuffEffect> debuffEffects) {
         EntityImpl self = (EntityImpl) self0;
         EntityImpl target = (EntityImpl) target0;
-        if (target.isDead())  // XXX 只是有时会出现目标已死。有更好的逻辑？
+        if (target.isDead())  // XXX 只是有时会出现目标已死。有更好 的逻辑？
             return;
+
+        // XXX 关于触发时机
+        if (debuffEffects != null)
+            for (DebuffEffect debuffEffect : debuffEffects) {
+                applyDebuff(self, target, debuffEffect);
+            }
 
         self.eventController.trigger(new AttackEvent(this, self, target));
 
@@ -105,6 +108,7 @@ public class ControllerImpl implements Controller {
             return;
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
+        log.info(Msg.info(self, "受到伤害 " + damage));
         doDamage(self, damage);
     }
 
@@ -155,14 +159,26 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void applyDebuff(Entity self, PctEffect effect, Entity target, Debuff debuff) {
-        if (RandUtil.success(CalcEffect.pct(effect.getPct(), self.getEffectHit()))) {
+    public void applyDebuff(Entity self, Entity target, DebuffEffect effect) {
+        final double pct;
+        final boolean involveHitAndDef = effect.involveHitAndDef();
+        if (involveHitAndDef)
+            pct = CalcEffect.pct(effect.getPct(), self.getEffectHit());
+        else
+            pct = effect.getPct();
+        if (RandUtil.success(pct)) {
             log.info(Msg.trigger(self, effect));
-            if (RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
+            Debuff debuff = effect.getDebuff();
+            if (involveHitAndDef) {  // XXX 确定 true || exc()不会执行后者的话可以简化。
+                if (RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
+                    log.info(Msg.info(target, "获得负面效果 " + debuff.getName()));
+                    target.getBuffController().add(debuff);
+                } else {
+                    log.info(Msg.info(target, "抵抗了负面效果 " + debuff.getName()));
+                }
+            } else {
                 log.info(Msg.info(target, "获得负面效果 " + debuff.getName()));
                 target.getBuffController().add(debuff);
-            } else {
-                log.info(Msg.info(target, "抵抗了负面效果 " + debuff.getName()));
             }
         }
     }

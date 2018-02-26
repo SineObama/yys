@@ -2,7 +2,10 @@ package com.sine.yys.skill;
 
 import com.sine.yys.inter.ActiveSkill;
 import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
+
+import java.util.Collection;
 
 /**
  * 主动技能通用逻辑。
@@ -27,6 +30,13 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
      * @param target     目标。
      */
     protected abstract void doApply(Controller controller, Entity self, Entity target);
+
+    /**
+     * 获取攻击时附带的debuff效果。默认无效果。
+     */
+    protected Collection<DebuffEffect> getDebuffEffects() {
+        return null;
+    }
 
     /**
      * 目前只用于普攻触发事件。
