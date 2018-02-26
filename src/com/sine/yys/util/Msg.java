@@ -35,8 +35,8 @@ public class Msg {
         return vector(self, "攻击", target, "未造成伤害");
     }
 
-    public static String trigger(Target target, Named obj) {
-        return info(target, "触发 " + obj.getName());
+    public static String trigger(Target target, Named named) {
+        return info(target, "触发 " + named.getName());
     }
 
     /**

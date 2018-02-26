@@ -4,6 +4,7 @@ import com.sine.yys.event.FinishActionEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
+import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 /**
@@ -43,6 +44,7 @@ public class RenDuoShiZhong extends BasePassiveSkill implements PassiveSkill {
         @Override
         public void handle(FinishActionEvent event) {
             if (!self.isDead() && RandUtil.success(getPct())) {
+                log.info(Msg.trigger(self, RenDuoShiZhong.this));
                 event.getController().actionChance(self);
             }
         }
