@@ -12,6 +12,9 @@ import java.util.List;
 public class EnemyEntityResolver implements TargetResolver {
     @Override
     public List<? extends Entity> resolve(Camp own, Entity self) {
-        return own.getOpposite().getAllAlive();
+        final List<? extends Entity> allAlive = own.getOpposite().getAllAlive();
+        if (allAlive.isEmpty())
+            return null;
+        return allAlive;
     }
 }
