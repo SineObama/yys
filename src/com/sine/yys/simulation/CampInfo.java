@@ -1,8 +1,6 @@
 package com.sine.yys.simulation;
 
 import com.sine.yys.info.Property;
-import com.sine.yys.inter.Mitama;
-import com.sine.yys.inter.Shikigami;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +8,7 @@ import java.util.List;
 public class CampInfo {
     final List<EntityInfo> infos = new ArrayList<>();
 
-    public void add(Shikigami shiShen, Property property, Mitama mitama) {
+    public void add(String shiShen, Property property, String mitama) {
         EntityInfo info = new EntityInfo();
         info.shiShen = shiShen;
         info.property = property;

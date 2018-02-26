@@ -1,0 +1,5 @@
+GuHuoNiao       1240    10000   400     173     100%    150%    0%      0%   ZhenNv
+QingXingDeng    1240    10000   400     172     0%      150%    0%      0%   HuoLing
+
+QingXingDeng    1240    10000   400     171     80%     150%    300%    0%   MeiYao
+GuHuoNiao       1240    10000   400     170     80%     150%    300%    0%   MeiYao
