@@ -106,22 +106,20 @@ public class Simulator {
             return;
         }
 
-        round += 1;
-        log.info(Msg.info(self, "行动，序号 " + round));
-
         action(self);
+    }
 
-        log.info(Msg.info(self, "行动结束，序号 " + round));
-
+    boolean checkWin() {
         // XXX 简单判断胜负：无式神存活
         if (camp0.getAllShikigami().size() == 0) {
             win = camp1;
-            ended = true;
+            return ended = true;
         }
         if (camp1.getAllShikigami().size() == 0) {
             win = camp0;
-            ended = true;
+            return ended = true;
         }
+        return false;
     }
 
     /**
@@ -135,6 +133,8 @@ public class Simulator {
 
         // 用于多次行动
         do {
+            round += 1;
+            log.info(Msg.info(self, "行动，序号 " + round));
 
             // 重置行动条
             self.setPosition(0);
@@ -171,6 +171,10 @@ public class Simulator {
 
             // TODO 行动后行为，反击等。
             // FIXME 触发新回合后被反击打死，行动条还在1
+
+            log.info(Msg.info(self, "行动结束，序号 " + round));
+            if (checkWin())
+                break;
         } while (self.getPosition() == 1.0 && !self.isDead());
     }
 
