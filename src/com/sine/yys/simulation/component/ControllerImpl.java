@@ -168,7 +168,7 @@ public class ControllerImpl implements Controller {
             pct = effect.getPct();
         if (RandUtil.success(pct)) {
             log.info(Msg.trigger(self, effect));
-            Debuff debuff = effect.getDebuff();
+            Debuff debuff = effect.getDebuff(self);
             if (involveHitAndDef) {  // XXX 确定 true || exc()不会执行后者的话可以简化。
                 if (RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
                     log.info(Msg.info(target, "获得负面效果 " + debuff.getName()));

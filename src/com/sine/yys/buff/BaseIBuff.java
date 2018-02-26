@@ -15,15 +15,22 @@ import java.util.logging.Logger;
 public abstract class BaseIBuff implements IBuff {
     protected final Logger log = Logger.getLogger(this.getClass().toString());
     private final String name;
+    private final Entity src;
     private boolean prepared = false;  // 用于处理buff回合数衰减。调用beforeAction()后为true。在2个状态之间转换
 
-    public BaseIBuff(String name) {
+    public BaseIBuff(String name, Entity src) {
         this.name = name;
+        this.src = src;
     }
 
     @Override
     public final String getName() {
         return name;
+    }
+
+    @Override
+    public final Entity getSrc() {
+        return src;
     }
 
     @Override

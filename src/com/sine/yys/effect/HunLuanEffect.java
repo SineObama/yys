@@ -2,6 +2,7 @@ package com.sine.yys.effect;
 
 import com.sine.yys.buff.debuff.HunLuan;
 import com.sine.yys.inter.Debuff;
+import com.sine.yys.inter.Entity;
 
 /**
  * @see HunLuan
@@ -16,7 +17,7 @@ public class HunLuanEffect extends AddDebuffEffect {
     }
 
     @Override
-    public Debuff getDebuff() {
-        return new HunLuan();
+    public Debuff getDebuff(Entity self) {
+        return new HunLuan(self);
     }
 }

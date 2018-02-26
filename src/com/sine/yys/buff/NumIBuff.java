@@ -1,5 +1,6 @@
 package com.sine.yys.buff;
 
+import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.IBuff;
 
 /**
@@ -12,9 +13,10 @@ public abstract class NumIBuff extends BaseCommonIBuff implements IBuff {
 
     /**
      * @param last 持续回合数。必须为正。
+     * @param self
      */
-    public NumIBuff(int last, String name, double value) {
-        super(last, name);
+    public NumIBuff(int last, String name, double value, Entity src) {
+        super(last, name, src);
         this.value = value;
     }
 

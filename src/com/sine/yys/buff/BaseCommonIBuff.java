@@ -14,9 +14,10 @@ public abstract class BaseCommonIBuff extends BaseIBuff implements IBuff {
     /**
      * @param last 持续回合数。必须为正。
      * @param name buff名称。
+     * @param self
      */
-    public BaseCommonIBuff(int last, String name) {
-        super(name);
+    public BaseCommonIBuff(int last, String name, Entity src) {
+        super(name, src);
         if (last <= 0)
             throw new RuntimeException("buff持续回合不为正。");
         this.last = last;

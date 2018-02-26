@@ -31,12 +31,12 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
      * 释放幻境。由于开局释放不算回合数，而技能释放时需要给last额外加1，所以独立出这个逻辑。
      */
     private void deploy(Controller controller, Entity self, int last) {
-        LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> self.getEventController().trigger(new LongShouZhiYuOff()));  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
+        LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> self.getEventController().trigger(new LongShouZhiYuOff()), self);  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
         log.info(Msg.info(self, "施放 " + buff.getName()));
         self.getBuffController().add(buff);
         for (ShikigamiEntity shikigami : controller.getCamp(self).getAllShikigami()) {  // DESIGN 给式神不包括召唤物加buff
-            shikigami.getBuffController().add(new LSZYDefenseBuff(getDefPct()));
-            shikigami.getBuffController().add(new LSZYEffectDefBuff(getEffectDef()));
+            shikigami.getBuffController().add(new LSZYDefenseBuff(getDefPct(), self));
+            shikigami.getBuffController().add(new LSZYEffectDefBuff(getEffectDef(), self));
         }
         self.getEventController().trigger(new LongShouZhiYuOn());
     }

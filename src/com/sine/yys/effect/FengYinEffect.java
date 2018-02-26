@@ -2,6 +2,7 @@ package com.sine.yys.effect;
 
 import com.sine.yys.buff.debuff.FengYin;
 import com.sine.yys.inter.Debuff;
+import com.sine.yys.inter.Entity;
 
 /**
  * 封印御魂和被动。
@@ -15,7 +16,7 @@ public class FengYinEffect extends BaseDebuffEffect {
     }
 
     @Override
-    public Debuff getDebuff() {
-        return new FengYin(last);
+    public Debuff getDebuff(Entity self) {
+        return new FengYin(last, self);
     }
 }

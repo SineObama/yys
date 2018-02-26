@@ -52,4 +52,9 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
      * @return 被留下的实例。
      */
     IBuff combineWith(IBuff o);
+
+    /**
+     * @return 来源式神。
+     */
+    Entity getSrc();
 }

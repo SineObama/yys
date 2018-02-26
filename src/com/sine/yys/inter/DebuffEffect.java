@@ -10,5 +10,5 @@ public interface DebuffEffect extends PctEffect {
      */
     boolean involveHitAndDef();
 
-    Debuff getDebuff();
+    Debuff getDebuff(Entity self);
 }

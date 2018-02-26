@@ -1,6 +1,7 @@
 package com.sine.yys.buff.shield;
 
 import com.sine.yys.buff.BaseCommonIBuff;
+import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.IBuff;
 
 /**
@@ -10,8 +11,8 @@ import com.sine.yys.inter.IBuff;
 public abstract class BaseShield extends BaseCommonIBuff implements Shield {
     private int value;
 
-    public BaseShield(int value, int last, String name) {
-        super(last, name);
+    public BaseShield(int value, int last, String name, Entity src) {
+        super(last, name, src);
         this.value = value;
     }
 
