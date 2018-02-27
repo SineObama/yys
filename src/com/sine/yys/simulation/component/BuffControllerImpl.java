@@ -1,111 +1,104 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.simulation.model.battle.Target;
-import com.sine.yys.simulation.model.buff.Buff;
-import com.sine.yys.simulation.model.buff.Debuff;
-import com.sine.yys.simulation.model.buff.IBuff;
-import com.sine.yys.simulation.model.buff.UniqueIBuff;
-import com.sine.yys.simulation.model.buff.debuff.ControlBuff;
-import com.sine.yys.simulation.model.buff.debuff.HunLuan;
-import com.sine.yys.simulation.model.buff.debuff.SealMitama;
-import com.sine.yys.simulation.model.buff.debuff.SealPassive;
-import com.sine.yys.simulation.model.shield.BangJingShield;
-import com.sine.yys.simulation.model.shield.DiZangXiangShield;
-import com.sine.yys.simulation.model.shield.Shield;
-import com.sine.yys.simulation.model.shield.XueZhiHuaHaiShield;
-import com.sine.yys.simulation.util.Msg;
+import com.sine.yys.buff.debuff.*;
+import com.sine.yys.buff.shield.BangJingShield;
+import com.sine.yys.buff.shield.DiZangXiangShield;
+import com.sine.yys.buff.shield.Shield;
+import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
+import com.sine.yys.info.Combinable;
+import com.sine.yys.info.IBuffProperty;
+import com.sine.yys.inter.BuffController;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.IBuff;
+import com.sine.yys.rule.buff.*;
+import com.sine.yys.util.Msg;
 
 import java.util.*;
 import java.util.logging.Logger;
 
 /**
- * XXX 实现代码上有些冗余。
+ * 给主逻辑提供行动前后调用的接口。
+ * 通过{@link IBuffProperty}接口返回所有buff相应属性的合计。
  */
-public class BuffControllerImpl implements BuffController {
+public class BuffControllerImpl implements BuffController, IBuffProperty {
     private static final Map<Class, Integer> prior = new HashMap<>();// TODO buff存储方式
 
+    /*
+     * 优先级小的在前面。
+     * 对于护盾，先消耗前面的。
+     * 对于控制效果，前面的先生效。
+     * 以后还可能用于驱散？
+     */
     static {
         prior.put(BangJingShield.class, 100);
         prior.put(DiZangXiangShield.class, 200);
         prior.put(XueZhiHuaHaiShield.class, 1000);
 
-        prior.put(HunLuan.class, 100100);
+        prior.put(XuanYun.class, 100100);
+        prior.put(HunLuan.class, 101000);
     }
 
-    private final Logger log = Logger.getLogger(getClass().toString());
-    private final Set<Container<IBuff>> set = new TreeSet<>();
-    private final Set<Container<UniqueIBuff>> attach = new TreeSet<>(); // 附属buff，如龙首之玉的防御和抵抗，所有式神公用一个引用。
+    private final Logger log = Logger.getLogger(getClass().getName());
 
-    @Override
-    public void addShield(Shield shield) {
-        Class clz = shield.getClass();
-        for (Container<IBuff> buffContainer : set) {
-            if (buffContainer.getObj().getClass() == clz) {
-                if (((Shield) buffContainer.getObj()).getValue() < shield.getValue())
-                    buffContainer.setObj(shield);
-                return;
+    private final Map<Class, IBuff> map = new HashMap<>();
+
+    public Object remove(Object shield) {
+        return map.remove(shield.getClass());
+    }
+
+    /**
+     * 按照消耗顺序返回。
+     */
+    public Collection<Shield> getShields() {
+        Map<Integer, Shield> sorted = new TreeMap<>();
+        for (Object o : map.values()) {
+            if (o instanceof Shield)
+                sorted.put(prior.get(o.getClass()), (Shield) o);
+        }
+        return sorted.values();
+    }
+
+    public void beforeAction(Controller controller, Entity self) {
+        Collection<IBuff> buffs = new ArrayList<>(map.values());
+        for (IBuff buff : buffs) {
+            if (buff.beforeAction(controller, self) == 0) {
+                map.remove(buff.getClass());
+                log.info(Msg.info(self, buff.getName() + " 效果消失了"));
             }
         }
-        set.add(new Container<>(prior.get(shield.getClass()), shield));
     }
 
-    @Override
-    public void removeShield(Shield shield) {
-        set.remove(new Container<>((IBuff) shield));
-    }
-
-    @Override
-    public List<Shield> getShields() {
-        List<Shield> list = new ArrayList<>();
-        for (Container<IBuff> buffContainer : set) {
-            if (buffContainer.getObj() instanceof Shield) {
-                list.add((Shield) buffContainer.getObj());
-            }
-        }
-        return list;
-    }
-
-    @Override
-    public void step(Target self) {
-        // XXXX 分开试试
-        List<IBuff> removeList = new ArrayList<>();
-        final Iterator<Container<IBuff>> iterator = set.iterator();
-        for (; iterator.hasNext(); ) {
-            final Container<IBuff> buffContainer = iterator.next();
-            if (buffContainer.getObj().step() == 0) {
-                removeList.add(buffContainer.getObj());
+    public void afterAction(Controller controller, Entity self) {
+        Collection<IBuff> buffs = new ArrayList<>(map.values());
+        for (IBuff buff : buffs) {
+            if (buff.afterAction(controller, self) == 0) {
+                map.remove(buff.getClass());
                 // TODO 输出信息移到buff中？
-                log.info(Msg.info(self, buffContainer.getObj().getName() + " 效果消失了"));
+                log.info(Msg.info(self, buff.getName() + " 效果消失了"));
             }
         }
-        for (IBuff iBuff : removeList) {
-            set.remove(new Container<>(iBuff));
+    }
+
+    @Override
+    public <T> void add(Combinable<T> buff) {
+        IBuff buff0 = map.get(buff.getClass());
+        if (buff0 != null) {
+            map.put(buff.getClass(), buff0.combineWith((IBuff) buff));
+        } else {
+            map.put(buff.getClass(), (IBuff) buff);
         }
     }
 
     @Override
-    public void addBuff(Buff buff) {
-        addIBuff(buff);
-    }
-
-    @Override
-    public void addDebuff(Debuff debuff) {
-        addIBuff(debuff);
-    }
-
-    @Override
-    public <T extends UniqueIBuff> T getUnique(Class<T> clazz) {
-        for (Container<IBuff> container : set) {
-            if (container.getObj().getClass() == clazz)
-                return (T) container.getObj();  // XXX 又是unchecked
-        }
-        return null;
+    public <T> T get(Class<T> clazz) {
+        return (T) map.get(clazz);
     }
 
     @Override
     public boolean mitamaSealed() {
-        for (Container<IBuff> iBuffContainer : set) {
-            if (iBuffContainer.getObj() instanceof SealMitama)
+        for (IBuff iBuff : map.values()) {
+            if (iBuff instanceof SealMitama)
                 return true;
         }
         return false;
@@ -113,129 +106,62 @@ public class BuffControllerImpl implements BuffController {
 
     @Override
     public boolean passiveSealed() {
-        for (Container<IBuff> iBuffContainer : set) {
-            if (iBuffContainer.getObj() instanceof SealPassive)
+        for (IBuff iBuff : map.values()) {
+            if (iBuff instanceof SealPassive)
                 return true;
         }
         return false;
     }
 
     /**
-     * 暂定只有一个buff生效，不会进行替换。
+     * 获取行动控制效果，按控制优先级返回。
      */
-    @Override
-    public void addAttach(UniqueIBuff buff) {
-        Class clz = buff.getClass();
-        for (Container<UniqueIBuff> buffContainer : attach) {
-            if (buffContainer.getObj().getClass() == clz) {
-                return;
-            }
-        }
-        attach.add(new Container<>(prior.get(buff.getClass()), buff));
-    }
-
-    private void addIBuff(IBuff iBuff) {
-        if (iBuff instanceof UniqueIBuff) {
-            Class clz = iBuff.getClass();
-            for (Container<IBuff> buffContainer : set) {
-                if (buffContainer.getObj().getClass() == clz) {
-                    if (buffContainer.getObj().getLast() < iBuff.getLast())
-                        buffContainer.setObj(iBuff);
-                    return;
-                }
-            }
-        }
-        set.add(new Container<>(prior.get(iBuff.getClass()), iBuff));
-    }
-
-    @Override
     public List<ControlBuff> getControlBuffs() {
         List<ControlBuff> list = new ArrayList<>();
-        for (Container<IBuff> buffContainer : set) {
-            if (buffContainer.getObj() instanceof ControlBuff) {
-                list.add((ControlBuff) buffContainer.getObj());
-            }
+        for (IBuff buff : map.values()) {
+            if (buff instanceof ControlBuff)
+                list.add((ControlBuff) buff);
         }
         return list;
     }
 
     @Override
-    public <T extends UniqueIBuff> void removeAttach(Class<T> clazz) {
-        for (Container<UniqueIBuff> iBuffContainer : attach) {
-            if (iBuffContainer.getObj().getClass() == clazz) {
-                attach.remove(iBuffContainer);
-                return;
-            }
-        }
+    public <T> void remove(Class<T> clazz) {
+        map.remove(clazz);
     }
 
     @Override
     public double getAtkPct() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getAtkPct();
-        for (Container<UniqueIBuff> container : attach)
-            sum += container.getObj().getAtkPct();
-        return sum;
+        return new AtkPct().calc(map.values());
     }
 
     @Override
     public double getDefPct() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getDefPct();
-        for (Container<UniqueIBuff> container : attach)
-            sum += container.getObj().getDefPct();
-        return sum;
+        return new DefPct().calc(map.values());
     }
 
     @Override
     public double getSpeed() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getSpeed();
-        for (Container<UniqueIBuff> container : attach)
-            sum += container.getObj().getSpeed();
-        return sum;
+        return new Speed().calc(map.values());
     }
 
     @Override
     public double getCritical() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getCritical();
-        for (Container<UniqueIBuff> container : attach)
-            sum += container.getObj().getCritical();
-        return sum;
+        return new Critical().calc(map.values());
     }
 
     @Override
     public double getCriticalDamage() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getCriticalDamage();
-        for (Container<UniqueIBuff> container : attach)
-            sum += container.getObj().getCriticalDamage();
-        return sum;
+        return new CriticalDamage().calc(map.values());
     }
 
     @Override
     public double getEffectHit() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getEffectHit();
-        for (Container<UniqueIBuff> container : attach)
-            sum += container.getObj().getEffectHit();
-        return sum;
+        return new EffectHit().calc(map.values());
     }
 
     @Override
     public double getEffectDef() {
-        double sum = 0;
-        for (Container<IBuff> container : set)
-            sum += container.getObj().getEffectDef();
-        for (Container<UniqueIBuff> container : attach)
-            sum += container.getObj().getEffectDef();
-        return sum;
+        return new EffectDef().calc(map.values());
     }
 }

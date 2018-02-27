@@ -1,0 +1,19 @@
+package com.sine.yys.effect;
+
+import com.sine.yys.inter.Effect;
+
+import java.util.logging.Logger;
+
+public abstract class BaseEffect implements Effect {
+    protected final Logger log = Logger.getLogger(this.getClass().getName());
+    private final String name;
+
+    BaseEffect(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public final String getName() {
+        return name;
+    }
+}
