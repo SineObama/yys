@@ -6,7 +6,7 @@ import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.AttackSkill;
 import com.sine.yys.skill.BaseActiveSkill;
 import com.sine.yys.skill.model.AttackInfoImpl;
-import com.sine.yys.skill.targetresolver.EmptyResolver;
+import com.sine.yys.skill.targetresolver.EnemyCampResolver;
 
 /**
  * 简单群攻，可多段。
@@ -23,7 +23,7 @@ public abstract class SimpleGroupAttack extends BaseActiveSkill implements Attac
 
     @Override
     public TargetResolver getTargetResolver() {
-        return new EmptyResolver();
+        return new EnemyCampResolver();
     }
 
     @Override
