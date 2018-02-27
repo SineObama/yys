@@ -31,7 +31,7 @@ public abstract class BaseDoT extends BaseIBuff implements DoT {
     @Override
     protected final int doBeforeAction(DamageController controller, Entity self) {
         if (last <= 0) {
-            log.severe("异常调用beforeAction()，buff已结束");
+            log.warning("异常调用beforeAction()，buff已结束");
             return 0;
         }
         last -= 1;

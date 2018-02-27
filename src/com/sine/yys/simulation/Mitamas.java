@@ -26,7 +26,7 @@ public class Mitamas {
 
     private static void put(Mitama mitama, String... keys) {
         map.put(mitama.getName().toLowerCase(), mitama);
-        map.put(mitama.getClass().toString().replaceAll(".*\\.", "").toLowerCase(), mitama);
+        map.put(mitama.getClass().getName().replaceAll(".*\\.", "").toLowerCase(), mitama);
         for (String key : keys) {
             map.put(key.toLowerCase(), mitama);
         }

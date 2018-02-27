@@ -15,7 +15,7 @@ import java.util.List;
  * <p>
  * 每行输入格式：名字      攻击    生命     防御    速度    暴击   暴伤    命中    抵抗    御魂
  * <p>
- * 其中名字和御魂为中午或全拼（不分大小写），其他作为浮点值，可用百分数形式。
+ * 其中名字和御魂为中文或全拼（不分大小写），其他作为浮点值，可用百分数形式。
  * （可以井号#开头写入一行注释，不读入数据）
  */
 public class InputUtil {
@@ -31,7 +31,8 @@ public class InputUtil {
             if (line.startsWith("#"))
                 continue;
             if (line.equals("")) {
-                campInfo = blue;
+                if (campInfo.infos.size() > 0)
+                    campInfo = blue;
                 continue;
             }
             final String[] tokens = line.split("\\s+");

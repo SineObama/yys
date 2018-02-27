@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * 在阵营和式神中都有独立的控制器，分开定义和管理属于阵营全局和式神自身的事件。
  */
 public class EventControllerImpl implements EventController {
-    private final Logger log = Logger.getLogger(this.getClass().toString());
+    private final Logger log = Logger.getLogger(this.getClass().getName());
 
     private final Map<Class, Set<Container<EventHandler>>> controllerMap = new HashMap<>();
     private final Map<Class, Boolean> states = new HashMap<>();

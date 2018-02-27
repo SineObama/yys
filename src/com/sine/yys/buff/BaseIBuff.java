@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  * 默认所有数值属性为0。
  */
 public abstract class BaseIBuff implements IBuff {
-    protected final Logger log = Logger.getLogger(this.getClass().toString());
+    protected final Logger log = Logger.getLogger(this.getClass().getName());
     private final String name;
     private final Entity src;
     private boolean prepared = false;  // 用于处理buff回合数衰减。调用beforeAction()后为true。在2个状态之间转换
@@ -43,7 +43,7 @@ public abstract class BaseIBuff implements IBuff {
     @Override
     public final int beforeAction(DamageController controller, Entity self) {
         if (prepared) {
-            log.severe("异常调用beforeAction()");
+            log.warning("异常调用beforeAction()");
             return getLast();
         }
         prepared = true;

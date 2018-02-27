@@ -39,7 +39,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         prior.put(HunLuan.class, 101000);
     }
 
-    private final Logger log = Logger.getLogger(getClass().toString());
+    private final Logger log = Logger.getLogger(getClass().getName());
 
     private final Map<Class, IBuff> map = new HashMap<>();
 

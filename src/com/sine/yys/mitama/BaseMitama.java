@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  * 御魂不再与式神一一关联，只在初始化时把式神传递给监听器。
  */
 public abstract class BaseMitama implements Mitama {
-    protected final Logger log = Logger.getLogger(this.getClass().toString());
+    protected final Logger log = Logger.getLogger(this.getClass().getName());
 
     @Override
     public void init(Controller controller, Entity self) {

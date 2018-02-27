@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 public abstract class BaseSkill implements Skill {
     protected static final String CD = "CD";
-    protected final Logger log = Logger.getLogger(this.getClass().toString());
+    protected final Logger log = Logger.getLogger(this.getClass().getName());
     private boolean prepared = false;  // 用于处理buff回合数衰减。调用beforeAction()后为true。在2个状态之间转换
 
     @Override
@@ -28,7 +28,7 @@ public abstract class BaseSkill implements Skill {
     @Override
     public final int beforeAction(Controller controller, Entity self) {
         if (prepared) {
-            log.severe("异常调用beforeAction()");
+            log.warning("异常调用beforeAction()");
             return getCD(self);
         }
         prepared = true;

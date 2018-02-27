@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.logging.Logger;
 
 public class ControllerImpl implements Controller {
-    private final Logger log = Logger.getLogger(getClass().toString());
+    private final Logger log = Logger.getLogger(getClass().getName());
     private final BaseCamp camp0, camp1;
 
     public ControllerImpl(BaseCamp camp0, BaseCamp camp1) {

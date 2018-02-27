@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class RedBlueSimulator {
     public static final String redName = "红方";
     public static final String buleName = "蓝方";
-    private final Logger log = Logger.getLogger(getClass().toString());
+    private final Logger log = Logger.getLogger(getClass().getName());
     private final CampInfo redInfo, blueInfo;
     private final Map<String, Integer> count = new HashMap<>(2);
 
@@ -38,10 +38,10 @@ public class RedBlueSimulator {
             while (simulator.getWin() == null)
                 simulator.step();
             String winName = simulator.getWin().getName();
-            log.warning(winName + " 胜利");
+            log.info("测试 " + (i + 1) + " " + winName + " 胜利");
             count.put(winName, count.get(winName) + 1);
         }
-        log.severe(count.get(redName) + ":" + count.get(buleName));
+        printResult();
     }
 
     public int getRedWins() {
@@ -50,5 +50,11 @@ public class RedBlueSimulator {
 
     public int getBlueWins() {
         return count.get(buleName);
+    }
+
+    public void printResult() {
+        final String msg = "result=" + count.get(redName) + ":" + count.get(buleName);
+        log.info(msg);
+        System.out.println(msg);
     }
 }

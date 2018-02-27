@@ -60,7 +60,7 @@ public class PVPCamp extends BaseCamp implements Camp, FireRepo {
     @Override
     public void ready() {
         if (prepared) {
-            log.severe("异常调用ready()");
+            log.warning("异常调用ready()");
             return;
         }
         prepared = true;

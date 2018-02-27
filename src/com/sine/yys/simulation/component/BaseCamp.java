@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * 初始化时给式神设置唯一的鬼火仓库（自己）。
  */
 public abstract class BaseCamp implements Camp {
-    protected final Logger log = Logger.getLogger(getClass().toString());
+    protected final Logger log = Logger.getLogger(getClass().getName());
 
     private final EventController eventController = new EventControllerImpl();
     private final String name;

@@ -25,7 +25,7 @@ public class Shikigamis {
 
     private static void put(Shikigami shikigami, String... keys) {
         map.put(shikigami.getName().toLowerCase(), shikigami);
-        map.put(shikigami.getClass().toString().replaceAll(".*\\.", "").toLowerCase(), shikigami);
+        map.put(shikigami.getClass().getName().replaceAll(".*\\.", "").toLowerCase(), shikigami);
         for (String key : keys) {
             map.put(key.toLowerCase(), shikigami);
         }

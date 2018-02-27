@@ -18,12 +18,12 @@ import java.util.logging.Logger;
  * 战斗模拟器。
  */
 public class Simulator {
-    private final Logger log = Logger.getLogger(getClass().toString());
+    private final Logger log = Logger.getLogger(getClass().getName());
 
     // 引用
     private final BaseCamp camp0, camp1;
     private final List<EntityImpl> extras;  // 额外的对象，包括不属于阵营的战场鲤鱼旗。秘闻竞赛副本的鬼头？
-    ControllerImpl controller;
+    private ControllerImpl controller;
     private Camp win = null;
     // 状态
     private boolean started = false;
@@ -109,7 +109,7 @@ public class Simulator {
         action(self);
     }
 
-    boolean checkWin() {
+    private boolean checkWin() {
         // XXX 简单判断胜负：无式神存活
         if (camp0.getAllShikigami().size() == 0) {
             win = camp1;
