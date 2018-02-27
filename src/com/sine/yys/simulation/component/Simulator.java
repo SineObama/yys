@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * 战斗模拟器。
+ * 战场模拟器。安排战斗主干流程。
  */
 public class Simulator {
     private final Logger log = Logger.getLogger(getClass().getName());

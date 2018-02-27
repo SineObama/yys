@@ -3,6 +3,7 @@ package com.sine.yys.inter;
 /**
  * 主动技能。
  * 包括所有普攻、群攻等等。
+ * 是回合中需要选择使用的技能。
  */
 public interface ActiveSkill extends Skill {
     /**

@@ -1,7 +1,7 @@
 package com.sine.yys.inter;
 
 /**
- * 伤害控制器，提供给buff实现伤害。
+ * 伤害控制器，单纯提供给buff实现伤害。
  */
 public interface DamageController {
     /**

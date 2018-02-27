@@ -1,9 +1,7 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.info.Property;
-import com.sine.yys.info.Target;
 import com.sine.yys.inter.*;
-import com.sine.yys.shikigami.BaseShikigami;
 import com.sine.yys.skill.commonattack.CommonAttack;
 
 import java.util.ArrayList;
@@ -12,15 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 战场中的实体，保存了式神信息{@link BaseShikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
- * <p>
- * 以下为旧内容：
- * 实体的基类。
- * 必须含有一个普攻技能{@link CommonAttack}。
- * <p>这里实现了程序的主体逻辑，包括行动逻辑，事件的触发等。
- * 技能或御魂通过调用这里的函数以实现自身的逻辑。</p>
+ * 战场中的实体，保存了式神信息{@link Shikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
  */
-public class EntityImpl implements Target, Property, Entity {
+public class EntityImpl implements Entity {
     final EventControllerImpl eventController = new EventControllerImpl();
     final BuffControllerImpl buffController = new BuffControllerImpl();
     final Shikigami shikigami;

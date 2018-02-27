@@ -5,6 +5,9 @@ import com.sine.yys.info.Property;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 一方阵营信息，包括多个式神。
+ */
 public class CampInfo {
     final List<EntityInfo> infos = new ArrayList<>();
 

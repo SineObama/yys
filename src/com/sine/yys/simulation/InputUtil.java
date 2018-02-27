@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 从文件读取数据，构成模拟器。
+ * <p>
  * 每行代表一个式神。
  * 前面是红方阵营，第一个空行之后是蓝方阵营。
  * <p>

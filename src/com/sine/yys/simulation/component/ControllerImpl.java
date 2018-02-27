@@ -12,6 +12,9 @@ import com.sine.yys.util.RandUtil;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+/**
+ * 主要战场逻辑。
+ */
 public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().getName());
     private final BaseCamp camp0, camp1;

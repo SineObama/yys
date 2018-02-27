@@ -2,6 +2,9 @@ package com.sine.yys.inter;
 
 import com.sine.yys.info.PctEffect;
 
+/**
+ * 定义一个可以附加debuff的效果（在攻击的时候）。
+ */
 public interface DebuffEffect extends PctEffect {
     /**
      * 是否受效果命中/抵抗影响。
@@ -10,5 +13,10 @@ public interface DebuffEffect extends PctEffect {
      */
     boolean involveHitAndDef();
 
+    /**
+     * 获取附加的debuff。
+     *
+     * @param self 施加的式神。
+     */
     Debuff getDebuff(Entity self);
 }
