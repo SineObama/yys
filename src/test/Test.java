@@ -7,10 +7,12 @@ import java.io.IOException;
 
 public class Test {
     static {
-        if (System.getProperty("info") == null)
-            System.setProperty("java.util.logging.config.file", "resource/test/logging_warning.properties");
-        else
-            System.setProperty("java.util.logging.config.file", "resource/test/logging_info.properties");
+        if (System.getProperty("java.util.logging.config.file") == null) {
+            if (System.getProperty("info") == null)
+                System.setProperty("java.util.logging.config.file", "tests/logging_warning.properties");
+            else
+                System.setProperty("java.util.logging.config.file", "tests/logging_info.properties");
+        }
     }
 
     public static void main(String[] args) {

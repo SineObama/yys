@@ -7,7 +7,8 @@ import java.io.IOException;
 
 public class Main {
     static {
-        System.setProperty("java.util.logging.config.file", "resource/logging.properties");
+        if (System.getProperty("java.util.logging.config.file") == null)
+            System.setProperty("java.util.logging.config.file", "logging.properties");
     }
 
     /**
