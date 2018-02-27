@@ -139,7 +139,6 @@ public class Simulator {
             // 重置行动条
             self.setPosition(0);
 
-            controller.clear();  // 重置攻击事件。允许对方彼岸花行动前的伤害触发事件。
 
             for (Skill skill : self.shikigami.getSkills())
                 skill.beforeAction(controller, self);
@@ -149,12 +148,16 @@ public class Simulator {
             self.camp.getEventController().trigger(new BeforeActionEvent(controller, self));
             self.eventController.trigger(new BeforeActionEvent(controller, self));
 
+            controller.afterMovement();
+
             // XXXX 行动前事件死了的影响
             // 包括执行持续伤害
             self.buffController.beforeAction(controller, self);
 
             if (!self.isDead())
                 doAction(self);
+
+            controller.afterMovement();
 
             // 一般buff回合数-1
             self.buffController.afterAction(controller, self);
@@ -169,7 +172,7 @@ public class Simulator {
             // 完成推进鬼火行动条
             self.fireRepo.finish();
 
-            // TODO 行动后行为，反击等。
+            // TODO 行动后行为，反击等。记得调用controller.afterMovement();
             // FIXME 触发新回合后被反击打死，行动条还在1
 
             log.info(Msg.info(self, "行动结束，序号 " + round));

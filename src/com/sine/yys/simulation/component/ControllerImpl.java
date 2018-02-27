@@ -198,8 +198,17 @@ public class ControllerImpl implements Controller {
             ((EntityImpl) self).getCommonAttack().xieZhan(this, self, target);
     }
 
-    @Override
-    public void clear() {
+    /**
+     * 一次“动作”结束后的逻辑。
+     *
+     * 之前用于实现群体/多段攻击不重复计算，触发一次后会关闭BeAttackEvent事件。
+     * 技能调用此函数以重置状态。
+     */
+    public void afterMovement() {
+        camp0.getEventController().trigger(new AfterMovementEvent(this));
+        camp1.getEventController().trigger(new AfterMovementEvent(this));
+
+        // 重置事件状态
         camp0.getEventController().setState(BeAttackEvent.class, true);
         camp1.getEventController().setState(BeAttackEvent.class, true);
         for (EntityImpl entity : camp0.getAllAlive()) {

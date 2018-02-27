@@ -14,7 +14,6 @@ import java.util.Collection;
 public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override
     public final void apply(Controller controller, Entity self, Entity target) {
-        controller.clear();  // XXXX 寻找clear()适合的调用位置
         if (getMAXCD() > 0)
             self.put(this.getClass(), CD, getMAXCD());  // XXXX 设置技能进入CD，这个+1的操作
         beforeApply(target);
