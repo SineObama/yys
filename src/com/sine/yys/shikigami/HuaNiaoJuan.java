@@ -2,10 +2,7 @@ package com.sine.yys.shikigami;
 
 import com.sine.yys.skill.HuaNiaoXiangWen;
 import com.sine.yys.skill.commonattack.GuiNiao;
-import com.sine.yys.skill.commonattack.GuiZhiJiaMian;
-import com.sine.yys.skill.groupattack.GuiXi;
 import com.sine.yys.skill.passive.HuaJing;
-import com.sine.yys.skill.passive.JiHenZhiXin;
 
 import java.util.Arrays;
 

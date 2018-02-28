@@ -19,8 +19,8 @@ public abstract class BaseIBuff implements IBuff {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
     private final String name;
     private final Entity src;
-    private boolean prepared = false;  // 用于处理buff回合数衰减。调用beforeAction()后为true。在2个状态之间转换
     int last;
+    private boolean prepared = false;  // 用于处理buff回合数衰减。调用beforeAction()后为true。在2个状态之间转换
 
     /**
      * @param last 持续回合数。必须为正。

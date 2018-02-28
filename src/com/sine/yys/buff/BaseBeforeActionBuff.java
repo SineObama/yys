@@ -1,6 +1,5 @@
 package com.sine.yys.buff;
 
-import com.sine.yys.buff.debuff.DoT;
 import com.sine.yys.inter.Entity;
 
 /**

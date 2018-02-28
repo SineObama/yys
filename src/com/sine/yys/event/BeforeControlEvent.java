@@ -22,11 +22,11 @@ public class BeforeControlEvent {
         return controlBuff;
     }
 
-    public void setEffective(boolean effective) {
-        this.effective = effective;
-    }
-
     public boolean isEffective() {
         return effective;
+    }
+
+    public void setEffective(boolean effective) {
+        this.effective = effective;
     }
 }
