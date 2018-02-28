@@ -115,19 +115,32 @@ public class ControllerImpl implements Controller {
         doDamage(self, damage);
     }
 
+    @Override
+    public int cure(Entity target0, double src) {
+        EntityImpl target = (EntityImpl) target0;
+        final double pct = target.getBuffController().getReduceCurePct();
+        final int count;
+        if (pct != 0.0)
+            log.info(Msg.info(target, "受到减疗 " + pct));
+        count = (int) (src * (1 - pct));
+        log.info(Msg.info(target, "受到治疗回复 " + count));
+        target.addLife(count);
+        return count;
+    }
+
+
     /**
      * 直接减少目标生命，触发{@link BeDamageEvent}事件。
      * <p>
      * 未来可能进行死亡处理，如匣中少女的被动，立即复活并回复状态，不会计算击杀。
      */
     private void doDamage(EntityImpl target, int damage) {
-        if (target.getLifeInt() > damage) {
-            double src = target.getLife();
-            target.setLife(target.getLifeInt() - damage);
-            double dst = target.getLife();
+        double src = target.getLife();
+        final int life = target.reduceLife(damage);
+        double dst = target.getLife();
+        if (life != 0) {
             target.getEventController().trigger(new BeDamageEvent(this, src, dst));
         } else {
-            target.setLife(0);
             target.getCamp().getPosition(target).setCurrent(null);
             log.info(Msg.info(target, "死亡"));
         }
@@ -200,7 +213,7 @@ public class ControllerImpl implements Controller {
 
     /**
      * 一次“动作”结束后的逻辑。
-     *
+     * <p>
      * 之前用于实现群体/多段攻击不重复计算，触发一次后会关闭BeAttackEvent事件。
      * 技能调用此函数以重置状态。
      */
@@ -226,7 +239,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public int shieldValue(Entity self, double src) {
+    public int calcCritical(Entity self, double src) {
         if (!RandUtil.success(self.getCritical()))
             return (int) src;
         log.info(Msg.info(self, "暴击"));

@@ -34,6 +34,7 @@ public class EntityImpl implements Entity {
         this.life = getMaxLife();
     }
 
+    @Override
     public <T, V> V get(Class<T> clazz, Object key, V defaultValue) {
         if (!map.containsKey(clazz))
             map.put(clazz, new HashMap<>());
@@ -44,20 +45,24 @@ public class EntityImpl implements Entity {
             return defaultValue;
     }
 
+    @Override
     public <T> void put(Class<T> clazz, Object key, Object value) {
         if (!map.containsKey(clazz))
             map.put(clazz, new HashMap<>());
         map.get(clazz).put(key, value);
     }
 
+    @Override
     public final String getFullName() {
         return camp.getFullName() + getName();
     }
 
+    @Override
     public final double getAttack() {
         return property.getAttack() * (1 + buffController.getAtkPct());
     }
 
+    @Override
     public final int getMaxLife() {
         return (int) property.getLife();
     }
@@ -67,44 +72,63 @@ public class EntityImpl implements Entity {
         return life;
     }
 
+    @Override
     public final double getDefense() {
         return property.getDefense() * (1 + buffController.getDefPct());
     }
 
+    @Override
     public final double getSpeed() {
         return property.getSpeed() + buffController.getSpeed();
     }
 
+    @Override
     public final double getCritical() {
         return property.getCritical() + buffController.getCritical();
     }
 
+    @Override
     public final double getCriticalDamage() {
         return property.getCriticalDamage() + buffController.getCriticalDamage();
     }
 
     // XXX 可能的负值问题。
-
+    @Override
     public final double getEffectHit() {
         return property.getEffectHit() + buffController.getEffectHit();
     }
 
+    @Override
     public final double getEffectDef() {
         return property.getEffectDef() + buffController.getEffectDef();
     }
 
     // XXX 可能的负值问题。
-
+    @Override
     public final double getLife() {
         return (double) life / getMaxLife();
     }
 
     // XXX 可能的负值问题。
-
     void setLife(int life) {
         this.life = life;
     }
 
+    int addLife(int count) {
+        this.life += count;
+        if (this.life > getMaxLife())
+            this.life = getMaxLife();
+        return count;
+    }
+
+    int reduceLife(int count) {
+        this.life -= count;
+        if (this.life < 0)
+            this.life = 0;
+        return count;
+    }
+
+    @Override
     public final EventController getEventController() {
         return this.eventController;
     }
@@ -128,6 +152,7 @@ public class EntityImpl implements Entity {
         throw new RuntimeException(getFullName() + " 没有普通攻击。");
     }
 
+    @Override
     public final boolean isDead() {
         return life <= 0;
     }
@@ -140,10 +165,12 @@ public class EntityImpl implements Entity {
         this.camp = camp;
     }
 
+    @Override
     public final BuffController getBuffController() {
         return buffController;
     }
 
+    @Override
     public final FireRepo getFireRepo() {
         return fireRepo;
     }
@@ -152,6 +179,7 @@ public class EntityImpl implements Entity {
         this.fireRepo = fireRepo;
     }
 
+    @Override
     public double getPosition() {
         return position;
     }

@@ -3,6 +3,7 @@ package com.sine.yys.buff.buff;
 import com.sine.yys.buff.BaseCommonIBuff;
 import com.sine.yys.info.CallBack;
 import com.sine.yys.inter.Buff;
+import com.sine.yys.inter.DamageController;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -19,7 +20,7 @@ public class LongShouZhiYuBuff extends BaseCommonIBuff implements Buff {
     }
 
     @Override
-    protected void afterStep() {
+    protected void doAfterAction(DamageController controller, Entity self) {
         if (getLast() == 0)
             callBack.call();
     }

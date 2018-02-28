@@ -65,12 +65,4 @@ public interface Controller extends DamageController {
      * 获得一次行动机会
      */
     void actionChance(Entity self);
-
-    /**
-     * 添加护盾时计算护盾的数值（厚度）。计算暴击。
-     *
-     * @param src 原本数值。
-     * @return 最终数值。
-     */
-    int shieldValue(Entity self, double src);
 }
