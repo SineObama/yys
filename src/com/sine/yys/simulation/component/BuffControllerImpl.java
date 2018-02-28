@@ -164,4 +164,16 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     public double getEffectDef() {
         return new EffectDef().calc(map.values());
     }
+
+    /**
+     * 约定减疗都不能叠加，只存在一个。
+     */
+    @Override
+    public double getReduceCurePct() {
+        final ReduceCure reduceCure = get(ReduceCure.class);
+        if (reduceCure != null)
+            return reduceCure.getPct();
+        else
+            return 0.0;
+    }
 }

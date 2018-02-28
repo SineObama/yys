@@ -31,4 +31,9 @@ public interface BuffController {
      * 移除特定类型的buff。
      */
     <T> void remove(Class<T> clazz);
+
+    /**
+     * @return 减疗百分比。
+     */
+    double getReduceCurePct();
 }
