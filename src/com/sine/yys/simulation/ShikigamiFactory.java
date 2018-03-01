@@ -21,6 +21,7 @@ public class ShikigamiFactory {
         put(HuiYeJi::new);
         put(LianYou::new);
         put(QingXingDeng::new);
+        put(HuaNiaoJuan::new);
     }
 
     private static void put(Creator creator, String... keys) {
