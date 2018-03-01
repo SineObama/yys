@@ -20,10 +20,9 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     }
 
     /**
-     * @param self 自身
      * @return 攻击次数（段数）。
      */
-    public int getTimes(Entity self) {
+    public int getTimes() {
         return 1;
     }
 
@@ -49,9 +48,9 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     }
 
     @Override
-    public final void afterApply(Controller controller, Entity self, Entity target) {
+    public final void afterApply(Entity target) {
         // 触发普攻事件
-        controller.getCamp(self).getEventController().trigger(new CommonAttackEvent(controller, self, target));
+        getOwn().getEventController().trigger(new CommonAttackEvent(getSelf(), target));
     }
 
     /**
@@ -64,23 +63,21 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
      */
     @Override
     public void xieZhan(Controller controller, Entity self, Entity target) {
-        doApply(controller, self, target);
+        doApply(target);
     }
 
     /**
      * 普攻的具体操作。无需触发普攻事件。
      * 默认以getAttack的攻击，对target攻击getTimes次。
      *
-     * @param controller
-     * @param self       自身。
-     * @param target     攻击目标。
+     * @param target 攻击目标。
      */
     @Override
-    protected void doApply(Controller controller, Entity self, Entity target) {
-        for (int i = 0; i < getTimes(self); i++) {
+    protected void doApply(Entity target) {
+        for (int i = 0; i < getTimes(); i++) {
             if (target.isDead())
                 break;
-            controller.attack(self, target, getAttack(), getDebuffEffects());
+            getController().attack(getSelf(), target, getAttack(), getDebuffEffects());
         }
     }
 }

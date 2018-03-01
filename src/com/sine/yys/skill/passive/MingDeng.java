@@ -9,8 +9,12 @@ import com.sine.yys.util.RandUtil;
 
 /**
  * 青行灯-明灯。
+ * TODO 2018-2-28游戏更新。
  */
 public class MingDeng extends BasePassiveSkill implements PassiveSkill {
+
+    private final UseFireHandler useFireHandler = new UseFireHandler();
+
     @Override
     public String getName() {
         return "明灯";
@@ -24,19 +28,20 @@ public class MingDeng extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(Controller controller, Entity self) {
-        controller.getCamp(self).getEventController().add(new Handler(self));
+    public void doInit(Controller controller, Entity self) {
+        getOwn().getEventController().add(useFireHandler);
     }
 
-    class Handler extends SealablePassiveHandler implements EventHandler<UseFireEvent> {
-        Handler(Entity self) {
-            super(self);
-        }
+    @Override
+    public void onDie() {
+        getOwn().getEventController().remove(useFireHandler);
+    }
 
+    class UseFireHandler extends SealablePassiveHandler implements EventHandler<UseFireEvent> {
         @Override
         public void handle(UseFireEvent event) {
-            if (event.getEntity() != self && RandUtil.success(getPct())) {
-                log.info(Msg.trigger(self, MingDeng.this));
+            if (event.getEntity() != getSelf() && RandUtil.success(getPct())) {
+                log.info(Msg.trigger(getSelf(), MingDeng.this));
                 event.setCostFire(0);
             }
         }

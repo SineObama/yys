@@ -8,6 +8,8 @@ import com.sine.yys.inter.Mitama;
  * 魅妖。
  */
 public class MeiYao extends BaseDebuffMitama implements Mitama {
+    private final HunLuanEffect hunLuanEffect = new HunLuanEffect(getPct(), getName());
+
     @Override
     public String getName() {
         return "魅妖";
@@ -19,6 +21,6 @@ public class MeiYao extends BaseDebuffMitama implements Mitama {
 
     @Override
     AddDebuffEffect getEffect() {
-        return new HunLuanEffect(getPct(), getName());
+        return hunLuanEffect;
     }
 }

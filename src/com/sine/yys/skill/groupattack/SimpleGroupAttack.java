@@ -27,7 +27,9 @@ public abstract class SimpleGroupAttack extends BaseActiveSkill implements Attac
     }
 
     @Override
-    public void doApply(Controller controller, Entity self, Entity unused) {
+    public void doApply(Entity unused) {
+        final Controller controller = getController();
+        final Entity self = getSelf();
         for (int i = 0; i < getTimes(); i++) {
             for (Entity target : controller.getCamp(self).getOpposite().getAllAlive()) {
                 controller.attack(self, target, new AttackInfoImpl(getCoefficient()), getDebuffEffects());

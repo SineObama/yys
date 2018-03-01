@@ -1,7 +1,6 @@
 package com.sine.yys.skill.groupattack;
 
 import com.sine.yys.buff.buff.KuangBao;
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -33,8 +32,8 @@ public class GuiXi extends SimpleGroupAttack {
     }
 
     @Override
-    public void doApply(Controller controller, Entity self, Entity unused) {
-        super.doApply(controller, self, unused);
-        self.getBuffController().add(new KuangBao(getLast(), self));
+    public void doApply(Entity unused) {
+        super.doApply(unused);
+        getSelf().getBuffController().add(new KuangBao(getLast(), getSelf()));
     }
 }

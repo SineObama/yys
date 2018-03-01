@@ -63,6 +63,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         Collection<IBuff> buffs = new ArrayList<>(map.values());
         for (IBuff buff : buffs) {
             if (buff.beforeAction(controller, self) == 0) {
+                buff.onRemove();
                 map.remove(buff.getClass());
                 log.info(Msg.info(self, buff.getName() + " 效果消失了"));
             }
@@ -73,6 +74,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         Collection<IBuff> buffs = new ArrayList<>(map.values());
         for (IBuff buff : buffs) {
             if (buff.afterAction(controller, self) == 0) {
+                buff.onRemove();
                 map.remove(buff.getClass());
                 // TODO 输出信息移到buff中？
                 log.info(Msg.info(self, buff.getName() + " 效果消失了"));
@@ -163,5 +165,26 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     @Override
     public double getEffectDef() {
         return new EffectDef().calc(map.values());
+    }
+
+    /**
+     * 约定减疗都不能叠加，只存在一个。
+     */
+    @Override
+    public double getReduceCurePct() {
+        final ReduceCure reduceCure = get(ReduceCure.class);
+        if (reduceCure != null)
+            return reduceCure.getPct();
+        else
+            return 0.0;
+    }
+
+    @Override
+    public void clear() {
+        Collection<IBuff> buffs = new ArrayList<>(map.values());
+        for (IBuff iBuff : buffs) {
+            iBuff.onRemove();
+        }
+        map.clear();
     }
 }

@@ -19,7 +19,7 @@ public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().getName());
     private final BaseCamp camp0, camp1;
 
-    public ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
+    ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
         this.camp0 = camp0;
         this.camp1 = camp1;
     }
@@ -42,11 +42,11 @@ public class ControllerImpl implements Controller {
                 applyDebuff(self, target, debuffEffect);
             }
 
-        self.eventController.trigger(new AttackEvent(this, self, target));
+        self.eventController.trigger(new AttackEvent(self, target));
 
         // XXXXX 像这种每次都调用是不是不好、太慢
-        this.getCamp(target).getEventController().triggerOff(new BeAttackEvent(this));
-        target.getEventController().triggerOff(new BeAttackEvent(this));
+        this.getCamp(target).getEventController().triggerOff(new BeAttackEvent());
+        target.getEventController().triggerOff(new BeAttackEvent());
 
         // 1.
         final boolean critical = RandUtil.success(self.getCritical());
@@ -61,7 +61,7 @@ public class ControllerImpl implements Controller {
         if (remain != 0) {
             damage = remain;
 
-            PreDamageEvent event = new PreDamageEvent(this, self, target);
+            PreDamageEvent event = new PreDamageEvent(self, target);
             self.eventController.trigger(event);
             damage *= event.getCoefficient();
 
@@ -73,8 +73,8 @@ public class ControllerImpl implements Controller {
                 log.info(Msg.vector(self, "击杀", target, ""));
 
             if (critical) {
-                target.getEventController().trigger(new BeCriticalEvent(this, target, self));
-                self.eventController.trigger(new CriticalEvent(this, self, target));
+                target.getEventController().trigger(new BeCriticalEvent(target, self));
+                self.eventController.trigger(new CriticalEvent(self, target));
             }
         } else {
             log.info(Msg.noDamage(self, target));
@@ -88,7 +88,7 @@ public class ControllerImpl implements Controller {
         if (target.isDead())
             return;
 
-        self.eventController.trigger(new AttackEvent(this, self, target));
+        self.eventController.trigger(new AttackEvent(self, target));
 
         // 2.
         int remain = breakShield(target, (int) damage);
@@ -115,19 +115,39 @@ public class ControllerImpl implements Controller {
         doDamage(self, damage);
     }
 
+    @Override
+    public int cure(Entity target0, double src) {
+        EntityImpl target = (EntityImpl) target0;
+        final double pct = target.getBuffController().getReduceCurePct();
+        final int count;
+        if (pct != 0.0)
+            log.info(Msg.info(target, "受到减疗 " + pct));
+        count = (int) (src * (1 - pct));
+        log.info(Msg.info(target, "受到治疗回复 " + count));
+        target.addLife(count);
+        return count;
+    }
+
+    @Override
+    public int cureByLifePct(Entity self, Entity target, double pct) {
+        return cure(target, calcCritical(self, pct * self.getMaxLife()));
+    }
+
+
     /**
      * 直接减少目标生命，触发{@link BeDamageEvent}事件。
      * <p>
      * 未来可能进行死亡处理，如匣中少女的被动，立即复活并回复状态，不会计算击杀。
      */
     private void doDamage(EntityImpl target, int damage) {
-        if (target.getLifeInt() > damage) {
-            double src = target.getLife();
-            target.setLife(target.getLifeInt() - damage);
-            double dst = target.getLife();
-            target.getEventController().trigger(new BeDamageEvent(this, src, dst));
+        double src = target.getLife();
+        final int life = target.reduceLife(damage);
+        double dst = target.getLife();
+        if (life != 0) {
+            target.getEventController().trigger(new BeDamageEvent(src, dst));
         } else {
-            target.setLife(0);
+            target.getBuffController().clear();
+            target.getEventController().trigger(new DieEvent(target));
             target.getCamp().getPosition(target).setCurrent(null);
             log.info(Msg.info(target, "死亡"));
         }
@@ -198,8 +218,17 @@ public class ControllerImpl implements Controller {
             ((EntityImpl) self).getCommonAttack().xieZhan(this, self, target);
     }
 
-    @Override
-    public void clear() {
+    /**
+     * 一次“动作”结束后的逻辑。
+     * <p>
+     * 之前用于实现群体/多段攻击不重复计算，触发一次后会关闭BeAttackEvent事件。
+     * 技能调用此函数以重置状态。
+     */
+    public void afterMovement() {
+        camp0.getEventController().trigger(new AfterMovementEvent());
+        camp1.getEventController().trigger(new AfterMovementEvent());
+
+        // 重置事件状态
         camp0.getEventController().setState(BeAttackEvent.class, true);
         camp1.getEventController().setState(BeAttackEvent.class, true);
         for (EntityImpl entity : camp0.getAllAlive()) {
@@ -217,7 +246,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public int shieldValue(Entity self, double src) {
+    public int calcCritical(Entity self, double src) {
         if (!RandUtil.success(self.getCritical()))
             return (int) src;
         log.info(Msg.info(self, "暴击"));

@@ -1,6 +1,5 @@
 package com.sine.yys.shikigami;
 
-import com.sine.yys.info.Named;
 import com.sine.yys.inter.OperationHandler;
 import com.sine.yys.inter.Shikigami;
 import com.sine.yys.inter.Skill;
@@ -11,11 +10,11 @@ import java.util.List;
 /**
  * 式神基类。
  */
-public abstract class BaseShikigami implements Named, Shikigami {
+public abstract class BaseShikigami implements Shikigami {
     final List<Skill> skills;
-    final String name;
+    private final String name;
 
-    public BaseShikigami(List<Skill> skills, String name) {
+    BaseShikigami(List<Skill> skills, String name) {
         this.skills = skills;
         this.name = name;
     }

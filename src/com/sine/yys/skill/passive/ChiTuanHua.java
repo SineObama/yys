@@ -12,8 +12,12 @@ import com.sine.yys.util.Msg;
 /**
  * 彼岸花-赤团华。
  */
-public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill {
-    private XueZhiHuaHai xueZhiHuaHai = new XueZhiHuaHai();
+public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventHandler<BeforeActionEvent> {
+    private final XueZhiHuaHai xueZhiHuaHai;
+
+    public ChiTuanHua(XueZhiHuaHai xueZhiHuaHai) {
+        this.xueZhiHuaHai = xueZhiHuaHai;
+    }
 
     @Override
     public String getName() {
@@ -25,39 +29,34 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(Controller controller, Entity self) {
-        controller.getCamp(self).getOpposite().getEventController().add(new Handler(self));
-        self.getEventController().add(new Handler2(self));
+    public void doInit(Controller controller, Entity self) {
+        getEnemy().getEventController().add(this);
+        self.getEventController().add(new BeDamageHandler());
     }
 
-    class Handler extends SealablePassiveHandler implements EventHandler<BeforeActionEvent> {
-        Handler(Entity self) {
-            super(self);
-        }
+    @Override
+    public void onDie() {
+        getEnemy().getEventController().remove(this);
+    }
 
-        @Override
-        public void handle(BeforeActionEvent event) {
-            int level = xueZhiHuaHai.getLevel(self);
-            if (!self.isDead() && level > 0) {
-                log.info(Msg.trigger(self, ChiTuanHua.this));
-                event.getController().attack(self, event.getEntity(), new AttackInfoImpl(getCoefficient() * level), null);
-            }
+    @Override
+    public void handle(BeforeActionEvent event) {
+        int level = xueZhiHuaHai.getLevel();
+        if (level > 0) {
+            log.info(Msg.trigger(getSelf(), ChiTuanHua.this));
+            getController().attack(getSelf(), event.getEntity(), new AttackInfoImpl(getCoefficient() * level), null);
         }
     }
 
-    class Handler2 extends SealablePassiveHandler implements EventHandler<BeDamageEvent> {
-        Handler2(Entity self) {
-            super(self);
-        }
-
+    class BeDamageHandler extends SealablePassiveHandler implements EventHandler<BeDamageEvent> {
         @Override
         public void handle(BeDamageEvent event) {
             int src = (int) (event.getSrc() * 4);
             int dst = (int) (event.getDst() * 4);
             if (src != 4 && src != dst) {
-                log.info(Msg.trigger(self, self));
-                xueZhiHuaHai.addLevel(self, src - dst);
-                xueZhiHuaHai.addShield(event.getController(), self);
+                log.info(Msg.trigger(getSelf(), ChiTuanHua.this));
+                xueZhiHuaHai.addLevel(src - dst);
+                xueZhiHuaHai.addShield();
             }
         }
     }

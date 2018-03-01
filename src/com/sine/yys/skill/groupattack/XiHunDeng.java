@@ -32,9 +32,11 @@ public class XiHunDeng extends SimpleGroupAttack {
     }
 
     @Override
-    public void doApply(Controller controller, Entity self, Entity target) {
-        List<? extends Entity> allAlive = controller.getCamp(self).getOpposite().getAllAlive();// XXX 未来对于召唤物的吸火检查
-        super.doApply(controller, self, target);
+    public void doApply(Entity target) {
+        final Controller controller = getController();
+        final Entity self = getSelf();
+        List<? extends Entity> allAlive = getEnemy().getAllAlive();// XXX 未来对于召唤物的吸火检查
+        super.doApply(target);
         for (Entity entity : allAlive) {// XXX 对于已死目标是否会有问题
             controller.randomGrab(self, entity, getPct());
         }

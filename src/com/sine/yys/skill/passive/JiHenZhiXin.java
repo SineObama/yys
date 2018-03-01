@@ -31,10 +31,11 @@ public class JiHenZhiXin extends BasePassiveSkill implements PassiveSkill, Event
 
     @Override
     public void handle(AttackEvent event) {
-        event.getController().applyDebuff(event.getEntity(), event.getTarget(), effect);
+        getController().applyDebuff(getSelf(), event.getTarget(), effect);
     }
 
-    public void init(Controller controller, Entity self) {
+    @Override
+    public void doInit(Controller controller, Entity self) {
         self.getEventController().add(this);
     }
 }

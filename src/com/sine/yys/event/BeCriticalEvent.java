@@ -1,6 +1,5 @@
 package com.sine.yys.event;
 
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -9,7 +8,7 @@ import com.sine.yys.inter.Entity;
  * @see CriticalEvent
  */
 public class BeCriticalEvent extends BaseVectorEvent implements Event {
-    public BeCriticalEvent(Controller controller, Entity entity, Entity target) {
-        super(controller, entity, target);
+    public BeCriticalEvent(Entity entity, Entity target) {
+        super(entity, target);
     }
 }

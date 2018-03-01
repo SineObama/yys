@@ -3,7 +3,6 @@ package com.sine.yys.skill;
 import com.sine.yys.buff.buff.XDZBAttackBuff;
 import com.sine.yys.buff.buff.XDZBEffectDefBuff;
 import com.sine.yys.inter.ActiveSkill;
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -17,8 +16,9 @@ public class XiongDiZhiBan extends BaseNoTargetSkill implements ActiveSkill {
     }
 
     @Override
-    public void doApply(Controller controller, Entity self, Entity target) {
-        for (Entity entity : controller.getCamp(self).getAllAlive()) {
+    public void doApply(Entity target) {
+        final Entity self = getSelf();
+        for (Entity entity : getController().getCamp(self).getAllAlive()) {
             entity.addPosition(getAddPosition());
             entity.getBuffController().add(new XDZBAttackBuff(getLast(), getAttackPct(), self));
             entity.getBuffController().add(new XDZBEffectDefBuff(getLast(), getEffectDef(), self));

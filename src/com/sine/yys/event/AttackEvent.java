@@ -1,6 +1,5 @@
 package com.sine.yys.event;
 
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -8,7 +7,7 @@ import com.sine.yys.inter.Entity;
  * 用于附加效果（不需要造成伤害也能生效）。
  */
 public class AttackEvent extends BaseVectorEvent {
-    public AttackEvent(Controller controller, Entity entity, Entity target) {
-        super(controller, entity, target);
+    public AttackEvent(Entity entity, Entity target) {
+        super(entity, target);
     }
 }

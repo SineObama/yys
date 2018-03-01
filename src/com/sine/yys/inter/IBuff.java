@@ -38,7 +38,7 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
     int afterAction(DamageController controller, Entity self);
 
     /**
-     * @return 持续回合数。永久buff以（接近）整数最大值表示。
+     * @return 持续回合数。0表示buff应当被移除。永久buff以（接近）整数最大值表示。
      */
     int getLast();
 
@@ -58,4 +58,9 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
      * @return 来源式神。
      */
     Entity getSrc();
+
+    /**
+     * buff被移除时会被调用。
+     */
+    void onRemove();
 }

@@ -32,20 +32,16 @@ public class RenDuoShiZhong extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(Controller controller, Entity self) {
-        self.getEventController().add(new Handler(self));
+    public void doInit(Controller controller, Entity self) {
+        self.getEventController().add(new FinishActionHandler());
     }
 
-    class Handler extends SealablePassiveHandler implements EventHandler<FinishActionEvent> {
-        Handler(Entity self) {
-            super(self);
-        }
-
+    class FinishActionHandler extends SealablePassiveHandler implements EventHandler<FinishActionEvent> {
         @Override
         public void handle(FinishActionEvent event) {
-            if (!self.isDead() && RandUtil.success(getPct())) {
-                log.info(Msg.trigger(self, RenDuoShiZhong.this));
-                event.getController().actionChance(self);
+            if (RandUtil.success(getPct())) {
+                log.info(Msg.trigger(getSelf(), RenDuoShiZhong.this));
+                getController().actionChance(getSelf());
             }
         }
     }

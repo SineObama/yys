@@ -16,6 +16,11 @@ public interface Camp extends Target {
 
     List<? extends ShikigamiEntity> getAllShikigami();
 
+    /**
+     * 获取血量百分比最低的式神。
+     */
+    ShikigamiEntity getLeastLifeShikigami();
+
     boolean contain(Entity entity);
 
     Position getPosition(Entity entity);

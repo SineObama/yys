@@ -1,9 +1,6 @@
 package com.sine.yys.skill.operation;
 
-import com.sine.yys.inter.ActiveSkill;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.Operation;
-import com.sine.yys.inter.OperationHandler;
+import com.sine.yys.inter.*;
 import com.sine.yys.util.RandUtil;
 
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.Map;
  */
 public class AutoOperationHandler implements OperationHandler {
     @Override
-    public Operation handle(Entity self, Map<ActiveSkill, List<? extends Entity>> map) {
+    public Operation handle(Entity self, Camp own, Map<ActiveSkill, List<? extends Entity>> map) {
         int max = 0;
         ActiveSkill use = null;
         for (ActiveSkill activeSkill : map.keySet()) {

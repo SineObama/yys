@@ -62,21 +62,7 @@ public interface Controller extends DamageController {
     void xieZhan(Entity self, Entity target);
 
     /**
-     * 用于实现群体/多段攻击不重复计算，触发一次后会关闭BeAttackEvent事件。
-     * 技能调用此函数以重置状态。
-     */
-    void clear();
-
-    /**
      * 获得一次行动机会
      */
     void actionChance(Entity self);
-
-    /**
-     * 添加护盾时计算护盾的数值（厚度）。计算暴击。
-     *
-     * @param src 原本数值。
-     * @return 最终数值。
-     */
-    int shieldValue(Entity self, double src);
 }

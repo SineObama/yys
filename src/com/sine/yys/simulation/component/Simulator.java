@@ -87,8 +87,8 @@ public class Simulator {
         started = true;
         init(camp0, camp1);
         init(camp1, camp0);
-        camp0.getEventController().trigger(new BattleStartEvent(controller));
-        camp1.getEventController().trigger(new BattleStartEvent(controller));
+        camp0.getEventController().trigger(new BattleStartEvent());
+        camp1.getEventController().trigger(new BattleStartEvent());
     }
 
     public void step() {
@@ -139,15 +139,16 @@ public class Simulator {
             // 重置行动条
             self.setPosition(0);
 
-            controller.clear();  // 重置攻击事件。允许对方彼岸花行动前的伤害触发事件。
 
             for (Skill skill : self.shikigami.getSkills())
-                skill.beforeAction(controller, self);
+                skill.beforeAction();
 
             // 行动前事件
             // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
-            self.camp.getEventController().trigger(new BeforeActionEvent(controller, self));
-            self.eventController.trigger(new BeforeActionEvent(controller, self));
+            self.camp.getEventController().trigger(new BeforeActionEvent(self));
+            self.eventController.trigger(new BeforeActionEvent(self));
+
+            controller.afterMovement();
 
             // XXXX 行动前事件死了的影响
             // 包括执行持续伤害
@@ -156,20 +157,22 @@ public class Simulator {
             if (!self.isDead())
                 doAction(self);
 
+            controller.afterMovement();
+
             // 一般buff回合数-1
             self.buffController.afterAction(controller, self);
 
             // 行动后事件
-            self.camp.getEventController().trigger(new AfterActionEvent(controller, self));
-            self.eventController.trigger(new AfterActionEvent(controller, self));
+            self.camp.getEventController().trigger(new AfterActionEvent(self));
+            self.eventController.trigger(new AfterActionEvent(self));
 
             for (Skill skill : self.shikigami.getSkills())
-                skill.afterAction(controller, self);
+                skill.afterAction();
 
             // 完成推进鬼火行动条
             self.fireRepo.finish();
 
-            // TODO 行动后行为，反击等。
+            // TODO 行动后行为，反击等。记得调用controller.afterMovement();
             // FIXME 触发新回合后被反击打死，行动条还在1
 
             log.info(Msg.info(self, "行动结束，序号 " + round));
@@ -189,7 +192,7 @@ public class Simulator {
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
             for (ActiveSkill activeSkill : self.getActiveSkills()) {
-                int cd = activeSkill.getCD(self);
+                int cd = activeSkill.getCD();
                 if (cd > 0) {
                     log.info(Msg.info(self, "技能 " + activeSkill.getName() + " 还有CD " + cd));
                     continue;
@@ -202,7 +205,7 @@ public class Simulator {
             }
 
             if (!map.isEmpty())
-                operation = self.shikigami.getAI().handle(self, map);
+                operation = self.shikigami.getAI().handle(self, self.camp, map);
             else
                 operation = new OperationImpl(null, null);
 
@@ -232,7 +235,7 @@ public class Simulator {
             // 消耗鬼火
             int fire = activeSkill.getFire();
             if (fire > 0) {
-                UseFireEvent event = new UseFireEvent(controller, self, fire);
+                UseFireEvent event = new UseFireEvent(self, fire);
                 self.camp.getEventController().trigger(event);
                 fire = event.getCostFire();
                 self.fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
@@ -240,9 +243,9 @@ public class Simulator {
             }
 
             // 执行技能
-            activeSkill.apply(controller, self, target);
+            activeSkill.apply(target);
 
-            self.eventController.trigger(new FinishActionEvent(controller));
+            self.eventController.trigger(new FinishActionEvent());
         } else {
             log.info(Msg.info(self, "无法行动。"));
         }

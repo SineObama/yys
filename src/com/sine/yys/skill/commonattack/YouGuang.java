@@ -1,6 +1,5 @@
 package com.sine.yys.skill.commonattack;
 
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -25,8 +24,8 @@ public class YouGuang extends BaseCommonAttack {
     }
 
     @Override
-    public void doApply(Controller controller, Entity self, Entity target) {
-        super.doApply(controller, self, target);
-        controller.randomGrab(self, target, getPct());
+    public void doApply(Entity target) {
+        super.doApply(target);
+        getController().randomGrab(getSelf(), target, getPct());
     }
 }

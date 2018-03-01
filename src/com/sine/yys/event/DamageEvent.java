@@ -7,7 +7,14 @@ import com.sine.yys.inter.Entity;
  * 造成伤害时***。
  */
 public class DamageEvent extends BaseVectorEvent implements Event {
+    private final Controller controller;
+
     public DamageEvent(Controller controller, Entity entity, Entity target) {
-        super(controller, entity, target);
+        super(entity, target);
+        this.controller = controller;
+    }
+
+    public final Controller getController() {
+        return controller;
     }
 }

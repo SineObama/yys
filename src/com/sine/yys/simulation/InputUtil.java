@@ -38,10 +38,10 @@ public class InputUtil {
                 continue;
             }
             final String[] tokens = line.split("\\s+");
-            if (tokens.length != 10) {
+            if (tokens.length != 10 && tokens.length != 9) {
                 throw new NumberFormatException("输入格式非法，字段数不正确：" + line);
             }
-            campInfo.add(tokens[0], new PropertyImpl(fromString(tokens, 1, 8)), tokens[9]);
+            campInfo.add(tokens[0], new PropertyImpl(fromString(tokens, 1, 8)), tokens.length == 10 ? tokens[9] : null);
         }
         return new RedBlueSimulator(red, blue);
     }
