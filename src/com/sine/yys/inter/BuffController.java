@@ -33,11 +33,6 @@ public interface BuffController {
     <T> void remove(Class<T> clazz);
 
     /**
-     * @return 减疗百分比。
-     */
-    double getReduceCurePct();
-
-    /**
      * 死亡时清空buff。
      */
     void clear();

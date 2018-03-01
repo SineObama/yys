@@ -123,6 +123,21 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     @Override
+    public double getCure() {
+        return 0;
+    }
+
+    @Override
+    public double getDamageUp() {
+        return 0;
+    }
+
+    @Override
+    public double getFlagDamage() {
+        return 0;
+    }
+
+    @Override
     public double getAtkPct() {
         return 0;
     }

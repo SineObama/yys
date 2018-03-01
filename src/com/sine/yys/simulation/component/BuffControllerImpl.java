@@ -133,6 +133,21 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     }
 
     @Override
+    public double getCure() {
+        return new Cure().calc(map.values());
+    }
+
+    @Override
+    public double getDamageUp() {
+        return new DamageUp().calc(map.values());
+    }
+
+    @Override
+    public double getFlagDamage() {
+        return new FlagDamage().calc(map.values());
+    }
+
+    @Override
     public double getAtkPct() {
         return new AtkPct().calc(map.values());
     }
@@ -165,18 +180,6 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     @Override
     public double getEffectDef() {
         return new EffectDef().calc(map.values());
-    }
-
-    /**
-     * 约定减疗都不能叠加，只存在一个。
-     */
-    @Override
-    public double getReduceCurePct() {
-        final ReduceCure reduceCure = get(ReduceCure.class);
-        if (reduceCure != null)
-            return reduceCure.getPct();
-        else
-            return 0.0;
     }
 
     @Override
