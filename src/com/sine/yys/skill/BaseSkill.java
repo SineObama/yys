@@ -1,8 +1,7 @@
 package com.sine.yys.skill;
 
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.Skill;
+import com.sine.yys.event.DieEvent;
+import com.sine.yys.inter.*;
 
 import java.util.logging.Logger;
 
@@ -14,10 +13,29 @@ public abstract class BaseSkill implements Skill {
     protected static final String CD = "CD";
     protected final Logger log = Logger.getLogger(this.getClass().getName());
     private boolean prepared = false;  // 用于处理buff回合数衰减。调用beforeAction()后为true。在2个状态之间转换
+    private Entity self = null;
+    private Controller controller = null;
+    private Camp own, enemy;
+
+    protected final Camp getOwn() {
+        return own;
+    }
+
+    protected final Camp getEnemy() {
+        return enemy;
+    }
+
+    protected final Entity getSelf() {
+        return self;
+    }
+
+    protected final Controller getController() {
+        return controller;
+    }
 
     @Override
     public final int getCD(Entity self) {
-        return self.get(this.getClass(), CD, 0);
+        return self.get(CD, 0);
     }
 
     @Override
@@ -26,18 +44,18 @@ public abstract class BaseSkill implements Skill {
     }
 
     @Override
-    public final int beforeAction(Controller controller, Entity self) {
+    public final int beforeAction() {
         if (prepared) {
             log.warning("异常调用beforeAction()");
             return getCD(self);
         }
         prepared = true;
-        doBeforeAction(controller, self);
+        doBeforeAction();
         return getCD(self);
     }
 
     @Override
-    public final int afterAction(Controller controller, Entity self) {
+    public final int afterAction() {
         if (!prepared)
             return getCD(self);
         prepared = false;
@@ -46,20 +64,45 @@ public abstract class BaseSkill implements Skill {
             cd = getCD(self);
             if (cd > 0) {
                 cd -= 1;
-                self.put(this.getClass(), CD, cd);
+                self.put(CD, cd);
             }
         }
-        doAfterAction(controller, self);
+        doAfterAction();
         return cd;
     }
 
-    protected void doBeforeAction(Controller controller, Entity self) {
+    protected void doBeforeAction() {
     }
 
-    protected void doAfterAction(Controller controller, Entity self) {
+    protected void doAfterAction() {
+    }
+
+    /**
+     * 在自身死亡事件时触发。
+     * 子类可以重写以移除事件监听等。
+     */
+    protected void onDie() {
     }
 
     @Override
     public void init(Controller controller, Entity self) {
+        if (this.self != null) {
+            log.warning("重复调用 Skill.doInit()。即将返回。");
+            return;
+        }
+        this.controller = controller;
+        this.self = self;
+        this.own = controller.getCamp(self);
+        this.enemy = this.own.getOpposite();
+        self.getEventController().add(new EventHandler<DieEvent>() {
+            @Override
+            public void handle(DieEvent event) {
+                onDie();
+            }
+        });
+        doInit(controller, self);
+    }
+
+    public void doInit(Controller controller, Entity self) {
     }
 }

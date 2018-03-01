@@ -3,12 +3,20 @@ package com.sine.yys.util;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * 随机 实用类。
  */
 public class RandUtil {
-    private static Random random = new Random();
+    private static final Logger log = Logger.getLogger(RandUtil.class.getName());
+    private static final Random random;
+
+    static {
+        final long seed = Seed.get();
+        log.info("using random seed:" + seed);
+        random = new Random(seed);
+    }
 
     public static boolean success(double pct) {
         return random.nextDouble() < pct;

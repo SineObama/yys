@@ -1,6 +1,5 @@
 package com.sine.yys.event;
 
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -10,8 +9,8 @@ import com.sine.yys.inter.Entity;
 public abstract class BaseVectorEvent extends BaseEntityEvent implements Event {
     private final Entity target;
 
-    public BaseVectorEvent(Controller controller, Entity entity, Entity target) {
-        super(controller, entity);
+    public BaseVectorEvent(Entity entity, Entity target) {
+        super(entity);
         this.target = target;
     }
 

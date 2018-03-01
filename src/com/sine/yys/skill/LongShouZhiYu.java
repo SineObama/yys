@@ -7,7 +7,6 @@ import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;
 import com.sine.yys.event.LongShouZhiYuOff;
 import com.sine.yys.event.LongShouZhiYuOn;
-import com.sine.yys.info.Sealable;
 import com.sine.yys.inter.*;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -17,27 +16,31 @@ import com.sine.yys.util.RandUtil;
  * 附带开局释放效果（游戏中写在被动技能中）。
  */
 public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
+    private final BeforeActionHandler beforeActionHandler = new BeforeActionHandler();
+
     @Override
     public int getFire() {
         return 2;
     }
 
     @Override
-    public void doApply(Controller controller, Entity self, Entity target) {
-        deploy(controller, self, getLast());
+    public void doApply(Entity target) {
+        deploy();
     }
 
     /**
      * 释放幻境。由于开局释放不算回合数，而技能释放时需要给last额外加1，所以独立出这个逻辑。
      */
-    private void deploy(Controller controller, Entity self, int last) {
-        LongShouZhiYuBuff buff = new LongShouZhiYuBuff(last, () -> self.getEventController().trigger(new LongShouZhiYuOff()), self);  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
+    private void deploy() {
+        Entity self = getSelf();
+        LongShouZhiYuBuff buff = new LongShouZhiYuBuff(getLast(), () -> self.getEventController().trigger(new LongShouZhiYuOff()), self);  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
         log.info(Msg.info(self, "施放 " + buff.getName()));
         self.getBuffController().add(buff);
-        for (ShikigamiEntity shikigami : controller.getCamp(self).getAllShikigami()) {  // DESIGN 给式神不包括召唤物加buff
+        for (ShikigamiEntity shikigami : getController().getCamp(self).getAllShikigami()) {  // DESIGN 给式神不包括召唤物加buff
             shikigami.getBuffController().add(new LSZYDefenseBuff(getDefPct(), self));
             shikigami.getBuffController().add(new LSZYEffectDefBuff(getEffectDef(), self));
         }
+        getOwn().getEventController().add(beforeActionHandler);
         self.getEventController().trigger(new LongShouZhiYuOn());
     }
 
@@ -47,25 +50,24 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
     }
 
     @Override
-    public void init(Controller controller, Entity self) {
-        Camp own = controller.getCamp(self);
-        controller.getCamp(self).getEventController().add(new Handler(self));
-        own.getEventController().add(new EventHandler<BattleStartEvent>() {
+    public void doInit(Controller controller, Entity self) {
+        getOwn().getEventController().add(new EventHandler<BattleStartEvent>() {
             @Override
             public void handle(BattleStartEvent event) {
                 // XXX 实际上会触发招财猫（甚至是一个回合，因为在行动条上显示了辉夜姬），然而感觉很bug
                 // 然而又不能算一个回合（没有触发彼岸花被动？也不会触发御馔津吧？），因为鬼火进度条没变……
                 // 好像还会触发匣中少女的盾，无语。还是可以考虑定义一个新概念。
-                deploy(controller, self, getLast());
+                deploy();
             }
         });
         self.getEventController().add(new EventHandler<LongShouZhiYuOff>() {
             @Override
             public void handle(LongShouZhiYuOff event) {
-                for (Entity shikigami : own.getAllShikigami()) {
+                for (Entity shikigami : getOwn().getAllShikigami()) {
                     shikigami.getBuffController().remove(LSZYDefenseBuff.class);
                     shikigami.getBuffController().remove(LSZYEffectDefBuff.class);
                 }
+                getOwn().getEventController().remove(beforeActionHandler);
             }
         });
     }
@@ -98,19 +100,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
         return 2;
     }
 
-    // XXXX 实现方式：是移除监听器，还是这样封印好？
-    class Handler implements Sealable, EventHandler<BeforeActionEvent> {
-        private final Entity self;
-
-        Handler(Entity self) {
-            this.self = self;
-        }
-
-        @Override
-        public boolean sealed() {
-            return self.getBuffController().get(LongShouZhiYuBuff.class) == null;
-        }
-
+    class BeforeActionHandler implements EventHandler<BeforeActionEvent> {
         /**
          * 输出正则测试，消失后没有触发：龙首之玉幻境 效果消失([\s\S](?!施放 龙首之玉))*?触发 龙首之玉
          * 输出正则测试，部署后有触发：施放 龙首之玉([\s\S](?!龙首之玉幻境 效果消失))*?触发 龙首之玉
@@ -118,7 +108,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
         @Override
         public void handle(BeforeActionEvent event) {
             if (RandUtil.success(getPct())) {
-                log.info(Msg.trigger(self, LongShouZhiYu.this));
+                log.info(Msg.trigger(getSelf(), LongShouZhiYu.this));
                 event.getEntity().getFireRepo().addFire(1);
             }
         }

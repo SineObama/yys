@@ -15,24 +15,22 @@ public interface Entity extends Target, Property {
     /**
      * 获取技能保存的变量。没有时使用默认值。
      *
-     * @param clazz        技能Class。
-     * @param key          键。
-     * @param defaultValue 默认值。
      * @param <T>          技能类型。
      * @param <V>          值类型。
+     * @param key          键。
+     * @param defaultValue 默认值。
      * @return 变量值。
      */
-    <T, V> V get(Class<T> clazz, Object key, V defaultValue);
+    <T, V> V get(Object key, V defaultValue);
 
     /**
      * 保存技能变量。
      *
-     * @param clazz 技能Class。
+     * @param <T>   技能类型。
      * @param key   键
      * @param value 值。
-     * @param <T>   技能类型。
      */
-    <T> void put(Class<T> clazz, Object key, Object value);
+    <T> void put(Object key, Object value);
 
     /**
      * @return 生命百分比。

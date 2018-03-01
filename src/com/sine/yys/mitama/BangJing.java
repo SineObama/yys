@@ -11,7 +11,7 @@ import com.sine.yys.util.Msg;
 /**
  * 蚌精。
  */
-public class BangJing extends BaseMitama implements Mitama {
+public class BangJing extends BaseMitama implements Mitama, EventHandler<BattleStartEvent> {
     @Override
     public String getName() {
         return "蚌精";
@@ -25,23 +25,18 @@ public class BangJing extends BaseMitama implements Mitama {
     }
 
     @Override
-    public void init(Controller controller, Entity self) {
-        controller.getCamp(self).getEventController().add(new Handler(self));
+    public void doInit(Controller controller, Entity self) {
+        controller.getCamp(self).getEventController().add(this);
     }
 
-    class Handler extends SealableMitamaHandler implements EventHandler<BattleStartEvent> {
-        Handler(Entity self) {
-            super(self);
-        }
-
-        @Override
-        public void handle(BattleStartEvent event) {
-            log.info(Msg.trigger(self, BangJing.this));
-            final double value = self.getMaxLife() * getShieldByMaxLife();
-            Controller controller = event.getController();
-            for (Entity entity : controller.getCamp(self).getAllAlive()) {
-                entity.getBuffController().add(new BangJingShield(controller.calcCritical(self, value), self));
-            }
+    @Override
+    public void handle(BattleStartEvent event) {
+        final Entity self = getSelf();
+        log.info(Msg.trigger(self, BangJing.this));
+        final double value = self.getMaxLife() * getShieldByMaxLife();
+        Controller controller = getController();
+        for (Entity entity : controller.getCamp(self).getAllAlive()) {
+            entity.getBuffController().add(new BangJingShield(controller.calcCritical(self, value), self));
         }
     }
 }

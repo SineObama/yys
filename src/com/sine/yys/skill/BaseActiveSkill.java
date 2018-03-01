@@ -1,7 +1,6 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.inter.ActiveSkill;
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
 
@@ -13,22 +12,20 @@ import java.util.Collection;
  */
 public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override
-    public final void apply(Controller controller, Entity self, Entity target) {
+    public final void apply(Entity target) {
         if (getMAXCD() > 0)
-            self.put(this.getClass(), CD, getMAXCD());  // XXXX 设置技能进入CD，这个+1的操作
+            getSelf().put(CD, getMAXCD());  // XXXX 设置技能进入CD，这个+1的操作
         beforeApply(target);
-        doApply(controller, self, target);
-        afterApply(controller, self, target);
+        doApply(target);
+        afterApply(target);
     }
 
     /**
      * 技能的具体操作。各技能重写的重点。
      *
-     * @param controller
-     * @param self       自身。
-     * @param target     目标。
+     * @param target 目标。
      */
-    protected abstract void doApply(Controller controller, Entity self, Entity target);
+    protected abstract void doApply(Entity target);
 
     /**
      * 获取攻击时附带的debuff效果。默认无效果。
@@ -48,10 +45,8 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     /**
      * 目前只用于普攻触发事件。
      *
-     * @param controller
-     * @param self       自身
-     * @param target     目标。
+     * @param target 目标。
      */
-    protected void afterApply(Controller controller, Entity self, Entity target) {
+    protected void afterApply(Entity target) {
     }
 }

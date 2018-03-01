@@ -19,8 +19,8 @@ public class GuiNiao extends BaseCommonAttack {
     }
 
     @Override
-    public int getTimes(Entity self) {
-        return getFeiNiao(self);
+    public int getTimes() {
+        return getFeiNiao();
     }
 
     @Override
@@ -40,53 +40,45 @@ public class GuiNiao extends BaseCommonAttack {
         return 0.8;
     }
 
-    public int getFeiNiao(Entity self) {
-        return self.get(GuiNiao.class, FeiNiao, 0);
+    public int getFeiNiao() {
+        return getSelf().get(FeiNiao, 0);
     }
 
     /**
      * 包括上限检查。
      */
-    protected void addFeiNiao(Entity self) {
-        int feiNiao = getFeiNiao(self);
+    protected void addFeiNiao() {
+        int feiNiao = getFeiNiao();
         if (feiNiao < getMaxFeiNiao()) {
             feiNiao += 1;
-            self.put(GuiNiao.class, FeiNiao, feiNiao);
-            log.info(Msg.info(self, "飞鸟数增加1"));
+            getSelf().put(FeiNiao, feiNiao);
+            log.info(Msg.info(getSelf(), "飞鸟数增加1"));
         }
-        log.info(Msg.info(self, "当前剩余飞鸟数 " + feiNiao));
+        log.info(Msg.info(getSelf(), "当前剩余飞鸟数 " + feiNiao));
     }
 
     @Override
-    public void init(Controller controller, Entity self) {
-        self.put(GuiNiao.class, FeiNiao, 1);
-        self.getEventController().add(new BeforeActionHandler(self));
+    public void doInit(Controller controller, Entity self) {
+        self.put(FeiNiao, 1);
+        self.getEventController().add(new BeforeActionHandler());
 
         // XXXX 花鸟卷死后影响？还是采用移除监听器？
-        controller.getCamp(self).getEventController().add(new AfterMovementHandler(self));
-        controller.getCamp(self).getOpposite().getEventController().add(new AfterMovementHandler(self));
+        controller.getCamp(self).getEventController().add(new AfterMovementHandler());
+        controller.getCamp(self).getOpposite().getEventController().add(new AfterMovementHandler());
     }
 
-    class BeforeActionHandler extends BaseHandler implements EventHandler<BeforeActionEvent> {
-        protected BeforeActionHandler(Entity self) {
-            super(self);
-        }
-
+    class BeforeActionHandler implements EventHandler<BeforeActionEvent> {
         @Override
         public void handle(BeforeActionEvent event) {
-            addFeiNiao(self);
+            addFeiNiao();
         }
     }
 
-    class AfterMovementHandler extends BaseHandler implements EventHandler<AfterMovementEvent> {
-        protected AfterMovementHandler(Entity self) {
-            super(self);
-        }
-
+    class AfterMovementHandler implements EventHandler<AfterMovementEvent> {
         @Override
         public void handle(AfterMovementEvent event) {
-            if (getFeiNiao(self) == 0)
-                addFeiNiao(self);
+            if (getFeiNiao() == 0)
+                addFeiNiao();
         }
     }
 }

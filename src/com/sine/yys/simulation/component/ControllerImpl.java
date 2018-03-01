@@ -19,7 +19,7 @@ public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().getName());
     private final BaseCamp camp0, camp1;
 
-    public ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
+    ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
         this.camp0 = camp0;
         this.camp1 = camp1;
     }
@@ -42,11 +42,11 @@ public class ControllerImpl implements Controller {
                 applyDebuff(self, target, debuffEffect);
             }
 
-        self.eventController.trigger(new AttackEvent(this, self, target));
+        self.eventController.trigger(new AttackEvent(self, target));
 
         // XXXXX 像这种每次都调用是不是不好、太慢
-        this.getCamp(target).getEventController().triggerOff(new BeAttackEvent(this));
-        target.getEventController().triggerOff(new BeAttackEvent(this));
+        this.getCamp(target).getEventController().triggerOff(new BeAttackEvent());
+        target.getEventController().triggerOff(new BeAttackEvent());
 
         // 1.
         final boolean critical = RandUtil.success(self.getCritical());
@@ -61,7 +61,7 @@ public class ControllerImpl implements Controller {
         if (remain != 0) {
             damage = remain;
 
-            PreDamageEvent event = new PreDamageEvent(this, self, target);
+            PreDamageEvent event = new PreDamageEvent(self, target);
             self.eventController.trigger(event);
             damage *= event.getCoefficient();
 
@@ -73,8 +73,8 @@ public class ControllerImpl implements Controller {
                 log.info(Msg.vector(self, "击杀", target, ""));
 
             if (critical) {
-                target.getEventController().trigger(new BeCriticalEvent(this, target, self));
-                self.eventController.trigger(new CriticalEvent(this, self, target));
+                target.getEventController().trigger(new BeCriticalEvent(target, self));
+                self.eventController.trigger(new CriticalEvent(self, target));
             }
         } else {
             log.info(Msg.noDamage(self, target));
@@ -88,7 +88,7 @@ public class ControllerImpl implements Controller {
         if (target.isDead())
             return;
 
-        self.eventController.trigger(new AttackEvent(this, self, target));
+        self.eventController.trigger(new AttackEvent(self, target));
 
         // 2.
         int remain = breakShield(target, (int) damage);
@@ -139,8 +139,10 @@ public class ControllerImpl implements Controller {
         final int life = target.reduceLife(damage);
         double dst = target.getLife();
         if (life != 0) {
-            target.getEventController().trigger(new BeDamageEvent(this, src, dst));
+            target.getEventController().trigger(new BeDamageEvent(src, dst));
         } else {
+            target.getBuffController().clear();
+            target.getEventController().trigger(new DieEvent(target));
             target.getCamp().getPosition(target).setCurrent(null);
             log.info(Msg.info(target, "死亡"));
         }
@@ -218,8 +220,8 @@ public class ControllerImpl implements Controller {
      * 技能调用此函数以重置状态。
      */
     public void afterMovement() {
-        camp0.getEventController().trigger(new AfterMovementEvent(this));
-        camp1.getEventController().trigger(new AfterMovementEvent(this));
+        camp0.getEventController().trigger(new AfterMovementEvent());
+        camp1.getEventController().trigger(new AfterMovementEvent());
 
         // 重置事件状态
         camp0.getEventController().setState(BeAttackEvent.class, true);

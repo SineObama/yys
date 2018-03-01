@@ -112,6 +112,10 @@ public abstract class BaseIBuff implements IBuff {
     void dealLastAfterAction() {
     }
 
+    @Override
+    public void onRemove() {
+    }
+
     protected void doBeforeAction(DamageController controller, Entity self) {
     }
 

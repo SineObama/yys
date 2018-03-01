@@ -87,8 +87,8 @@ public class Simulator {
         started = true;
         init(camp0, camp1);
         init(camp1, camp0);
-        camp0.getEventController().trigger(new BattleStartEvent(controller));
-        camp1.getEventController().trigger(new BattleStartEvent(controller));
+        camp0.getEventController().trigger(new BattleStartEvent());
+        camp1.getEventController().trigger(new BattleStartEvent());
     }
 
     public void step() {
@@ -141,12 +141,12 @@ public class Simulator {
 
 
             for (Skill skill : self.shikigami.getSkills())
-                skill.beforeAction(controller, self);
+                skill.beforeAction();
 
             // 行动前事件
             // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
-            self.camp.getEventController().trigger(new BeforeActionEvent(controller, self));
-            self.eventController.trigger(new BeforeActionEvent(controller, self));
+            self.camp.getEventController().trigger(new BeforeActionEvent(self));
+            self.eventController.trigger(new BeforeActionEvent(self));
 
             controller.afterMovement();
 
@@ -163,11 +163,11 @@ public class Simulator {
             self.buffController.afterAction(controller, self);
 
             // 行动后事件
-            self.camp.getEventController().trigger(new AfterActionEvent(controller, self));
-            self.eventController.trigger(new AfterActionEvent(controller, self));
+            self.camp.getEventController().trigger(new AfterActionEvent(self));
+            self.eventController.trigger(new AfterActionEvent(self));
 
             for (Skill skill : self.shikigami.getSkills())
-                skill.afterAction(controller, self);
+                skill.afterAction();
 
             // 完成推进鬼火行动条
             self.fireRepo.finish();
@@ -235,7 +235,7 @@ public class Simulator {
             // 消耗鬼火
             int fire = activeSkill.getFire();
             if (fire > 0) {
-                UseFireEvent event = new UseFireEvent(controller, self, fire);
+                UseFireEvent event = new UseFireEvent(self, fire);
                 self.camp.getEventController().trigger(event);
                 fire = event.getCostFire();
                 self.fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
@@ -243,9 +243,9 @@ public class Simulator {
             }
 
             // 执行技能
-            activeSkill.apply(controller, self, target);
+            activeSkill.apply(target);
 
-            self.eventController.trigger(new FinishActionEvent(controller));
+            self.eventController.trigger(new FinishActionEvent());
         } else {
             log.info(Msg.info(self, "无法行动。"));
         }

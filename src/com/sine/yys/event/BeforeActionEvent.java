@@ -1,6 +1,5 @@
 package com.sine.yys.event;
 
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -10,7 +9,7 @@ import com.sine.yys.inter.Entity;
  * 未来还有鲤鱼旗、樱花妖、招财猫……
  */
 public class BeforeActionEvent extends BaseEntityEvent implements Event {
-    public BeforeActionEvent(Controller controller, Entity entity) {
-        super(controller, entity);
+    public BeforeActionEvent(Entity entity) {
+        super(entity);
     }
 }

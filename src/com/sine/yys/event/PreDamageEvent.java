@@ -1,6 +1,5 @@
 package com.sine.yys.event;
 
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -10,8 +9,8 @@ import com.sine.yys.inter.Entity;
 public class PreDamageEvent extends BaseVectorEvent implements Event {
     private double coefficient = 1.0;
 
-    public PreDamageEvent(Controller controller, Entity entity, Entity target) {
-        super(controller, entity, target);
+    public PreDamageEvent(Entity entity, Entity target) {
+        super(entity, target);
     }
 
     public double getCoefficient() {

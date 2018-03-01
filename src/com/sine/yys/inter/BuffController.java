@@ -36,4 +36,9 @@ public interface BuffController {
      * @return 减疗百分比。
      */
     double getReduceCurePct();
+
+    /**
+     * 死亡时清空buff。
+     */
+    void clear();
 }

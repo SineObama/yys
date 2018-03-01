@@ -58,4 +58,9 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
      * @return 来源式神。
      */
     Entity getSrc();
+
+    /**
+     * buff被移除时会被调用。
+     */
+    void onRemove();
 }

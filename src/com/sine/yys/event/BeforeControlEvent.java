@@ -10,7 +10,7 @@ import com.sine.yys.buff.debuff.ControlBuff;
  *
  * @version 2018-2-28
  */
-public class BeforeControlEvent {
+public class BeforeControlEvent extends BaseEvent {
     final ControlBuff controlBuff;
     boolean effective = true;
 

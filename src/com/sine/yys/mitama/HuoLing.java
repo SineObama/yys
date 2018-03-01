@@ -10,7 +10,7 @@ import com.sine.yys.util.Msg;
 /**
  * 火灵。
  */
-public class HuoLing extends BaseMitama implements Mitama {
+public class HuoLing extends BaseMitama implements Mitama, EventHandler<BattleStartEvent> {
     @Override
     public String getName() {
         return "火灵";
@@ -21,19 +21,14 @@ public class HuoLing extends BaseMitama implements Mitama {
     }
 
     @Override
-    public void init(Controller controller, Entity self) {
-        controller.getCamp(self).getEventController().add(new Handler(self));
+    public void doInit(Controller controller, Entity self) {
+        controller.getCamp(self).getEventController().add(this);
     }
 
-    class Handler extends SealableMitamaHandler implements EventHandler<BattleStartEvent> {
-        Handler(Entity self) {
-            super(self);
-        }
-
-        @Override
-        public void handle(BattleStartEvent event) {
-            log.info(Msg.trigger(self, HuoLing.this));
-            self.getFireRepo().addFire(getFire());
-        }
+    @Override
+    public void handle(BattleStartEvent event) {
+        final Entity self = getSelf();
+        log.info(Msg.trigger(self, HuoLing.this));
+        self.getFireRepo().addFire(getFire());
     }
 }

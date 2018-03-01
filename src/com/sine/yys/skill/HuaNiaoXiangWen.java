@@ -9,7 +9,9 @@ import com.sine.yys.inter.Entity;
  */
 public class HuaNiaoXiangWen extends BaseNoTargetSkill {
     @Override
-    protected void doApply(Controller controller, Entity self, Entity target) {
+    protected void doApply(Entity target) {
+        final Controller controller = getController();
+        final Entity self = getSelf();
         for (Entity entity : controller.getCamp(self).getAllAlive()) {  // XXX 群体治疗包括召唤物？
             controller.cure(entity, controller.calcCritical(self, getDirectLifePct() * self.getMaxLife()));
             entity.getBuffController().add(new FenFang(self, getSecondLifePct(), getThirdLifePct()));

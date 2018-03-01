@@ -12,6 +12,8 @@ import com.sine.yys.util.RandUtil;
  * 辉夜姬-火鼠裘。
  */
 public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
+    private final BeAttackHandler ownBeAttackHandler = new BeAttackHandler(true);
+
     @Override
     public String getName() {
         return "火鼠裘";
@@ -25,32 +27,36 @@ public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void init(Controller controller, Entity self) {
-        self.getEventController().add(new Handler(self, false));
-        controller.getCamp(self).getEventController().add(new Handler(self, true));
+    public void doInit(Controller controller, Entity self) {
+        self.getEventController().add(new BeAttackHandler(false));
+        getOwn().getEventController().add(ownBeAttackHandler);
+    }
+
+    @Override
+    public void onDie() {
+        getOwn().getEventController().remove(ownBeAttackHandler);
     }
 
     /**
      * 通过参数创建2个实例，分别监听自身被攻击和阵营被攻击。
      */
-    class Handler extends SealablePassiveHandler implements EventHandler<BeAttackEvent> {
+    class BeAttackHandler extends SealablePassiveHandler implements EventHandler<BeAttackEvent> {
         private final boolean flag;
 
-        Handler(Entity self, boolean huanJing) {
-            super(self);
+        BeAttackHandler(boolean huanJing) {
             this.flag = huanJing;
         }
 
         @Override
         public boolean sealed() {
-            return super.sealed() || (self.getBuffController().get(LongShouZhiYuBuff.class) == null ^ flag);
+            return super.sealed() || (getSelf().getBuffController().get(LongShouZhiYuBuff.class) == null ^ flag);
         }
 
         @Override
         public void handle(BeAttackEvent event) {
             if (RandUtil.success(getPct())) {
-                log.info(Msg.trigger(self, HuoShuQiu.this));
-                self.getFireRepo().addFire(1);
+                log.info(Msg.trigger(getSelf(), HuoShuQiu.this));
+                getSelf().getFireRepo().addFire(1);
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.sine.yys.skill.groupattack;
 
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.model.AttackInfoImpl;
@@ -35,8 +34,8 @@ public class TianXiangHeZhan extends SimpleGroupAttack {
     }
 
     @Override
-    public void doApply(Controller controller, Entity self, Entity target) {
-        super.doApply(controller, self, target);
-        controller.attack(self, target, new AttackInfoImpl(getFinalCoefficient()), null);
+    public void doApply(Entity target) {
+        super.doApply(target);
+        getController().attack(getSelf(), target, new AttackInfoImpl(getFinalCoefficient()), null);
     }
 }

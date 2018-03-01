@@ -11,7 +11,7 @@ import com.sine.yys.util.RandUtil;
 /**
  * 针女。
  */
-public class ZhenNv extends BaseMitama implements Mitama {
+public class ZhenNv extends BaseMitama implements Mitama, EventHandler<CriticalEvent> {
     @Override
     public String getName() {
         return "针女";
@@ -36,24 +36,19 @@ public class ZhenNv extends BaseMitama implements Mitama {
     }
 
     @Override
-    public void init(Controller controller, Entity self) {
-        self.getEventController().add(new Handler(self));
+    public void doInit(Controller controller, Entity self) {
+        self.getEventController().add(this);
     }
 
-    class Handler extends SealableMitamaHandler implements EventHandler<CriticalEvent> {
-        Handler(Entity self) {
-            super(self);
-        }
-
-        @Override
-        public void handle(CriticalEvent event) {
-            if (RandUtil.success(getPct())) {
-                log.info(Msg.trigger(self, ZhenNv.this));
-                final double damage1 = self.getAttack() * getMaxDamageByAttack();
-                final double damage2 = event.getTarget().getMaxLife() * getMaxDamageByMaxLife();
-                double damage = damage1 < damage2 ? damage1 : damage2;
-                event.getController().realDamage(self, event.getTarget(), damage);
-            }
+    @Override
+    public void handle(CriticalEvent event) {
+        if (RandUtil.success(getPct())) {
+            final Entity self = getSelf();
+            log.info(Msg.trigger(self, ZhenNv.this));
+            final double damage1 = self.getAttack() * getMaxDamageByAttack();
+            final double damage2 = event.getTarget().getMaxLife() * getMaxDamageByMaxLife();
+            double damage = damage1 < damage2 ? damage1 : damage2;
+            getController().realDamage(self, event.getTarget(), damage);
         }
     }
 }

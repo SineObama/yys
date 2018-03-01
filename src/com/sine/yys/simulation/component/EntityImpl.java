@@ -18,7 +18,7 @@ public class EntityImpl implements Entity {
     final Shikigami shikigami;
     final List<Mitama> mitamas;
     private final Property property;
-    private final Map<Class, Map<Object, Object>> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
+    private final Map<Object, Object> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
     // XXXX 两者的设置由谁负责比较好？
     Camp camp = null;
     FireRepo fireRepo;
@@ -35,21 +35,16 @@ public class EntityImpl implements Entity {
     }
 
     @Override
-    public <T, V> V get(Class<T> clazz, Object key, V defaultValue) {
-        if (!map.containsKey(clazz))
-            map.put(clazz, new HashMap<>());
-        Map<Object, Object> map1 = map.get(clazz);
-        if (map1.containsKey(key))
-            return (V) map1.get(key);
+    public <T, V> V get(Object key, V defaultValue) {
+        if (map.containsKey(key))
+            return (V) map.get(key);
         else
             return defaultValue;
     }
 
     @Override
-    public <T> void put(Class<T> clazz, Object key, Object value) {
-        if (!map.containsKey(clazz))
-            map.put(clazz, new HashMap<>());
-        map.get(clazz).put(key, value);
+    public <T> void put(Object key, Object value) {
+        map.put(key, value);
     }
 
     @Override
@@ -118,14 +113,14 @@ public class EntityImpl implements Entity {
         this.life += count;
         if (this.life > getMaxLife())
             this.life = getMaxLife();
-        return count;
+        return this.life;
     }
 
     int reduceLife(int count) {
         this.life -= count;
         if (this.life < 0)
             this.life = 0;
-        return count;
+        return this.life;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.sine.yys.event;
 
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -10,8 +9,8 @@ import com.sine.yys.inter.Entity;
 public class UseFireEvent extends BaseEntityEvent implements Event {
     private int costFire;
 
-    public UseFireEvent(Controller controller, Entity self, int costFire) {
-        super(controller, self);
+    public UseFireEvent(Entity self, int costFire) {
+        super(self);
         this.costFire = costFire;
     }
 

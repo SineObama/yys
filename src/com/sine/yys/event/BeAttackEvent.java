@@ -1,7 +1,5 @@
 package com.sine.yys.event;
 
-import com.sine.yys.inter.Controller;
-
 /**
  * 阵营或式神受击事件（阵营和式神都有此事件），包括反击。
  * 目前仅为实现辉夜姬幻境下的被动，群体、多段攻击不重复计算：
@@ -11,7 +9,4 @@ import com.sine.yys.inter.Controller;
  * 4. 受中毒伤不触发（暂定，不确定真实情况）。
  */
 public class BeAttackEvent extends BaseEvent implements Event {
-    public BeAttackEvent(Controller controller) {
-        super(controller);
-    }
 }

@@ -1,9 +1,7 @@
 package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.effect.PangZouEffect;
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.DebuffEffect;
-import com.sine.yys.inter.Entity;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -34,10 +32,5 @@ public class PangZou extends BaseCommonAttack {
     @Override
     protected Collection<DebuffEffect> getDebuffEffects() {
         return Collections.singleton(effect);
-    }
-
-    @Override
-    protected void doApply(Controller controller, Entity self, Entity target) {
-        super.doApply(controller, self, target);
     }
 }
