@@ -19,9 +19,9 @@ public class FenFang extends BaseBeforeActionBuff implements DispellableBuff {
     @Override
     public void doBeforeAction(DamageController controller, Entity self) {
         if (getLast() == 2) {
-            controller.cure(self, controller.calcCritical(getSrc(), secondPct * getSrc().getMaxLife()));
+            controller.cureByLifePct(getSrc(), self, secondPct);
         } else if (getLast() == 1) {
-            controller.cure(self, controller.calcCritical(getSrc(), thirdPct * getSrc().getMaxLife()));
+            controller.cureByLifePct(getSrc(), self, secondPct);
         }
     }
 }

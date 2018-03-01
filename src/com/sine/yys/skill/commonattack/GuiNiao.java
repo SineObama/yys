@@ -21,7 +21,7 @@ public class GuiNiao extends BaseCommonAttack {
         final Entity self = getSelf();
         for (int i = 0; i < getTimes(); i++) {
             if (RandUtil.success(getCurePct()))
-                controller.cure(getOwn().getLeastLifeShikigami(), controller.calcCritical(self, getCureLifePct() * self.getMaxLife()));
+                controller.cureByLifePct(self, getOwn().getLeastLifeShikigami(), getCureLifePct());
         }
     }
 

@@ -128,6 +128,11 @@ public class ControllerImpl implements Controller {
         return count;
     }
 
+    @Override
+    public int cureByLifePct(Entity self, Entity target, double pct) {
+        return cure(target, calcCritical(self, pct * self.getMaxLife()));
+    }
+
 
     /**
      * 直接减少目标生命，触发{@link BeDamageEvent}事件。

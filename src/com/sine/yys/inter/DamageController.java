@@ -24,6 +24,15 @@ public interface DamageController {
     int cure(Entity target, double src);
 
     /**
+     *
+     * @param self 自身
+     * @param target 治疗目标。
+     * @param pct 自身生命百分比。
+     * @return
+     */
+    int cureByLifePct(Entity self, Entity target, double pct);
+
+    /**
      * 计算暴击。
      * 包括添加护盾或治疗的时候。
      *
