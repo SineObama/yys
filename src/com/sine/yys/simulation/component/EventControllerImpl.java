@@ -58,13 +58,15 @@ public class EventControllerImpl implements EventController {
 
     @Override
     public <EventType> void trigger(EventType event) {
-        if (!states.containsKey(event.getClass()) || states.get(event.getClass()))
-            for (Container<EventHandler> container : get(event.getClass())) {
+        final Set<Container<EventHandler>> containers = new TreeSet<>(get(event.getClass()));
+        if (!states.containsKey(event.getClass()) || states.get(event.getClass())) {
+            for (Container<EventHandler> container : containers) {
                 final EventHandler obj = container.getObj();
                 if (obj instanceof Sealable && ((Sealable) obj).sealed())
                     continue;
                 obj.handle(event);
             }
+        }
     }
 
     @Override
