@@ -63,6 +63,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
         self.getEventController().add(new EventHandler<LongShouZhiYuOff>() {
             @Override
             public void handle(LongShouZhiYuOff event) {
+                log.info(Msg.info(getOwn(), "龙首之玉幻境结束了"));
                 for (Entity shikigami : getOwn().getAllShikigami()) {
                     shikigami.getBuffController().remove(LSZYDefenseBuff.class);
                     shikigami.getBuffController().remove(LSZYEffectDefBuff.class);

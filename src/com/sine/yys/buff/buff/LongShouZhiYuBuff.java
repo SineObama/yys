@@ -14,7 +14,7 @@ public class LongShouZhiYuBuff extends BaseCommonIBuff implements Buff {
     private final CallBack callBack;
 
     public LongShouZhiYuBuff(int last, CallBack callBack, Entity src) {
-        super(last, "龙首之玉幻境", src);
+        super(last, "龙首之玉", src);
         this.callBack = callBack;
     }
 
