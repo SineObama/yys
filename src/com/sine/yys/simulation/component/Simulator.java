@@ -192,7 +192,7 @@ public class Simulator {
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
             for (ActiveSkill activeSkill : self.getActiveSkills()) {
-                int cd = activeSkill.getCD(self);
+                int cd = activeSkill.getCD();
                 if (cd > 0) {
                     log.info(Msg.info(self, "技能 " + activeSkill.getName() + " 还有CD " + cd));
                     continue;

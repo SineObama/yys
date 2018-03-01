@@ -34,7 +34,7 @@ public abstract class BaseSkill implements Skill {
     }
 
     @Override
-    public final int getCD(Entity self) {
+    public final int getCD() {
         return self.get(this.toString() + CD, 0);
     }
 
@@ -52,22 +52,22 @@ public abstract class BaseSkill implements Skill {
         doBeforeAction();
         if (prepared) {
             log.warning("异常调用beforeAction()");
-            return getCD(self);
+            return getCD();
         }
-        if (getCD(getSelf()) > 0)
+        if (getCD() > 0)
         prepared = true;
-        return getCD(self);
+        return getCD();
     }
 
     @Override
     public final int afterAction() {
         doAfterAction();
         if (!prepared)
-            return getCD(self);
+            return getCD();
         prepared = false;
         int cd = 0;
         if (getMAXCD() > 0) {
-            cd = getCD(self);
+            cd = getCD();
             if (cd > 0) {
                 cd -= 1;
                 setCD(cd);

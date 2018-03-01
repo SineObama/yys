@@ -10,7 +10,7 @@ import com.sine.yys.info.Named;
 public interface Skill extends Named {
     void init(Controller controller, Entity self);
 
-    int getCD(Entity self);
+    int getCD();
 
     int getMAXCD();
 
