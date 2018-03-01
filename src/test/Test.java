@@ -3,6 +3,7 @@ package test;
 import com.sine.yys.simulation.InputUtil;
 import com.sine.yys.simulation.RedBlueSimulator;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Test {
@@ -15,14 +16,14 @@ public class Test {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         RedBlueSimulator simulator;
         try {
             for (int i = 1; i < 99; i++) {
                 simulator = InputUtil.create("tests/" + i);
                 simulator.test(Integer.valueOf(args[0]));
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
         }
     }
 }
