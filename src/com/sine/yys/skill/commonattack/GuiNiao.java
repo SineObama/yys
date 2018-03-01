@@ -6,12 +6,24 @@ import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.util.Msg;
+import com.sine.yys.util.RandUtil;
 
 /**
  * 花鸟卷-归鸟。
  */
 public class GuiNiao extends BaseCommonAttack {
     public static final String FeiNiao = "FeiNiao";
+
+    @Override
+    protected void doApply(Entity target) {
+        super.doApply(target);
+        final Controller controller = getController();
+        final Entity self = getSelf();
+        for (int i = 0; i < getTimes(); i++) {
+            if (RandUtil.success(getCurePct()))
+                controller.cure(getOwn().getLeastLifeShikigami(), controller.calcCritical(self, getCureLifePct() * self.getMaxLife()));
+        }
+    }
 
     @Override
     public String getName() {

@@ -205,7 +205,7 @@ public class Simulator {
             }
 
             if (!map.isEmpty())
-                operation = self.shikigami.getAI().handle(self, map);
+                operation = self.shikigami.getAI().handle(self, self.camp, map);
             else
                 operation = new OperationImpl(null, null);
 

@@ -10,7 +10,8 @@ import java.util.Map;
 public interface OperationHandler {
     /**
      * @param self 当前行动的式神。
+     * @param own
      * @param map  可用的技能，以及其对应的可选目标。
      */
-    Operation handle(Entity self, Map<ActiveSkill, List<? extends Entity>> map);
+    Operation handle(Entity self, Camp own, Map<ActiveSkill, List<? extends Entity>> map);
 }
