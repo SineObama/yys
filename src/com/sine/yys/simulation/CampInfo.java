@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * 一方阵营信息，包括多个式神。
+ * 允许御魂为null表示没有御魂。
  */
 public class CampInfo {
     final List<EntityInfo> infos = new ArrayList<>();

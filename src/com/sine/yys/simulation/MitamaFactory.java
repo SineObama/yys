@@ -34,7 +34,12 @@ public class MitamaFactory {
     }
 
     static Mitama create(String key) {
-        return map.get(key.toLowerCase()).create();
+        if (key == null)
+            return null;
+        final Creator creator = map.get(key.toLowerCase());
+        if (creator == null)
+            throw new RuntimeException("can't found mitama:" + key);
+        return creator.create();
     }
 
     static Set<String> keySet() {

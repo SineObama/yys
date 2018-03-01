@@ -33,7 +33,10 @@ public class ShikigamiFactory {
     }
 
     static Shikigami create(String key) {
-        return map.get(key.toLowerCase()).create();
+        final Creator creator = map.get(key.toLowerCase());
+        if (creator == null)
+            throw new RuntimeException("can't found shikigami:" + key);
+        return creator.create();
     }
 
     static Set<String> keySet() {
