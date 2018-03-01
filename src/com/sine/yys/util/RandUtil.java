@@ -14,13 +14,13 @@ public class RandUtil {
 
     static {
         final long seed = Seed.get();
-        log.fine("using random seed:" + seed);
+        log.info("using random seed:" + seed);
         random = new Random(seed);
     }
 
     public static boolean success(double pct) {
         final double v = random.nextDouble();
-        log.info(String.valueOf(v));
+        log.fine(String.valueOf(v));
         return v < pct;
     }
 
