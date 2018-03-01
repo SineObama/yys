@@ -14,16 +14,14 @@ public class RandUtil {
 
     static {
         final long seed = Seed.get();
-        log.info("using random seed:" + seed);
+        log.fine("using random seed:" + seed);
         random = new Random(seed);
     }
 
     public static boolean success(double pct) {
-        return random.nextDouble() < pct;
-    }
-
-    public static boolean fail(double pct) {
-        return random.nextDouble() > pct;
+        final double v = random.nextDouble();
+        log.info(String.valueOf(v));
+        return v < pct;
     }
 
     public static int count(double pct, int times) {
@@ -36,7 +34,9 @@ public class RandUtil {
     }
 
     public static int choose(int total) {
-        return random.nextInt(total);
+        final int i = random.nextInt(total);
+        log.fine(String.valueOf(i));
+        return i;
     }
 
     public static <T> T choose(Collection<T> collection) {
