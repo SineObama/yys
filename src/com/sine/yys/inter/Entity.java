@@ -59,4 +59,17 @@ public interface Entity extends Target, Property {
     void addPosition(double count);
 
     EventController getEventController();
+
+    double getCureCoefficient();
+
+    /**
+     * 造成伤害增加。
+     */
+    double getDamageCoefficient();
+
+    /**
+     * 战场旗帜buff的伤害增加系数。
+     * 用于针女。
+     */
+    double getFlagDamageCoefficient();
 }

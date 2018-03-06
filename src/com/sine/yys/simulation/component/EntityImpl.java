@@ -128,6 +128,22 @@ public class EntityImpl implements Entity {
         return this.eventController;
     }
 
+    @Override
+    public double getCureCoefficient() {
+        return 1.0 + buffController.getCure();
+    }
+
+    @Override
+    public double getDamageCoefficient() {
+        return 1.0 + buffController.getDamageUp();
+    }
+
+    @Override
+    public double getFlagDamageCoefficient() {
+        return 1.0 + buffController.getFlagDamage();
+    }
+
+
     public List<ActiveSkill> getActiveSkills() {
         List<ActiveSkill> activeSkills = new ArrayList<>();
         for (Skill skill : shikigami.getSkills()) {
