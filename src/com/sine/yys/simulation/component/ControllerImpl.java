@@ -17,7 +17,19 @@ import java.util.logging.Logger;
  */
 public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().getName());
-    private final BaseCamp camp0, camp1;
+    private final BaseCamp camp0;
+
+    @Override
+    public Camp getCamp0() {
+        return camp0;
+    }
+
+    @Override
+    public Camp getCamp1() {
+        return camp1;
+    }
+
+    private final BaseCamp camp1;
 
     ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
         this.camp0 = camp0;
@@ -54,7 +66,10 @@ public class ControllerImpl implements Controller {
             log.info(Msg.info(self, "暴击"));
         double damage = CalcDam.expect(self, target, attackInfo, critical);
 
-        //3.
+        // 2.
+        damage *= self.getDamageCoefficient();
+
+        // 3.
         int remain = breakShield(target, (int) damage);
 
         // 4.
@@ -90,6 +105,9 @@ public class ControllerImpl implements Controller {
 
         self.eventController.trigger(new AttackEvent(self, target));
 
+        // 1.
+        damage *= self.getDamageCoefficient();
+
         // 2.
         int remain = breakShield(target, (int) damage);
 
@@ -118,11 +136,10 @@ public class ControllerImpl implements Controller {
     @Override
     public int cure(Entity target0, double src) {
         EntityImpl target = (EntityImpl) target0;
-        final double pct = target.getBuffController().getReduceCurePct();
+        final double coefficient = target.getCureCoefficient();
         final int count;
-        if (pct != 0.0)
-            log.info(Msg.info(target, "受到减疗 " + pct));
-        count = (int) (src * (1 - pct));
+        log.info(Msg.info(target, "治疗效果 " + coefficient));
+        count = (int) (src * coefficient);
         log.info(Msg.info(target, "受到治疗回复 " + count));
         target.addLife(count);
         return count;
