@@ -194,11 +194,6 @@ public class EntityImpl extends SimpleObject implements Entity {
         return (double) life / getMaxLife();
     }
 
-    // XXX 可能的负值问题。
-    void setLife(int life) {
-        this.life = life;
-    }
-
     int addLife(int count) {
         this.life += count;
         if (this.life > getMaxLife())
