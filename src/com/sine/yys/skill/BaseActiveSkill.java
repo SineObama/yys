@@ -14,7 +14,7 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override
     public final void apply(Entity target) {
         if (getMAXCD() > 0)
-           setCD(getMAXCD());
+            setCD(getMAXCD());
         beforeApply(target);
         doApply(target);
         afterApply(target);

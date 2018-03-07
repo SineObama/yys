@@ -18,6 +18,12 @@ import java.util.logging.Logger;
 public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().getName());
     private final BaseCamp camp0;
+    private final BaseCamp camp1;
+
+    ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
+        this.camp0 = camp0;
+        this.camp1 = camp1;
+    }
 
     @Override
     public Camp getCamp0() {
@@ -27,13 +33,6 @@ public class ControllerImpl implements Controller {
     @Override
     public Camp getCamp1() {
         return camp1;
-    }
-
-    private final BaseCamp camp1;
-
-    ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
-        this.camp0 = camp0;
-        this.camp1 = camp1;
     }
 
     @Override

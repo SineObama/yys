@@ -10,21 +10,21 @@ import com.sine.yys.buff.BaseCommonIBuff;
 public class BattleFlag extends BaseCommonIBuff {
     private double damage = 0, cure = 0;
 
-    public void setDamage(double damage) {
-        this.damage = damage;
-    }
-
-    public void setCure(double cure) {
-        this.cure = cure;
-    }
-
     public BattleFlag() {
         super(Integer.MAX_VALUE, "战场效果", null);
+    }
+
+    public void setDamage(double damage) {
+        this.damage = damage;
     }
 
     @Override
     public double getCure() {
         return cure;
+    }
+
+    public void setCure(double cure) {
+        this.cure = cure;
     }
 
     @Override

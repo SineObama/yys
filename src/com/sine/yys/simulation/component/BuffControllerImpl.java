@@ -1,6 +1,8 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.buff.debuff.*;
+import com.sine.yys.buff.debuff.ControlBuff;
+import com.sine.yys.buff.debuff.HunLuan;
+import com.sine.yys.buff.debuff.XuanYun;
 import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
 import com.sine.yys.buff.shield.Shield;

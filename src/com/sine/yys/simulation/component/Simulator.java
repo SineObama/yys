@@ -4,7 +4,6 @@ import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;
 import com.sine.yys.inter.Camp;
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Skill;
 import com.sine.yys.util.Msg;
 

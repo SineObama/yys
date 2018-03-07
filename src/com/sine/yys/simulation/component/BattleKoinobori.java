@@ -11,9 +11,9 @@ import com.sine.yys.util.Msg;
  * 还未实现功能。
  */
 public class BattleKoinobori extends SimpleObject implements EventHandler<BattleStartEvent> {
-    private int level = 0;
     private final double damageRatioAddition = 0.15;
     private final double cureRatioReduction = -0.15;
+    private int level = 0;
     private BattleFlag battleFlag = new BattleFlag();
 
     public BattleKoinobori(double speed) {

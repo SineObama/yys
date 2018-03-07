@@ -55,7 +55,7 @@ public abstract class BaseSkill implements Skill {
             return getCD();
         }
         if (getCD() > 0)
-        prepared = true;
+            prepared = true;
         return getCD();
     }
 

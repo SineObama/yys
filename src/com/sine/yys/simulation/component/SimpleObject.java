@@ -11,9 +11,9 @@ import java.util.logging.Logger;
  */
 public abstract class SimpleObject implements Target {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
-    private double position = 0;  // 行动位置，范围0-1。
     private final String name;
     private final double speed;
+    private double position = 0;  // 行动位置，范围0-1。
     private Controller controller;
 
     protected SimpleObject(String name, double speed) {
