@@ -1,5 +1,7 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.buff.debuff.SealMitama;
+import com.sine.yys.buff.debuff.SealPassive;
 import com.sine.yys.info.Property;
 import com.sine.yys.inter.*;
 import com.sine.yys.skill.commonattack.CommonAttack;
@@ -143,6 +145,23 @@ public class EntityImpl implements Entity {
         return 1.0 + buffController.getFlagDamage();
     }
 
+    @Override
+    public boolean mitamaSealed() {
+        for (IBuff iBuff : buffController.getMap().values()) {
+            if (iBuff instanceof SealMitama)
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean passiveSealed() {
+        for (IBuff iBuff : buffController.getMap().values()) {
+            if (iBuff instanceof SealPassive)
+                return true;
+        }
+        return false;
+    }
 
     public List<ActiveSkill> getActiveSkills() {
         List<ActiveSkill> activeSkills = new ArrayList<>();

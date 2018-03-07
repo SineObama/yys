@@ -72,4 +72,14 @@ public interface Entity extends Target, Property {
      * 用于针女。
      */
     double getFlagDamageCoefficient();
+
+    /**
+     * @return 是否被封印御魂。
+     */
+    boolean mitamaSealed();
+
+    /**
+     * @return 是否被封印被动。
+     */
+    boolean passiveSealed();
 }

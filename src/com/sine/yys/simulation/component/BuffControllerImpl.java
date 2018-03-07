@@ -97,22 +97,8 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         return (T) map.get(clazz);
     }
 
-    @Override
-    public boolean mitamaSealed() {
-        for (IBuff iBuff : map.values()) {
-            if (iBuff instanceof SealMitama)
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean passiveSealed() {
-        for (IBuff iBuff : map.values()) {
-            if (iBuff instanceof SealPassive)
-                return true;
-        }
-        return false;
+    public Map<Class, IBuff> getMap() {
+        return map;
     }
 
     /**

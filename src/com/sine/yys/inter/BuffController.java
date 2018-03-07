@@ -18,16 +18,6 @@ public interface BuffController {
     <T> T get(Class<T> clazz);
 
     /**
-     * @return 是否存在封印御魂buff。
-     */
-    boolean mitamaSealed();
-
-    /**
-     * @return 是否存在封印被动buff。
-     */
-    boolean passiveSealed();
-
-    /**
      * 移除特定类型的buff。
      */
     <T> void remove(Class<T> clazz);
