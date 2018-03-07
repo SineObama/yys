@@ -106,7 +106,7 @@ public class ControllerImpl implements Controller {
         self.eventController.trigger(new AttackEvent(self, target));
 
         // 1.
-        damage *= self.getDamageCoefficient();
+        damage *= self.getFlagDamageCoefficient();
 
         // 2.
         int remain = breakShield(target, (int) damage);
