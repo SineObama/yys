@@ -4,12 +4,12 @@ import com.sine.yys.info.Property;
 import com.sine.yys.info.Target;
 
 /**
- * 战场中的实体。
+ * 战场中的可见实体。
  * 包括式神和召唤物。
  * 可理解为可作为目标（攻击）的对象。
  * <p>
- * 全局广泛使用的接口，主要作存储功能。
- * 可获取战斗时属性（包括buff加成），设置行动条位置，获取buff和事件控制器，还为技能保存变量。
+ * 全局广泛使用的接口，主要作存储功能（buff、事件）。
+ * 还为技能保存部分变量（状态）。
  */
 public interface Entity extends Target, Property {
     /**
@@ -21,7 +21,7 @@ public interface Entity extends Target, Property {
      * @param defaultValue 默认值。
      * @return 变量值。
      */
-    <T, V> V get(Object key, V defaultValue);
+    <V> V get(Object key, V defaultValue);
 
     /**
      * 保存技能变量。

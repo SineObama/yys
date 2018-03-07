@@ -11,6 +11,10 @@ import com.sine.yys.inter.ShikigamiEntity;
  */
 public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity {
     public ShikigamiEntityImpl(Property property, Mitama mitama, Shikigami shiShen) {
-        super(property, mitama, shiShen);
+        super(property, mitama, shiShen, shiShen.getName());
+    }
+
+    public ShikigamiEntityImpl(Property property, Mitama mitama, Shikigami shiShen, String name) {
+        super(property, mitama, shiShen, name);
     }
 }

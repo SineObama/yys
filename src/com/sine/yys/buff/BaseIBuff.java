@@ -42,7 +42,7 @@ public abstract class BaseIBuff implements IBuff {
                 name +
                 "," +
                 "src=" +
-                src.getFullName() +
+                (src == null ? "null" : src.getFullName()) +
                 "," +
                 "last=" +
                 last +

@@ -1,9 +1,6 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.inter.Camp;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.EventController;
-import com.sine.yys.inter.Position;
+import com.sine.yys.inter.*;
 import com.sine.yys.util.RandUtil;
 
 import java.util.ArrayList;
@@ -85,10 +82,11 @@ public abstract class BaseCamp implements Camp {
         return eventController;
     }
 
-    public void init(Camp enemy) {
+    public void init(Camp enemy, Controller controller) {
         opposite = enemy;
         for (ShikigamiEntityImpl shikigami : getAllShikigami()) {
             shikigami.setCamp(this);
+            shikigami.init(controller);
         }
     }
 

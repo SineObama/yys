@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.inter.Camp;
+import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.FireRepo;
 import com.sine.yys.inter.ShikigamiEntity;
 import com.sine.yys.util.Msg;
@@ -21,8 +22,8 @@ public class PVPCamp extends BaseCamp implements Camp, FireRepo {
         this.fire = fire;
     }
 
-    public void init(Camp enemy) {
-        super.init(enemy);
+    public void init(Camp enemy, Controller controller) {
+        super.init(enemy, controller);
         for (ShikigamiEntityImpl shikigami : getAllShikigami()) {
             shikigami.setFireRepo(this);
         }
