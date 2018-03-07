@@ -153,20 +153,20 @@ public class ControllerImpl implements Controller {
 
     /**
      * 直接减少目标生命，触发{@link BeDamageEvent}事件。
-     * <p>
-     * 未来可能进行死亡处理，如匣中少女的被动，立即复活并回复状态，不会计算击杀。
      */
     private void doDamage(EntityImpl target, int damage) {
         double src = target.getLife();
         final int life = target.reduceLife(damage);
         double dst = target.getLife();
-        if (life != 0) {
-            target.getEventController().trigger(new BeDamageEvent(src, dst));
-        } else {
-            target.getBuffController().clear();
-            target.getEventController().trigger(new DieEvent(target));
+        target.getEventController().trigger(new BeDamageEvent(src, dst));
+        if (life == 0) {
+            // 添加匣中少女逻辑，回复状态则退出
+            target.getBuffController().clear();// XXX 匣中少女回复状态会不会保留buff？
             target.getCamp().getPosition(target).setCurrent(null);
             log.info(Msg.info(target, "死亡"));
+            // 包括阎魔放小鬼
+            target.getEventController().trigger(new DieEvent(target));
+            // 添加击杀事件
         }
     }
 
