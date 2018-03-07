@@ -14,18 +14,16 @@ import com.sine.yys.inter.Mitama;
  *
  * @see AddDebuffEffect
  */
-public abstract class BaseDebuffMitama extends BaseMitama implements Mitama {
+public abstract class BaseDebuffMitama extends BaseMitama implements Mitama, EventHandler<DamageEvent> {
     abstract AddDebuffEffect getEffect();
 
     @Override
     public void doInit(Controller controller, Entity self) {
-        self.getEventController().add(new DamageHandler());
+        self.getEventController().add(this);
     }
 
-    class DamageHandler extends SealableMitamaHandler implements EventHandler<DamageEvent> {
-        @Override
-        public void handle(DamageEvent event) {
-            getEffect().handle(event);
-        }
+    @Override
+    public void handle(DamageEvent event) {
+        getEffect().handle(event);
     }
 }

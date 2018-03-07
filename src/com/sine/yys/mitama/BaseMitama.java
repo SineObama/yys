@@ -55,11 +55,4 @@ public abstract class BaseMitama implements Mitama, Sealable {
     public boolean sealed() {
         return self.getBuffController().mitamaSealed();
     }
-
-    class SealableMitamaHandler implements Sealable {
-        @Override
-        public boolean sealed() {
-            return self.getBuffController().mitamaSealed();
-        }
-    }
 }
