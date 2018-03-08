@@ -8,32 +8,25 @@ import com.sine.yys.buff.BaseCommonIBuff;
  * 不可驱散。
  */
 public class BattleFlag extends BaseCommonIBuff {
-    private double damage = 0, cure = 0;
+    private final BattleFlagSource source;
 
-    public BattleFlag() {
+    public BattleFlag(BattleFlagSource source) {
         super(Integer.MAX_VALUE, "战场效果", null);
-    }
-
-    public void setDamage(double damage) {
-        this.damage = damage;
+        this.source = source;
     }
 
     @Override
     public double getCure() {
-        return cure;
-    }
-
-    public void setCure(double cure) {
-        this.cure = cure;
+        return source.getCure();
     }
 
     @Override
     public double getDamageUp() {
-        return damage;
+        return source.getDamageUp();
     }
 
     @Override
     public double getFlagDamage() {
-        return damage;
+        return source.getDamageUp();
     }
 }

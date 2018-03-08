@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.buff.buff.BattleFlag;
+import com.sine.yys.buff.buff.BattleFlagSource;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -14,32 +15,20 @@ public class BattleKoinobori extends SimpleObject implements EventHandler<Battle
     private final double damageRatioAddition = 0.15;
     private final double cureRatioReduction = -0.10;
     private int level = 0;
-    private BattleFlag battleFlag = new BattleFlag();
+    private BattleFlagSourceImpl battleFlagSource = new BattleFlagSourceImpl();
 
     public BattleKoinobori(double speed) {
-        super("战场鲤鱼旗", speed);  // TODO 行动技能：给全体加增伤buff
-    }
-
-    public double getDamageRatioAddition() {
-        return damageRatioAddition;
-    }
-
-    public double getCureRatioReduction() {
-        return cureRatioReduction;
+        super("战场鲤鱼旗", speed);
     }
 
     @Override
     void action() {
         level += 1;
-        battleFlag.setDamage(level * damageRatioAddition);
-        battleFlag.setCure(level * cureRatioReduction);
+        battleFlagSource.setDamage(level * damageRatioAddition);
+        battleFlagSource.setCure(level * cureRatioReduction);
         log.info(Msg.info(this, "战场旗帜等级 " + level));
-        log.info(Msg.info(this, "伤害加成 " + battleFlag.getDamageUp()));
-        log.info(Msg.info(this, "治疗衰减 " + battleFlag.getCure()));
-    }
-
-    public BattleFlag getBattleFlag() {
-        return battleFlag;
+        log.info(Msg.info(this, "伤害加成 " + battleFlagSource.getDamageUp()));
+        log.info(Msg.info(this, "治疗衰减 " + battleFlagSource.getCure()));
     }
 
     @Override
@@ -51,10 +40,32 @@ public class BattleKoinobori extends SimpleObject implements EventHandler<Battle
     @Override
     public void handle(BattleStartEvent event) {
         for (Entity entity : getController().getCamp0().getAllAlive()) {
-            entity.getBuffController().add(battleFlag);
+            entity.getBuffController().add(new BattleFlag(battleFlagSource));
         }
         for (Entity entity : getController().getCamp1().getAllAlive()) {
-            entity.getBuffController().add(battleFlag);
+            entity.getBuffController().add(new BattleFlag(battleFlagSource));
+        }
+    }
+
+    class BattleFlagSourceImpl implements BattleFlagSource {
+        private double damage = 0, cure = 0;
+
+        public void setDamage(double damage) {
+            this.damage = damage;
+        }
+
+        @Override
+        public double getCure() {
+            return cure;
+        }
+
+        public void setCure(double cure) {
+            this.cure = cure;
+        }
+
+        @Override
+        public double getDamageUp() {
+            return damage;
         }
     }
 }
