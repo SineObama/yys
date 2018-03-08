@@ -12,7 +12,7 @@ import com.sine.yys.util.Msg;
  */
 public class BattleKoinobori extends SimpleObject implements EventHandler<BattleStartEvent> {
     private final double damageRatioAddition = 0.15;
-    private final double cureRatioReduction = -0.15;
+    private final double cureRatioReduction = -0.10;
     private int level = 0;
     private BattleFlag battleFlag = new BattleFlag();
 
