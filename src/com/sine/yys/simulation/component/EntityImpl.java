@@ -133,7 +133,7 @@ public class EntityImpl extends SimpleObject implements Entity {
     }
 
     @Override
-    public <T> void put(Object key, Object value) {
+    public void put(Object key, Object value) {
         map.put(key, value);
     }
 

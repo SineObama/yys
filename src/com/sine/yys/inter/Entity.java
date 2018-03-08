@@ -13,9 +13,8 @@ import com.sine.yys.info.Target;
  */
 public interface Entity extends Target, Property {
     /**
-     * 获取技能保存的变量。没有时使用默认值。
+     * 获取变量。没有时使用默认值。
      *
-     * @param <T>          技能类型。
      * @param <V>          值类型。
      * @param key          键。
      * @param defaultValue 默认值。
@@ -24,13 +23,12 @@ public interface Entity extends Target, Property {
     <V> V get(Object key, V defaultValue);
 
     /**
-     * 保存技能变量。
+     * 保存变量。
      *
-     * @param <T>   技能类型。
      * @param key   键
      * @param value 值。
      */
-    <T> void put(Object key, Object value);
+    void put(Object key, Object value);
 
     /**
      * @return 生命百分比。
