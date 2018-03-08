@@ -144,7 +144,7 @@ public class EntityImpl extends SimpleObject implements Entity {
 
     @Override
     public final double getAttack() {
-        return property.getAttack() * (1 + buffController.getAtkPct());
+        return property.getAttack() + shikigami.getOriginAttack() * buffController.getAtkPct();
     }
 
     @Override

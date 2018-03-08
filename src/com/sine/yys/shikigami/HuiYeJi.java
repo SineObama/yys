@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class HuiYeJi extends BaseShikigami {
     public HuiYeJi() {
-        super(Arrays.asList(new PengLaiYuZhi(), new HuoShuQiu(), new LongShouZhiYu()), "辉夜姬");
+        super(Arrays.asList(new PengLaiYuZhi(), new HuoShuQiu(), new LongShouZhiYu()), "辉夜姬", 2332);
     }
 
     @Override

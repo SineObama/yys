@@ -13,10 +13,17 @@ import java.util.List;
 public abstract class BaseShikigami implements Shikigami {
     final List<Skill> skills;
     private final String name;
+    private final double originAttack;
 
-    BaseShikigami(List<Skill> skills, String name) {
+    BaseShikigami(List<Skill> skills, String name, double originAttack) {
         this.skills = skills;
         this.name = name;
+        this.originAttack = originAttack;
+    }
+
+    @Override
+    public double getOriginAttack() {
+        return originAttack;
     }
 
     @Override

@@ -11,6 +11,6 @@ import java.util.Arrays;
  */
 public class BoRe extends BaseShikigami {
     public BoRe() {
-        super(Arrays.asList(new GuiZhiJiaMian(), new JiHenZhiXin(), new GuiXi()), "般若");
+        super(Arrays.asList(new GuiZhiJiaMian(), new JiHenZhiXin(), new GuiXi()), "般若", 3136);
     }
 }

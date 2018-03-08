@@ -11,6 +11,6 @@ import java.util.Arrays;
  */
 public class QingXingDeng extends BaseShikigami {
     public QingXingDeng() {
-        super(Arrays.asList(new YouGuang(), new MingDeng(), new XiHunDeng()), "青行灯");
+        super(Arrays.asList(new YouGuang(), new MingDeng(), new XiHunDeng()), "青行灯", 2439);
     }
 }

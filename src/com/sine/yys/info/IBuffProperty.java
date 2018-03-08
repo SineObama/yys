@@ -28,13 +28,13 @@ public interface IBuffProperty {
 
     /**
      * 攻击加成百分比。
-     * （1+百分比）*原攻击。
+     * （1+百分比）*原始攻击。
      */
     double getAtkPct();
 
     /**
      * 防御加成百分比。
-     * （1+百分比）*原防御。
+     * （1+百分比）*防御。
      */
     double getDefPct();
 

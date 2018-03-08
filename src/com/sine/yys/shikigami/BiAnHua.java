@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class BiAnHua extends BaseShikigami {
     public BiAnHua() {
-        super(new ArrayList<>(), "彼岸花");
+        super(new ArrayList<>(), "彼岸花", 3002);
         skills.add(new SiWangZhiHua());
         final XueZhiHuaHai xueZhiHuaHai = new XueZhiHuaHai();
         skills.add(new ChiTuanHua(xueZhiHuaHai));
