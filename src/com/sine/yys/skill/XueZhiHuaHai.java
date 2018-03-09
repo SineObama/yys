@@ -36,7 +36,7 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
 
     public void addLevel(int count) {
         final Entity self = getSelf();
-        final int max = (int) (7 - self.getLife() * 4);
+        final int max = getMaxLevel(self.getLife());
         int level = getLevel();
         log.info(Msg.info(self, "原花海层数 " + level));
         level += count;
@@ -44,6 +44,12 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
             level = max;
         self.put(LEVEL, level);
         log.info(Msg.info(self, "现花海层数 " + level));
+    }
+
+    public int getMaxLevel(double lifePct) {
+        if (lifePct == 0.0)
+            return 6;
+        return (int) (7 - lifePct * 4);
     }
 
     public int getLevel() {

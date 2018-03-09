@@ -42,7 +42,7 @@ public abstract class BaseIBuff implements IBuff {
                 name +
                 "," +
                 "src=" +
-                src.getFullName() +
+                (src == null ? "null" : src.getFullName()) +
                 "," +
                 "last=" +
                 last +
@@ -120,6 +120,21 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     protected void doAfterAction(DamageController controller, Entity self) {
+    }
+
+    @Override
+    public double getCure() {
+        return 0;
+    }
+
+    @Override
+    public double getDamageUp() {
+        return 0;
+    }
+
+    @Override
+    public double getFlagDamage() {
+        return 0;
     }
 
     @Override

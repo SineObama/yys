@@ -1,8 +1,17 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.buff.debuff.ControlBuff;
+import com.sine.yys.buff.debuff.HunLuan;
+import com.sine.yys.buff.debuff.SealMitama;
+import com.sine.yys.buff.debuff.SealPassive;
+import com.sine.yys.event.FinishActionEvent;
+import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.info.Property;
 import com.sine.yys.inter.*;
 import com.sine.yys.skill.commonattack.CommonAttack;
+import com.sine.yys.skill.operation.OperationImpl;
+import com.sine.yys.util.Msg;
+import com.sine.yys.util.RandUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +21,7 @@ import java.util.Map;
 /**
  * 战场中的实体，保存了式神信息{@link Shikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
  */
-public class EntityImpl implements Entity {
+public class EntityImpl extends SimpleObject implements Entity {
     final EventControllerImpl eventController = new EventControllerImpl();
     final BuffControllerImpl buffController = new BuffControllerImpl();
     final Shikigami shikigami;
@@ -23,9 +32,9 @@ public class EntityImpl implements Entity {
     Camp camp = null;
     FireRepo fireRepo;
     private int life;
-    private double position = 0;  // 行动位置，范围0-1。
 
-    public EntityImpl(Property property, Mitama mitama, Shikigami shikigami) {
+    EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name) {
+        super(name, 9999);
         this.property = property;
         this.shikigami = shikigami;
         this.mitamas = new ArrayList<>();
@@ -35,7 +44,88 @@ public class EntityImpl implements Entity {
     }
 
     @Override
-    public <T, V> V get(Object key, V defaultValue) {
+    protected final void doInit() {
+        final Controller controller = getController();
+        for (Skill skill : this.shikigami.getSkills()) {
+            skill.init(controller, this);
+        }
+        for (Mitama mitama : this.mitamas) {
+            mitama.init(controller, this);
+        }
+    }
+
+    /**
+     * 式神自身的行动逻辑。
+     */
+    void action() {
+        final Operation operation;
+        // 判断是否有行动控制debuff，进行相关操作。
+        final List<ControlBuff> controlBuffs = this.buffController.getControlBuffs();
+        if (controlBuffs.isEmpty()) {  // 无行动控制debuff
+            // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
+            Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
+            for (ActiveSkill activeSkill : this.getActiveSkills()) {
+                int cd = activeSkill.getCD();
+                if (cd > 0) {
+                    log.info(Msg.info(this, "技能 " + activeSkill.getName() + " 还有CD " + cd));
+                    continue;
+                }
+                if (this.fireRepo.getFire() < activeSkill.getFire())
+                    continue;
+                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this.getCamp(), this);
+                if (targets != null)
+                    map.put(activeSkill, targets);
+            }
+
+            if (!map.isEmpty())
+                operation = this.shikigami.getAI().handle(this, this.camp, map);
+            else
+                operation = new OperationImpl(null, null);
+
+        } else {  // 受行动控制debuff影响
+
+            ControlBuff controlBuff = controlBuffs.get(0);
+            log.info(Msg.info(this, "受行动控制debuff " + controlBuff.getName() + " 影响"));
+            if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
+                final List<Entity> allAlive = new ArrayList<>();
+                allAlive.addAll(this.camp.getAllAlive());
+                allAlive.addAll(this.camp.getOpposite().getAllAlive());
+                allAlive.remove(this);
+                operation = new OperationImpl(RandUtil.choose(allAlive), this.getCommonAttack());
+            } else {
+                operation = new OperationImpl(null, null);
+            }
+
+        }
+
+        // 执行操作
+        ActiveSkill activeSkill = operation.getSkill();
+        if (activeSkill != null) {
+            Entity target = operation.getTarget();
+            log.info(Msg.info(this, "当前鬼火 " + this.fireRepo.getFire()));
+            log.info(Msg.vector(this, target != null ? "对" : "", target, "使用了 " + activeSkill.getName()));
+
+            // 消耗鬼火
+            int fire = activeSkill.getFire();
+            if (fire > 0) {
+                UseFireEvent event = new UseFireEvent(this, fire);
+                this.camp.getEventController().trigger(event);
+                fire = event.getCostFire();
+                this.fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
+                log.info(Msg.info(this, "消耗 " + fire + " 点鬼火，剩余 " + this.fireRepo.getFire() + " 点"));
+            }
+
+            // 执行技能
+            activeSkill.apply(target);
+
+            this.eventController.trigger(new FinishActionEvent());
+        } else {
+            log.info(Msg.info(this, "无法行动。"));
+        }
+    }
+
+    @Override
+    public <V> V get(Object key, V defaultValue) {
         if (map.containsKey(key))
             return (V) map.get(key);
         else
@@ -43,7 +133,7 @@ public class EntityImpl implements Entity {
     }
 
     @Override
-    public <T> void put(Object key, Object value) {
+    public void put(Object key, Object value) {
         map.put(key, value);
     }
 
@@ -54,7 +144,7 @@ public class EntityImpl implements Entity {
 
     @Override
     public final double getAttack() {
-        return property.getAttack() * (1 + buffController.getAtkPct());
+        return property.getAttack() + shikigami.getOriginAttack() * buffController.getAtkPct();
     }
 
     @Override
@@ -104,12 +194,11 @@ public class EntityImpl implements Entity {
         return (double) life / getMaxLife();
     }
 
-    // XXX 可能的负值问题。
-    void setLife(int life) {
-        this.life = life;
-    }
-
     int addLife(int count) {
+        if (count < 0) {
+            log.warning("add life by negative value");
+            return this.life;
+        }
         this.life += count;
         if (this.life > getMaxLife())
             this.life = getMaxLife();
@@ -117,6 +206,10 @@ public class EntityImpl implements Entity {
     }
 
     int reduceLife(int count) {
+        if (count < 0) {
+            log.warning("reduce life by negative value");
+            return this.life;
+        }
         this.life -= count;
         if (this.life < 0)
             this.life = 0;
@@ -128,7 +221,40 @@ public class EntityImpl implements Entity {
         return this.eventController;
     }
 
-    public List<ActiveSkill> getActiveSkills() {
+    @Override
+    public double getCureCoefficient() {
+        return 1.0 + buffController.getCure();
+    }
+
+    @Override
+    public double getDamageCoefficient() {
+        return 1.0 + buffController.getDamageUp();
+    }
+
+    @Override
+    public double getFlagDamageCoefficient() {
+        return 1.0 + buffController.getFlagDamage();
+    }
+
+    @Override
+    public boolean mitamaSealed() {
+        for (IBuff iBuff : buffController.getMap().values()) {
+            if (iBuff instanceof SealMitama)
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean passiveSealed() {
+        for (IBuff iBuff : buffController.getMap().values()) {
+            if (iBuff instanceof SealPassive)
+                return true;
+        }
+        return false;
+    }
+
+    private List<ActiveSkill> getActiveSkills() {
         List<ActiveSkill> activeSkills = new ArrayList<>();
         for (Skill skill : shikigami.getSkills()) {
             if (skill instanceof ActiveSkill) {
@@ -172,26 +298,5 @@ public class EntityImpl implements Entity {
 
     public void setFireRepo(FireRepo fireRepo) {
         this.fireRepo = fireRepo;
-    }
-
-    @Override
-    public double getPosition() {
-        return position;
-    }
-
-    public void setPosition(double position) {
-        this.position = position;
-    }
-
-    @Override
-    public void addPosition(double count) {
-        this.position += count;
-        if (this.position > 1.0)
-            this.position = 1.0;
-    }
-
-    @Override
-    public final String getName() {
-        return shikigami.getName();
     }
 }

@@ -4,33 +4,31 @@ import com.sine.yys.info.Property;
 import com.sine.yys.info.Target;
 
 /**
- * 战场中的实体。
+ * 战场中的可见实体。
  * 包括式神和召唤物。
  * 可理解为可作为目标（攻击）的对象。
  * <p>
- * 全局广泛使用的接口，主要作存储功能。
- * 可获取战斗时属性（包括buff加成），设置行动条位置，获取buff和事件控制器，还为技能保存变量。
+ * 全局广泛使用的接口，主要作存储功能（buff、事件）。
+ * 还为技能保存部分变量（状态）。
  */
 public interface Entity extends Target, Property {
     /**
-     * 获取技能保存的变量。没有时使用默认值。
+     * 获取变量。没有时使用默认值。
      *
-     * @param <T>          技能类型。
      * @param <V>          值类型。
      * @param key          键。
      * @param defaultValue 默认值。
      * @return 变量值。
      */
-    <T, V> V get(Object key, V defaultValue);
+    <V> V get(Object key, V defaultValue);
 
     /**
-     * 保存技能变量。
+     * 保存变量。
      *
-     * @param <T>   技能类型。
      * @param key   键
      * @param value 值。
      */
-    <T> void put(Object key, Object value);
+    void put(Object key, Object value);
 
     /**
      * @return 生命百分比。
@@ -59,4 +57,27 @@ public interface Entity extends Target, Property {
     void addPosition(double count);
 
     EventController getEventController();
+
+    double getCureCoefficient();
+
+    /**
+     * 造成伤害增加。
+     */
+    double getDamageCoefficient();
+
+    /**
+     * 战场旗帜buff的伤害增加系数。
+     * 用于针女。
+     */
+    double getFlagDamageCoefficient();
+
+    /**
+     * @return 是否被封印御魂。
+     */
+    boolean mitamaSealed();
+
+    /**
+     * @return 是否被封印被动。
+     */
+    boolean passiveSealed();
 }

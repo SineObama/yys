@@ -11,6 +11,10 @@ import java.util.Collection;
  * 比如进行攻击、附加效果等。
  */
 public interface Controller extends DamageController {
+    Camp getCamp0();
+
+    Camp getCamp1();
+
     /**
      * 获取式神所在的阵营。
      * <p>

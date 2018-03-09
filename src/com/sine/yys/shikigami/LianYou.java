@@ -11,6 +11,6 @@ import java.util.Arrays;
  */
 public class LianYou extends BaseShikigami {
     public LianYou() {
-        super(Arrays.asList(new PangZou(), new RenDuoShiZhong(), new XiongDiZhiBan()), "镰鼬");
+        super(Arrays.asList(new PangZou(), new RenDuoShiZhong(), new XiongDiZhiBan()), "镰鼬", 2680);
     }
 }

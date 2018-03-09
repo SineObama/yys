@@ -22,7 +22,7 @@ public class Seed {
         }
     }
 
-    public static final long get() {
+    public static long get() {
         return seed;
     }
 }

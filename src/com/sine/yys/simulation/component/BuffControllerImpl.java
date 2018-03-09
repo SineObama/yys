@@ -1,6 +1,8 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.buff.debuff.*;
+import com.sine.yys.buff.debuff.ControlBuff;
+import com.sine.yys.buff.debuff.HunLuan;
+import com.sine.yys.buff.debuff.XuanYun;
 import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
 import com.sine.yys.buff.shield.Shield;
@@ -97,22 +99,8 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         return (T) map.get(clazz);
     }
 
-    @Override
-    public boolean mitamaSealed() {
-        for (IBuff iBuff : map.values()) {
-            if (iBuff instanceof SealMitama)
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean passiveSealed() {
-        for (IBuff iBuff : map.values()) {
-            if (iBuff instanceof SealPassive)
-                return true;
-        }
-        return false;
+    public Map<Class, IBuff> getMap() {
+        return map;
     }
 
     /**
@@ -130,6 +118,21 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     @Override
     public <T> void remove(Class<T> clazz) {
         map.remove(clazz);
+    }
+
+    @Override
+    public double getCure() {
+        return new Cure().calc(map.values());
+    }
+
+    @Override
+    public double getDamageUp() {
+        return new DamageUp().calc(map.values());
+    }
+
+    @Override
+    public double getFlagDamage() {
+        return new FlagDamage().calc(map.values());
     }
 
     @Override
@@ -165,18 +168,6 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     @Override
     public double getEffectDef() {
         return new EffectDef().calc(map.values());
-    }
-
-    /**
-     * 约定减疗都不能叠加，只存在一个。
-     */
-    @Override
-    public double getReduceCurePct() {
-        final ReduceCure reduceCure = get(ReduceCure.class);
-        if (reduceCure != null)
-            return reduceCure.getPct();
-        else
-            return 0.0;
     }
 
     @Override

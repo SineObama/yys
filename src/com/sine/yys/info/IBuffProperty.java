@@ -7,14 +7,34 @@ package com.sine.yys.info;
  */
 public interface IBuffProperty {
     /**
+     * 治疗效果。
+     * 一般减疗都不能叠加，只有和旗帜buff叠加。
+     * （1+百分比）*原治疗量。
+     */
+    double getCure();
+
+    /**
+     * 伤害加成百分比。
+     * （1+百分比）*原伤害。
+     */
+    double getDamageUp();
+
+    /**
+     * 旗帜buff的伤害加成百分比。
+     * （1+百分比）*原伤害。
+     * 只用于特定伤害，目前只有针女。
+     */
+    double getFlagDamage();
+
+    /**
      * 攻击加成百分比。
-     * （1+百分比）*原攻击。
+     * （1+百分比）*原始攻击。
      */
     double getAtkPct();
 
     /**
      * 防御加成百分比。
-     * （1+百分比）*原防御。
+     * （1+百分比）*防御。
      */
     double getDefPct();
 

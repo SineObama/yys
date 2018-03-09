@@ -11,6 +11,6 @@ import java.util.Arrays;
  */
 public class GuHuoNiao extends BaseShikigami {
     public GuHuoNiao() {
-        super(Arrays.asList(new SanJian(), new XieZhan(), new TianXiangHeZhan()), "姑获鸟");
+        super(Arrays.asList(new SanJian(), new XieZhan(), new TianXiangHeZhan()), "姑获鸟", 3082);
     }
 }

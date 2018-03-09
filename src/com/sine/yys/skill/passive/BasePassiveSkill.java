@@ -9,13 +9,13 @@ import com.sine.yys.skill.BaseSkill;
 public abstract class BasePassiveSkill extends BaseSkill implements PassiveSkill, Sealable {
     @Override
     public boolean sealed() {
-        return getSelf().getBuffController().passiveSealed();
+        return getSelf().passiveSealed();
     }
 
     class SealablePassiveHandler implements Sealable {
         @Override
         public boolean sealed() {
-            return getSelf().getBuffController().passiveSealed();
+            return getSelf().passiveSealed();
         }
     }
 }

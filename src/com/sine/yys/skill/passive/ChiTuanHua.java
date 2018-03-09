@@ -51,11 +51,11 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventH
     class BeDamageHandler extends SealablePassiveHandler implements EventHandler<BeDamageEvent> {
         @Override
         public void handle(BeDamageEvent event) {
-            int src = (int) (event.getSrc() * 4);
-            int dst = (int) (event.getDst() * 4);
-            if (src != 4 && src != dst) {
+            final int src = xueZhiHuaHai.getMaxLevel(event.getSrc());
+            final int dst = xueZhiHuaHai.getMaxLevel(event.getDst());
+            if (src != dst) {
                 log.info(Msg.trigger(getSelf(), ChiTuanHua.this));
-                xueZhiHuaHai.addLevel(src - dst);
+                xueZhiHuaHai.addLevel(dst - src);
                 xueZhiHuaHai.addShield();
             }
         }

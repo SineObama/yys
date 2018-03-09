@@ -14,4 +14,6 @@ public interface Shikigami extends Named {
     OperationHandler getAI();
 
     List<? extends Skill> getSkills();
+
+    double getOriginAttack();
 }

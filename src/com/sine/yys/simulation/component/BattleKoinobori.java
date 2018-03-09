@@ -1,50 +1,71 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.buff.buff.BattleFlag;
+import com.sine.yys.buff.buff.BattleFlagSource;
+import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventHandler;
+import com.sine.yys.util.Msg;
 
 /**
  * 战场鲤鱼旗。
  * 还未实现功能。
  */
-public class BattleKoinobori extends EntityImpl implements Entity {
-    private double damageRatio = 1.0;
-    private double cureRatio = 1.0;
-    private double damageRatioAddition = 0.2;
-    private double cureRatioReduction = 0.2;
+public class BattleKoinobori extends SimpleObject implements EventHandler<BattleStartEvent> {
+    private final double damageRatioAddition = 0.15;
+    private final double cureRatioReduction = -0.10;
+    private int level = 0;
+    private BattleFlagSourceImpl battleFlagSource = new BattleFlagSourceImpl();
 
     public BattleKoinobori(double speed) {
-        super(new PropertyImpl(0, 0, 0, speed, 0, 0, 0, 0), null, null);  // TODO 行动技能：给全体加增伤buff
+        super("战场鲤鱼旗", speed);
     }
 
-    public double getDamageRatio() {
-        return damageRatio;
+    @Override
+    void action() {
+        level += 1;
+        battleFlagSource.setDamage(level * damageRatioAddition);
+        battleFlagSource.setCure(level * cureRatioReduction);
+        log.info(Msg.info(this, "战场旗帜等级 " + level));
+        log.info(Msg.info(this, "伤害加成 " + battleFlagSource.getDamageUp()));
+        log.info(Msg.info(this, "治疗衰减 " + battleFlagSource.getCure()));
     }
 
-    public void setDamageRatio(double damageRatio) {
-        this.damageRatio = damageRatio;
+    @Override
+    protected void doInit() {
+        // XXXX 临时监听其中一个阵营的开始事件。
+        getController().getCamp0().getEventController().add(this);
     }
 
-    public double getCureRatio() {
-        return cureRatio;
+    @Override
+    public void handle(BattleStartEvent event) {
+        for (Entity entity : getController().getCamp0().getAllAlive()) {
+            entity.getBuffController().add(new BattleFlag(battleFlagSource));
+        }
+        for (Entity entity : getController().getCamp1().getAllAlive()) {
+            entity.getBuffController().add(new BattleFlag(battleFlagSource));
+        }
     }
 
-    public void setCureRatio(double cureRatio) {
-        this.cureRatio = cureRatio;
-    }
+    class BattleFlagSourceImpl implements BattleFlagSource {
+        private double damage = 0, cure = 0;
 
-    public double getDamageRatioAddition() {
-        return damageRatioAddition;
-    }
+        public void setDamage(double damage) {
+            this.damage = damage;
+        }
 
-    public void setDamageRatioAddition(double damageRatioAddition) {
-        this.damageRatioAddition = damageRatioAddition;
-    }
+        @Override
+        public double getCure() {
+            return cure;
+        }
 
-    public double getCureRatioReduction() {
-        return cureRatioReduction;
-    }
+        public void setCure(double cure) {
+            this.cure = cure;
+        }
 
-    public void setCureRatioReduction(double cureRatioReduction) {
-        this.cureRatioReduction = cureRatioReduction;
+        @Override
+        public double getDamageUp() {
+            return damage;
+        }
     }
 }

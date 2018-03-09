@@ -17,11 +17,22 @@ import java.util.logging.Logger;
  */
 public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().getName());
-    private final BaseCamp camp0, camp1;
+    private final BaseCamp camp0;
+    private final BaseCamp camp1;
 
     ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
         this.camp0 = camp0;
         this.camp1 = camp1;
+    }
+
+    @Override
+    public Camp getCamp0() {
+        return camp0;
+    }
+
+    @Override
+    public Camp getCamp1() {
+        return camp1;
     }
 
     @Override
@@ -54,7 +65,10 @@ public class ControllerImpl implements Controller {
             log.info(Msg.info(self, "暴击"));
         double damage = CalcDam.expect(self, target, attackInfo, critical);
 
-        //3.
+        // 2.
+        damage *= self.getDamageCoefficient();
+
+        // 3.
         int remain = breakShield(target, (int) damage);
 
         // 4.
@@ -90,6 +104,9 @@ public class ControllerImpl implements Controller {
 
         self.eventController.trigger(new AttackEvent(self, target));
 
+        // 1.
+        damage *= self.getFlagDamageCoefficient();
+
         // 2.
         int remain = breakShield(target, (int) damage);
 
@@ -118,11 +135,12 @@ public class ControllerImpl implements Controller {
     @Override
     public int cure(Entity target0, double src) {
         EntityImpl target = (EntityImpl) target0;
-        final double pct = target.getBuffController().getReduceCurePct();
-        final int count;
-        if (pct != 0.0)
-            log.info(Msg.info(target, "受到减疗 " + pct));
-        count = (int) (src * (1 - pct));
+        final double coefficient = target.getCureCoefficient();
+        int count;
+        log.info(Msg.info(target, "治疗效果 " + coefficient));
+        count = (int) (src * coefficient);
+        if (count <= 0)
+            count = 1;
         log.info(Msg.info(target, "受到治疗回复 " + count));
         target.addLife(count);
         return count;
@@ -136,20 +154,20 @@ public class ControllerImpl implements Controller {
 
     /**
      * 直接减少目标生命，触发{@link BeDamageEvent}事件。
-     * <p>
-     * 未来可能进行死亡处理，如匣中少女的被动，立即复活并回复状态，不会计算击杀。
      */
     private void doDamage(EntityImpl target, int damage) {
         double src = target.getLife();
         final int life = target.reduceLife(damage);
         double dst = target.getLife();
-        if (life != 0) {
-            target.getEventController().trigger(new BeDamageEvent(src, dst));
-        } else {
-            target.getBuffController().clear();
-            target.getEventController().trigger(new DieEvent(target));
+        target.getEventController().trigger(new BeDamageEvent(src, dst));
+        if (life == 0) {
+            // 添加匣中少女逻辑，回复状态则退出
+            target.getBuffController().clear();// XXX 匣中少女回复状态会不会保留buff？
             target.getCamp().getPosition(target).setCurrent(null);
             log.info(Msg.info(target, "死亡"));
+            // 包括阎魔放小鬼
+            target.getEventController().trigger(new DieEvent(target));
+            // 添加击杀事件
         }
     }
 

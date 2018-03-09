@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public class HuaNiaoJuan extends BaseShikigami {
     public HuaNiaoJuan() {
-        super(Arrays.asList(new GuiNiao(), new HuaJing(), new HuaNiaoXiangWen()), "花鸟卷");
+        super(Arrays.asList(new GuiNiao(), new HuaJing(), new HuaNiaoXiangWen()), "花鸟卷", 2305);
     }
 
     @Override

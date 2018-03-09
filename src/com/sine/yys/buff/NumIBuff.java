@@ -12,8 +12,10 @@ public abstract class NumIBuff extends BaseCommonIBuff implements IBuff {
     protected final double value;
 
     /**
-     * @param last 持续回合数。必须为正。
-     * @param self
+     * @param last  持续回合数。必须为正。
+     * @param name  名称。
+     * @param value 数值。
+     * @param src   来源式神。
      */
     public NumIBuff(int last, String name, double value, Entity src) {
         super(last, name, src);
