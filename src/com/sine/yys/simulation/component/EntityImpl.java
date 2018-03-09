@@ -195,6 +195,10 @@ public class EntityImpl extends SimpleObject implements Entity {
     }
 
     int addLife(int count) {
+        if (count < 0) {
+            log.warning("add life by negative value");
+            return this.life;
+        }
         this.life += count;
         if (this.life > getMaxLife())
             this.life = getMaxLife();
@@ -202,6 +206,10 @@ public class EntityImpl extends SimpleObject implements Entity {
     }
 
     int reduceLife(int count) {
+        if (count < 0) {
+            log.warning("reduce life by negative value");
+            return this.life;
+        }
         this.life -= count;
         if (this.life < 0)
             this.life = 0;
