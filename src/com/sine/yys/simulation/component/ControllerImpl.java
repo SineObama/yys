@@ -136,9 +136,11 @@ public class ControllerImpl implements Controller {
     public int cure(Entity target0, double src) {
         EntityImpl target = (EntityImpl) target0;
         final double coefficient = target.getCureCoefficient();
-        final int count;
+        int count;
         log.info(Msg.info(target, "治疗效果 " + coefficient));
         count = (int) (src * coefficient);
+        if (count <= 0)
+            count = 1;
         log.info(Msg.info(target, "受到治疗回复 " + count));
         target.addLife(count);
         return count;
