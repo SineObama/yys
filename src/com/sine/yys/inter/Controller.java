@@ -78,4 +78,9 @@ public interface Controller extends DamageController {
      * 获得一次行动机会
      */
     void actionChance(Entity self);
+
+    /**
+     * 复活目标，并设置生命为指定值。
+     */
+    void revive(Entity target, int maxLife);
 }

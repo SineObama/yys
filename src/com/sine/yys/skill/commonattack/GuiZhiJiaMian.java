@@ -13,7 +13,7 @@ public class GuiZhiJiaMian extends BaseCommonAttack {
 
     @Override
     public int getTimes() {
-        return getSelf().getBuffController().get(KuangBao.class) == null ? 1 : 2;  // XXX 般若狂暴平A两段？
+        return getSelf().getBuffController().contain(KuangBao.class) ? 2 : 1;  // XXX 般若狂暴平A两段？
     }
 
     @Override

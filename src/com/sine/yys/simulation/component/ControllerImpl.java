@@ -290,6 +290,7 @@ public class ControllerImpl implements Controller {
     public void actionChance(Entity self0) {
         EntityImpl self = (EntityImpl) self0;
         self.setPosition(1.0);
+        log.info(Msg.info(self, "获得一次行动机会"));
     }
 
     @Override
@@ -298,6 +299,15 @@ public class ControllerImpl implements Controller {
             return (int) src;
         log.info(Msg.info(self, "暴击"));
         return (int) (src * self.getCriticalDamage());
+    }
+
+    @Override
+    public void revive(Entity target0, int maxLife) {
+        EntityImpl target = (EntityImpl) target0;
+        final Position position = target.getCamp().getPositionBySrc(target);
+        position.setCurrent(target);
+        target.setLife(maxLife);
+        log.info(Msg.info(target, "复活，血量 " + target.getLifeInt()));
     }
 
     /**

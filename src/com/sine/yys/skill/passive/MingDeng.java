@@ -1,8 +1,8 @@
 package com.sine.yys.skill.passive;
 
+import com.sine.yys.event.DieEvent;
+import com.sine.yys.event.EnterEvent;
 import com.sine.yys.event.UseFireEvent;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -28,13 +28,17 @@ public class MingDeng extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void doInit(Controller controller, Entity self) {
-        getOwn().getEventController().add(useFireHandler);
+    protected EventHandler<EnterEvent> getEnterHandler() {
+        return event -> {
+            getOwn().getEventController().add(useFireHandler);
+        };
     }
 
     @Override
-    public void onDie() {
-        getOwn().getEventController().remove(useFireHandler);
+    public EventHandler<DieEvent> getDieHandler() {
+        return event -> {
+            getOwn().getEventController().remove(useFireHandler);
+        };
     }
 
     class UseFireHandler extends SealablePassiveHandler implements EventHandler<UseFireEvent> {

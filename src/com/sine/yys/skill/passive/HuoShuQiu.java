@@ -2,6 +2,8 @@ package com.sine.yys.skill.passive;
 
 import com.sine.yys.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.event.BeAttackEvent;
+import com.sine.yys.event.DieEvent;
+import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -12,7 +14,7 @@ import com.sine.yys.util.RandUtil;
  * 辉夜姬-火鼠裘。
  */
 public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
-    private final BeAttackHandler ownBeAttackHandler = new BeAttackHandler(true);
+    private final BeAttackHandler ownBeAttackHandler = new BeAttackHandler(false);
 
     @Override
     public String getName() {
@@ -28,13 +30,21 @@ public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
 
     @Override
     public void doInit(Controller controller, Entity self) {
-        self.getEventController().add(new BeAttackHandler(false));
-        getOwn().getEventController().add(ownBeAttackHandler);
+        self.getEventController().add(new BeAttackHandler(true));
     }
 
     @Override
-    public void onDie() {
-        getOwn().getEventController().remove(ownBeAttackHandler);
+    protected EventHandler<EnterEvent> getEnterHandler() {
+        return event -> {
+            getOwn().getEventController().add(ownBeAttackHandler);
+        };
+    }
+
+    @Override
+    public EventHandler<DieEvent> getDieHandler() {
+        return event -> {
+            getOwn().getEventController().remove(ownBeAttackHandler);
+        };
     }
 
     /**
@@ -43,13 +53,13 @@ public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
     class BeAttackHandler extends SealablePassiveHandler implements EventHandler<BeAttackEvent> {
         private final boolean flag;
 
-        BeAttackHandler(boolean huanJing) {
-            this.flag = huanJing;
+        BeAttackHandler(boolean noHuanJing) {
+            this.flag = noHuanJing;
         }
 
         @Override
         public boolean sealed() {
-            return super.sealed() || (getSelf().getBuffController().get(LongShouZhiYuBuff.class) == null ^ flag);
+            return super.sealed() || (getSelf().getBuffController().contain(LongShouZhiYuBuff.class) ^ flag);
         }
 
         @Override

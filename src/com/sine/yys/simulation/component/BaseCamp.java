@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.*;
 import com.sine.yys.util.RandUtil;
 
@@ -78,6 +79,15 @@ public abstract class BaseCamp implements Camp {
     }
 
     @Override
+    public final Position getPositionBySrc(Entity entity) {
+        for (Position position : positions) {
+            if (position.getSource() == entity)
+                return position;
+        }
+        return null;
+    }
+
+    @Override
     public final EventController getEventController() {
         return eventController;
     }
@@ -87,6 +97,7 @@ public abstract class BaseCamp implements Camp {
         for (ShikigamiEntityImpl shikigami : getAllShikigami()) {
             shikigami.setCamp(this);
             shikigami.init(controller);
+            shikigami.eventController.trigger(new EnterEvent(shikigami));
         }
     }
 

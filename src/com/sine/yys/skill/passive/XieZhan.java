@@ -1,7 +1,8 @@
 package com.sine.yys.skill.passive;
 
 import com.sine.yys.event.CommonAttackEvent;
-import com.sine.yys.inter.Controller;
+import com.sine.yys.event.DieEvent;
+import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.util.Msg;
@@ -24,13 +25,17 @@ public class XieZhan extends BasePassiveSkill implements PassiveSkill {
     }
 
     @Override
-    public void doInit(Controller controller, Entity self) {
-        getOwn().getEventController().add(commonAttackHandler);
+    protected EventHandler<EnterEvent> getEnterHandler() {
+        return event -> {
+            getOwn().getEventController().add(commonAttackHandler);
+        };
     }
 
     @Override
-    public void onDie() {
-        getOwn().getEventController().remove(commonAttackHandler);
+    public EventHandler<DieEvent> getDieHandler() {
+        return event -> {
+            getOwn().getEventController().remove(commonAttackHandler);
+        };
     }
 
     class CommonAttackHandler extends SealablePassiveHandler implements EventHandler<CommonAttackEvent> {

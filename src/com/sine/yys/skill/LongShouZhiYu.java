@@ -55,7 +55,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
             @Override
             public void handle(BattleStartEvent event) {
                 // XXX 实际上会触发招财猫（甚至是一个回合，因为在行动条上显示了辉夜姬），然而感觉很bug
-                // 然而又不能算一个回合（没有触发彼岸花被动？也不会触发御馔津吧？），因为鬼火进度条没变……
+                // 然而又不能算一个回合（没有触发彼岸花被动，也不会触发御馔津），因为鬼火进度条没变……
                 // 好像还会触发匣中少女的盾，无语。还是可以考虑定义一个新概念。
                 deploy();
             }

@@ -99,6 +99,11 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         return (T) map.get(clazz);
     }
 
+    @Override
+    public <T> boolean contain(Class<T> clazz) {
+        return map.get(clazz) != null;
+    }
+
     public Map<Class, IBuff> getMap() {
         return map;
     }

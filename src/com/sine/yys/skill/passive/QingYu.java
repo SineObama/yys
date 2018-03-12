@@ -1,9 +1,6 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.event.AfterActionEvent;
-import com.sine.yys.event.BeCureEvent;
-import com.sine.yys.event.BeDamageEvent;
-import com.sine.yys.inter.Controller;
+import com.sine.yys.event.*;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.inter.ShikigamiEntity;
@@ -46,10 +43,12 @@ public class QingYu extends BasePassiveSkill implements PassiveSkill, EventHandl
     }
 
     @Override
-    public void doInit(Controller controller, Entity self) {
-        getEnemy().getEventController().add(this);
-        getEnemy().getEventController().add(beCureHandler);
-        getOwn().getEventController().add(beDamageHandler);
+    protected EventHandler<EnterEvent> getEnterHandler() {
+        return event -> {
+            getEnemy().getEventController().add(this);
+            getEnemy().getEventController().add(beCureHandler);
+            getOwn().getEventController().add(beDamageHandler);
+        };
     }
 
     public void addEnergy(int count) {
@@ -59,10 +58,12 @@ public class QingYu extends BasePassiveSkill implements PassiveSkill, EventHandl
     }
 
     @Override
-    public void onDie() {
-        getEnemy().getEventController().remove(this);
-        getEnemy().getEventController().remove(beCureHandler);
-        getOwn().getEventController().remove(beDamageHandler);
+    public EventHandler<DieEvent> getDieHandler() {
+        return event -> {
+            getEnemy().getEventController().remove(this);
+            getEnemy().getEventController().remove(beCureHandler);
+            getOwn().getEventController().remove(beDamageHandler);
+        };
     }
 
     // XXXX 实际上治疗比较像一个独立的动作

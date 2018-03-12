@@ -30,6 +30,8 @@ public interface Camp extends Target {
 
     Position getPosition(Entity entity);
 
+    Position getPositionBySrc(Entity entity);
+
     EventController getEventController();
 
     Entity randomTarget();

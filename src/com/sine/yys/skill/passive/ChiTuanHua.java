@@ -2,6 +2,8 @@ package com.sine.yys.skill.passive;
 
 import com.sine.yys.event.BeDamageEvent;
 import com.sine.yys.event.BeforeActionEvent;
+import com.sine.yys.event.DieEvent;
+import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -30,13 +32,21 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventH
 
     @Override
     public void doInit(Controller controller, Entity self) {
-        getEnemy().getEventController().add(this);
         self.getEventController().add(new BeDamageHandler());
     }
 
     @Override
-    public void onDie() {
-        getEnemy().getEventController().remove(this);
+    protected EventHandler<EnterEvent> getEnterHandler() {
+        return event -> {
+            getEnemy().getEventController().add(this);
+        };
+    }
+
+    @Override
+    public EventHandler<DieEvent> getDieHandler() {
+        return event -> {
+            getEnemy().getEventController().remove(this);
+        };
     }
 
     @Override

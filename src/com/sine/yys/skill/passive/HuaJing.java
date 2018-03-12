@@ -2,6 +2,8 @@ package com.sine.yys.skill.passive;
 
 import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.BeforeControlEvent;
+import com.sine.yys.event.DieEvent;
+import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -39,12 +41,20 @@ public class HuaJing extends BasePassiveSkill implements PassiveSkill, EventHand
     @Override
     public void doInit(Controller controller, Entity self) {
         self.getEventController().add(new AfterActionHandler());
-        getOwn().getEventController().add(this);
     }
 
     @Override
-    public void onDie() {
-        getOwn().getEventController().remove(this);
+    protected EventHandler<EnterEvent> getEnterHandler() {
+        return event -> {
+            getOwn().getEventController().add(this);
+        };
+    }
+
+    @Override
+    public EventHandler<DieEvent> getDieHandler() {
+        return event -> {
+            getOwn().getEventController().remove(this);
+        };
     }
 
     @Override
