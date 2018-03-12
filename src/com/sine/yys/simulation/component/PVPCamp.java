@@ -3,7 +3,6 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.FireRepo;
-import com.sine.yys.inter.ShikigamiEntity;
 import com.sine.yys.util.Msg;
 
 /**
@@ -82,18 +81,5 @@ public class PVPCamp extends BaseCamp implements Camp, FireRepo {
             if (increase < 5)
                 increase += 1;
         }
-    }
-
-    @Override
-    public ShikigamiEntity getLeastLifeShikigami() {
-        double least = 1.0;
-        ShikigamiEntityImpl current = null;
-        for (ShikigamiEntityImpl shikigamiEntity : getAllShikigami()) {
-            if (least >= shikigamiEntity.getLife()) {
-                least = shikigamiEntity.getLife();
-                current = shikigamiEntity;
-            }
-        }
-        return current;
     }
 }

@@ -40,4 +40,9 @@ public abstract class BaseShikigami implements Shikigami {
     public List<? extends Skill> getSkills() {
         return skills;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

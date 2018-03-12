@@ -48,7 +48,7 @@ public class EventControllerImpl implements EventController {
 
     @Override
     public void remove(EventHandler<?> handler) {
-        get(getEventType(handler)).remove(new Container<>(prior.get(handler), handler));
+        getNoCreate(getEventType(handler)).remove(new Container<>(prior.get(handler), handler));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class EventControllerImpl implements EventController {
 
     @Override
     public <EventType> void trigger(EventType event) {
-        final Set<Container<EventHandler>> containers = new TreeSet<>(get(event.getClass()));
+        final Set<Container<EventHandler>> containers = new TreeSet<>(getNoCreate(event.getClass()));
         if (!states.containsKey(event.getClass()) || states.get(event.getClass())) {
             for (Container<EventHandler> container : containers) {
                 final EventHandler obj = container.getObj();
@@ -78,6 +78,12 @@ public class EventControllerImpl implements EventController {
     private Set<Container<EventHandler>> get(Class T) {
         if (!controllerMap.containsKey(T))
             controllerMap.put(T, new TreeSet<>());
+        return controllerMap.get(T);
+    }
+
+    private Set<Container<EventHandler>> getNoCreate(Class T) {
+        if (!controllerMap.containsKey(T))
+            return new TreeSet<>();
         return controllerMap.get(T);
     }
 

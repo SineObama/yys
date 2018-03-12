@@ -1,6 +1,7 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.event.DieEvent;
+import com.sine.yys.info.Sealable;
 import com.sine.yys.inter.*;
 
 import java.util.logging.Logger;
@@ -109,5 +110,12 @@ public abstract class BaseSkill implements Skill {
     }
 
     public void doInit(Controller controller, Entity self) {
+    }
+
+    protected class SealablePassiveHandler implements Sealable {
+        @Override
+        public boolean sealed() {
+            return getSelf().passiveSealed();
+        }
     }
 }

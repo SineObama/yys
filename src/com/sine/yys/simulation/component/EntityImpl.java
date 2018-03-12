@@ -153,6 +153,11 @@ public class EntityImpl extends SimpleObject implements Entity {
     }
 
     @Override
+    public int getLostLifeInt() {
+        return (int) property.getLife() - life;
+    }
+
+    @Override
     public int getLifeInt() {
         return life;
     }

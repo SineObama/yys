@@ -1,6 +1,7 @@
 package com.sine.yys.inter;
 
 import com.sine.yys.info.AttackInfo;
+import com.sine.yys.info.CallBack;
 
 import java.util.Collection;
 
@@ -11,6 +12,14 @@ import java.util.Collection;
  * 比如进行攻击、附加效果等。
  */
 public interface Controller extends DamageController {
+    /**
+     * 添加一个动作
+     *
+     * @param prior
+     * @param action
+     */
+    void addAction(int prior, CallBack action);
+
     Camp getCamp0();
 
     Camp getCamp1();

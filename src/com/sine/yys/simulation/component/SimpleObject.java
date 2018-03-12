@@ -61,4 +61,9 @@ public abstract class SimpleObject implements Target {
     public final String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return getFullName();
+    }
 }

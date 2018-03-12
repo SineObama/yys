@@ -11,11 +11,4 @@ public abstract class BasePassiveSkill extends BaseSkill implements PassiveSkill
     public boolean sealed() {
         return getSelf().passiveSealed();
     }
-
-    class SealablePassiveHandler implements Sealable {
-        @Override
-        public boolean sealed() {
-            return getSelf().passiveSealed();
-        }
-    }
 }

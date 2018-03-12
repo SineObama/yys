@@ -38,6 +38,8 @@ public interface Entity extends Target, Property {
 
     int getMaxLife();
 
+    int getLostLifeInt();
+
     int getLifeInt();
 
     boolean isDead();

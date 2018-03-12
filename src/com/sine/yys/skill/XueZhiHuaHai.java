@@ -72,7 +72,7 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
 
     public void addShield() {
         final Entity self = getSelf();
-        final double value = self.getMaxLife() * (1 - self.getLife()) * getLostLifePct();
+        final double value = self.getLostLifeInt() * getLostLifePct();
         self.getBuffController().add(new XueZhiHuaHaiShield(getController().calcCritical(self, value), self));
         log.info(Msg.info(self, "获得 " + getName()));
     }

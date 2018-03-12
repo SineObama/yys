@@ -99,4 +99,35 @@ public abstract class BaseCamp implements Camp {
     public final Camp getOpposite() {
         return opposite;
     }
+
+    @Override
+    public List<ShikigamiEntityImpl> getRevivable() {
+        List<ShikigamiEntityImpl> list = new ArrayList<>();
+        for (PositionImpl position : positions) {
+            if (position.getCurrent() == null) {
+                final Entity source = position.getSource();
+                if (source instanceof ShikigamiEntityImpl)
+                    list.add((ShikigamiEntityImpl) source);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public ShikigamiEntity getLeastLifeShikigami() {
+        double least = 1.0;
+        ShikigamiEntityImpl current = null;
+        for (ShikigamiEntityImpl shikigamiEntity : getAllShikigami()) {
+            if (least >= shikigamiEntity.getLife()) {
+                least = shikigamiEntity.getLife();
+                current = shikigamiEntity;
+            }
+        }
+        return current;
+    }
+
+    @Override
+    public String toString() {
+        return getFullName();
+    }
 }

@@ -14,6 +14,11 @@ import java.util.List;
 public interface Camp extends Target {
     List<? extends Entity> getAllAlive();
 
+    /**
+     * @return 可复活的式神。
+     */
+    List<? extends ShikigamiEntity> getRevivable();
+
     List<? extends ShikigamiEntity> getAllShikigami();
 
     /**

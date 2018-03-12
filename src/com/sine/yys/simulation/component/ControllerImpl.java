@@ -1,8 +1,10 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.event.*;
 import com.sine.yys.info.AttackInfo;
+import com.sine.yys.info.CallBack;
 import com.sine.yys.inter.*;
 import com.sine.yys.rule.CalcDam;
 import com.sine.yys.rule.CalcEffect;
@@ -10,6 +12,8 @@ import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 import java.util.Collection;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.logging.Logger;
 
 /**
@@ -19,10 +23,24 @@ public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().getName());
     private final BaseCamp camp0;
     private final BaseCamp camp1;
+    private final Queue<SingleAction> actions = new PriorityQueue<>();
 
     ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
         this.camp0 = camp0;
         this.camp1 = camp1;
+    }
+
+    @Override
+    public void addAction(int prior, CallBack callBack) {
+        if (!actions.contains(new SingleAction(prior, callBack)))
+            actions.add(new SingleAction(prior, callBack));
+    }
+
+    CallBack getFirstAction() {
+        final SingleAction poll = actions.poll();
+        if (poll == null)
+            return null;
+        return poll.getCallback();
     }
 
     @Override
@@ -143,6 +161,9 @@ public class ControllerImpl implements Controller {
             count = 1;
         log.info(Msg.info(target, "受到治疗回复 " + count));
         target.addLife(count);
+        final BeCureEvent beCureEvent = new BeCureEvent(count);
+        target.getEventController().trigger(beCureEvent);
+        target.getCamp().getEventController().trigger(beCureEvent);
         return count;
     }
 
@@ -151,15 +172,17 @@ public class ControllerImpl implements Controller {
         return cure(target, calcCritical(self, pct * self.getMaxLife()));
     }
 
-
     /**
      * 直接减少目标生命，触发{@link BeDamageEvent}事件。
      */
     private void doDamage(EntityImpl target, int damage) {
-        double src = target.getLife();
+        final double src = target.getLife();
+        final int srcLife = target.getLifeInt();
         final int life = target.reduceLife(damage);
-        double dst = target.getLife();
-        target.getEventController().trigger(new BeDamageEvent(src, dst));
+        final double dst = target.getLife();
+        final BeDamageEvent event = new BeDamageEvent(src, dst, srcLife - life);
+        target.getEventController().trigger(event);
+        target.getCamp().getEventController().trigger(event);
         if (life == 0) {
             // 添加匣中少女逻辑，回复状态则退出
             target.getBuffController().clear();// XXX 匣中少女回复状态会不会保留buff？
@@ -167,6 +190,7 @@ public class ControllerImpl implements Controller {
             log.info(Msg.info(target, "死亡"));
             // 包括阎魔放小鬼
             target.getEventController().trigger(new DieEvent(target));
+            target.getCamp().getEventController().trigger(new DieEvent(target));
             // 添加击杀事件
         }
     }
@@ -200,7 +224,8 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void applyDebuff(Entity self, Entity target, DebuffEffect effect) {
+    public void applyDebuff(Entity self, Entity target0, DebuffEffect effect) {
+        EntityImpl target = (EntityImpl) target0;
         final double pct;
         final boolean involveHitAndDef = effect.involveHitAndDef();
         if (involveHitAndDef)
@@ -210,16 +235,20 @@ public class ControllerImpl implements Controller {
         if (RandUtil.success(pct)) {
             log.info(Msg.trigger(self, effect));
             Debuff debuff = effect.getDebuff(self);
-            if (involveHitAndDef) {  // XXX 确定 true || exc()不会执行后者的话可以简化。
-                if (RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
+            if (!involveHitAndDef || RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
+                boolean effective = true;
+                if (debuff instanceof ControlBuff) {
+                    BeforeControlEvent event = new BeforeControlEvent((ControlBuff) debuff);
+                    target.getEventController().trigger(event);
+                    target.getCamp().getEventController().trigger(event);
+                    effective = !event.isNotEffective();
+                }
+                if (effective) {
                     log.info(Msg.info(target, "获得负面效果 " + debuff.getName()));
                     target.getBuffController().add(debuff);
-                } else {
-                    log.info(Msg.info(target, "抵抗了负面效果 " + debuff.getName()));
                 }
             } else {
-                log.info(Msg.info(target, "获得负面效果 " + debuff.getName()));
-                target.getBuffController().add(debuff);
+                log.info(Msg.info(target, "抵抗了负面效果 " + debuff.getName()));
             }
         }
     }
@@ -229,7 +258,7 @@ public class ControllerImpl implements Controller {
         // 目标死亡则随机攻击另一个目标
         Camp own = getCamp(self);
         if (!own.getOpposite().contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
-            log.info(Msg.vector(target, "在", self, "己方阵营中，随机协战"));
+            log.info(Msg.vector(target, "不在", self, "敌方阵营中，随机协战"));
             target = own.getOpposite().randomTarget();
         }
         if (target != null)
@@ -269,5 +298,33 @@ public class ControllerImpl implements Controller {
             return (int) src;
         log.info(Msg.info(self, "暴击"));
         return (int) (src * self.getCriticalDamage());
+    }
+
+    /**
+     * 用于进行行动外的动作。
+     * 如反击。
+     */
+    public class SingleAction implements Comparable<SingleAction> {
+        private final int prior;
+        private final CallBack callback;
+
+        SingleAction(int prior, CallBack callback) {
+            this.prior = prior;
+            this.callback = callback;
+        }
+
+        CallBack getCallback() {
+            return callback;
+        }
+
+        @Override
+        public int compareTo(SingleAction o) {
+            return prior - o.prior;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj) || obj instanceof SingleAction && callback.equals(((SingleAction) obj).callback);
+        }
     }
 }
