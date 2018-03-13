@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.info.Property;
+import com.sine.yys.inter.Property;
 import com.sine.yys.inter.Mitama;
 import com.sine.yys.inter.Shikigami;
 import com.sine.yys.inter.ShikigamiEntity;

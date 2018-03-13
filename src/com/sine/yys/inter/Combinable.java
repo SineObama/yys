@@ -1,4 +1,4 @@
-package com.sine.yys.info;
+package com.sine.yys.inter;
 
 /**
  * 可结合（叠加）的接口，用于buff叠加。

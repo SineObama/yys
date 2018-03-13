@@ -1,7 +1,5 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.info.Combinable;
-
 /**
  * 为单个式神存储buff和debuff（包括护盾），提供添加、查找等操作。
  * 同类型的buff只能存在一个，buff应当实现{@link Combinable}以完成叠加（或理解为选择）的逻辑。

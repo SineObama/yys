@@ -1,7 +1,5 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.info.Target;
-
 import java.util.List;
 
 /**

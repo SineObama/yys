@@ -1,4 +1,4 @@
-package com.sine.yys.info;
+package com.sine.yys.inter;
 
 /**
  * 只用作统一输出。

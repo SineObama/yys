@@ -1,8 +1,5 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.info.Property;
-import com.sine.yys.info.Target;
-
 /**
  * 战场中的可见实体。
  * 包括式神和召唤物。

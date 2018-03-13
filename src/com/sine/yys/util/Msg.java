@@ -1,7 +1,7 @@
 package com.sine.yys.util;
 
-import com.sine.yys.info.Named;
-import com.sine.yys.info.Target;
+import com.sine.yys.inter.Named;
+import com.sine.yys.inter.Target;
 
 /**
  * 用于统一输出信息（对齐）。

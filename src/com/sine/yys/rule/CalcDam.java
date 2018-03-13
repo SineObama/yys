@@ -1,7 +1,7 @@
 package com.sine.yys.rule;
 
-import com.sine.yys.info.AttackInfo;
-import com.sine.yys.info.Property;
+import com.sine.yys.inter.AttackInfo;
+import com.sine.yys.inter.Property;
 
 /**
  * 伤害计算。

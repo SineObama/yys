@@ -1,6 +1,7 @@
 package com.sine.yys.rule.buff;
 
 import com.sine.yys.inter.IBuff;
+import com.sine.yys.inter.IBuffProperty;
 
 import java.util.Collection;
 
@@ -9,7 +10,7 @@ import java.util.Collection;
  * 比如2个破防30%叠加就是破防60%。
  * 数值含义参考：
  *
- * @see com.sine.yys.info.IBuffProperty
+ * @see IBuffProperty
  */
 public interface Composition {
     /**

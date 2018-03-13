@@ -1,8 +1,5 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.info.AttackInfo;
-import com.sine.yys.info.CallBack;
-
 import java.util.Collection;
 
 /**

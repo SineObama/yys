@@ -1,4 +1,4 @@
-package com.sine.yys.info;
+package com.sine.yys.inter;
 
 /**
  * 有名字的对象。

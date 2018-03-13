@@ -1,6 +1,6 @@
 package com.sine.yys.mitama;
 
-import com.sine.yys.info.Sealable;
+import com.sine.yys.inter.Sealable;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;

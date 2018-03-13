@@ -2,7 +2,7 @@ package com.sine.yys.skill;
 
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
-import com.sine.yys.info.Sealable;
+import com.sine.yys.inter.Sealable;
 import com.sine.yys.inter.*;
 
 import java.util.logging.Logger;

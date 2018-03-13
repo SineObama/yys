@@ -1,7 +1,5 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.info.Named;
-
 /**
  * 技能。
  * 只有逻辑，状态保存在{@link Entity}中。

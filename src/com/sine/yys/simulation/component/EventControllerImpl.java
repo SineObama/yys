@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.info.Sealable;
+import com.sine.yys.inter.Sealable;
 import com.sine.yys.inter.EventController;
 import com.sine.yys.inter.EventHandler;
 
