@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-/**
- * PVP阵营。
- * 初始化时给式神设置唯一的鬼火仓库（自己）。
- */
 public abstract class BaseCamp implements Camp {
     protected final Logger log = Logger.getLogger(getClass().getName());
 

@@ -6,7 +6,7 @@ import com.sine.yys.skill.targetresolver.EmptyResolver;
 
 /**
  * 不需要选择目标的主动技能通用逻辑。
- * 虽然只有一个函数。
+ * 虽然只有一个逻辑。
  */
 public abstract class BaseNoTargetSkill extends BaseActiveSkill implements ActiveSkill {
     @Override

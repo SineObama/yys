@@ -8,7 +8,6 @@ import com.sine.yys.util.Msg;
 
 /**
  * 战场鲤鱼旗。
- * 还未实现功能。
  */
 public class BattleKoinobori extends SimpleObject {
     private final double damageRatioAddition = 0.15;

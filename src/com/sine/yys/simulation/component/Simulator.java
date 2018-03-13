@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * 战场模拟器。安排战斗主干流程。
  * <p>
- * 阵营和式神主要存储关系和状态（事件、buff），主体逻辑（施加伤害和效果，事件监听等）放在技能和御魂中。
+ * 阵营和式神主要用于存储关系和状态（事件、buff），主体逻辑（施加伤害和效果，事件监听等）放在技能和御魂中。
  */
 public class Simulator {
     private final Logger log = Logger.getLogger(getClass().getName());

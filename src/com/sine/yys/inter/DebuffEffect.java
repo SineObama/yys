@@ -3,7 +3,9 @@ package com.sine.yys.inter;
 /**
  * 定义一个可以附加debuff的效果（在攻击的时候）。
  */
-public interface DebuffEffect extends PctEffect {
+public interface DebuffEffect extends Named {
+    double getPct();
+
     /**
      * 是否受效果命中/抵抗影响。
      *

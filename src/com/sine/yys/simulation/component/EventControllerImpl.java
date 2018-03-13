@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
-// TODO unchecked 警告，更好的实现方法？
+// XXX unchecked 警告，更好的实现方法？
 
 /**
  * 在阵营和式神中都有独立的控制器，分开定义和管理属于阵营全局和式神自身的事件。

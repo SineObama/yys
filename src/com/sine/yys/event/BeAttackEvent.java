@@ -6,7 +6,7 @@ package com.sine.yys.event;
  * 1. 在敌方回合最多触发一次；
  * 2. 被敌方反击触发一次（每个狰反击分开算）；
  * 3. 被彼岸花被动攻击触发一次；
- * 4. 受中毒伤不触发（暂定，不确定真实情况）。
+ * 4. 受中毒伤不触发。
  */
 public class BeAttackEvent extends BaseEvent implements Event {
 }

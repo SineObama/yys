@@ -5,7 +5,6 @@ import java.util.Collection;
 /**
  * 控制器，提供给技能和御魂实现操作。
  * 包含了战斗的重要逻辑。
- * 附带当前所属式神、阵营的信息等。
  * 比如进行攻击、附加效果等。
  */
 public interface Controller extends DamageController {

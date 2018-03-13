@@ -3,7 +3,8 @@ package com.sine.yys.inter;
 import java.util.List;
 
 /**
- * 技能的可选目标查找器。由技能定义、实现此类。
+ * 技能的可选目标查找器。
+ * 由技能定义、实现此类。
  *
  * @see ActiveSkill
  */

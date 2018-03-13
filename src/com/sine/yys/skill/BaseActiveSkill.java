@@ -8,7 +8,6 @@ import java.util.Collection;
 
 /**
  * 主动技能通用逻辑。
- * 固定了apply，执行特定函数以实现群体/多段攻击不重复计算。
  */
 public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override
@@ -35,7 +34,7 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     }
 
     /**
-     * 目前只用于普攻触发事件。
+     * 目前没用。
      *
      * @param target 目标。
      */
