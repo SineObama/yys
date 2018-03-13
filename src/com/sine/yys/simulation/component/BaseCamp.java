@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-/**
- * PVP阵营。
- * 初始化时给式神设置唯一的鬼火仓库（自己）。
- */
 public abstract class BaseCamp implements Camp {
     protected final Logger log = Logger.getLogger(getClass().getName());
 
@@ -78,6 +74,15 @@ public abstract class BaseCamp implements Camp {
     }
 
     @Override
+    public final Position getPositionBySrc(Entity entity) {
+        for (Position position : positions) {
+            if (position.getSource() == entity)
+                return position;
+        }
+        return null;
+    }
+
+    @Override
     public final EventController getEventController() {
         return eventController;
     }
@@ -98,5 +103,36 @@ public abstract class BaseCamp implements Camp {
     @Override
     public final Camp getOpposite() {
         return opposite;
+    }
+
+    @Override
+    public List<ShikigamiEntityImpl> getRevivable() {
+        List<ShikigamiEntityImpl> list = new ArrayList<>();
+        for (PositionImpl position : positions) {
+            if (position.getCurrent() == null) {
+                final Entity source = position.getSource();
+                if (source instanceof ShikigamiEntityImpl)
+                    list.add((ShikigamiEntityImpl) source);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public ShikigamiEntity getLeastLifeShikigami() {
+        double least = 1.0;
+        ShikigamiEntityImpl current = null;
+        for (ShikigamiEntityImpl shikigamiEntity : getAllShikigami()) {
+            if (least >= shikigamiEntity.getLife()) {
+                least = shikigamiEntity.getLife();
+                current = shikigamiEntity;
+            }
+        }
+        return current;
+    }
+
+    @Override
+    public String toString() {
+        return getFullName();
     }
 }

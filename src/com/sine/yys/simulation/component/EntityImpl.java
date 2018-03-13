@@ -6,7 +6,6 @@ import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
 import com.sine.yys.event.FinishActionEvent;
 import com.sine.yys.event.UseFireEvent;
-import com.sine.yys.info.Property;
 import com.sine.yys.inter.*;
 import com.sine.yys.skill.commonattack.CommonAttack;
 import com.sine.yys.skill.operation.OperationImpl;
@@ -67,7 +66,7 @@ public class EntityImpl extends SimpleObject implements Entity {
             for (ActiveSkill activeSkill : this.getActiveSkills()) {
                 int cd = activeSkill.getCD();
                 if (cd > 0) {
-                    log.info(Msg.info(this, "技能 " + activeSkill.getName() + " 还有CD " + cd));
+                    log.info(Msg.info(this, "技能", activeSkill.getName(), "还有CD", cd));
                     continue;
                 }
                 if (this.fireRepo.getFire() < activeSkill.getFire())
@@ -85,7 +84,7 @@ public class EntityImpl extends SimpleObject implements Entity {
         } else {  // 受行动控制debuff影响
 
             ControlBuff controlBuff = controlBuffs.get(0);
-            log.info(Msg.info(this, "受行动控制debuff " + controlBuff.getName() + " 影响"));
+            log.info(Msg.info(this, "受行动控制debuff", controlBuff.getName(), "影响"));
             if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
                 final List<Entity> allAlive = new ArrayList<>();
                 allAlive.addAll(this.camp.getAllAlive());
@@ -102,8 +101,8 @@ public class EntityImpl extends SimpleObject implements Entity {
         ActiveSkill activeSkill = operation.getSkill();
         if (activeSkill != null) {
             Entity target = operation.getTarget();
-            log.info(Msg.info(this, "当前鬼火 " + this.fireRepo.getFire()));
-            log.info(Msg.vector(this, target != null ? "对" : "", target, "使用了 " + activeSkill.getName()));
+            log.info(Msg.info(this, "当前鬼火", this.fireRepo.getFire()));
+            log.info(Msg.vector(this, target != null ? "对" : "", target, "使用了", activeSkill.getName()));
 
             // 消耗鬼火
             int fire = activeSkill.getFire();
@@ -112,7 +111,7 @@ public class EntityImpl extends SimpleObject implements Entity {
                 this.camp.getEventController().trigger(event);
                 fire = event.getCostFire();
                 this.fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
-                log.info(Msg.info(this, "消耗 " + fire + " 点鬼火，剩余 " + this.fireRepo.getFire() + " 点"));
+                log.info(Msg.info(this, "消耗", fire, "点鬼火，剩余", this.fireRepo.getFire(), "点"));
             }
 
             // 执行技能
@@ -150,6 +149,11 @@ public class EntityImpl extends SimpleObject implements Entity {
     @Override
     public final int getMaxLife() {
         return (int) property.getLife();
+    }
+
+    @Override
+    public int getLostLifeInt() {
+        return (int) property.getLife() - life;
     }
 
     @Override
@@ -192,6 +196,15 @@ public class EntityImpl extends SimpleObject implements Entity {
     @Override
     public final double getLife() {
         return (double) life / getMaxLife();
+    }
+
+    /**
+     * 不会超过最大值。
+     */
+    void setLife(int life) {
+        if (life > getMaxLife())
+            life = getMaxLife();
+        this.life = life;
     }
 
     int addLife(int count) {

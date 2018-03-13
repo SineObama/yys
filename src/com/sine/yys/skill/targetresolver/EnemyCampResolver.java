@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * 不需要指定目标。
+ * 但需要敌方阵营有存活。
  */
 public class EnemyCampResolver implements TargetResolver {
     @Override

@@ -42,4 +42,9 @@ public class Container<T> implements Comparable<Container> {
             return this.obj.hashCode() - o.obj.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return obj.toString() + ",priority=" + priority;
+    }
 }

@@ -1,10 +1,6 @@
 package com.sine.yys.mitama;
 
-import com.sine.yys.info.Sealable;
-import com.sine.yys.inter.Camp;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.Mitama;
+import com.sine.yys.inter.*;
 
 import java.util.logging.Logger;
 

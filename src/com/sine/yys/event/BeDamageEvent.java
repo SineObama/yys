@@ -1,16 +1,19 @@
 package com.sine.yys.event;
 
 /**
- * 受到伤害事件。多段攻击也算。记录受伤前后生命百分比。
- * 死亡不算。
+ * 受到伤害事件。多段攻击也算。
+ * 记录受伤前后生命百分比。
+ * 记录损失生命量。
  */
 public class BeDamageEvent extends BaseEvent implements Event {
-    double src;
-    double dst;
+    final double src;
+    final double dst;
+    final double count;
 
-    public BeDamageEvent(double src, double dst) {
+    public BeDamageEvent(double src, double dst, double count) {
         this.src = src;
         this.dst = dst;
+        this.count = count;
     }
 
     public double getSrc() {
@@ -19,5 +22,9 @@ public class BeDamageEvent extends BaseEvent implements Event {
 
     public double getDst() {
         return dst;
+    }
+
+    public double getCount() {
+        return count;
     }
 }

@@ -1,16 +1,21 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.info.AttackInfo;
-
 import java.util.Collection;
 
 /**
  * 控制器，提供给技能和御魂实现操作。
  * 包含了战斗的重要逻辑。
- * 附带当前所属式神、阵营的信息等。
  * 比如进行攻击、附加效果等。
  */
 public interface Controller extends DamageController {
+    /**
+     * 添加一个动作
+     *
+     * @param prior
+     * @param action
+     */
+    void addAction(int prior, CallBack action);
+
     Camp getCamp0();
 
     Camp getCamp1();
@@ -69,4 +74,9 @@ public interface Controller extends DamageController {
      * 获得一次行动机会
      */
     void actionChance(Entity self);
+
+    /**
+     * 复活目标，并设置生命为指定值。
+     */
+    void revive(Entity target, int maxLife);
 }

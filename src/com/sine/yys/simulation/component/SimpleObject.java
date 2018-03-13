@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.info.Target;
 import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Target;
 
 import java.util.logging.Logger;
 
@@ -60,5 +60,10 @@ public abstract class SimpleObject implements Target {
     @Override
     public final String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return getFullName();
     }
 }

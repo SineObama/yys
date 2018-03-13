@@ -1,9 +1,5 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.info.Combinable;
-import com.sine.yys.info.IBuffProperty;
-import com.sine.yys.info.Named;
-
 /**
  * 式神头上的buff，分为增益和减益两大类。
  * 基本的有增加攻击、防御、抵抗等，也包括护盾、控制效果。

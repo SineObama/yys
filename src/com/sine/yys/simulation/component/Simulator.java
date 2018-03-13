@@ -3,6 +3,8 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;
+import com.sine.yys.event.EnterEvent;
+import com.sine.yys.inter.CallBack;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Skill;
 import com.sine.yys.util.Msg;
@@ -14,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * 战场模拟器。安排战斗主干流程。
  * <p>
- * 阵营和式神主要存储关系和状态（事件、buff），主体逻辑（施加伤害和效果，事件监听等）放在技能和御魂中。
+ * 阵营和式神主要用于存储关系和状态（事件、buff），主体逻辑（施加伤害和效果，事件监听等）放在技能和御魂中。
  */
 public class Simulator {
     private final Logger log = Logger.getLogger(getClass().getName());
@@ -66,7 +68,15 @@ public class Simulator {
         camp1.init(camp0, controller);
         for (SimpleObject extra : extras)
             extra.init(controller);
+        for (EntityImpl entity : camp0.getAllAlive()) {
+            entity.eventController.trigger(new EnterEvent(entity));
+            camp0.getEventController().trigger(new EnterEvent(entity));
+        }
         camp0.getEventController().trigger(new BattleStartEvent());
+        for (EntityImpl entity : camp1.getAllAlive()) {
+            entity.eventController.trigger(new EnterEvent(entity));
+            camp1.getEventController().trigger(new EnterEvent(entity));
+        }
         camp1.getEventController().trigger(new BattleStartEvent());
     }
 
@@ -99,7 +109,7 @@ public class Simulator {
         // 用于多次行动
         do {
             round += 1;
-            log.info(Msg.info(self, "行动，序号 " + round));
+            log.info(Msg.info(self, "行动，序号", round));
 
             // 重置行动条
             self.setPosition(0);
@@ -109,8 +119,8 @@ public class Simulator {
 
             // 行动前事件
             // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
-            self.camp.getEventController().trigger(new BeforeActionEvent(self));
             self.eventController.trigger(new BeforeActionEvent(self));
+            self.camp.getEventController().trigger(new BeforeActionEvent(self));
 
             controller.afterMovement();
 
@@ -127,8 +137,8 @@ public class Simulator {
             self.buffController.afterAction(controller, self);
 
             // 行动后事件
-            self.camp.getEventController().trigger(new AfterActionEvent(self));
             self.eventController.trigger(new AfterActionEvent(self));
+            self.camp.getEventController().trigger(new AfterActionEvent(self));
 
             for (Skill skill : self.shikigami.getSkills())
                 skill.afterAction();
@@ -136,16 +146,27 @@ public class Simulator {
             // 完成推进鬼火行动条
             self.fireRepo.finish();
 
-            // TODO 行动后行为，反击等。记得调用controller.afterMovement();
-            // FIXME 触发新回合后被反击打死，行动条还在1
+            log.info(Msg.info(self, "行动结束，序号", round));
+            if (checkWin())
+                break;
 
-            log.info(Msg.info(self, "行动结束，序号 " + round));
+            // 回合后的行动，如反击等。通过回调实现。
+            CallBack action = controller.getFirstAction();
+            while (action != null) {
+                action.call();
+                controller.afterMovement();
+                if (checkWin())
+                    break;
+                action = controller.getFirstAction();
+            }
             if (checkWin())
                 break;
         } while (self.getPosition() == 1.0 && !self.isDead());
     }
 
     private boolean checkWin() {
+        if (ended)
+            return true;
         // XXX 简单判断胜负：无式神存活
         if (camp0.getAllShikigami().size() == 0) {
             win = camp1;

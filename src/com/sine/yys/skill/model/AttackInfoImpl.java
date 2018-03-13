@@ -1,6 +1,6 @@
 package com.sine.yys.skill.model;
 
-import com.sine.yys.info.AttackInfo;
+import com.sine.yys.inter.AttackInfo;
 
 public class AttackInfoImpl implements AttackInfo {
     private final double coefficient;

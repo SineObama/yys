@@ -1,6 +1,6 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.info.Sealable;
+import com.sine.yys.inter.Sealable;
 import com.sine.yys.skill.BaseSkill;
 
 /**
@@ -10,12 +10,5 @@ public abstract class BasePassiveSkill extends BaseSkill implements PassiveSkill
     @Override
     public boolean sealed() {
         return getSelf().passiveSealed();
-    }
-
-    class SealablePassiveHandler implements Sealable {
-        @Override
-        public boolean sealed() {
-            return getSelf().passiveSealed();
-        }
     }
 }

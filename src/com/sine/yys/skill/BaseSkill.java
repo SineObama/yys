@@ -1,6 +1,7 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.event.DieEvent;
+import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.*;
 
 import java.util.logging.Logger;
@@ -83,10 +84,19 @@ public abstract class BaseSkill implements Skill {
     }
 
     /**
+     * 在进入战场或复活时触发。
+     * 子类可以重写以添加事件监听等。
+     */
+    protected EventHandler<EnterEvent> getEnterHandler() {
+        return null;
+    }
+
+    /**
      * 在自身死亡事件时触发。
      * 子类可以重写以移除事件监听等。
      */
-    protected void onDie() {
+    protected EventHandler<DieEvent> getDieHandler() {
+        return null;
     }
 
     @Override
@@ -99,15 +109,24 @@ public abstract class BaseSkill implements Skill {
         this.self = self;
         this.own = controller.getCamp(self);
         this.enemy = this.own.getOpposite();
-        self.getEventController().add(new EventHandler<DieEvent>() {
-            @Override
-            public void handle(DieEvent event) {
-                onDie();
-            }
-        });
+
+        final EventHandler<DieEvent> dieHandler = getDieHandler();
+        if (dieHandler != null)
+            self.getEventController().add(DieEvent.class, dieHandler);
+        final EventHandler<EnterEvent> enterHandler = getEnterHandler();
+        if (enterHandler != null)
+            self.getEventController().add(EnterEvent.class, enterHandler);
+
         doInit(controller, self);
     }
 
     public void doInit(Controller controller, Entity self) {
+    }
+
+    protected class SealablePassiveHandler implements Sealable {
+        @Override
+        public boolean sealed() {
+            return getSelf().passiveSealed();
+        }
     }
 }

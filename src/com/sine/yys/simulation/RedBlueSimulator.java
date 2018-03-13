@@ -1,6 +1,7 @@
 package com.sine.yys.simulation;
 
 import com.sine.yys.simulation.component.*;
+import com.sine.yys.util.Msg;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,7 +9,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * 模拟对弈竞猜，计算多次结果。
+ * 模拟红蓝（对弈）竞猜。
+ * 可计算多次结果。
  */
 public class RedBlueSimulator {
     public static final String redName = "红方";
@@ -38,7 +40,7 @@ public class RedBlueSimulator {
             while (simulator.getWin() == null)
                 simulator.step();
             String winName = simulator.getWin().getName();
-            log.info("测试 " + (i + 1) + " " + winName + " 胜利");
+            log.info(Msg.join("测试", (i + 1), winName, "胜利"));
             count.put(winName, count.get(winName) + 1);
         }
         printResult();

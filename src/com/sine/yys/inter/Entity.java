@@ -1,12 +1,9 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.info.Property;
-import com.sine.yys.info.Target;
-
 /**
  * 战场中的可见实体。
  * 包括式神和召唤物。
- * 可理解为可作为目标（攻击）的对象。
+ * 可作为目标（攻击）的对象。
  * <p>
  * 全局广泛使用的接口，主要作存储功能（buff、事件）。
  * 还为技能保存部分变量（状态）。
@@ -37,6 +34,8 @@ public interface Entity extends Target, Property {
     double getLife();
 
     int getMaxLife();
+
+    int getLostLifeInt();
 
     int getLifeInt();
 

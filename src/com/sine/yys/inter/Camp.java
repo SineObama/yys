@@ -1,7 +1,5 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.info.Target;
-
 import java.util.List;
 
 /**
@@ -14,6 +12,11 @@ import java.util.List;
 public interface Camp extends Target {
     List<? extends Entity> getAllAlive();
 
+    /**
+     * @return 可复活的式神。
+     */
+    List<? extends ShikigamiEntity> getRevivable();
+
     List<? extends ShikigamiEntity> getAllShikigami();
 
     /**
@@ -24,6 +27,8 @@ public interface Camp extends Target {
     boolean contain(Entity entity);
 
     Position getPosition(Entity entity);
+
+    Position getPositionBySrc(Entity entity);
 
     EventController getEventController();
 

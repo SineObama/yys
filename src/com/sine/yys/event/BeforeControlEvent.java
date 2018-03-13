@@ -22,8 +22,8 @@ public class BeforeControlEvent extends BaseEvent {
         return controlBuff;
     }
 
-    public boolean isEffective() {
-        return effective;
+    public boolean isNotEffective() {
+        return !effective;
     }
 
     public void setEffective(boolean effective) {
