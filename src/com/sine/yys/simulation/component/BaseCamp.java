@@ -97,7 +97,6 @@ public abstract class BaseCamp implements Camp {
         for (ShikigamiEntityImpl shikigami : getAllShikigami()) {
             shikigami.setCamp(this);
             shikigami.init(controller);
-            shikigami.eventController.trigger(new EnterEvent(shikigami));
         }
     }
 

@@ -308,6 +308,9 @@ public class ControllerImpl implements Controller {
         position.setCurrent(target);
         target.setLife(maxLife);
         log.info(Msg.info(target, "复活，血量", target.getLifeInt()));
+        final EnterEvent enterEvent = new EnterEvent(target);
+        target.eventController.trigger(enterEvent);
+        target.getCamp().getEventController().trigger(enterEvent);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;
+import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.CallBack;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Skill;
@@ -67,7 +68,15 @@ public class Simulator {
         camp1.init(camp0, controller);
         for (SimpleObject extra : extras)
             extra.init(controller);
+        for (EntityImpl entity : camp0.getAllAlive()) {
+            entity.eventController.trigger(new EnterEvent(entity));
+            camp0.getEventController().trigger(new EnterEvent(entity));
+        }
         camp0.getEventController().trigger(new BattleStartEvent());
+        for (EntityImpl entity : camp1.getAllAlive()) {
+            entity.eventController.trigger(new EnterEvent(entity));
+            camp1.getEventController().trigger(new EnterEvent(entity));
+        }
         camp1.getEventController().trigger(new BattleStartEvent());
     }
 
