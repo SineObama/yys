@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.*;
 import com.sine.yys.util.RandUtil;
 

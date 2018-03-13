@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.inter.Target;
 import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Target;
 
 import java.util.logging.Logger;
 

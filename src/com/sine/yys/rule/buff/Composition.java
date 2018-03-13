@@ -14,11 +14,11 @@ import java.util.Collection;
  */
 public interface Composition {
     /**
-     * 计算集合中所有buff的总和。每个实例只能调用一次此函数。
+     * 计算集合中所有buff的总和。
      *
-     * @param lists
+     * @param list
      * @return 最终加成数值。
      * @see com.sine.yys.simulation.component.BuffControllerImpl
      */
-    double calc(Collection<IBuff>... lists);
+    double calc(Collection<IBuff> list);
 }

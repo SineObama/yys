@@ -6,7 +6,6 @@ import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
 import com.sine.yys.event.FinishActionEvent;
 import com.sine.yys.event.UseFireEvent;
-import com.sine.yys.inter.Property;
 import com.sine.yys.inter.*;
 import com.sine.yys.skill.commonattack.CommonAttack;
 import com.sine.yys.skill.operation.OperationImpl;

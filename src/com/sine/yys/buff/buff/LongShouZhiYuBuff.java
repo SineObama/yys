@@ -1,8 +1,8 @@
 package com.sine.yys.buff.buff;
 
 import com.sine.yys.buff.BaseCommonIBuff;
-import com.sine.yys.inter.CallBack;
 import com.sine.yys.inter.Buff;
+import com.sine.yys.inter.CallBack;
 import com.sine.yys.inter.Entity;
 
 /**

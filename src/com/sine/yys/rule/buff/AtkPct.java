@@ -1,10 +1,9 @@
 package com.sine.yys.rule.buff;
 
-import com.sine.yys.inter.IBuff;
+import com.sine.yys.inter.IBuffProperty;
 
 public class AtkPct extends BaseComposition {
-    @Override
-    protected void and(IBuff iBuff) {
-        product += iBuff.getAtkPct();
+    public AtkPct() {
+        super(IBuffProperty::getAtkPct);
     }
 }

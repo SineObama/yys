@@ -3,8 +3,6 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.event.*;
-import com.sine.yys.inter.AttackInfo;
-import com.sine.yys.inter.CallBack;
 import com.sine.yys.inter.*;
 import com.sine.yys.rule.CalcDam;
 import com.sine.yys.rule.CalcEffect;

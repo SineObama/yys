@@ -7,12 +7,7 @@ import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
-import com.sine.yys.inter.Combinable;
-import com.sine.yys.inter.IBuffProperty;
-import com.sine.yys.inter.BuffController;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.IBuff;
+import com.sine.yys.inter.*;
 import com.sine.yys.rule.buff.*;
 import com.sine.yys.util.Msg;
 
@@ -44,6 +39,16 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     private final Logger log = Logger.getLogger(getClass().getName());
 
     private final Map<Class, IBuff> map = new HashMap<>();
+    private final Cure cure = new Cure();
+    private final DamageUp damageUp = new DamageUp();
+    private final FlagDamage flagDamage = new FlagDamage();
+    private final AtkPct atkPct = new AtkPct();
+    private final DefPct defPct = new DefPct();
+    private final Speed speed = new Speed();
+    private final Critical critical = new Critical();
+    private final CriticalDamage criticalDamage = new CriticalDamage();
+    private final EffectHit effectHit = new EffectHit();
+    private final EffectDef effectDef = new EffectDef();
 
     public Object remove(Object shield) {
         return map.remove(shield.getClass());
@@ -127,52 +132,52 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
 
     @Override
     public double getCure() {
-        return new Cure().calc(map.values());
+        return cure.calc(map.values());
     }
 
     @Override
     public double getDamageUp() {
-        return new DamageUp().calc(map.values());
+        return damageUp.calc(map.values());
     }
 
     @Override
     public double getFlagDamage() {
-        return new FlagDamage().calc(map.values());
+        return flagDamage.calc(map.values());
     }
 
     @Override
     public double getAtkPct() {
-        return new AtkPct().calc(map.values());
+        return atkPct.calc(map.values());
     }
 
     @Override
     public double getDefPct() {
-        return new DefPct().calc(map.values());
+        return defPct.calc(map.values());
     }
 
     @Override
     public double getSpeed() {
-        return new Speed().calc(map.values());
+        return speed.calc(map.values());
     }
 
     @Override
     public double getCritical() {
-        return new Critical().calc(map.values());
+        return critical.calc(map.values());
     }
 
     @Override
     public double getCriticalDamage() {
-        return new CriticalDamage().calc(map.values());
+        return criticalDamage.calc(map.values());
     }
 
     @Override
     public double getEffectHit() {
-        return new EffectHit().calc(map.values());
+        return effectHit.calc(map.values());
     }
 
     @Override
     public double getEffectDef() {
-        return new EffectDef().calc(map.values());
+        return effectDef.calc(map.values());
     }
 
     @Override
