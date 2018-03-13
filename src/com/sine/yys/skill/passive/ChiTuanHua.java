@@ -38,7 +38,7 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventH
     @Override
     protected EventHandler<EnterEvent> getEnterHandler() {
         return event -> {
-            getEnemy().getEventController().add(this);
+            getEnemy().getEventController().add(this, 300);
         };
     }
 
