@@ -93,29 +93,32 @@ public class ZiYang extends BaseActiveSkill implements ActiveSkill {
     }
 
     class DieHandler extends SealablePassiveHandler implements EventHandler<DieEvent> {
+        private final CallBack callBack = () -> {
+            // 查找己方式神站位，可复活的队友。
+            final ShikigamiEntity choosed = RandUtil.choose(getOwn().getRevivable());
+            if (choosed == null)
+                return;
+            log.info(Msg.trigger(getSelf(), ZiYang.this));
+            QingTianWaWa waWa = getSelf().get(QingTianWaWa.class, null);
+            waWa.sacrifice();
+            getController().revive(choosed, Integer.MAX_VALUE);  // 回复满生命
+            double energy = waWa.use(Integer.MAX_VALUE);  // 消耗所有能量。
+            energy *= getCurePctOfEnergy();  // 总治疗量
+            final List<? extends ShikigamiEntity> allShikigami = getOwn().getAllShikigami();
+            final int num = allShikigami.size() - 1;  // 其余队友数量
+            energy /= num;  // 每人治疗量
+            for (ShikigamiEntity shikigamiEntity : allShikigami) {
+                if (shikigamiEntity != choosed)
+                    getController().cure(shikigamiEntity, energy);
+            }
+        };
+
         @Override
         public void handle(DieEvent event) {
             QingTianWaWa waWa = getSelf().get(QingTianWaWa.class, null);
             if (waWa.getCd() > 0)
                 return;
-            getController().addAction(400, () -> {
-                // 查找己方式神站位，可复活的队友。
-                final ShikigamiEntity choosed = RandUtil.choose(getOwn().getRevivable());
-                if (choosed == null)
-                    return;
-                log.info(Msg.trigger(getSelf(), ZiYang.this));
-                waWa.sacrifice();
-                getController().revive(choosed, Integer.MAX_VALUE);  // 回复满生命
-                double energy = waWa.use(Integer.MAX_VALUE);  // 消耗所有能量。
-                energy *= getCurePctOfEnergy();  // 总治疗量
-                final List<? extends ShikigamiEntity> allShikigami = getOwn().getAllShikigami();
-                final int num = allShikigami.size() - 1;  // 其余队友数量
-                energy /= num;  // 每人治疗量
-                for (ShikigamiEntity shikigamiEntity : allShikigami) {
-                    if (shikigamiEntity != choosed)
-                        getController().cure(shikigamiEntity, energy);
-                }
-            });
+            getController().addAction(400, callBack);
         }
     }
 }
