@@ -146,7 +146,7 @@ public class ControllerImpl implements Controller {
             return;
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
-        log.info(Msg.info(self, "受到伤害 " + damage));
+        log.info(Msg.info(self, "受到伤害", damage));
         doDamage(self, damage);
     }
 
@@ -155,11 +155,11 @@ public class ControllerImpl implements Controller {
         EntityImpl target = (EntityImpl) target0;
         final double coefficient = target.getCureCoefficient();
         int count;
-        log.info(Msg.info(target, "治疗效果 " + coefficient));
+        log.info(Msg.info(target, "治疗效果", coefficient));
         count = (int) (src * coefficient);
         if (count <= 0)
             count = 1;
-        log.info(Msg.info(target, "受到治疗回复 " + count));
+        log.info(Msg.info(target, "受到治疗回复", count));
         target.addLife(count);
         final BeCureEvent beCureEvent = new BeCureEvent(count);
         target.getEventController().trigger(beCureEvent);
@@ -206,7 +206,7 @@ public class ControllerImpl implements Controller {
             if (damage == -1)
                 break;
             target.buffController.remove(shield);
-            log.info(Msg.info(target, shield.getName() + " 被击破"));
+            log.info(Msg.info(target, shield.getName(), "被击破"));
         }
         if (damage == -1)
             damage = 0;
@@ -218,7 +218,7 @@ public class ControllerImpl implements Controller {
         if (RandUtil.success(pct)) {
             int num = target.getFireRepo().grabFire(1);
             if (num > 0)
-                log.info(Msg.vector(self, "吸取", target, num + " 点鬼火"));
+                log.info(Msg.vector(self, "吸取", target, num, "点鬼火"));
             self.getFireRepo().addFire(num);
         }
     }
@@ -244,11 +244,11 @@ public class ControllerImpl implements Controller {
                     effective = !event.isNotEffective();
                 }
                 if (effective) {
-                    log.info(Msg.info(target, "获得负面效果 " + debuff.getName()));
+                    log.info(Msg.info(target, "获得负面效果", debuff.getName()));
                     target.getBuffController().add(debuff);
                 }
             } else {
-                log.info(Msg.info(target, "抵抗了负面效果 " + debuff.getName()));
+                log.info(Msg.info(target, "抵抗了负面效果", debuff.getName()));
             }
         }
     }
@@ -307,7 +307,7 @@ public class ControllerImpl implements Controller {
         final Position position = target.getCamp().getPositionBySrc(target);
         position.setCurrent(target);
         target.setLife(maxLife);
-        log.info(Msg.info(target, "复活，血量 " + target.getLifeInt()));
+        log.info(Msg.info(target, "复活，血量", target.getLifeInt()));
     }
 
     /**

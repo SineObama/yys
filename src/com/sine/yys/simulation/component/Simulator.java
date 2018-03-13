@@ -100,7 +100,7 @@ public class Simulator {
         // 用于多次行动
         do {
             round += 1;
-            log.info(Msg.info(self, "行动，序号 " + round));
+            log.info(Msg.info(self, "行动，序号", round));
 
             // 重置行动条
             self.setPosition(0);
@@ -137,7 +137,7 @@ public class Simulator {
             // 完成推进鬼火行动条
             self.fireRepo.finish();
 
-            log.info(Msg.info(self, "行动结束，序号 " + round));
+            log.info(Msg.info(self, "行动结束，序号", round));
             if (checkWin())
                 break;
 

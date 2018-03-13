@@ -55,7 +55,7 @@ public class PVPCamp extends BaseCamp implements Camp, FireRepo {
         fire += count;
         if (fire > 8)
             fire = 8;
-        log.info(Msg.info(this, "增加 " + count + " 点鬼火，当前剩余 " + fire + " 点"));
+        log.info(Msg.info(this, "增加", count, "点鬼火，当前剩余", fire, "点"));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class PVPCamp extends BaseCamp implements Camp, FireRepo {
         }
         prepared = true;
         fireBarPos += 1;
-        log.info(Msg.info(this, "鬼火行动条位置 " + fireBarPos));
+        log.info(Msg.info(this, "鬼火行动条位置", fireBarPos));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class PVPCamp extends BaseCamp implements Camp, FireRepo {
         prepared = false;
         if (fireBarPos >= 5) {
             fireBarPos = 0;
-            log.info(Msg.info(this, "行动满5回合，将回复 " + increase + " 点鬼火"));
+            log.info(Msg.info(this, "行动满5回合，将回复", increase, "点鬼火"));
             addFire(increase);
             if (increase < 5)
                 increase += 1;

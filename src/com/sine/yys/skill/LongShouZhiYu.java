@@ -34,7 +34,7 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
     private void deploy() {
         Entity self = getSelf();
         LongShouZhiYuBuff buff = new LongShouZhiYuBuff(getLast(), () -> self.getEventController().trigger(new LongShouZhiYuOff()), self);  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
-        log.info(Msg.info(self, "施放 " + buff.getName()));
+        log.info(Msg.info(self, "施放", buff.getName()));
         self.getBuffController().add(buff);
         for (ShikigamiEntity shikigami : getController().getCamp(self).getAllShikigami()) {  // DESIGN 给式神不包括召唤物加buff
             shikigami.getBuffController().add(new LSZYDefenseBuff(getDefPct(), self));

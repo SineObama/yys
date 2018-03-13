@@ -69,7 +69,7 @@ public class GuiNiao extends BaseCommonAttack {
             getSelf().put(FeiNiao, feiNiao);
             log.info(Msg.info(getSelf(), "飞鸟数增加1"));
         }
-        log.info(Msg.info(getSelf(), "当前剩余飞鸟数 " + feiNiao));
+        log.info(Msg.info(getSelf(), "当前剩余飞鸟数", feiNiao));
     }
 
     @Override

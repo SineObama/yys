@@ -26,9 +26,9 @@ public class BattleKoinobori extends SimpleObject implements EventHandler<Battle
         level += 1;
         battleFlagSource.setDamage(level * damageRatioAddition);
         battleFlagSource.setCure(level * cureRatioReduction);
-        log.info(Msg.info(this, "战场旗帜等级 " + level));
-        log.info(Msg.info(this, "伤害加成 " + battleFlagSource.getDamageUp()));
-        log.info(Msg.info(this, "治疗衰减 " + battleFlagSource.getCure()));
+        log.info(Msg.info(this, "战场旗帜等级", level));
+        log.info(Msg.info(this, "伤害加成", battleFlagSource.getDamageUp()));
+        log.info(Msg.info(this, "治疗衰减", battleFlagSource.getCure()));
     }
 
     @Override

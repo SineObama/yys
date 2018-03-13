@@ -20,7 +20,7 @@ public abstract class BaseDoT extends BaseBeforeActionBuff implements DoT {
 
     @Override
     protected final void doBeforeAction(DamageController controller, Entity self) {
-        log.info(Msg.info(self, "受到持续伤害效果 " + getName()));
+        log.info(Msg.info(self, "受到持续伤害效果", getName()));
         double damage = handle(self);
         controller.directDamage(self, (int) damage);
     }

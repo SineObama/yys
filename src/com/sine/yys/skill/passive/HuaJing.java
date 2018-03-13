@@ -65,8 +65,8 @@ public class HuaJing extends BasePassiveSkill implements PassiveSkill, EventHand
         final Integer niao = self.get(GuiNiao.FeiNiao, 0);
         if (niao > 0 && RandUtil.success(getCancelPct())) {
             log.info(Msg.trigger(self, HuaJing.this));
-            log.info(Msg.info(self, "牺牲飞鸟抵消了 " + event.getControlBuff().getName()));
-            log.info(Msg.info(self, "当前剩余飞鸟数 " + (niao - 1)));
+            log.info(Msg.info(self, "牺牲飞鸟抵消了", event.getControlBuff().getName()));
+            log.info(Msg.info(self, "当前剩余飞鸟数", (niao - 1)));
             self.put(GuiNiao.FeiNiao, niao - 1);
             event.setEffective(false);
         }

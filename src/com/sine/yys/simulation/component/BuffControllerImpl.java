@@ -67,7 +67,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
             if (buff.beforeAction(controller, self) == 0) {
                 buff.onRemove();
                 map.remove(buff.getClass());
-                log.info(Msg.info(self, buff.getName() + " 效果消失了"));
+                log.info(Msg.info(self, buff.getName(), "效果消失了"));
             }
         }
     }
@@ -79,7 +79,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
                 buff.onRemove();
                 map.remove(buff.getClass());
                 // TODO 输出信息移到buff中？
-                log.info(Msg.info(self, buff.getName() + " 效果消失了"));
+                log.info(Msg.info(self, buff.getName(), "效果消失了"));
             }
         }
     }

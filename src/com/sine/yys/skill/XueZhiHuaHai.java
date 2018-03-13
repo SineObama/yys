@@ -38,12 +38,12 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
         final Entity self = getSelf();
         final int max = getMaxLevel(self.getLife());
         int level = getLevel();
-        log.info(Msg.info(self, "原花海层数 " + level));
+        log.info(Msg.info(self, "原花海层数", level));
         level += count;
         if (level > max)
             level = max;
         self.put(LEVEL, level);
-        log.info(Msg.info(self, "现花海层数 " + level));
+        log.info(Msg.info(self, "现花海层数", level));
     }
 
     public int getMaxLevel(double lifePct) {
@@ -74,6 +74,6 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
         final Entity self = getSelf();
         final double value = self.getLostLifeInt() * getLostLifePct();
         self.getBuffController().add(new XueZhiHuaHaiShield(getController().calcCritical(self, value), self));
-        log.info(Msg.info(self, "获得 " + getName()));
+        log.info(Msg.info(self, "获得", getName()));
     }
 }
