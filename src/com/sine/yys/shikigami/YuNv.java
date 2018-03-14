@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 /**
  * 雨女。
+ * XXXX 雨女AI未确定。
  */
 public class YuNv extends BaseShikigami {
     public YuNv() {

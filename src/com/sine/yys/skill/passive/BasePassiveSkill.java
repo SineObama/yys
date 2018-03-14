@@ -8,7 +8,7 @@ import com.sine.yys.skill.BaseSkill;
  */
 public abstract class BasePassiveSkill extends BaseSkill implements PassiveSkill, Sealable {
     @Override
-    public boolean sealed() {
+    public final boolean sealed() {
         return getSelf().passiveSealed();
     }
 }

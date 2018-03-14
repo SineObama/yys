@@ -331,6 +331,7 @@ public class ControllerImpl implements Controller {
             if (left <= 0)
                 break;
             target.getBuffController().remove(t);
+            log.info(Msg.info(target, t, "被驱散了"));
             left -= 1;
         }
         return count - left;
