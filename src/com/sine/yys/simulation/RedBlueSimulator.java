@@ -18,6 +18,7 @@ public class RedBlueSimulator {
     private final Logger log = Logger.getLogger(getClass().getName());
     private final CampInfo redInfo, blueInfo;
     private final Map<String, Integer> count = new HashMap<>(2);
+    private long start, end;
 
     public RedBlueSimulator(CampInfo red, CampInfo blue) {
         this.redInfo = red;
@@ -27,6 +28,7 @@ public class RedBlueSimulator {
     }
 
     public void test(int times) {
+        start = System.currentTimeMillis();
         for (int i = 0; i < times; i++) {
             BaseCamp red = new PVPCamp(redName, 3);
             BaseCamp blue = new PVPCamp(buleName, 3);
@@ -43,6 +45,7 @@ public class RedBlueSimulator {
             log.info(Msg.join("测试", (i + 1), winName, "胜利"));
             count.put(winName, count.get(winName) + 1);
         }
+        end = System.currentTimeMillis();
         printResult();
     }
 
@@ -55,7 +58,7 @@ public class RedBlueSimulator {
     }
 
     public void printResult() {
-        final String msg = "result=" + count.get(redName) + ":" + count.get(buleName);
+        final String msg = "result=" + count.get(redName) + ":" + count.get(buleName) + ", time=" + (end - start);
         log.info(msg);
         System.out.println(msg);
     }
