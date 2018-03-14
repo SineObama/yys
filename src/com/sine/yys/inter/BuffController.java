@@ -7,6 +7,8 @@ import java.util.Collection;
  * 同类型的buff只能存在一个，buff应当实现{@link Combinable}以完成叠加（或理解为选择）的逻辑。
  */
 public interface BuffController {
+    Object remove(Object iBuff);
+
     /**
      * 添加buff。叠加逻辑由buff实现。
      */

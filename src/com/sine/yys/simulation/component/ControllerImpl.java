@@ -1,6 +1,8 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.buff.buff.DispellableBuff;
 import com.sine.yys.buff.debuff.ControlBuff;
+import com.sine.yys.buff.debuff.DispellableDebuff;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.event.*;
 import com.sine.yys.inter.*;
@@ -10,6 +12,7 @@ import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Logger;
@@ -309,6 +312,28 @@ public class ControllerImpl implements Controller {
         final EnterEvent enterEvent = new EnterEvent(target);
         target.eventController.trigger(enterEvent);
         target.getCamp().getEventController().trigger(enterEvent);
+    }
+
+    @Override
+    public int dispelBuff(Entity target, int count) {
+        return dispel(target, count, DispellableBuff.class);
+    }
+
+    @Override
+    public int dispelDebuff(Entity target, int count) {
+        return dispel(target, count, DispellableDebuff.class);
+    }
+
+    private <T extends IBuff> int dispel(Entity target, final int count, Class<T> clazz) {
+        int left = count;
+        final Iterator<? extends T> iterator = target.getBuffController().getBuffs(clazz).iterator();
+        for (T t : target.getBuffController().getBuffs(clazz)) {
+            if (left <= 0)
+                break;
+            target.getBuffController().remove(t);
+            left -= 1;
+        }
+        return count - left;
     }
 
     /**

@@ -76,4 +76,14 @@ public interface Controller extends DamageController {
      * 复活目标，并设置生命为指定值。
      */
     void revive(Entity target, int maxLife);
+
+    /**
+     * 驱散增益效果。
+     */
+    int dispelBuff(Entity target, int count);
+
+    /**
+     * 驱散减益效果。
+     */
+    int dispelDebuff(Entity target, int count);
 }
