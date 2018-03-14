@@ -57,9 +57,8 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
      * 协战的具体操作。
      * 默认调用doApply。具体技能根据需要重写。
      *
-     * @param controller
-     * @param self       自身。
-     * @param target     协战目标。
+     * @param self   自身。
+     * @param target 协战目标。
      */
     @Override
     public void xieZhan(Controller controller, Entity self, Entity target) {

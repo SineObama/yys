@@ -16,7 +16,6 @@ public interface Composition {
     /**
      * 计算集合中所有buff的总和。
      *
-     * @param list
      * @return 最终加成数值。
      * @see com.sine.yys.simulation.component.BuffControllerImpl
      */

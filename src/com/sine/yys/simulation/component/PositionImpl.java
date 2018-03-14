@@ -12,14 +12,16 @@ public class PositionImpl implements Position {
         this.source = source;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Entity getSource() {
-        return source;
+    public <T extends Entity> T getSource() {
+        return (T) source;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Entity getCurrent() {
-        return current;
+    public <T extends Entity> T getCurrent() {
+        return (T) current;
     }
 
     @Override

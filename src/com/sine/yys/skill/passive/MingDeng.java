@@ -29,16 +29,12 @@ public class MingDeng extends BasePassiveSkill implements PassiveSkill {
 
     @Override
     protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> {
-            getOwn().getEventController().add(useFireHandler);
-        };
+        return event -> getOwn().getEventController().add(useFireHandler);
     }
 
     @Override
     public EventHandler<DieEvent> getDieHandler() {
-        return event -> {
-            getOwn().getEventController().remove(useFireHandler);
-        };
+        return event -> getOwn().getEventController().remove(useFireHandler);
     }
 
     class UseFireHandler extends SealablePassiveHandler implements EventHandler<UseFireEvent> {

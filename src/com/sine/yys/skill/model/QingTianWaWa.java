@@ -39,7 +39,6 @@ public class QingTianWaWa {
         }
         log.info(Msg.info(self, "本次增加", ENERGY, (added - energy)));
         energy = added;
-        return;
     }
 
     /**

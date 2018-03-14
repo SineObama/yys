@@ -12,8 +12,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
-// XXX unchecked 警告，更好的实现方法？
-
 /**
  * 在阵营和式神中都有独立的控制器，分开定义和管理属于阵营全局和式神自身的事件。
  */
@@ -47,7 +45,7 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public void remove(EventHandler<?> handler) {
+    public void remove(EventHandler handler) {
         getNoCreate(getEventType(handler)).remove(new Container<>(prior.get(handler), handler));
     }
 
@@ -61,7 +59,7 @@ public class EventControllerImpl implements EventController {
         final Set<Container<EventHandler>> containers = new TreeSet<>(getNoCreate(event.getClass()));
         if (!states.containsKey(event.getClass()) || states.get(event.getClass())) {
             for (Container<EventHandler> container : containers) {
-                final EventHandler obj = container.getObj();
+                @SuppressWarnings("unchecked") final EventHandler<EventType> obj = container.getObj();
                 if (obj instanceof Sealable && ((Sealable) obj).sealed())
                     continue;
                 obj.handle(event);
@@ -87,7 +85,7 @@ public class EventControllerImpl implements EventController {
         return controllerMap.get(T);
     }
 
-    private <EventType> Class<EventType> getEventType(EventHandler<EventType> handler) {
+    private Class getEventType(EventHandler handler) {
         Class clazz = handler.getClass();
         do {  // 往上查找父类
             Type[] types = clazz.getGenericInterfaces();
@@ -95,7 +93,7 @@ public class EventControllerImpl implements EventController {
                 if (type instanceof ParameterizedType) {
                     ParameterizedType p = (ParameterizedType) type;
                     if (p.getRawType() == EventHandler.class)
-                        return (Class<EventType>) p.getActualTypeArguments()[0];
+                        return (Class) p.getActualTypeArguments()[0];
                 }
             }
             clazz = (Class) clazz.getGenericSuperclass();

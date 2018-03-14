@@ -24,7 +24,7 @@ public class Simulator {
     // 引用
     private final BaseCamp camp0, camp1;
     private final List<SimpleObject> extras;  // 额外的对象，包括不属于阵营的战场鲤鱼旗。秘闻竞赛副本的鬼头？
-    private ControllerImpl controller;
+    private final ControllerImpl controller;
     private Camp win = null;
     // 状态
     private boolean started = false;

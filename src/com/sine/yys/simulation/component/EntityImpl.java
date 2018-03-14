@@ -123,6 +123,7 @@ public class EntityImpl extends SimpleObject implements Entity {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <V> V get(Object key, V defaultValue) {
         if (map.containsKey(key))

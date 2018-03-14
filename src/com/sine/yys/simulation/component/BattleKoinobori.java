@@ -12,11 +12,9 @@ import com.sine.yys.util.Msg;
 public class BattleKoinobori extends SimpleObject {
     private final double damageRatioAddition = 0.15;
     private final double cureRatioReduction = -0.10;
+    private final BattleFlagSourceImpl battleFlagSource = new BattleFlagSourceImpl();
+    private final EventHandler<EnterEvent> enterHandler = event -> event.getEntity().getBuffController().add(new BattleFlag(battleFlagSource));
     private int level = 0;
-    private BattleFlagSourceImpl battleFlagSource = new BattleFlagSourceImpl();
-    private final EventHandler<EnterEvent> enterHandler = event -> {
-        event.getEntity().getBuffController().add(new BattleFlag(battleFlagSource));
-    };
 
     public BattleKoinobori(double speed) {
         super("战场鲤鱼旗", speed);

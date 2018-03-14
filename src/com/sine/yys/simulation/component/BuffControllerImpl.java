@@ -91,17 +91,12 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
 
     @Override
     public <T> void add(Combinable<T> buff) {
-        IBuff buff0 = map.get(buff.getClass());
-        if (buff0 != null) {
-            map.put(buff.getClass(), buff0.combineWith((IBuff) buff));
-        } else {
-            map.put(buff.getClass(), (IBuff) buff);
-        }
+        map.merge(buff.getClass(), (IBuff) buff, IBuff::combineWith);
     }
 
     @Override
     public <T> T get(Class<T> clazz) {
-        return (T) map.get(clazz);
+        return clazz.cast(map.get(clazz));
     }
 
     @Override
@@ -187,5 +182,15 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
             iBuff.onRemove();
         }
         map.clear();
+    }
+
+    @Override
+    public <T> Collection<T> getBuffs(Class<T> clazz) {
+        Collection<T> buffs = new ArrayList<>(5);
+        for (IBuff iBuff : map.values()) {
+            if (clazz.isAssignableFrom(iBuff.getClass()))
+                buffs.add(clazz.cast(iBuff));
+        }
+        return buffs;
     }
 }

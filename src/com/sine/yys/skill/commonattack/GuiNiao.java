@@ -80,16 +80,12 @@ public class GuiNiao extends BaseCommonAttack {
 
     @Override
     protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> {
-            getOwn().getEventController().add(afterMovementHandler);
-        };
+        return event -> getOwn().getEventController().add(afterMovementHandler);
     }
 
     @Override
     protected EventHandler<DieEvent> getDieHandler() {
-        return event -> {
-            getOwn().getEventController().remove(afterMovementHandler);
-        };
+        return event -> getOwn().getEventController().remove(afterMovementHandler);
     }
 
     class BeforeActionHandler implements EventHandler<BeforeActionEvent> {

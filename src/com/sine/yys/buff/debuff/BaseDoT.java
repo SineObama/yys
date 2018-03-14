@@ -12,7 +12,6 @@ public abstract class BaseDoT extends BaseBeforeActionBuff implements DoT {
     /**
      * @param last 持续回合数。必须为正。
      * @param name buff名称。
-     * @param self
      */
     public BaseDoT(int last, String name, Entity src) {
         super(last, name, src);

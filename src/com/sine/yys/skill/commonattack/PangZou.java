@@ -10,7 +10,7 @@ import java.util.Collections;
  * 镰鼬-胖揍。
  */
 public class PangZou extends BaseCommonAttack {
-    private DebuffEffect effect = new PangZouEffect(getPct());
+    private final DebuffEffect effect = new PangZouEffect(getPct());
 
     @Override
     public String getName() {

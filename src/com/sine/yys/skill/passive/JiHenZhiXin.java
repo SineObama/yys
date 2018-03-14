@@ -11,7 +11,7 @@ import com.sine.yys.inter.EventHandler;
  * 般若-嫉恨之心。
  */
 public class JiHenZhiXin extends BasePassiveSkill implements PassiveSkill, EventHandler<AttackEvent> {
-    private DebuffEffect effect = new FengYinEffect(getPct(), getLast(), getName());
+    private final DebuffEffect effect = new FengYinEffect(getPct(), getLast(), getName());
 
     @Override
     public String getName() {

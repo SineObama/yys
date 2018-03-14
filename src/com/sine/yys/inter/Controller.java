@@ -10,9 +10,6 @@ import java.util.Collection;
 public interface Controller extends DamageController {
     /**
      * 添加一个动作
-     *
-     * @param prior
-     * @param action
      */
     void addAction(int prior, CallBack action);
 
