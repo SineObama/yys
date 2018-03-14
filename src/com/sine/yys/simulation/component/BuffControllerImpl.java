@@ -122,6 +122,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
 
     @Override
     public <T> void remove(Class<T> clazz) {
+        map.get(clazz).onRemove();
         map.remove(clazz);
     }
 
