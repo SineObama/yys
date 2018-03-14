@@ -12,10 +12,7 @@ import com.sine.yys.skill.operation.OperationImpl;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 战场中的实体，保存了式神信息{@link Shikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
@@ -59,7 +56,7 @@ public class EntityImpl extends SimpleObject implements Entity {
     void action() {
         final Operation operation;
         // 判断是否有行动控制debuff，进行相关操作。
-        final List<ControlBuff> controlBuffs = this.buffController.getControlBuffs();
+        final Collection<ControlBuff> controlBuffs = this.buffController.getControlBuffs();
         if (controlBuffs.isEmpty()) {  // 无行动控制debuff
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
@@ -83,7 +80,7 @@ public class EntityImpl extends SimpleObject implements Entity {
 
         } else {  // 受行动控制debuff影响
 
-            ControlBuff controlBuff = controlBuffs.get(0);
+            ControlBuff controlBuff = controlBuffs.iterator().next();
             log.info(Msg.info(this, "受行动控制debuff", controlBuff.getName(), "影响"));
             if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
                 final List<Entity> allAlive = new ArrayList<>();
@@ -252,7 +249,7 @@ public class EntityImpl extends SimpleObject implements Entity {
 
     @Override
     public boolean mitamaSealed() {
-        for (IBuff iBuff : buffController.getMap().values()) {
+        for (IBuff iBuff : buffController.getAll()) {
             if (iBuff instanceof SealMitama)
                 return true;
         }
@@ -261,7 +258,7 @@ public class EntityImpl extends SimpleObject implements Entity {
 
     @Override
     public boolean passiveSealed() {
-        for (IBuff iBuff : buffController.getMap().values()) {
+        for (IBuff iBuff : buffController.getAll()) {
             if (iBuff instanceof SealPassive)
                 return true;
         }
