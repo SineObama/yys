@@ -4,17 +4,16 @@ import com.sine.yys.skill.XueZhiHuaHai;
 import com.sine.yys.skill.commonattack.SiWangZhiHua;
 import com.sine.yys.skill.passive.ChiTuanHua;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * 彼岸花。
  */
 public class BiAnHua extends BaseShikigami {
     public BiAnHua() {
-        super(new ArrayList<>(), "彼岸花", 3002);
-        skills.add(new SiWangZhiHua());
-        final XueZhiHuaHai xueZhiHuaHai = new XueZhiHuaHai();
-        skills.add(new ChiTuanHua(xueZhiHuaHai));
-        skills.add(xueZhiHuaHai);
+        super(() -> {
+            final XueZhiHuaHai xueZhiHuaHai = new XueZhiHuaHai();
+            return Arrays.asList(new SiWangZhiHua(), new ChiTuanHua(xueZhiHuaHai), xueZhiHuaHai);
+        }, "彼岸花", 3002);
     }
 }

@@ -1,6 +1,6 @@
 package com.sine.yys.inter;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * 式神。
@@ -11,7 +11,7 @@ import java.util.List;
 public interface Shikigami extends Named {
     OperationHandler getAI();
 
-    List<? extends Skill> getSkills();
+    Collection<? extends Skill> getSkills();
 
     double getOriginAttack();
 }
