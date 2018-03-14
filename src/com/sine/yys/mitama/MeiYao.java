@@ -1,15 +1,13 @@
 package com.sine.yys.mitama;
 
-import com.sine.yys.effect.AddDebuffEffect;
-import com.sine.yys.effect.HunLuanEffect;
-import com.sine.yys.inter.Mitama;
+import com.sine.yys.buff.debuff.HunLuan;
+import com.sine.yys.inter.Debuff;
+import com.sine.yys.inter.Entity;
 
 /**
  * 魅妖。
  */
-public class MeiYao extends BaseDebuffMitama implements Mitama {
-    private final HunLuanEffect hunLuanEffect = new HunLuanEffect(getPct(), getName());
-
+public class MeiYao extends BaseDebuffMitama {
     @Override
     public String getName() {
         return "魅妖";
@@ -20,7 +18,7 @@ public class MeiYao extends BaseDebuffMitama implements Mitama {
     }
 
     @Override
-    AddDebuffEffect getEffect() {
-        return hunLuanEffect;
+    public Debuff getDebuff(Entity self) {
+        return new HunLuan(self);
     }
 }
