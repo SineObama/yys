@@ -6,7 +6,7 @@ import com.sine.yys.inter.Entity;
 /**
  * 防御减少debuff。
  */
-public class ReduceDefense extends BaseCommonIBuff implements DispellableDebuff {
+public abstract class ReduceDefense extends BaseCommonIBuff implements DispellableDebuff {
     private final double defPct;
 
     /**
