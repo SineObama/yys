@@ -44,7 +44,7 @@ public class DiZangXiang extends BaseMitama implements Mitama, EventHandler<BeCr
         final double value = self.getMaxLife() * getShieldByMaxLife();
         Controller controller = getController();
         self.getBuffController().add(new DiZangXiangShield(controller.calcCritical(self, value), self));
-        for (Entity entity : controller.getCamp(self).getAllAlive()) {
+        for (Entity entity : getOwn().getAllAlive()) {
             if (entity == self)
                 continue;
             if (RandUtil.success(getPct())) {

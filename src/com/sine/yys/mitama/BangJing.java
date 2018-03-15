@@ -26,7 +26,7 @@ public class BangJing extends BaseMitama implements Mitama, EventHandler<BattleS
 
     @Override
     public void doInit(Controller controller, Entity self) {
-        controller.getCamp(self).getEventController().add(this);
+        getOwn().getEventController().add(this);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class BangJing extends BaseMitama implements Mitama, EventHandler<BattleS
         log.info(Msg.trigger(self, BangJing.this));
         final double value = self.getMaxLife() * getShieldByMaxLife();
         Controller controller = getController();
-        for (Entity entity : controller.getCamp(self).getAllAlive()) {
+        for (Entity entity : getOwn().getAllAlive()) {
             entity.getBuffController().add(new BangJingShield(controller.calcCritical(self, value), self));
         }
     }

@@ -75,7 +75,7 @@ public class ControllerImpl implements Controller {
         self.eventController.trigger(new AttackEvent(self, target));
 
         // XXXXX 像这种每次都调用是不是不好、太慢
-        this.getCamp(target).getEventController().triggerOff(new BeAttackEvent());
+        target.getCamp().getEventController().triggerOff(new BeAttackEvent());
         target.getEventController().triggerOff(new BeAttackEvent());
 
         // 1.
@@ -255,15 +255,14 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void xieZhan(Entity self, Entity target) {
-        // 目标死亡则随机攻击另一个目标
-        Camp own = getCamp(self);
-        if (!own.getOpposite().contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
+    public void xieZhan(Entity self0, Entity target) {
+        EntityImpl self = (EntityImpl) self0;
+        if (!self.getCamp().getOpposite().contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
             log.info(Msg.vector(target, "不在", self, "敌方阵营中，随机协战"));
-            target = own.getOpposite().randomTarget();
+            target = self.getCamp().getOpposite().randomTarget();
         }
         if (target != null)
-            ((EntityImpl) self).getCommonAttack().xieZhan(this, self, target);
+            self.getCommonAttack().xieZhan(this, self, target);
     }
 
     /**
