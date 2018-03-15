@@ -9,8 +9,8 @@ import com.sine.yys.inter.Entity;
 public class ReduceCure extends BaseCommonIBuff {
     private final double cure;
 
-    public ReduceCure(int last, String name, Entity src, double cure) {
-        super(last, name, src);
+    public ReduceCure(int last, String prefix, Entity src, double cure) {
+        super(last, prefix + "-减疗", src);
         this.cure = -cure;
     }
 

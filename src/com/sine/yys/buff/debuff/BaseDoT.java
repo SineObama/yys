@@ -10,11 +10,12 @@ import com.sine.yys.util.Msg;
  */
 public abstract class BaseDoT extends BaseBeforeActionBuff implements DoT {
     /**
-     * @param last 持续回合数。必须为正。
-     * @param name buff名称。
+     * @param last   持续回合数。必须为正。
+     * @param prefix buff名称。
+     * @param src    来源式神。
      */
-    public BaseDoT(int last, String name, Entity src) {
-        super(last, name, src);
+    BaseDoT(int last, String prefix, Entity src) {
+        super(last, prefix + "-持续伤害", src);
     }
 
     @Override

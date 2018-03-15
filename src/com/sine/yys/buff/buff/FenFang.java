@@ -8,7 +8,7 @@ import com.sine.yys.inter.Entity;
  * 花鸟卷-花鸟相闻-芬芳。
  */
 public class FenFang extends BaseBeforeActionBuff implements DispellableBuff {
-    final double secondPct, thirdPct;
+    private final double secondPct, thirdPct;
 
     public FenFang(Entity src, double secondPct, double thirdPct) {
         super(2, "芬芳", src);
