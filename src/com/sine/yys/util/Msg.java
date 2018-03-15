@@ -37,7 +37,7 @@ public class Msg {
             } else if (object instanceof Named) {
                 sequences[i] = ((Named) object).getName();
             } else {
-                sequences[i] = object.toString();
+                sequences[i] = String.valueOf(object);
             }
         }
         return String.join(" ", sequences);
