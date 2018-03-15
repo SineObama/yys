@@ -78,6 +78,8 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
                 set.remove(buff);
                 log.info(Msg.info(self, buff.getName(), "效果消失了"));
             }
+            if (self.isDead())
+                break;
         }
     }
 
