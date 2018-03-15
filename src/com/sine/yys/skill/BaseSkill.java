@@ -3,6 +3,7 @@ package com.sine.yys.skill;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.*;
+import com.sine.yys.util.JSON;
 
 import java.util.logging.Logger;
 
@@ -10,7 +11,7 @@ import java.util.logging.Logger;
  * 技能通用逻辑。
  * 包括CD的设定，战斗中CD的保存，所属式神的引用。
  */
-public abstract class BaseSkill implements Skill {
+public abstract class BaseSkill implements Skill, JSONable {
     protected static final String CD = "CD";
     protected final Logger log = Logger.getLogger(this.getClass().getName());
     private boolean prepared = false;  // 用于处理buff回合数衰减。调用beforeAction()后为true。在2个状态之间转换
@@ -121,6 +122,11 @@ public abstract class BaseSkill implements Skill {
     }
 
     public void doInit(Controller controller, Entity self) {
+    }
+
+    @Override
+    public String toJSON() {
+        return JSON.format("name", getName(), "CD", getCD());
     }
 
     protected class SealablePassiveHandler implements Sealable {

@@ -1,9 +1,11 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.JSONable;
 import com.sine.yys.inter.Position;
+import com.sine.yys.util.JSON;
 
-public class PositionImpl implements Position {
+public class PositionImpl implements Position, JSONable {
     private final Entity source;
     private Entity current;
 
@@ -27,5 +29,17 @@ public class PositionImpl implements Position {
     @Override
     public void setCurrent(Entity entity) {
         current = entity;
+    }
+
+    @Override
+    public String toString() {
+        return current.toString();
+    }
+
+    @Override
+    public String toJSON() {
+        if (source == current)
+            return JSON.format("cur", current);
+        return JSON.format("src", source, "cur", current);
     }
 }

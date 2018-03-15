@@ -86,82 +86,90 @@ public class Simulator {
         if (!started)
             init();
 
-        // 获取下一行动式神
-        SimpleObject self0 = next();
+        try {
 
-        // 战场鲤鱼旗（等独立实体）行动。
-        // XXXX 暂时采用直接调用的方式，跳过后面的鬼火仓库、技能调用……
-        if (!(self0 instanceof EntityImpl)) {
-            self0.setPosition(0);
-            self0.action();
-            return;
-        }
-        EntityImpl self = (EntityImpl) self0;
+            // 获取下一行动式神
+            final SimpleObject self0 = next();
 
-        /*
-         * 整个行动，包括鬼火处理、技能处理、事件触发、行动后的反击等。
-         * 多次行动不会返回。
-         */
+            // 战场鲤鱼旗（等独立实体）行动。
+            // XXXX 暂时采用直接调用的方式，跳过后面的鬼火仓库、技能调用……
+            if (!(self0 instanceof EntityImpl)) {
+                self0.setPosition(0);
+                self0.action();
+                return;
+            }
+            final EntityImpl self = (EntityImpl) self0;
 
-        // 预备推进鬼火行动条
-        self.fireRepo.ready();
+            /*
+             * 整个行动，包括鬼火处理、技能处理、事件触发、行动后的反击等。
+             * 多次行动不会返回。
+             */
 
-        // 用于多次行动
-        do {
-            round += 1;
-            log.info(Msg.info(self, "行动，序号", round));
+            // 预备推进鬼火行动条
+            self.fireRepo.ready();
 
-            // 重置行动条
-            self.setPosition(0);
+            // 用于多次行动
+            do {
+                round += 1;
+                log.info(Msg.info(self, "行动，序号", round));
 
-            for (Skill skill : self.shikigami.getSkills())
-                skill.beforeAction();
+                // 重置行动条
+                self.setPosition(0);
 
-            // 行动前事件
-            // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
-            self.eventController.trigger(new BeforeActionEvent(self));
-            self.camp.getEventController().trigger(new BeforeActionEvent(self));
+                for (Skill skill : self.shikigami.getSkills())
+                    skill.beforeAction();
 
-            controller.afterMovement();
+                // 行动前事件
+                // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
+                self.eventController.trigger(new BeforeActionEvent(self));
+                self.camp.getEventController().trigger(new BeforeActionEvent(self));
 
-            // XXXX 行动前事件死了的影响
-            // 包括执行持续伤害
-            self.buffController.beforeAction(controller, self);
-
-            if (!self.isDead())
-                self.action();
-
-            controller.afterMovement();
-
-            // 一般buff回合数-1
-            self.buffController.afterAction(controller, self);
-
-            // 行动后事件
-            self.eventController.trigger(new AfterActionEvent(self));
-            self.camp.getEventController().trigger(new AfterActionEvent(self));
-
-            for (Skill skill : self.shikigami.getSkills())
-                skill.afterAction();
-
-            // 完成推进鬼火行动条
-            self.fireRepo.finish();
-
-            log.info(Msg.info(self, "行动结束，序号", round));
-            if (checkWin())
-                break;
-
-            // 回合后的行动，如反击等。通过回调实现。
-            CallBack action = controller.getFirstAction();
-            while (action != null) {
-                action.call();
                 controller.afterMovement();
+
+                // XXXX 行动前事件死了的影响
+                // 包括执行持续伤害
+                self.buffController.beforeAction(controller, self);
+
+                if (!self.isDead())
+                    self.action();
+
+                controller.afterMovement();
+
+                // 一般buff回合数-1
+                self.buffController.afterAction(controller, self);
+
+                // 行动后事件
+                self.eventController.trigger(new AfterActionEvent(self));
+                self.camp.getEventController().trigger(new AfterActionEvent(self));
+
+                for (Skill skill : self.shikigami.getSkills())
+                    skill.afterAction();
+
+                // 完成推进鬼火行动条
+                self.fireRepo.finish();
+
+                log.info(Msg.info(self, "行动结束，序号", round));
                 if (checkWin())
                     break;
-                action = controller.getFirstAction();
-            }
-            if (checkWin())
-                break;
-        } while (self.getPosition() == 1.0 && !self.isDead());
+
+                // 回合后的行动，如反击等。通过回调实现。
+                CallBack action = controller.getFirstAction();
+                while (action != null) {
+                    action.call();
+                    controller.afterMovement();
+                    if (checkWin())
+                        break;
+                    action = controller.getFirstAction();
+                }
+                if (checkWin())
+                    break;
+            } while (self.getPosition() == 1.0 && !self.isDead());
+
+        } catch (Exception e) {
+            log.severe(camp0.toJSON());
+            log.severe(camp1.toJSON());
+            throw e;
+        }
     }
 
     private boolean checkWin() {

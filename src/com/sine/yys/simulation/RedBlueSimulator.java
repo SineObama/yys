@@ -1,6 +1,7 @@
 package com.sine.yys.simulation;
 
 import com.sine.yys.simulation.component.*;
+import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 
 import java.util.Collections;
@@ -28,25 +29,31 @@ public class RedBlueSimulator {
     }
 
     public void test(int times) {
-        start = System.currentTimeMillis();
-        for (int i = 0; i < times; i++) {
-            BaseCamp red = new PVPCamp(redName, 3);
-            BaseCamp blue = new PVPCamp(buleName, 3);
-            for (EntityInfo info : redInfo.infos) {
-                red.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen)));
+        int i = 1;
+        try {
+            start = System.currentTimeMillis();
+            for (; i <= times; i++) {
+                BaseCamp red = new PVPCamp(redName, 3);
+                BaseCamp blue = new PVPCamp(buleName, 3);
+                for (EntityInfo info : redInfo.infos) {
+                    red.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen)));
+                }
+                for (EntityInfo info : blueInfo.infos) {
+                    blue.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen)));
+                }
+                Simulator simulator = new Simulator(red, blue, Collections.singletonList(new BattleKoinobori(128.0)));
+                while (simulator.getWin() == null)
+                    simulator.step();
+                String winName = simulator.getWin().getName();
+                log.info(Msg.join("测试", (i + 1), winName, "胜利"));
+                count.put(winName, count.get(winName) + 1);
             }
-            for (EntityInfo info : blueInfo.infos) {
-                blue.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen)));
-            }
-            Simulator simulator = new Simulator(red, blue, Collections.singletonList(new BattleKoinobori(128.0)));
-            while (simulator.getWin() == null)
-                simulator.step();
-            String winName = simulator.getWin().getName();
-            log.info(Msg.join("测试", (i + 1), winName, "胜利"));
-            count.put(winName, count.get(winName) + 1);
+            end = System.currentTimeMillis();
+            printResult();
+        } catch (Exception e) {
+            log.severe(JSON.format("test case", i));
+            throw e;
         }
-        end = System.currentTimeMillis();
-        printResult();
     }
 
     public int getRedWins() {
