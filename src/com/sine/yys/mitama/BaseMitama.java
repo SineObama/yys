@@ -1,6 +1,7 @@
 package com.sine.yys.mitama;
 
 import com.sine.yys.inter.*;
+import com.sine.yys.util.JSON;
 
 import java.util.logging.Logger;
 
@@ -9,7 +10,7 @@ import java.util.logging.Logger;
  * 使用嵌套类作为事件监听器。
  * 御魂不再与式神一一关联，只在初始化时把式神传递给监听器。
  */
-public abstract class BaseMitama implements Mitama, Sealable {
+public abstract class BaseMitama implements Mitama, Sealable, JSONable {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
     private Entity self = null;
     private Controller controller = null;
@@ -50,5 +51,10 @@ public abstract class BaseMitama implements Mitama, Sealable {
     @Override
     public boolean sealed() {
         return self.mitamaSealed();
+    }
+
+    @Override
+    public String toJSON() {
+        return JSON.format("name", getName());
     }
 }

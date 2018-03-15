@@ -26,16 +26,12 @@ public class XieZhan extends BasePassiveSkill implements PassiveSkill {
 
     @Override
     protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> {
-            getOwn().getEventController().add(commonAttackHandler);
-        };
+        return event -> getOwn().getEventController().add(commonAttackHandler);
     }
 
     @Override
     public EventHandler<DieEvent> getDieHandler() {
-        return event -> {
-            getOwn().getEventController().remove(commonAttackHandler);
-        };
+        return event -> getOwn().getEventController().remove(commonAttackHandler);
     }
 
     class CommonAttackHandler extends SealablePassiveHandler implements EventHandler<CommonAttackEvent> {

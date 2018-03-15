@@ -18,7 +18,7 @@ public class XiongDiZhiBan extends BaseNoTargetSkill implements ActiveSkill {
     @Override
     public void doApply(Entity target) {
         final Entity self = getSelf();
-        for (Entity entity : getController().getCamp(self).getAllAlive()) {
+        for (Entity entity : getOwn().getAllAlive()) {
             entity.addPosition(getAddPosition());
             entity.getBuffController().add(new XDZBAttackBuff(getLast(), getAttackPct(), self));
             entity.getBuffController().add(new XDZBEffectDefBuff(getLast(), getEffectDef(), self));

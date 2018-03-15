@@ -45,16 +45,12 @@ public class HuaJing extends BasePassiveSkill implements PassiveSkill, EventHand
 
     @Override
     protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> {
-            getOwn().getEventController().add(this);
-        };
+        return event -> getOwn().getEventController().add(this);
     }
 
     @Override
     public EventHandler<DieEvent> getDieHandler() {
-        return event -> {
-            getOwn().getEventController().remove(this);
-        };
+        return event -> getOwn().getEventController().remove(this);
     }
 
     @Override

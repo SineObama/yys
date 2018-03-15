@@ -5,6 +5,7 @@ package com.sine.yys.inter;
  *
  * @param <EventType> 处理的事件类型，也是处理函数的传入参数。
  */
+@FunctionalInterface
 public interface EventHandler<EventType> {
     void handle(EventType event);
 }

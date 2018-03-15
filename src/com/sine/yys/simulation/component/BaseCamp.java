@@ -1,13 +1,14 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.inter.*;
+import com.sine.yys.util.JSON;
 import com.sine.yys.util.RandUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public abstract class BaseCamp implements Camp {
+public abstract class BaseCamp implements Camp, JSONable {
     protected final Logger log = Logger.getLogger(getClass().getName());
 
     private final EventController eventController = new EventControllerImpl();
@@ -134,5 +135,10 @@ public abstract class BaseCamp implements Camp {
     @Override
     public String toString() {
         return getFullName();
+    }
+
+    @Override
+    public String toJSON() {
+        return JSON.format("name", fullName, "position", positions);
     }
 }

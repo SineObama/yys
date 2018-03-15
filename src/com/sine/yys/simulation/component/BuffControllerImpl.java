@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * 通过{@link IBuffProperty}接口返回所有buff相应属性的合计。
  */
 public class BuffControllerImpl implements BuffController, IBuffProperty {
-    private static final Map<Class, Integer> prior = new HashMap<>();// TODO buff存储方式
+    private static final Map<Class, Integer> prior = new HashMap<>();
 
     /*
      * 优先级小的在前面。
@@ -38,7 +38,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
 
     private final Logger log = Logger.getLogger(getClass().getName());
 
-    private final Map<Class, IBuff> map = new HashMap<>();
+    private final Set<IBuff> set = new HashSet<>();
     private final Cure cure = new Cure();
     private final DamageUp damageUp = new DamageUp();
     private final FlagDamage flagDamage = new FlagDamage();
@@ -50,8 +50,12 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     private final EffectHit effectHit = new EffectHit();
     private final EffectDef effectDef = new EffectDef();
 
-    public Object remove(Object shield) {
-        return map.remove(shield.getClass());
+    @Override
+    public Object remove(Object obj) {
+        final IBuff iBuff = (IBuff) obj;
+        if (iBuff != null)
+            iBuff.onRemove();
+        return set.remove(iBuff);
     }
 
     /**
@@ -59,7 +63,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
      */
     public Collection<Shield> getShields() {
         Map<Integer, Shield> sorted = new TreeMap<>();
-        for (Object o : map.values()) {
+        for (Object o : set) {
             if (o instanceof Shield)
                 sorted.put(prior.get(o.getClass()), (Shield) o);
         }
@@ -67,22 +71,24 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     }
 
     public void beforeAction(Controller controller, Entity self) {
-        Collection<IBuff> buffs = new ArrayList<>(map.values());
+        Collection<IBuff> buffs = new ArrayList<>(set);
         for (IBuff buff : buffs) {
             if (buff.beforeAction(controller, self) == 0) {
                 buff.onRemove();
-                map.remove(buff.getClass());
+                set.remove(buff);
                 log.info(Msg.info(self, buff.getName(), "效果消失了"));
             }
+            if (self.isDead())
+                break;
         }
     }
 
     public void afterAction(Controller controller, Entity self) {
-        Collection<IBuff> buffs = new ArrayList<>(map.values());
+        Collection<IBuff> buffs = new ArrayList<>(set);
         for (IBuff buff : buffs) {
             if (buff.afterAction(controller, self) == 0) {
                 buff.onRemove();
-                map.remove(buff.getClass());
+                set.remove(buff);
                 // TODO 输出信息移到buff中？
                 log.info(Msg.info(self, buff.getName(), "效果消失了"));
             }
@@ -91,101 +97,123 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
 
     @Override
     public <T> void add(Combinable<T> buff) {
-        IBuff buff0 = map.get(buff.getClass());
-        if (buff0 != null) {
-            map.put(buff.getClass(), buff0.combineWith((IBuff) buff));
-        } else {
-            map.put(buff.getClass(), (IBuff) buff);
+        for (IBuff iBuff : set) {
+            if (iBuff.getClass() == buff.getClass()) {
+                final IBuff iBuff1 = iBuff.combineWith((IBuff) buff);
+                if (iBuff1 != iBuff) {
+                    set.remove(iBuff);
+                    set.add(iBuff1);
+                }
+                return;
+            }
         }
+        set.add((IBuff) buff);
+    }
+
+    private <T> IBuff find(Class<T> clazz) {
+        for (IBuff iBuff : set) {
+            if (iBuff.getClass() == clazz) {
+                return iBuff;
+            }
+        }
+        return null;
     }
 
     @Override
     public <T> T get(Class<T> clazz) {
-        return (T) map.get(clazz);
+        return clazz.cast(find(clazz));
     }
 
     @Override
     public <T> boolean contain(Class<T> clazz) {
-        return map.get(clazz) != null;
+        return find(clazz) != null;
     }
 
-    public Map<Class, IBuff> getMap() {
-        return map;
+    public Collection<IBuff> getAll() {
+        return set;
     }
 
     /**
      * 获取行动控制效果，按控制优先级返回。
      */
-    public List<ControlBuff> getControlBuffs() {
-        List<ControlBuff> list = new ArrayList<>();
-        for (IBuff buff : map.values()) {
+    public Collection<ControlBuff> getControlBuffs() {
+        Map<Integer, ControlBuff> list = new TreeMap<>();
+        for (IBuff buff : set) {
             if (buff instanceof ControlBuff)
-                list.add((ControlBuff) buff);
+                list.put(prior.get(buff.getClass()), (ControlBuff) buff);
         }
-        return list;
+        return list.values();
     }
 
     @Override
     public <T> void remove(Class<T> clazz) {
-        map.remove(clazz);
+        remove(find(clazz));
     }
 
     @Override
     public double getCure() {
-        return cure.calc(map.values());
+        return cure.calc(set);
     }
 
     @Override
     public double getDamageUp() {
-        return damageUp.calc(map.values());
+        return damageUp.calc(set);
     }
 
     @Override
     public double getFlagDamage() {
-        return flagDamage.calc(map.values());
+        return flagDamage.calc(set);
     }
 
     @Override
     public double getAtkPct() {
-        return atkPct.calc(map.values());
+        return atkPct.calc(set);
     }
 
     @Override
     public double getDefPct() {
-        return defPct.calc(map.values());
+        return defPct.calc(set);
     }
 
     @Override
     public double getSpeed() {
-        return speed.calc(map.values());
+        return speed.calc(set);
     }
 
     @Override
     public double getCritical() {
-        return critical.calc(map.values());
+        return critical.calc(set);
     }
 
     @Override
     public double getCriticalDamage() {
-        return criticalDamage.calc(map.values());
+        return criticalDamage.calc(set);
     }
 
     @Override
     public double getEffectHit() {
-        return effectHit.calc(map.values());
+        return effectHit.calc(set);
     }
 
     @Override
     public double getEffectDef() {
-        return effectDef.calc(map.values());
+        return effectDef.calc(set);
     }
 
     @Override
     public void clear() {
-        Collection<IBuff> buffs = new ArrayList<>(map.values());
-        for (IBuff iBuff : buffs) {
+        for (IBuff iBuff : new ArrayList<>(set))
             iBuff.onRemove();
+        set.clear();
+    }
+
+    @Override
+    public <T> Collection<T> getBuffs(Class<T> clazz) {
+        Collection<T> buffs = new ArrayList<>(5);
+        for (IBuff iBuff : set) {
+            if (clazz.isAssignableFrom(iBuff.getClass()))
+                buffs.add(clazz.cast(iBuff));
         }
-        map.clear();
+        return buffs;
     }
 }

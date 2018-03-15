@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 /**
  * buff通用逻辑。
  * <p>
- * 保存buff名字、持续回合。
+ * 保存buff名字、来源式神、持续回合。
  * 默认所有数值属性为0。
  * <p>
  * 根据减少回合数的时机（行动前和行动后）区分为2类效果。
@@ -24,8 +24,8 @@ public abstract class BaseIBuff implements IBuff {
 
     /**
      * @param last 持续回合数。必须为正。
+     * @param src  来源式神。
      * @param name buff名称。
-     * @param self
      */
     public BaseIBuff(int last, Entity src, String name) {
         this.name = name;
@@ -37,7 +37,7 @@ public abstract class BaseIBuff implements IBuff {
 
     @Override
     public String toString() {
-        String builder = "[" +
+        return "[" +
                 "name=" +
                 name +
                 "," +
@@ -48,7 +48,6 @@ public abstract class BaseIBuff implements IBuff {
                 last +
                 "," +
                 "]";
-        return builder;
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.sine.yys.inter.Entity;
 public class FengYin extends BaseCommonIBuff implements SealPassive, SealMitama, DispellableDebuff {
     /**
      * @param last 持续回合数。必须为正。
-     * @param self
      */
     public FengYin(int last, Entity src) {
         super(last, "封印", src);

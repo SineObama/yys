@@ -22,7 +22,7 @@ public class HuoLing extends BaseMitama implements Mitama, EventHandler<BattleSt
 
     @Override
     public void doInit(Controller controller, Entity self) {
-        controller.getCamp(self).getEventController().add(this);
+        getOwn().getEventController().add(this);
     }
 
     @Override

@@ -9,18 +9,16 @@ import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.*;
 import com.sine.yys.skill.commonattack.CommonAttack;
 import com.sine.yys.skill.operation.OperationImpl;
+import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 战场中的实体，保存了式神信息{@link Shikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
  */
-public class EntityImpl extends SimpleObject implements Entity {
+public class EntityImpl extends SimpleObject implements Entity, JSONable {
     final EventControllerImpl eventController = new EventControllerImpl();
     final BuffControllerImpl buffController = new BuffControllerImpl();
     final Shikigami shikigami;
@@ -59,7 +57,7 @@ public class EntityImpl extends SimpleObject implements Entity {
     void action() {
         final Operation operation;
         // 判断是否有行动控制debuff，进行相关操作。
-        final List<ControlBuff> controlBuffs = this.buffController.getControlBuffs();
+        final Collection<ControlBuff> controlBuffs = this.buffController.getControlBuffs();
         if (controlBuffs.isEmpty()) {  // 无行动控制debuff
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
@@ -83,8 +81,8 @@ public class EntityImpl extends SimpleObject implements Entity {
 
         } else {  // 受行动控制debuff影响
 
-            ControlBuff controlBuff = controlBuffs.get(0);
-            log.info(Msg.info(this, "受行动控制debuff", controlBuff.getName(), "影响"));
+            ControlBuff controlBuff = controlBuffs.iterator().next();
+            log.info(Msg.info(this, "受控制效果", controlBuff, "影响"));
             if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
                 final List<Entity> allAlive = new ArrayList<>();
                 allAlive.addAll(this.camp.getAllAlive());
@@ -123,6 +121,7 @@ public class EntityImpl extends SimpleObject implements Entity {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <V> V get(Object key, V defaultValue) {
         if (map.containsKey(key))
@@ -251,7 +250,7 @@ public class EntityImpl extends SimpleObject implements Entity {
 
     @Override
     public boolean mitamaSealed() {
-        for (IBuff iBuff : buffController.getMap().values()) {
+        for (IBuff iBuff : buffController.getAll()) {
             if (iBuff instanceof SealMitama)
                 return true;
         }
@@ -260,7 +259,7 @@ public class EntityImpl extends SimpleObject implements Entity {
 
     @Override
     public boolean passiveSealed() {
-        for (IBuff iBuff : buffController.getMap().values()) {
+        for (IBuff iBuff : buffController.getAll()) {
             if (iBuff instanceof SealPassive)
                 return true;
         }
@@ -311,5 +310,15 @@ public class EntityImpl extends SimpleObject implements Entity {
 
     public void setFireRepo(FireRepo fireRepo) {
         this.fireRepo = fireRepo;
+    }
+
+    @Override
+    public String toString() {
+        return getFullName();
+    }
+
+    @Override
+    public String toJSON() {
+        return JSON.format("name", getFullName(), "mitama", mitamas, "life", life);
     }
 }

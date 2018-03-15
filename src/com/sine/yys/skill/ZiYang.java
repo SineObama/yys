@@ -74,9 +74,7 @@ public class ZiYang extends BaseActiveSkill implements ActiveSkill {
 
     @Override
     protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> {
-            getOwn().getEventController().add(dieHandler);
-        };
+        return event -> getOwn().getEventController().add(dieHandler);
     }
 
     @Override

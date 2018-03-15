@@ -23,7 +23,7 @@ public class Test {
                 simulator = InputUtil.create("tests/" + i);
                 simulator.test(Integer.valueOf(args[0]));
             }
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignored) {
         }
     }
 }

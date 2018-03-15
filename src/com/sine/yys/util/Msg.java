@@ -34,8 +34,10 @@ public class Msg {
                 sequences[i] = String.format("%f", (Double) object).replaceAll("0*$", "");
             } else if (object instanceof Float) {
                 sequences[i] = String.format("%f", (Float) object).replaceAll("0*$", "");
+            } else if (object instanceof Named) {
+                sequences[i] = ((Named) object).getName();
             } else {
-                sequences[i] = object.toString();
+                sequences[i] = String.valueOf(object);
             }
         }
         return String.join(" ", sequences);
@@ -52,7 +54,7 @@ public class Msg {
     }
 
     public static String addBuff(Target self, Target target, Named buff) {
-        return vector(self, "给", target, "添加" + buff.getName());
+        return vector(self, "给", target, "添加", buff);
     }
 
     public static String noDamage(Target self, Target target) {

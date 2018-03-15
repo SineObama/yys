@@ -1,18 +1,13 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.effect.FengYinEffect;
+import com.sine.yys.buff.debuff.FengYin;
 import com.sine.yys.event.AttackEvent;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.DebuffEffect;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.*;
 
 /**
  * 般若-嫉恨之心。
  */
-public class JiHenZhiXin extends BasePassiveSkill implements PassiveSkill, EventHandler<AttackEvent> {
-    private DebuffEffect effect = new FengYinEffect(getPct(), getLast(), getName());
-
+public class JiHenZhiXin extends BasePassiveSkill implements PassiveSkill, EventHandler<AttackEvent>, DebuffEffect {
     @Override
     public String getName() {
         return "嫉恨之心";
@@ -20,6 +15,16 @@ public class JiHenZhiXin extends BasePassiveSkill implements PassiveSkill, Event
 
     public double getPct() {
         return 0.4;
+    }
+
+    @Override
+    public boolean involveHitAndDef() {
+        return true;
+    }
+
+    @Override
+    public Debuff getDebuff(Entity self) {
+        return new FengYin(getLast(), self);
     }
 
     /**
@@ -31,7 +36,7 @@ public class JiHenZhiXin extends BasePassiveSkill implements PassiveSkill, Event
 
     @Override
     public void handle(AttackEvent event) {
-        getController().applyDebuff(getSelf(), event.getTarget(), effect);
+        getController().applyDebuff(getSelf(), event.getTarget(), this);
     }
 
     @Override

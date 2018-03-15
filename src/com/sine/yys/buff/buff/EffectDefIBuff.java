@@ -10,7 +10,6 @@ public abstract class EffectDefIBuff extends NumIBuff {
     /**
      * @param last   持续回合数。必须为正。
      * @param defPct 防御百分比。
-     * @param self
      */
     public EffectDefIBuff(int last, String name, double defPct, Entity src) {
         super(last, name, defPct, src);

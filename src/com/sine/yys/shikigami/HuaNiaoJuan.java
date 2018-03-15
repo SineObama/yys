@@ -18,6 +18,6 @@ public class HuaNiaoJuan extends BaseShikigami {
 
     @Override
     public OperationHandler getAI() {
-        return new SimpleCureHandler<HuaNiaoXiangWen>(HuaNiaoXiangWen.class, 0.6);
+        return new SimpleCureHandler<>(HuaNiaoXiangWen.class, 0.6);
     }
 }
