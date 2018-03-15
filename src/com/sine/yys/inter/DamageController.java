@@ -15,7 +15,7 @@ public interface DamageController {
     void directDamage(Entity self, int damage);
 
     /**
-     * 治疗。
+     * 治疗。（不会计算暴击）
      *
      * @param target 目标。
      * @param src    原治疗量（包括暴击）。
@@ -24,11 +24,13 @@ public interface DamageController {
     int cure(Entity target, double src);
 
     /**
+     * 治疗。（会计算暴击）
+     *
      * @param self   自身
      * @param target 治疗目标。
      * @param pct    自身生命百分比。
      */
-    int cureByLifePct(Entity self, Entity target, double pct);
+    int cure(Entity self, Entity target, double src);
 
     /**
      * 计算暴击。

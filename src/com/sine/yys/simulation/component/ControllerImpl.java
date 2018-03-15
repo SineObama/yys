@@ -169,8 +169,8 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public int cureByLifePct(Entity self, Entity target, double pct) {
-        return cure(target, calcCritical(self, pct * self.getMaxLife()));
+    public int cure(Entity self, Entity target, double src) {
+        return cure(target, calcCritical(self, src));
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.sine.yys.buff.debuff;
 
-import com.sine.yys.buff.BaseBeforeActionBuff;
+import com.sine.yys.buff.BaseCommonIBuff;
 import com.sine.yys.inter.DamageController;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.util.Msg;
@@ -8,7 +8,7 @@ import com.sine.yys.util.Msg;
 /**
  * 持续伤害基类。
  */
-public abstract class BaseDoT extends BaseBeforeActionBuff implements DoT {
+public abstract class BaseDoT extends BaseCommonIBuff implements DoT {
     /**
      * @param last   持续回合数。必须为正。
      * @param prefix buff名称。
