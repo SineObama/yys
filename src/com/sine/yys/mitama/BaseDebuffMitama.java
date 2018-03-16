@@ -9,8 +9,6 @@ import com.sine.yys.inter.*;
  * 子类只需要重写getEffect改变效果。
  */
 public abstract class BaseDebuffMitama extends BaseMitama implements DebuffEffect, EventHandler<DamageEvent> {
-    public abstract Debuff getDebuff(Entity self);
-
     @Override
     public final void doInit(Controller controller, Entity self) {
         self.getEventController().add(this);
