@@ -12,7 +12,6 @@ import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Logger;
@@ -74,9 +73,8 @@ public class ControllerImpl implements Controller {
 
         self.eventController.trigger(new AttackEvent(self, target));
 
-        // XXXXX 像这种每次都调用是不是不好、太慢
-        target.getCamp().getEventController().triggerOff(new BeAttackEvent());
-        target.getEventController().triggerOff(new BeAttackEvent());
+        target.getCamp().getEventController().trigger(new BeAttackEvent());
+        target.getEventController().trigger(new BeAttackEvent());
 
         // 1.
         final boolean critical = RandUtil.success(self.getCritical());
@@ -276,13 +274,13 @@ public class ControllerImpl implements Controller {
         camp1.getEventController().trigger(new AfterMovementEvent());
 
         // 重置事件状态
-        camp0.getEventController().setState(BeAttackEvent.class, true);
-        camp1.getEventController().setState(BeAttackEvent.class, true);
+        camp0.eventController.clear();
+        camp1.eventController.clear();
         for (EntityImpl entity : camp0.getAllAlive()) {
-            entity.getEventController().setState(BeAttackEvent.class, true);
+            entity.eventController.clear();
         }
         for (EntityImpl entity : camp1.getAllAlive()) {
-            entity.getEventController().setState(BeAttackEvent.class, true);
+            entity.eventController.clear();
         }
     }
 
@@ -325,7 +323,6 @@ public class ControllerImpl implements Controller {
 
     private <T extends IBuff> int dispel(Entity target, final int count, Class<T> clazz) {
         int left = count;
-        final Iterator<? extends T> iterator = target.getBuffController().getBuffs(clazz).iterator();
         for (T t : target.getBuffController().getBuffs(clazz)) {
             if (left <= 0)
                 break;

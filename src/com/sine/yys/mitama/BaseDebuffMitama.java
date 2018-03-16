@@ -1,7 +1,10 @@
 package com.sine.yys.mitama;
 
 import com.sine.yys.event.DamageEvent;
-import com.sine.yys.inter.*;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.DebuffEffect;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventHandler;
 
 /**
  * 附加debuff的御魂效果通用逻辑。
