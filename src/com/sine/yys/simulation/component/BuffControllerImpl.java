@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.buff.buff.BattleFlag;
 import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.debuff.HunLuan;
 import com.sine.yys.buff.debuff.XuanYun;
@@ -202,9 +203,13 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
 
     @Override
     public void clear() {
+        final BattleFlag battleFlag = get(BattleFlag.class);
         for (IBuff iBuff : new ArrayList<>(set))
-            iBuff.onRemove();
+            if (iBuff != battleFlag)
+                iBuff.onRemove();
         set.clear();
+        if (battleFlag != null)
+            set.add(battleFlag);
     }
 
     @Override
