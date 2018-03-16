@@ -1,9 +1,9 @@
 package com.sine.yys.shikigami;
 
 import com.sine.yys.inter.OperationHandler;
+import com.sine.yys.shikigami.operation.SimpleCureHandler;
 import com.sine.yys.skill.HuaNiaoXiangWen;
 import com.sine.yys.skill.commonattack.GuiNiao;
-import com.sine.yys.skill.operation.SimpleCureHandler;
 import com.sine.yys.skill.passive.HuaJing;
 
 import java.util.Arrays;
