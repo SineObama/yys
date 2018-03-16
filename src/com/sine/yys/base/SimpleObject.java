@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.base;
 
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Target;
@@ -21,12 +21,12 @@ public abstract class SimpleObject implements Target {
         this.speed = speed;
     }
 
-    final void init(Controller controller) {
+    public final void init(Controller controller) {
         this.controller = controller;
         doInit();
     }
 
-    abstract void action();
+    public abstract void action();
 
     protected abstract void doInit();
 

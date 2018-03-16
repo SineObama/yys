@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.base.SimpleObject;
 import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.debuff.HunLuan;
 import com.sine.yys.buff.debuff.SealMitama;
@@ -54,7 +55,7 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
     /**
      * 式神自身的行动逻辑。
      */
-    void action() {
+    public void action() {
         final Operation operation;
         // 判断是否有行动控制debuff，进行相关操作。
         final Collection<ControlBuff> controlBuffs = this.buffController.getControlBuffs();

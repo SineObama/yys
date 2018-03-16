@@ -1,10 +1,10 @@
 package com.sine.yys.mitama;
 
 import com.sine.yys.base.BaseComponent;
-import com.sine.yys.inter.*;
+import com.sine.yys.inter.JSONable;
+import com.sine.yys.inter.Mitama;
+import com.sine.yys.inter.Sealable;
 import com.sine.yys.util.JSON;
-
-import java.util.logging.Logger;
 
 /**
  * 御魂通用逻辑。
