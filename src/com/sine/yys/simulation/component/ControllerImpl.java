@@ -149,8 +149,10 @@ public class ControllerImpl implements Controller {
         doDamage(self, damage);
     }
 
-    @Override
-    public int cure(Entity target0, double src) {
+    /**
+     * 治疗。（不会计算暴击）
+     */
+    private int cure(Entity target0, double src) {
         EntityImpl target = (EntityImpl) target0;
         final double coefficient = target.getCureCoefficient();
         int count;

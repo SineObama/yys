@@ -107,7 +107,7 @@ public class ZiYang extends BaseActiveSkill implements ActiveSkill {
             energy /= num;  // 每人治疗量
             for (ShikigamiEntity shikigamiEntity : allShikigami) {
                 if (shikigamiEntity != choosed)
-                    getController().cure(shikigamiEntity, energy);
+                    getController().cure(getSelf(), shikigamiEntity, energy);
             }
         };
 
