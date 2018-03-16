@@ -1,12 +1,11 @@
 package com.sine.yys.buff;
 
-import com.sine.yys.buff.debuff.DispellableDebuff;
 import com.sine.yys.inter.Entity;
 
 /**
  * 速度。
  */
-public abstract class SpeedIBuff extends NumIBuff implements DispellableDebuff {
+public abstract class SpeedIBuff extends NumIBuff {
     /**
      * @param last   持续回合数。必须为正。
      * @param prefix 名称前缀。

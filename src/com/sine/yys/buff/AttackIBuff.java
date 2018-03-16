@@ -1,12 +1,11 @@
 package com.sine.yys.buff;
 
-import com.sine.yys.buff.buff.DispellableBuff;
 import com.sine.yys.inter.Entity;
 
 /**
  * 攻击增减buff（按百分比）。
  */
-public abstract class AttackIBuff extends NumIBuff implements DispellableBuff {
+public abstract class AttackIBuff extends NumIBuff {
     /**
      * @param last   持续回合数。必须为正。
      * @param prefix 名称。
