@@ -91,6 +91,7 @@ public class ControllerImpl implements Controller {
 
         // 2.
         damage *= self.getDamageCoefficient();
+        damage *= attackInfo.randomFloat();
 
         // 3.
         int remain = breakShield(target, (int) damage);
