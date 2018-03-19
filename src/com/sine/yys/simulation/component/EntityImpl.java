@@ -1,10 +1,10 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.base.SimpleObject;
-import com.sine.yys.buff.debuff.ControlBuff;
-import com.sine.yys.buff.debuff.HunLuan;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
+import com.sine.yys.buff.debuff.control.ControlBuff;
+import com.sine.yys.buff.debuff.control.HunLuan;
 import com.sine.yys.event.FinishActionEvent;
 import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.*;

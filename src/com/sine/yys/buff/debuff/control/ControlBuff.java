@@ -1,4 +1,4 @@
-package com.sine.yys.buff.debuff;
+package com.sine.yys.buff.debuff.control;
 
 import com.sine.yys.inter.Debuff;
 
