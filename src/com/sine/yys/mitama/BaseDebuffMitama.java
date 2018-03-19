@@ -19,7 +19,7 @@ public abstract class BaseDebuffMitama extends BaseMitama implements DebuffEffec
 
     @Override
     public final void handle(DamageEvent event) {
-        event.getController().applyDebuff(event.getEntity(), event.getTarget(), this);
+        getController().applyDebuff(event.getEntity(), event.getTarget(), this);
     }
 
     @Override

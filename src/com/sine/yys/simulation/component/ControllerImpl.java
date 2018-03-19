@@ -133,7 +133,7 @@ public class ControllerImpl implements Controller {
             damage = damageShareEvent.getLeft();
 
             // 附加效果
-            self.eventController.trigger(new DamageEvent(this, self, target));
+            self.eventController.trigger(new DamageEvent(self, target));
             log.info(Msg.damage(self, target, (int) damage, critical));
             doDamage(target, (int) damage);
             if (target.getLifeInt() == 0)
