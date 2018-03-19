@@ -1,6 +1,6 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.event.BeDamageEvent;
+import com.sine.yys.event.LostLifeEvent;
 import com.sine.yys.event.BeforeActionEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
@@ -54,9 +54,9 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventH
         }
     }
 
-    class BeDamageHandler extends SealablePassiveHandler implements EventHandler<BeDamageEvent> {
+    class BeDamageHandler extends SealablePassiveHandler implements EventHandler<LostLifeEvent> {
         @Override
-        public void handle(BeDamageEvent event) {
+        public void handle(LostLifeEvent event) {
             final int src = xueZhiHuaHai.getMaxLevel(event.getSrc());
             final int dst = xueZhiHuaHai.getMaxLevel(event.getDst());
             if (src != dst) {

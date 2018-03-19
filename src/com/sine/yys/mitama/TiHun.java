@@ -51,7 +51,13 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
 
     @Override
     protected EventHandler<DieEvent> getDieHandler() {
-        return event -> getOwn().getEventController().remove(this);
+        return event -> {
+            getOwn().getEventController().remove(this);
+            if (target != null) {
+                target.getEventController().remove(damageShareHandler);
+                target = null;
+            }
+        };
     }
 
     @Override

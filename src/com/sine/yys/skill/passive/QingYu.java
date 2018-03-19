@@ -83,9 +83,9 @@ public class QingYu extends BasePassiveSkill implements PassiveSkill, EventHandl
         getController().cure(self, entity, count);
     }
 
-    class BeDamageHandler extends SealablePassiveHandler implements EventHandler<BeDamageEvent> {
+    class BeDamageHandler extends SealablePassiveHandler implements EventHandler<LostLifeEvent> {
         @Override
-        public void handle(BeDamageEvent event) {
+        public void handle(LostLifeEvent event) {
             addEnergy((int) (event.getCount() * getLostLifeCoefficient()));
         }
     }

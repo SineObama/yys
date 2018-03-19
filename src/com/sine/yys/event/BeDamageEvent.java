@@ -1,30 +1,19 @@
 package com.sine.yys.event;
 
+import com.sine.yys.inter.Entity;
+
 /**
- * 受到伤害事件。多段攻击也算。
- * 记录受伤前后生命百分比。
- * 记录损失生命量。
+ * 受到伤害事件。
+ * 多段攻击也算。
+ * 记录双方。
+ *
+ * 目前想到的用途：
+ * 1. 受到伤害时回复鬼火（等）；
+ * 2. 薙魂时受到伤害触发小僧被动；
+ * 3. 薙魂时受到伤害触发犬神反击；
  */
-public class BeDamageEvent extends BaseEvent implements Event {
-    final double src;
-    final double dst;
-    final double count;
-
-    public BeDamageEvent(double src, double dst, double count) {
-        this.src = src;
-        this.dst = dst;
-        this.count = count;
-    }
-
-    public double getSrc() {
-        return src;
-    }
-
-    public double getDst() {
-        return dst;
-    }
-
-    public double getCount() {
-        return count;
+public class BeDamageEvent extends BaseVectorEvent implements Event {
+    public BeDamageEvent(Entity entity, Entity target) {
+        super(entity, target);
     }
 }

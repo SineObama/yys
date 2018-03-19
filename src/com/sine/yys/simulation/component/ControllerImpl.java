@@ -154,21 +154,21 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void directDamage(Entity src, Entity self0, int damage) {
-        if (self0.isDead())  // XXXX 每次都判断死亡是不是太难看
-            return;
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
         log.info(Msg.info(self, "受到伤害", damage));
-        doDamage(self, damage);
+        if (damage > 0) {
+            self.eventController.trigger(new BeDamageEvent(src, self));
+            doDamage(self, damage);
+        }
     }
 
     public void buffDamage(Entity self0, int damage) {
-        if (self0.isDead())  // XXXX 每次都判断死亡是不是太难看
-            return;
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
         log.info(Msg.info(self, "受到伤害", damage));
-        doDamage(self, damage);
+        if (damage > 0)
+            doDamage(self, damage);
     }
 
     /**
@@ -196,14 +196,14 @@ public class ControllerImpl implements Controller {
     }
 
     /**
-     * 直接减少目标生命，触发{@link BeDamageEvent}事件。
+     * 直接减少目标生命，触发{@link LostLifeEvent}事件。
      */
     private void doDamage(EntityImpl target, int damage) {
         final double src = target.getLife();
         final int srcLife = target.getLifeInt();
         final int life = target.reduceLife(damage);
         final double dst = target.getLife();
-        final BeDamageEvent event = new BeDamageEvent(src, dst, srcLife - life);
+        final LostLifeEvent event = new LostLifeEvent(src, dst, srcLife - life);
         target.getEventController().trigger(event);
         target.getCamp().getEventController().trigger(event);
         if (life == 0) {
