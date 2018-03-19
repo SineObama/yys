@@ -1,4 +1,4 @@
-package com.sine.yys.skill.operation;
+package com.sine.yys.shikigami.operation;
 
 import com.sine.yys.inter.*;
 
@@ -11,10 +11,15 @@ import java.util.Map;
 public class SimpleCureHandler<T> extends AutoOperationHandler implements OperationHandler {
     private final Class<T> cureSkillClass;
     private final double lifePct;
+    private final boolean needTarget;
 
-    public SimpleCureHandler(Class<T> cureSkillClass, double lifePct) {
+    /**
+     * @param needTarget 技能是否需要指定目标。一般全体治疗不需要。
+     */
+    public SimpleCureHandler(Class<T> cureSkillClass, double lifePct, boolean needTarget) {
         this.cureSkillClass = cureSkillClass;
         this.lifePct = lifePct;
+        this.needTarget = needTarget;
     }
 
     @Override
@@ -23,7 +28,7 @@ public class SimpleCureHandler<T> extends AutoOperationHandler implements Operat
             if (cureSkillClass.isAssignableFrom(activeSkill.getClass())) {
                 ShikigamiEntity shikigamiEntity = own.getLeastLifeShikigami();
                 if (shikigamiEntity.getLife() < lifePct)
-                    return new OperationImpl(shikigamiEntity, activeSkill);
+                    return new OperationImpl(needTarget ? shikigamiEntity : null, activeSkill);
                 map.remove(activeSkill);
                 break;
             }

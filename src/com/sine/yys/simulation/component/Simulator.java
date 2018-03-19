@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.base.SimpleObject;
 import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;

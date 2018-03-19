@@ -1,19 +1,24 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.buff.debuff.ControlBuff;
-import com.sine.yys.buff.debuff.HunLuan;
+import com.sine.yys.base.SimpleObject;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
+import com.sine.yys.buff.debuff.control.ChaoFeng;
+import com.sine.yys.buff.debuff.control.ChenMo;
+import com.sine.yys.buff.debuff.control.HunLuan;
+import com.sine.yys.buff.debuff.control.Unmovable;
 import com.sine.yys.event.FinishActionEvent;
-import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.*;
+import com.sine.yys.shikigami.operation.OperationImpl;
 import com.sine.yys.skill.commonattack.CommonAttack;
-import com.sine.yys.skill.operation.OperationImpl;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 战场中的实体，保存了式神信息{@link Shikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
@@ -54,11 +59,13 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
     /**
      * 式神自身的行动逻辑。
      */
-    void action() {
+    public void action() {
+        log.info(Msg.info(this, "当前鬼火", this.fireRepo.getFire()));
+
         final Operation operation;
         // 判断是否有行动控制debuff，进行相关操作。
-        final Collection<ControlBuff> controlBuffs = this.buffController.getControlBuffs();
-        if (controlBuffs.isEmpty()) {  // 无行动控制debuff
+        final ControlBuff controlBuff = this.buffController.getFirstControlBuff();
+        if (controlBuff == null) {  // 无行动控制debuff
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
             for (ActiveSkill activeSkill : this.getActiveSkills()) {
@@ -69,7 +76,7 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
                 }
                 if (this.fireRepo.getFire() < activeSkill.getFire())
                     continue;
-                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this.getCamp(), this);
+                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this.camp, this);
                 if (targets != null)
                     map.put(activeSkill, targets);
             }
@@ -81,7 +88,6 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
 
         } else {  // 受行动控制debuff影响
 
-            ControlBuff controlBuff = controlBuffs.iterator().next();
             log.info(Msg.info(this, "受控制效果", controlBuff, "影响"));
             if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
                 final List<Entity> allAlive = new ArrayList<>();
@@ -89,7 +95,24 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
                 allAlive.addAll(this.camp.getOpposite().getAllAlive());
                 allAlive.remove(this);
                 operation = new OperationImpl(RandUtil.choose(allAlive), this.getCommonAttack());
+            } else if (controlBuff instanceof ChaoFeng) {
+                Entity target = controlBuff.getSrc();
+                if (target.isDead())
+                    target = this.camp.getOpposite().randomTarget();
+                operation = new OperationImpl(target, this.getCommonAttack());
+            } else if (controlBuff instanceof ChenMo) {
+                final CommonAttack activeSkill = this.getCommonAttack();
+                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this.camp, this);
+                if (targets != null)
+                    operation = this.shikigami.getAI().handle(this, this.camp, new HashMap<ActiveSkill, List<? extends Entity>>() {{
+                        put(activeSkill, targets);
+                    }});
+                else
+                    operation = new OperationImpl(null, null);
+            } else if (controlBuff instanceof Unmovable) {
+                operation = new OperationImpl(null, null);
             } else {
+                log.warning("没有判断出控制效果。默认无法行动。" + controlBuff);
                 operation = new OperationImpl(null, null);
             }
 
@@ -99,18 +122,7 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
         ActiveSkill activeSkill = operation.getSkill();
         if (activeSkill != null) {
             Entity target = operation.getTarget();
-            log.info(Msg.info(this, "当前鬼火", this.fireRepo.getFire()));
             log.info(Msg.vector(this, target != null ? "对" : "", target, "使用了", activeSkill.getName()));
-
-            // 消耗鬼火
-            int fire = activeSkill.getFire();
-            if (fire > 0) {
-                UseFireEvent event = new UseFireEvent(this, fire);
-                this.camp.getEventController().trigger(event);
-                fire = event.getCostFire();
-                this.fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
-                log.info(Msg.info(this, "消耗", fire, "点鬼火，剩余", this.fireRepo.getFire(), "点"));
-            }
 
             // 执行技能
             activeSkill.apply(target);

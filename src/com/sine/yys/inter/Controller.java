@@ -29,24 +29,15 @@ public interface Controller extends DamageController {
      * 受一般buff、旗帜buff影响。
      * 触发附加攻击时的效果、造成伤害时的效果、击杀时的效果等。
      * 也触发目标被攻击的事件（导致反击等）。
-     * <p>
-     * 伤害逻辑：
-     * 1. 由攻击、伤害系数、对方防御（忽略防御）计算。
-     * 2. 根据双方buff进行增减。
-     * 3. 破盾。
-     * 4. 施加剩余伤害，添加御魂效果。
      */
     void attack(Entity self0, Entity target, AttackInfo attackInfo, Collection<DebuffEffect> debuffEffects);
 
     /**
-     * 目前只用于施加针女伤害（会被椒图或薙魂分担，不会被金鱼分担，不受一般buff和御魂影响）。
-     * 1. 根据旗帜buff增减。
-     * 2. 破盾。
-     * 3. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
-     * <p>
-     * 与一般的攻击{@link #attack(Entity, Entity, AttackInfo, Collection)}有很多相似之处，要注意同步。
+     * 目前只用于施加针女伤害（会被椒图或薙魂分担，不会被金鱼分担，不受一般buff影响）。
      */
     void realDamage(Entity self0, Entity target, double damage);
+
+    void directDamage(Entity src, Entity self0, int damage);
 
     /**
      * 概率吸取鬼火。

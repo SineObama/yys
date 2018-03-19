@@ -32,11 +32,11 @@ public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
         self.getEventController().add(beAttackHandler);
         self.getEventController().add(LongShouZhiYuOn.class, event -> {
             self.getEventController().remove(beAttackHandler);
-            getOwn().getEventController().add(beAttackHandler);
+            getOwn().getEventController().add(0, beAttackHandler);
         });
         self.getEventController().add(LongShouZhiYuOff.class, event -> {
             getOwn().getEventController().remove(beAttackHandler);
-            self.getEventController().add(beAttackHandler);
+            self.getEventController().add(0, beAttackHandler);
         });
     }
 

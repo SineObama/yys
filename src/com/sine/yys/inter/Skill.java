@@ -4,9 +4,7 @@ package com.sine.yys.inter;
  * 技能。
  * 包含冷却时间（CD）的逻辑。
  */
-public interface Skill extends Named {
-    void init(Controller controller, Entity self);
-
+public interface Skill extends Named, Component {
     int getCD();
 
     int getMAXCD();

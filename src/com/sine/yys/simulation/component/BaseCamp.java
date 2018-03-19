@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.base.PositionImpl;
 import com.sine.yys.inter.*;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.RandUtil;
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
 public abstract class BaseCamp implements Camp, JSONable {
     protected final Logger log = Logger.getLogger(getClass().getName());
 
-    private final EventController eventController = new EventControllerImpl();
+    final EventControllerImpl eventController = new EventControllerImpl();
     private final String name;
     private final String fullName;
     private final List<PositionImpl> positions = new ArrayList<>();

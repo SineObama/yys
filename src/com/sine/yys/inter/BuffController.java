@@ -21,6 +21,8 @@ public interface BuffController {
 
     <T> boolean contain(Class<T> clazz);
 
+    ControlBuff getFirstControlBuff();
+
     /**
      * 移除特定类型的buff。
      */

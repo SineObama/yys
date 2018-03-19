@@ -18,6 +18,13 @@ public class RandUtil {
         random = new Random(seed);
     }
 
+    public static double doubles(double origin, double bound) {
+        double v = random.nextDouble();
+        log.fine(String.valueOf(v));
+        v = v * (bound - origin) + origin;
+        return v;
+    }
+
     public static boolean success(double pct) {
         final double v = random.nextDouble();
         log.fine(String.valueOf(v));

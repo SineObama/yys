@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.base.Container;
 import com.sine.yys.inter.EventController;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.inter.Sealable;
@@ -19,12 +20,20 @@ public class EventControllerImpl implements EventController {
     private final Logger log = Logger.getLogger(this.getClass().getName());
 
     private final Map<Class, Set<Container<EventHandler>>> controllerMap = new HashMap<>();
-    private final Map<Class, Boolean> states = new HashMap<>();
+    // 事件触发计数
+    private final Map<Object, Integer> times = new HashMap<>();
     private final Map<EventHandler, Integer> prior = new HashMap<>();
+    private final Map<EventHandler, Integer> triggerAt = new HashMap<>();
 
     @Override
     public void add(EventHandler<?> handler) {
         get(getEventType(handler)).add(new Container<>(null, handler));
+    }
+
+    @Override
+    public void add(int triggerAt, EventHandler<?> handler) {
+        get(getEventType(handler)).add(new Container<>(null, handler));
+        this.triggerAt.put(handler, triggerAt);
     }
 
     @Override
@@ -47,30 +56,33 @@ public class EventControllerImpl implements EventController {
     @Override
     public void remove(EventHandler handler) {
         getNoCreate(getEventType(handler)).remove(new Container<>(prior.get(handler), handler));
-    }
-
-    @Override
-    public <EventType> void setState(Class<EventType> clazz, boolean state) {
-        states.put(clazz, state);
+        prior.remove(handler);
+        triggerAt.remove(handler);
     }
 
     @Override
     public <EventType> void trigger(EventType event) {
+        if (times.containsKey(event)) {
+            times.put(event, times.get(event) + 1);
+        } else {
+            times.put(event, 0);
+        }
         final Set<Container<EventHandler>> containers = new TreeSet<>(getNoCreate(event.getClass()));
-        if (!states.containsKey(event.getClass()) || states.get(event.getClass())) {
-            for (Container<EventHandler> container : containers) {
-                @SuppressWarnings("unchecked") final EventHandler<EventType> obj = container.getObj();
-                if (obj instanceof Sealable && ((Sealable) obj).sealed())
-                    continue;
-                obj.handle(event);
-            }
+        for (Container<EventHandler> container : containers) {
+            @SuppressWarnings("unchecked") final EventHandler<EventType> obj = container.getObj();
+            if (triggerAt.containsKey(obj) && !triggerAt.get(obj).equals(times.get(event)))
+                continue;
+            if (obj instanceof Sealable && ((Sealable) obj).sealed())
+                continue;
+            obj.handle(event);
         }
     }
 
-    @Override
-    public <EventType> void triggerOff(EventType event) {
-        trigger(event);
-        states.put(event.getClass(), false);
+    /**
+     * 清空事件触发计数。
+     */
+    void clear() {
+        times.clear();
     }
 
     private Set<Container<EventHandler>> get(Class T) {

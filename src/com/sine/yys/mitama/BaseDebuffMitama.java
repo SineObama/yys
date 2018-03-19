@@ -1,7 +1,10 @@
 package com.sine.yys.mitama;
 
 import com.sine.yys.event.DamageEvent;
-import com.sine.yys.inter.*;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.DebuffEffect;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventHandler;
 
 /**
  * 附加debuff的御魂效果通用逻辑。
@@ -9,8 +12,6 @@ import com.sine.yys.inter.*;
  * 子类只需要重写getEffect改变效果。
  */
 public abstract class BaseDebuffMitama extends BaseMitama implements DebuffEffect, EventHandler<DamageEvent> {
-    public abstract Debuff getDebuff(Entity self);
-
     @Override
     public final void doInit(Controller controller, Entity self) {
         self.getEventController().add(this);
@@ -18,7 +19,7 @@ public abstract class BaseDebuffMitama extends BaseMitama implements DebuffEffec
 
     @Override
     public final void handle(DamageEvent event) {
-        event.getController().applyDebuff(event.getEntity(), event.getTarget(), this);
+        getController().applyDebuff(event.getEntity(), event.getTarget(), this);
     }
 
     @Override

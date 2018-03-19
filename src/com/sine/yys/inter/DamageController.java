@@ -7,28 +7,22 @@ public interface DamageController {
     /**
      * 直接造成伤害，不再计算任何buff加成效果，可被护盾减免，不受椒图分摊。
      * <p>
-     * 用于实现持续伤害效果。
+     * 用于实现不会暴击的持续伤害效果。
      * 未来也可实现椒图分摊后的伤害。
      *
      * @param damage 伤害值。
      */
-    void directDamage(Entity self, int damage);
+    void buffDamage(Entity self, int damage);
 
     /**
-     * 治疗。
+     * 治疗。（会计算暴击）
      *
-     * @param target 目标。
-     * @param src    原治疗量（包括暴击）。
-     * @return 实际治疗量（受减疗影响。不算奶满的影响）。
-     */
-    int cure(Entity target, double src);
-
-    /**
      * @param self   自身
      * @param target 治疗目标。
      * @param pct    自身生命百分比。
+     * @return 实际治疗量（受减疗影响。不算奶满的影响）。
      */
-    int cureByLifePct(Entity self, Entity target, double pct);
+    int cure(Entity self, Entity target, double src);
 
     /**
      * 计算暴击。

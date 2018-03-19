@@ -1,7 +1,7 @@
 package com.sine.yys.skill;
 
-import com.sine.yys.buff.buff.LSZYDefenseBuff;
-import com.sine.yys.buff.buff.LSZYEffectDefBuff;
+import com.sine.yys.buff.DefenseIBuff;
+import com.sine.yys.buff.EffectDefIBuff;
 import com.sine.yys.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.BeforeActionEvent;
@@ -93,6 +93,18 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
      */
     public int getLast() {
         return 2;
+    }
+
+    class LSZYDefenseBuff extends DefenseIBuff implements Buff {
+        LSZYDefenseBuff(double defPct, Entity src) {
+            super(Integer.MAX_VALUE, LongShouZhiYu.this.getName() + "-增加", defPct, src);
+        }
+    }
+
+    class LSZYEffectDefBuff extends EffectDefIBuff implements Buff {
+        LSZYEffectDefBuff(double effectDef, Entity src) {
+            super(Integer.MAX_VALUE, LongShouZhiYu.this.getName() + "-增加", effectDef, src);
+        }
     }
 
     class BeforeActionHandler implements EventHandler<BeforeActionEvent> {

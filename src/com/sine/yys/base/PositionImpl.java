@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.base;
 
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.JSONable;

@@ -3,7 +3,7 @@ package com.sine.yys.shikigami;
 import com.sine.yys.inter.OperationHandler;
 import com.sine.yys.inter.Shikigami;
 import com.sine.yys.inter.Skill;
-import com.sine.yys.skill.operation.AutoOperationHandler;
+import com.sine.yys.shikigami.operation.AutoOperationHandler;
 
 import java.util.Collection;
 

@@ -1,6 +1,4 @@
-package com.sine.yys.buff.debuff;
-
-import com.sine.yys.inter.Debuff;
+package com.sine.yys.inter;
 
 /**
  * 行动控制debuff。

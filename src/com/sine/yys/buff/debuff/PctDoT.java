@@ -3,9 +3,9 @@ package com.sine.yys.buff.debuff;
 import com.sine.yys.inter.Entity;
 
 /**
- * 镰鼬-胖揍-按最大生命百分比的持续伤害。
+ * 按最大生命百分比的持续伤害。
  */
-public class PctDoT extends BaseDoT implements DoT, DispellableDebuff {
+public abstract class PctDoT extends BaseDoT implements DoT, DispellableDebuff {
     private final double pct;
 
     /**
@@ -13,8 +13,8 @@ public class PctDoT extends BaseDoT implements DoT, DispellableDebuff {
      * @param name buff名称。
      * @param pct  生命百分比。
      */
-    public PctDoT(int last, String name, double pct, Entity src) {
-        super(last, name, src);
+    protected PctDoT(int last, String name, double pct, Entity src) {
+        super(last, name + "-生命百分比", src);
         this.pct = pct;
     }
 

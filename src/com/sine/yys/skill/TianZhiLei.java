@@ -75,7 +75,7 @@ public class TianZhiLei extends BaseNoTargetSkill implements DebuffEffect {
 
     @Override
     public Debuff getDebuff(Entity self) {
-        return new ReduceSpeed(2, "减速", self, getReduceSpeed()) {
+        return new ReduceSpeed(2, getName(), getReduceSpeed(), self) {
         };
     }
 }

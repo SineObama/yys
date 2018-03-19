@@ -2,7 +2,7 @@ package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.buff.debuff.PctDoT;
 import com.sine.yys.buff.debuff.ReduceDefense;
-import com.sine.yys.buff.debuff.XuanYun;
+import com.sine.yys.buff.debuff.control.XuanYun;
 import com.sine.yys.inter.Debuff;
 import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
@@ -40,8 +40,9 @@ public class PangZou extends BaseCommonAttack implements DebuffEffect {
 
     @Override
     public Debuff getDebuff(Entity self) {
-        return RandUtil.choose(Arrays.asList(new ReduceDefense(2, "破防", 0.3, self) {
-        }, new XuanYun(self), new PctDoT(2, "镰鼬持续伤害", 0.05, self)));
+        return RandUtil.choose(Arrays.asList(new ReduceDefense(2, getName(), 0.3, self) {
+        }, new XuanYun(self), new PctDoT(2, getName(), 0.05, self) {
+        }));
     }
 
     @Override

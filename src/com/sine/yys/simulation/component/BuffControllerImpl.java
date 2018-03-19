@@ -1,8 +1,7 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.buff.debuff.ControlBuff;
-import com.sine.yys.buff.debuff.HunLuan;
-import com.sine.yys.buff.debuff.XuanYun;
+import com.sine.yys.buff.buff.BattleFlag;
+import com.sine.yys.buff.debuff.control.*;
 import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
 import com.sine.yys.buff.shield.Shield;
@@ -32,8 +31,14 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         prior.put(DiZangXiangShield.class, 200);
         prior.put(XueZhiHuaHaiShield.class, 1000);
 
+        prior.put(BianXing.class, 100000);
         prior.put(XuanYun.class, 100100);
-        prior.put(HunLuan.class, 101000);
+        prior.put(BingDong.class, 100200);
+        prior.put(ShuiMian.class, 100300);
+        prior.put(StrongChaoFeng.class, 100400);
+        prior.put(WeakChaoFeng.class, 100500);
+        prior.put(HunLuan.class, 100600);
+        prior.put(ChenMo.class, 100700);
     }
 
     private final Logger log = Logger.getLogger(getClass().getName());
@@ -73,13 +78,13 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     public void beforeAction(Controller controller, Entity self) {
         Collection<IBuff> buffs = new ArrayList<>(set);
         for (IBuff buff : buffs) {
+            if (self.isDead())
+                break;
             if (buff.beforeAction(controller, self) == 0) {
                 buff.onRemove();
                 set.remove(buff);
                 log.info(Msg.info(self, buff.getName(), "效果消失了"));
             }
-            if (self.isDead())
-                break;
         }
     }
 
@@ -136,13 +141,17 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     /**
      * 获取行动控制效果，按控制优先级返回。
      */
-    public Collection<ControlBuff> getControlBuffs() {
+    @Override
+    public ControlBuff getFirstControlBuff() {
         Map<Integer, ControlBuff> list = new TreeMap<>();
         for (IBuff buff : set) {
             if (buff instanceof ControlBuff)
                 list.put(prior.get(buff.getClass()), (ControlBuff) buff);
         }
-        return list.values();
+        final Iterator<ControlBuff> iterator = list.values().iterator();
+        if (iterator.hasNext())
+            return iterator.next();
+        return null;
     }
 
     @Override
@@ -202,9 +211,13 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
 
     @Override
     public void clear() {
+        final BattleFlag battleFlag = get(BattleFlag.class);
         for (IBuff iBuff : new ArrayList<>(set))
-            iBuff.onRemove();
+            if (iBuff != battleFlag)
+                iBuff.onRemove();
         set.clear();
+        if (battleFlag != null)
+            set.add(battleFlag);
     }
 
     @Override

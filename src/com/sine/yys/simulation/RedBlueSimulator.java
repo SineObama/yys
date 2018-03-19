@@ -45,7 +45,7 @@ public class RedBlueSimulator {
                 while (simulator.getWin() == null)
                     simulator.step();
                 String winName = simulator.getWin().getName();
-                log.info(Msg.join("测试", (i + 1), winName, "胜利"));
+                log.info(Msg.join("测试", i, winName, "胜利"));
                 count.put(winName, count.get(winName) + 1);
             }
             end = System.currentTimeMillis();

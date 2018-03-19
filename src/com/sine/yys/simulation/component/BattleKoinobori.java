@@ -1,5 +1,6 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.base.SimpleObject;
 import com.sine.yys.buff.buff.BattleFlag;
 import com.sine.yys.buff.buff.BattleFlagSource;
 import com.sine.yys.event.EnterEvent;
@@ -21,7 +22,7 @@ public class BattleKoinobori extends SimpleObject {
     }
 
     @Override
-    void action() {
+    public void action() {
         level += 1;
         battleFlagSource.setDamage(level * damageRatioAddition);
         battleFlagSource.setCure(level * cureRatioReduction);

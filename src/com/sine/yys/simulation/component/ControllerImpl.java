@@ -1,7 +1,6 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.buff.buff.DispellableBuff;
-import com.sine.yys.buff.debuff.ControlBuff;
 import com.sine.yys.buff.debuff.DispellableDebuff;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.event.*;
@@ -12,7 +11,6 @@ import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Logger;
@@ -59,6 +57,12 @@ public class ControllerImpl implements Controller {
         return ((EntityImpl) entity).getCamp();
     }
 
+    /**
+     * 伤害逻辑：
+     * 1. 由攻击、伤害系数、对方防御（忽略防御）计算。
+     * 2. 根据双方buff进行增减。
+     * 3. 破盾，施加剩余伤害，添加御魂效果。
+     */
     @Override
     public void attack(Entity self0, Entity target0, AttackInfo attackInfo, Collection<DebuffEffect> debuffEffects) {
         EntityImpl self = (EntityImpl) self0;
@@ -72,25 +76,52 @@ public class ControllerImpl implements Controller {
                 applyDebuff(self, target, debuffEffect);
             }
 
-        self.eventController.trigger(new AttackEvent(self, target));
-
-        // XXXXX 像这种每次都调用是不是不好、太慢
-        target.getCamp().getEventController().triggerOff(new BeAttackEvent());
-        target.getEventController().triggerOff(new BeAttackEvent());
+        target.getCamp().getEventController().trigger(new BeAttackEvent());
+        target.getEventController().trigger(new BeAttackEvent());
 
         // 1.
         final boolean critical = RandUtil.success(self.getCritical());
         if (critical)
             log.info(Msg.info(self, "暴击"));
         double damage = CalcDam.expect(self, target, attackInfo, critical);
+        damage *= attackInfo.randomFloat();
 
         // 2.
         damage *= self.getDamageCoefficient();
 
         // 3.
+        applyDamage(self, target, damage, critical, false);
+    }
+
+    /**
+     * 1. 根据旗帜buff增减。
+     * 2. 破盾，施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
+     */
+    @Override
+    public void realDamage(Entity self0, Entity target0, double damage) {
+        EntityImpl self = (EntityImpl) self0;
+        EntityImpl target = (EntityImpl) target0;
+        if (target.isDead())
+            return;
+
+        // 1.
+        damage *= self.getFlagDamageCoefficient();
+
+        // 2.
+        applyDamage(self, target, damage, false, true);
+    }
+
+    /**
+     * 普通伤害的施加（包括破盾）。
+     * 破盾后计算御魂效果，进行伤害分摊。
+     * XXXX 伤害的附加效果的触发位置？
+     */
+    private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, boolean zhenNv) {
+        self.eventController.trigger(new AttackEvent(self, target));
+
+        // 破盾
         int remain = breakShield(target, (int) damage);
 
-        // 4.
         if (remain != 0) {
             damage = remain;
 
@@ -98,15 +129,20 @@ public class ControllerImpl implements Controller {
             self.eventController.trigger(event);
             damage *= event.getCoefficient();
 
+            // 处理薙魂。未来考虑金鱼、小松丸躲避。
+            final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage);
+            target.eventController.trigger(damageShareEvent);
+            damage = damageShareEvent.getLeft();
+
             // 附加效果
-            self.eventController.trigger(new DamageEvent(this, self, target));
+            self.eventController.trigger(new DamageEvent(self, target));
             log.info(Msg.damage(self, target, (int) damage, critical));
             doDamage(target, (int) damage);
             if (target.getLifeInt() == 0)
                 log.info(Msg.vector(self, "击杀", target, ""));
 
             if (critical) {
-                target.getEventController().trigger(new BeCriticalEvent(target, self));
+                target.eventController.trigger(new BeCriticalEvent(target, self));
                 self.eventController.trigger(new CriticalEvent(self, target));
             }
         } else {
@@ -115,44 +151,28 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void realDamage(Entity self0, Entity target0, double damage) {
-        EntityImpl self = (EntityImpl) self0;
-        EntityImpl target = (EntityImpl) target0;
-        if (target.isDead())
-            return;
-
-        self.eventController.trigger(new AttackEvent(self, target));
-
-        // 1.
-        damage *= self.getFlagDamageCoefficient();
-
-        // 2.
-        int remain = breakShield(target, (int) damage);
-
-        // 3.
-        if (remain != 0) {
-            // 附加效果
-            self.eventController.trigger(new DamageEvent(this, self, target));
-            log.info(Msg.damage(self, target, (int) damage));
-            doDamage(target, (int) damage);
-            if (target.getLifeInt() == 0)
-                log.info(Msg.vector(self, "击杀", target, ""));
-        } else {
-            log.info(Msg.noDamage(self, target));
-        }
-    }
-
-    public void directDamage(Entity self0, int damage) {
-        if (self0.isDead())  // XXXX 每次都判断死亡是不是太难看
-            return;
+    public void directDamage(Entity src, Entity self0, int damage) {
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
         log.info(Msg.info(self, "受到伤害", damage));
-        doDamage(self, damage);
+        if (damage > 0) {
+            self.eventController.trigger(new BeDamageEvent(src, self));
+            doDamage(self, damage);
+        }
     }
 
-    @Override
-    public int cure(Entity target0, double src) {
+    public void buffDamage(Entity self0, int damage) {
+        EntityImpl self = (EntityImpl) self0;
+        damage = breakShield(self, damage);
+        log.info(Msg.info(self, "受到伤害", damage));
+        if (damage > 0)
+            doDamage(self, damage);
+    }
+
+    /**
+     * 治疗。（不会计算暴击）
+     */
+    private int cure(Entity target0, double src) {
         EntityImpl target = (EntityImpl) target0;
         final double coefficient = target.getCureCoefficient();
         int count;
@@ -169,19 +189,19 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public int cureByLifePct(Entity self, Entity target, double pct) {
-        return cure(target, calcCritical(self, pct * self.getMaxLife()));
+    public int cure(Entity self, Entity target, double src) {
+        return cure(target, calcCritical(self, src));
     }
 
     /**
-     * 直接减少目标生命，触发{@link BeDamageEvent}事件。
+     * 直接减少目标生命，触发{@link LostLifeEvent}事件。
      */
     private void doDamage(EntityImpl target, int damage) {
         final double src = target.getLife();
         final int srcLife = target.getLifeInt();
         final int life = target.reduceLife(damage);
         final double dst = target.getLife();
-        final BeDamageEvent event = new BeDamageEvent(src, dst, srcLife - life);
+        final LostLifeEvent event = new LostLifeEvent(src, dst, srcLife - life);
         target.getEventController().trigger(event);
         target.getCamp().getEventController().trigger(event);
         if (life == 0) {
@@ -276,13 +296,13 @@ public class ControllerImpl implements Controller {
         camp1.getEventController().trigger(new AfterMovementEvent());
 
         // 重置事件状态
-        camp0.getEventController().setState(BeAttackEvent.class, true);
-        camp1.getEventController().setState(BeAttackEvent.class, true);
+        camp0.eventController.clear();
+        camp1.eventController.clear();
         for (EntityImpl entity : camp0.getAllAlive()) {
-            entity.getEventController().setState(BeAttackEvent.class, true);
+            entity.eventController.clear();
         }
         for (EntityImpl entity : camp1.getAllAlive()) {
-            entity.getEventController().setState(BeAttackEvent.class, true);
+            entity.eventController.clear();
         }
     }
 
@@ -325,7 +345,6 @@ public class ControllerImpl implements Controller {
 
     private <T extends IBuff> int dispel(Entity target, final int count, Class<T> clazz) {
         int left = count;
-        final Iterator<? extends T> iterator = target.getBuffController().getBuffs(clazz).iterator();
         for (T t : target.getBuffController().getBuffs(clazz)) {
             if (left <= 0)
                 break;
