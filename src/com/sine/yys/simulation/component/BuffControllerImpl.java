@@ -141,13 +141,17 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     /**
      * 获取行动控制效果，按控制优先级返回。
      */
-    public Collection<ControlBuff> getControlBuffs() {
+    @Override
+    public ControlBuff getFirstControlBuff() {
         Map<Integer, ControlBuff> list = new TreeMap<>();
         for (IBuff buff : set) {
             if (buff instanceof ControlBuff)
                 list.put(prior.get(buff.getClass()), (ControlBuff) buff);
         }
-        return list.values();
+        final Iterator<ControlBuff> iterator = list.values().iterator();
+        if (iterator.hasNext())
+            return iterator.next();
+        return null;
     }
 
     @Override

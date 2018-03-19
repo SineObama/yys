@@ -1,15 +1,14 @@
 package com.sine.yys.mitama;
 
+import com.sine.yys.buff.debuff.control.ChenMo;
 import com.sine.yys.event.*;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.EventHandler;
-import com.sine.yys.inter.ShikigamiEntity;
+import com.sine.yys.inter.*;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 /**
  * 薙魂。
+ * 在被控制（除了沉默）时不能触发。
  * 可以分担针女伤害。
  * 不能与金鱼、小松丸躲避、其他薙魂同时生效。
  * 多个薙魂时触发概率比较诡异，暂且不管。
@@ -56,8 +55,11 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
     public void handle(BeMonoAttackEvent event) {
         if (event.isTreated())
             return;
+        final ControlBuff controlBuff = getSelf().getBuffController().getFirstControlBuff();
+        if (controlBuff != null && !(controlBuff instanceof ChenMo))
+            return;
         final ShikigamiEntity entity = event.getEntity();
-        if (entity != null && RandUtil.success(getPct())) {
+        if (RandUtil.success(getPct())) {
             log.info(Msg.trigger(getSelf(), this));
             event.setTreated();
             target = entity;

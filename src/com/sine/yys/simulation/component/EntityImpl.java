@@ -3,7 +3,10 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.base.SimpleObject;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
-import com.sine.yys.buff.debuff.control.*;
+import com.sine.yys.buff.debuff.control.ChaoFeng;
+import com.sine.yys.buff.debuff.control.ChenMo;
+import com.sine.yys.buff.debuff.control.HunLuan;
+import com.sine.yys.buff.debuff.control.Unmovable;
 import com.sine.yys.event.FinishActionEvent;
 import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.*;
@@ -13,7 +16,10 @@ import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 战场中的实体，保存了式神信息{@link Shikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
@@ -57,8 +63,8 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
     public void action() {
         final Operation operation;
         // 判断是否有行动控制debuff，进行相关操作。
-        final Collection<ControlBuff> controlBuffs = this.buffController.getControlBuffs();
-        if (controlBuffs.isEmpty()) {  // 无行动控制debuff
+        final ControlBuff controlBuff = this.buffController.getFirstControlBuff();
+        if (controlBuff == null) {  // 无行动控制debuff
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
             for (ActiveSkill activeSkill : this.getActiveSkills()) {
@@ -81,7 +87,6 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
 
         } else {  // 受行动控制debuff影响
 
-            ControlBuff controlBuff = controlBuffs.iterator().next();
             log.info(Msg.info(this, "受控制效果", controlBuff, "影响"));
             if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
                 final List<Entity> allAlive = new ArrayList<>();
