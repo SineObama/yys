@@ -8,7 +8,6 @@ import com.sine.yys.buff.debuff.control.ChenMo;
 import com.sine.yys.buff.debuff.control.HunLuan;
 import com.sine.yys.buff.debuff.control.Unmovable;
 import com.sine.yys.event.FinishActionEvent;
-import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.*;
 import com.sine.yys.shikigami.operation.OperationImpl;
 import com.sine.yys.skill.commonattack.CommonAttack;
@@ -61,6 +60,8 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
      * 式神自身的行动逻辑。
      */
     public void action() {
+        log.info(Msg.info(this, "当前鬼火", this.fireRepo.getFire()));
+
         final Operation operation;
         // 判断是否有行动控制debuff，进行相关操作。
         final ControlBuff controlBuff = this.buffController.getFirstControlBuff();
@@ -121,18 +122,7 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
         ActiveSkill activeSkill = operation.getSkill();
         if (activeSkill != null) {
             Entity target = operation.getTarget();
-            log.info(Msg.info(this, "当前鬼火", this.fireRepo.getFire()));
             log.info(Msg.vector(this, target != null ? "对" : "", target, "使用了", activeSkill.getName()));
-
-            // 消耗鬼火
-            int fire = activeSkill.getFire();
-            if (fire > 0) {
-                UseFireEvent event = new UseFireEvent(this, fire);
-                this.camp.getEventController().trigger(event);
-                fire = event.getCostFire();
-                this.fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
-                log.info(Msg.info(this, "消耗", fire, "点鬼火，剩余", this.fireRepo.getFire(), "点"));
-            }
 
             // 执行技能
             activeSkill.apply(target);
