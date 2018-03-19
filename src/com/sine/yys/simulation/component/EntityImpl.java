@@ -3,8 +3,7 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.base.SimpleObject;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
-import com.sine.yys.buff.debuff.control.ControlBuff;
-import com.sine.yys.buff.debuff.control.HunLuan;
+import com.sine.yys.buff.debuff.control.*;
 import com.sine.yys.event.FinishActionEvent;
 import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.*;
@@ -70,7 +69,7 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
                 }
                 if (this.fireRepo.getFire() < activeSkill.getFire())
                     continue;
-                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this.getCamp(), this);
+                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this.camp, this);
                 if (targets != null)
                     map.put(activeSkill, targets);
             }
@@ -90,7 +89,24 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
                 allAlive.addAll(this.camp.getOpposite().getAllAlive());
                 allAlive.remove(this);
                 operation = new OperationImpl(RandUtil.choose(allAlive), this.getCommonAttack());
+            } else if (controlBuff instanceof ChaoFeng) {
+                Entity target = controlBuff.getSrc();
+                if (target.isDead())
+                    target = this.camp.getOpposite().randomTarget();
+                operation = new OperationImpl(target, this.getCommonAttack());
+            } else if (controlBuff instanceof ChenMo) {
+                final CommonAttack activeSkill = this.getCommonAttack();
+                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this.camp, this);
+                if (targets != null)
+                    operation = this.shikigami.getAI().handle(this, this.camp, new HashMap<ActiveSkill, List<? extends Entity>>() {{
+                        put(activeSkill, targets);
+                    }});
+                else
+                    operation = new OperationImpl(null, null);
+            } else if (controlBuff instanceof Unmovable) {
+                operation = new OperationImpl(null, null);
             } else {
+                log.warning("没有判断出控制效果。默认无法行动。" + controlBuff);
                 operation = new OperationImpl(null, null);
             }
 

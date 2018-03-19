@@ -1,9 +1,7 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.buff.buff.BattleFlag;
-import com.sine.yys.buff.debuff.control.ControlBuff;
-import com.sine.yys.buff.debuff.control.HunLuan;
-import com.sine.yys.buff.debuff.control.XuanYun;
+import com.sine.yys.buff.debuff.control.*;
 import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
 import com.sine.yys.buff.shield.Shield;
@@ -33,8 +31,14 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         prior.put(DiZangXiangShield.class, 200);
         prior.put(XueZhiHuaHaiShield.class, 1000);
 
+        prior.put(BianXing.class, 100000);
         prior.put(XuanYun.class, 100100);
-        prior.put(HunLuan.class, 101000);
+        prior.put(BingDong.class, 100200);
+        prior.put(ShuiMian.class, 100300);
+        prior.put(StrongChaoFeng.class, 100400);
+        prior.put(WeakChaoFeng.class, 100500);
+        prior.put(HunLuan.class, 100600);
+        prior.put(ChenMo.class, 100700);
     }
 
     private final Logger log = Logger.getLogger(getClass().getName());
