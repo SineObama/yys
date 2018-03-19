@@ -61,8 +61,7 @@ public class ControllerImpl implements Controller {
      * 伤害逻辑：
      * 1. 由攻击、伤害系数、对方防御（忽略防御）计算。
      * 2. 根据双方buff进行增减。
-     * 3. 破盾。
-     * 4. 施加剩余伤害，添加御魂效果。
+     * 3. 破盾，施加剩余伤害，添加御魂效果。
      */
     @Override
     public void attack(Entity self0, Entity target0, AttackInfo attackInfo, Collection<DebuffEffect> debuffEffects) {
@@ -93,9 +92,34 @@ public class ControllerImpl implements Controller {
         damage *= self.getDamageCoefficient();
 
         // 3.
+        applyDamage(self, target, damage, critical, false);
+    }
+
+    @Override
+    public void realDamage(Entity self0, Entity target0, double damage) {
+        EntityImpl self = (EntityImpl) self0;
+        EntityImpl target = (EntityImpl) target0;
+        if (target.isDead())
+            return;
+
+        self.eventController.trigger(new AttackEvent(self, target));
+
+        // 1.
+        damage *= self.getFlagDamageCoefficient();
+
+        // 2. 3.
+        applyDamage(self, target, damage, false, true);
+    }
+
+    /**
+     * 普通伤害的施加（包括破盾）。
+     * 破盾后计算御魂效果，进行伤害分摊。
+     * XXXX 伤害的附加效果的触发位置？
+     */
+    private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, boolean zhenNv) {
+        // 破盾
         int remain = breakShield(target, (int) damage);
 
-        // 4.
         if (remain != 0) {
             damage = remain;
 
@@ -116,42 +140,9 @@ public class ControllerImpl implements Controller {
                 log.info(Msg.vector(self, "击杀", target, ""));
 
             if (critical) {
-                target.getEventController().trigger(new BeCriticalEvent(target, self));
+                target.eventController.trigger(new BeCriticalEvent(target, self));
                 self.eventController.trigger(new CriticalEvent(self, target));
             }
-        } else {
-            log.info(Msg.noDamage(self, target));
-        }
-    }
-
-    @Override
-    public void realDamage(Entity self0, Entity target0, double damage) {
-        EntityImpl self = (EntityImpl) self0;
-        EntityImpl target = (EntityImpl) target0;
-        if (target.isDead())
-            return;
-
-        self.eventController.trigger(new AttackEvent(self, target));
-
-        // 1.
-        damage *= self.getFlagDamageCoefficient();
-
-        // 2.
-        int remain = breakShield(target, (int) damage);
-
-        // 3.
-        if (remain != 0) {
-            // 处理薙魂。未来考虑金鱼、小松丸躲避。
-            final DamageShareEvent damageShareEvent = new DamageShareEvent(target, damage);
-            target.eventController.trigger(damageShareEvent);
-            damage = damageShareEvent.getLeft();
-
-            // 附加效果
-            self.eventController.trigger(new DamageEvent(this, self, target));
-            log.info(Msg.damage(self, target, (int) damage));
-            doDamage(target, (int) damage);
-            if (target.getLifeInt() == 0)
-                log.info(Msg.vector(self, "击杀", target, ""));
         } else {
             log.info(Msg.noDamage(self, target));
         }
