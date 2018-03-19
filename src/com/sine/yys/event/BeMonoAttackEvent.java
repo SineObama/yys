@@ -1,5 +1,6 @@
 package com.sine.yys.event;
 
+import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.ShikigamiEntity;
 
 /**
@@ -17,17 +18,13 @@ import com.sine.yys.inter.ShikigamiEntity;
  * （似乎）妖刀转火后不会触发。
  * （似乎）不对己方混乱打己方触发的协战生效。
  */
-public class BeMonoAttackEvent implements Event {
-    private final ShikigamiEntity entity;
+public class BeMonoAttackEvent extends BaseVectorEvent implements Event {
     private boolean treated = false;
 
-    public BeMonoAttackEvent(ShikigamiEntity entity) {
-        this.entity = entity;
+    public BeMonoAttackEvent(Entity entity, ShikigamiEntity target) {
+        super(entity, target);
     }
 
-    public final ShikigamiEntity getEntity() {
-        return entity;
-    }
 
     public boolean isTreated() {
         return treated;

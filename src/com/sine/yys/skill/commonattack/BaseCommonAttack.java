@@ -49,7 +49,7 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     protected void beforeApply(Entity target) {
         // 可能被混乱打自己人
         if (getEnemy().contain(target) && target instanceof ShikigamiEntity) {
-            getEnemy().getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target));
+            getEnemy().getEventController().trigger(new BeMonoAttackEvent(getSelf(), (ShikigamiEntity) target));
         }
     }
 

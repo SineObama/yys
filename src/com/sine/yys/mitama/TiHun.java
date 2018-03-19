@@ -2,7 +2,10 @@ package com.sine.yys.mitama;
 
 import com.sine.yys.buff.debuff.control.ChenMo;
 import com.sine.yys.event.*;
-import com.sine.yys.inter.*;
+import com.sine.yys.inter.ControlBuff;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventHandler;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
@@ -16,7 +19,7 @@ import com.sine.yys.util.RandUtil;
 public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent> {
     private final DamageShareHandler damageShareHandler = new DamageShareHandler();
     private final AfterMovementHandler afterMovementHandler = new AfterMovementHandler();
-    private ShikigamiEntity target = null;
+    private Entity target = null;
 
     public double getPct() {
         return 0.5;
@@ -58,11 +61,10 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
         final ControlBuff controlBuff = getSelf().getBuffController().getFirstControlBuff();
         if (controlBuff != null && !(controlBuff instanceof ChenMo))
             return;
-        final ShikigamiEntity entity = event.getEntity();
         if (RandUtil.success(getPct())) {
             log.info(Msg.trigger(getSelf(), this));
             event.setTreated();
-            target = entity;
+            target = event.getEntity();
             target.getEventController().add(damageShareHandler);
         }
     }
