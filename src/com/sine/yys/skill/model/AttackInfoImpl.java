@@ -4,6 +4,7 @@ import com.sine.yys.inter.AttackInfo;
 import com.sine.yys.util.RandUtil;
 
 public class AttackInfoImpl implements AttackInfo {
+    private final static double defaultWaveRadius = 0.01;
     private final double coefficient;
     private final double ignoreDefensePct;
     private final int IgnoreDefense;
@@ -13,7 +14,7 @@ public class AttackInfoImpl implements AttackInfo {
         this.coefficient = coefficient;
         this.ignoreDefensePct = 0;
         IgnoreDefense = 0;
-        waveRadius = 0.01;
+        waveRadius = defaultWaveRadius;
     }
 
     public AttackInfoImpl(double coefficient, double waveRadius) {
@@ -27,7 +28,7 @@ public class AttackInfoImpl implements AttackInfo {
         this.coefficient = coefficient;
         this.ignoreDefensePct = ignoreDefensePct;
         IgnoreDefense = ignoreDefense;
-        waveRadius = 0.01;
+        waveRadius = defaultWaveRadius;
     }
 
     @Override
