@@ -88,10 +88,10 @@ public class ControllerImpl implements Controller {
         if (critical)
             log.info(Msg.info(self, "暴击"));
         double damage = CalcDam.expect(self, target, attackInfo, critical);
+        damage *= attackInfo.randomFloat();
 
         // 2.
         damage *= self.getDamageCoefficient();
-        damage *= attackInfo.randomFloat();
 
         // 3.
         int remain = breakShield(target, (int) damage);
