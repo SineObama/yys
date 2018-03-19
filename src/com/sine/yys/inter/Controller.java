@@ -29,12 +29,6 @@ public interface Controller extends DamageController {
      * 受一般buff、旗帜buff影响。
      * 触发附加攻击时的效果、造成伤害时的效果、击杀时的效果等。
      * 也触发目标被攻击的事件（导致反击等）。
-     * <p>
-     * 伤害逻辑：
-     * 1. 由攻击、伤害系数、对方防御（忽略防御）计算。
-     * 2. 根据双方buff进行增减。
-     * 3. 破盾。
-     * 4. 施加剩余伤害，添加御魂效果。
      */
     void attack(Entity self0, Entity target, AttackInfo attackInfo, Collection<DebuffEffect> debuffEffects);
 

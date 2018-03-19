@@ -58,6 +58,13 @@ public class ControllerImpl implements Controller {
         return ((EntityImpl) entity).getCamp();
     }
 
+    /**
+     * 伤害逻辑：
+     * 1. 由攻击、伤害系数、对方防御（忽略防御）计算。
+     * 2. 根据双方buff进行增减。
+     * 3. 破盾。
+     * 4. 施加剩余伤害，添加御魂效果。
+     */
     @Override
     public void attack(Entity self0, Entity target0, AttackInfo attackInfo, Collection<DebuffEffect> debuffEffects) {
         EntityImpl self = (EntityImpl) self0;
@@ -96,6 +103,11 @@ public class ControllerImpl implements Controller {
             self.eventController.trigger(event);
             damage *= event.getCoefficient();
 
+            // 处理薙魂。未来考虑金鱼、小松丸躲避。
+            final DamageShareEvent damageShareEvent = new DamageShareEvent(target, damage);
+            target.eventController.trigger(damageShareEvent);
+            damage = damageShareEvent.getLeft();
+
             // 附加效果
             self.eventController.trigger(new DamageEvent(this, self, target));
             log.info(Msg.damage(self, target, (int) damage, critical));
@@ -129,6 +141,11 @@ public class ControllerImpl implements Controller {
 
         // 3.
         if (remain != 0) {
+            // 处理薙魂。未来考虑金鱼、小松丸躲避。
+            final DamageShareEvent damageShareEvent = new DamageShareEvent(target, damage);
+            target.eventController.trigger(damageShareEvent);
+            damage = damageShareEvent.getLeft();
+
             // 附加效果
             self.eventController.trigger(new DamageEvent(this, self, target));
             log.info(Msg.damage(self, target, (int) damage));

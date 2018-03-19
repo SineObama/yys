@@ -1,6 +1,8 @@
 package com.sine.yys.skill.groupattack;
 
+import com.sine.yys.event.BeMonoAttackEvent;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.ShikigamiEntity;
 import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.model.AttackInfoImpl;
 import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
@@ -37,5 +39,12 @@ public class TianXiangHeZhan extends SimpleGroupAttack {
     public void doApply(Entity target) {
         super.doApply(target);
         getController().attack(getSelf(), target, new AttackInfoImpl(getFinalCoefficient()), null);
+    }
+
+    @Override
+    protected void beforeApply(Entity target) {
+        if (target instanceof ShikigamiEntity) {
+            getEnemy().getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target));
+        }
     }
 }
