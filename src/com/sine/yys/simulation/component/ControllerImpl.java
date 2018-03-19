@@ -95,6 +95,10 @@ public class ControllerImpl implements Controller {
         applyDamage(self, target, damage, critical, false);
     }
 
+    /**
+     * 1. 根据旗帜buff增减。
+     * 2. 破盾，施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
+     */
     @Override
     public void realDamage(Entity self0, Entity target0, double damage) {
         EntityImpl self = (EntityImpl) self0;
@@ -107,7 +111,7 @@ public class ControllerImpl implements Controller {
         // 1.
         damage *= self.getFlagDamageCoefficient();
 
-        // 2. 3.
+        // 2.
         applyDamage(self, target, damage, false, true);
     }
 
@@ -128,7 +132,7 @@ public class ControllerImpl implements Controller {
             damage *= event.getCoefficient();
 
             // 处理薙魂。未来考虑金鱼、小松丸躲避。
-            final DamageShareEvent damageShareEvent = new DamageShareEvent(target, damage);
+            final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage);
             target.eventController.trigger(damageShareEvent);
             damage = damageShareEvent.getLeft();
 
@@ -148,7 +152,17 @@ public class ControllerImpl implements Controller {
         }
     }
 
-    public void directDamage(Entity self0, int damage) {
+    @Override
+    public void directDamage(Entity src, Entity self0, int damage) {
+        if (self0.isDead())  // XXXX 每次都判断死亡是不是太难看
+            return;
+        EntityImpl self = (EntityImpl) self0;
+        damage = breakShield(self, damage);
+        log.info(Msg.info(self, "受到伤害", damage));
+        doDamage(self, damage);
+    }
+
+    public void buffDamage(Entity self0, int damage) {
         if (self0.isDead())  // XXXX 每次都判断死亡是不是太难看
             return;
         EntityImpl self = (EntityImpl) self0;

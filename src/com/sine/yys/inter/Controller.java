@@ -33,14 +33,11 @@ public interface Controller extends DamageController {
     void attack(Entity self0, Entity target, AttackInfo attackInfo, Collection<DebuffEffect> debuffEffects);
 
     /**
-     * 目前只用于施加针女伤害（会被椒图或薙魂分担，不会被金鱼分担，不受一般buff和御魂影响）。
-     * 1. 根据旗帜buff增减。
-     * 2. 破盾。
-     * 3. 施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
-     * <p>
-     * 与一般的攻击{@link #attack(Entity, Entity, AttackInfo, Collection)}有很多相似之处，要注意同步。
+     * 目前只用于施加针女伤害（会被椒图或薙魂分担，不会被金鱼分担，不受一般buff影响）。
      */
     void realDamage(Entity self0, Entity target, double damage);
+
+    void directDamage(Entity src, Entity self0, int damage);
 
     /**
      * 概率吸取鬼火。

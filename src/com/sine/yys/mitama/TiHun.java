@@ -90,7 +90,7 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
             final double damage = event.getTotal() * (1 - getDamageReducePct());
             // XXXXX 不清楚单人断连的情况。当前会触发薙魂，分担的伤害不会再被椒图分担
             // XXXX 薙魂的减伤目前只对破盾后的伤害生效
-            getController().directDamage(getSelf(), (int) (damage * getSharePct()));
+            getController().directDamage(event.getEntity(), getSelf(), (int) (damage * getSharePct()));
             event.setLeft(damage * (1 - getSharePct()));
         }
     }

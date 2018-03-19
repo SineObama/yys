@@ -22,6 +22,6 @@ public abstract class BaseDoT extends BaseCommonIBuff implements DoT {
     protected final void doBeforeAction(DamageController controller, Entity self) {
         log.info(Msg.info(self, "受到持续伤害效果", getName()));
         double damage = handle(self);
-        controller.directDamage(self, (int) damage);
+        controller.buffDamage(self, (int) damage);
     }
 }

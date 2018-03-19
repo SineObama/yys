@@ -12,7 +12,7 @@ public interface DamageController {
      *
      * @param damage 伤害值。
      */
-    void directDamage(Entity self, int damage);
+    void buffDamage(Entity self, int damage);
 
     /**
      * 治疗。（会计算暴击）
