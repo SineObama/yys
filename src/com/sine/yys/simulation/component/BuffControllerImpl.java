@@ -78,13 +78,13 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     public void beforeAction(Controller controller, Entity self) {
         Collection<IBuff> buffs = new ArrayList<>(set);
         for (IBuff buff : buffs) {
+            if (self.isDead())
+                break;
             if (buff.beforeAction(controller, self) == 0) {
                 buff.onRemove();
                 set.remove(buff);
                 log.info(Msg.info(self, buff.getName(), "效果消失了"));
             }
-            if (self.isDead())
-                break;
         }
     }
 
