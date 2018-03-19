@@ -76,8 +76,6 @@ public class ControllerImpl implements Controller {
                 applyDebuff(self, target, debuffEffect);
             }
 
-        self.eventController.trigger(new AttackEvent(self, target));
-
         target.getCamp().getEventController().trigger(new BeAttackEvent());
         target.getEventController().trigger(new BeAttackEvent());
 
@@ -106,8 +104,6 @@ public class ControllerImpl implements Controller {
         if (target.isDead())
             return;
 
-        self.eventController.trigger(new AttackEvent(self, target));
-
         // 1.
         damage *= self.getFlagDamageCoefficient();
 
@@ -121,6 +117,8 @@ public class ControllerImpl implements Controller {
      * XXXX 伤害的附加效果的触发位置？
      */
     private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, boolean zhenNv) {
+        self.eventController.trigger(new AttackEvent(self, target));
+
         // 破盾
         int remain = breakShield(target, (int) damage);
 
