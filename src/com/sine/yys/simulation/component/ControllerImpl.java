@@ -381,7 +381,12 @@ public class ControllerImpl implements Controller {
 
         @Override
         public boolean equals(Object obj) {
-            return super.equals(obj) || obj instanceof SingleAction && callback.equals(((SingleAction) obj).callback);
+            if (super.equals(obj))
+                return true;
+            if (!(obj instanceof SingleAction))
+                return false;
+            final SingleAction action = (SingleAction) obj;
+            return callback == action.callback || callback.equals(action.callback);
         }
     }
 }
