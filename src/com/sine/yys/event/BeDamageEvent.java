@@ -13,7 +13,14 @@ import com.sine.yys.inter.Entity;
  * 3. 薙魂时受到伤害触发犬神反击；
  */
 public class BeDamageEvent extends BaseVectorEvent implements Event {
-    public BeDamageEvent(Entity entity, Entity target) {
+    private final boolean zhenNv;
+
+    public BeDamageEvent(Entity entity, Entity target, boolean zhenNv) {
         super(entity, target);
+        this.zhenNv = zhenNv;
+    }
+
+    public boolean isZhenNv() {
+        return zhenNv;
     }
 }

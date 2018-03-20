@@ -137,7 +137,7 @@ public class ControllerImpl implements Controller {
             // 附加效果
             self.eventController.trigger(new DamageEvent(self, target));
             log.info(Msg.damage(self, target, (int) damage, critical));
-            self.eventController.trigger(new BeDamageEvent(self, target));
+            target.eventController.trigger(new BeDamageEvent(target, self, zhenNv));
             doDamage(target, (int) damage);
             if (target.getLifeInt() == 0)
                 log.info(Msg.vector(self, "击杀", target, ""));
@@ -157,7 +157,8 @@ public class ControllerImpl implements Controller {
         damage = breakShield(self, damage);
         log.info(Msg.info(self, "受到伤害", damage));
         if (damage > 0) {
-            self.eventController.trigger(new BeDamageEvent(src, self));
+            // XXX 薙魂伤害暂不分是否针女。毕竟也没有薙魂和狰共存的情况。
+            self.eventController.trigger(new BeDamageEvent(self, src, false));
             doDamage(self, damage);
         }
     }
