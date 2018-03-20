@@ -26,7 +26,7 @@ public class ZhaoCaiMao extends BaseMitama implements EventHandler<ZhaoCaiMaoEve
 
     @Override
     public void doInit(Controller controller, Entity self) {
-        getOwn().getEventController().add(this);
+        self.getEventController().add(this);
     }
 
     @Override
