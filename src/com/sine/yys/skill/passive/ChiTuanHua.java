@@ -1,9 +1,9 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.event.LostLifeEvent;
 import com.sine.yys.event.BeforeActionEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
+import com.sine.yys.event.LostLifeEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
