@@ -137,6 +137,7 @@ public class ControllerImpl implements Controller {
             // 附加效果
             self.eventController.trigger(new DamageEvent(self, target));
             log.info(Msg.damage(self, target, (int) damage, critical));
+            self.eventController.trigger(new BeDamageEvent(self, target));
             doDamage(target, (int) damage);
             if (target.getLifeInt() == 0)
                 log.info(Msg.vector(self, "击杀", target, ""));
