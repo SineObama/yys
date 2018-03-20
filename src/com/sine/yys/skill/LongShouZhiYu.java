@@ -3,10 +3,7 @@ package com.sine.yys.skill;
 import com.sine.yys.buff.DefenseIBuff;
 import com.sine.yys.buff.EffectDefIBuff;
 import com.sine.yys.buff.buff.LongShouZhiYuBuff;
-import com.sine.yys.event.BattleStartEvent;
-import com.sine.yys.event.BeforeActionEvent;
-import com.sine.yys.event.LongShouZhiYuOff;
-import com.sine.yys.event.LongShouZhiYuOn;
+import com.sine.yys.event.*;
 import com.sine.yys.inter.*;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -52,10 +49,9 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
     @Override
     public void doInit(Controller controller, Entity self) {
         getOwn().getEventController().add(BattleStartEvent.class, event -> {
-            // XXX 实际上会触发招财猫（甚至是一个回合，因为在行动条上显示了辉夜姬），然而感觉很bug
-            // 然而又不能算一个回合（没有触发彼岸花被动，也不会触发御馔津），因为鬼火进度条没变……
-            // 好像还会触发匣中少女的盾，无语。还是可以考虑定义一个新概念。
+            self.getEventController().trigger(new ZhaoCaiMaoEvent());
             deploy();
+            // 还会触发匣中少女的盾
         });
         self.getEventController().add(LongShouZhiYuOff.class, event -> {
             log.info(Msg.info(getOwn(), "龙首之玉幻境结束了"));

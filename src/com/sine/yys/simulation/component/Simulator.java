@@ -1,10 +1,7 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.base.SimpleObject;
-import com.sine.yys.event.AfterActionEvent;
-import com.sine.yys.event.BattleStartEvent;
-import com.sine.yys.event.BeforeActionEvent;
-import com.sine.yys.event.EnterEvent;
+import com.sine.yys.event.*;
 import com.sine.yys.inter.CallBack;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Skill;
@@ -122,6 +119,7 @@ public class Simulator {
 
                 // 行动前事件
                 // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
+                self.eventController.trigger(new ZhaoCaiMaoEvent());
                 self.eventController.trigger(new BeforeActionEvent(self));
                 self.camp.getEventController().trigger(new BeforeActionEvent(self));
 
