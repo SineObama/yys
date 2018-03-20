@@ -1,4 +1,4 @@
-package com.sine.yys.inter;
+package com.sine.yys.inter.base;
 
 /**
  * 式神原始的属性。

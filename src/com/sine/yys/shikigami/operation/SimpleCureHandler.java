@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * 简单的治疗式神AI，在有队友低于一定血量时使用指定技能。
  */
-public class SimpleCureHandler<T> extends AutoOperationHandler implements OperationHandler {
+public class SimpleCureHandler<T> extends AutoOperationHandler {
     private final Class<T> cureSkillClass;
     private final double lifePct;
     private final boolean needTarget;

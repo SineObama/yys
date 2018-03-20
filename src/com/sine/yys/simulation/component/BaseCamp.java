@@ -2,6 +2,7 @@ package com.sine.yys.simulation.component;
 
 import com.sine.yys.base.PositionImpl;
 import com.sine.yys.inter.*;
+import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.RandUtil;
 

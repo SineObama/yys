@@ -1,5 +1,6 @@
 package com.sine.yys.event;
 
+import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -12,15 +13,8 @@ import com.sine.yys.inter.Entity;
  * 2. 薙魂时受到伤害触发小僧被动；
  * 3. 薙魂时受到伤害触发犬神反击；
  */
-public class BeDamageEvent extends BaseVectorEvent implements Event {
-    private final boolean zhenNv;
-
-    public BeDamageEvent(Entity entity, Entity target, boolean zhenNv) {
-        super(entity, target);
-        this.zhenNv = zhenNv;
-    }
-
-    public boolean isZhenNv() {
-        return zhenNv;
+public class BeDamageEvent extends BaseAttackEvent implements Event {
+    public BeDamageEvent(Entity entity, Entity target, AttackType type) {
+        super(entity, target, type);
     }
 }

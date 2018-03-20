@@ -4,7 +4,10 @@ import com.sine.yys.buff.DefenseIBuff;
 import com.sine.yys.buff.EffectDefIBuff;
 import com.sine.yys.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.event.*;
-import com.sine.yys.inter.*;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.ShikigamiEntity;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
@@ -12,17 +15,17 @@ import com.sine.yys.util.RandUtil;
  * 辉夜姬-龙首之玉。
  * 附带开局释放效果（游戏中写在被动技能中）。
  */
-public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
+public class LongShouZhiYu extends BaseNoTargetSkill {
     private final BeforeActionHandler beforeActionHandler = new BeforeActionHandler();
-
-    @Override
-    public int getFire() {
-        return 2;
-    }
 
     @Override
     public void doApply(Entity target) {
         deploy();
+    }
+
+    @Override
+    public int getFire() {
+        return 2;
     }
 
     /**
@@ -91,13 +94,13 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
         return 2;
     }
 
-    class LSZYDefenseBuff extends DefenseIBuff implements Buff {
+    class LSZYDefenseBuff extends DefenseIBuff {
         LSZYDefenseBuff(double defPct, Entity src) {
             super(Integer.MAX_VALUE, LongShouZhiYu.this.getName() + "-增加", defPct, src);
         }
     }
 
-    class LSZYEffectDefBuff extends EffectDefIBuff implements Buff {
+    class LSZYEffectDefBuff extends EffectDefIBuff {
         LSZYEffectDefBuff(double effectDef, Entity src) {
             super(Integer.MAX_VALUE, LongShouZhiYu.this.getName() + "-增加", effectDef, src);
         }

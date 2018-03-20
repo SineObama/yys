@@ -15,10 +15,14 @@ public class BattleKoinobori extends SimpleObject {
     private final double cureRatioReduction = -0.10;
     private final BattleFlagSourceImpl battleFlagSource = new BattleFlagSourceImpl();
     private final EventHandler<EnterEvent> enterHandler = event -> event.getEntity().getBuffController().add(new BattleFlag(battleFlagSource));
+    private final BaseCamp camp0;
+    private final BaseCamp camp1;
     private int level = 0;
 
-    public BattleKoinobori(double speed) {
+    public BattleKoinobori(double speed, BaseCamp camp0, BaseCamp camp1) {
         super("战场鲤鱼旗", speed);
+        this.camp0 = camp0;
+        this.camp1 = camp1;
     }
 
     @Override
@@ -34,8 +38,8 @@ public class BattleKoinobori extends SimpleObject {
     @Override
     protected void doInit() {
         // XXXX 临时监听其中一个阵营的开始事件。
-        getController().getCamp0().getEventController().add(EnterEvent.class, enterHandler);
-        getController().getCamp1().getEventController().add(EnterEvent.class, enterHandler);
+        camp0.getEventController().add(EnterEvent.class, enterHandler);
+        camp1.getEventController().add(EnterEvent.class, enterHandler);
     }
 
     class BattleFlagSourceImpl implements BattleFlagSource {

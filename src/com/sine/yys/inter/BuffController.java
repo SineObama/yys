@@ -4,15 +4,17 @@ import java.util.Collection;
 
 /**
  * 为单个式神存储buff和debuff（包括护盾），提供添加、查找等操作。
- * 同类型的buff只能存在一个，buff应当实现{@link Combinable}以完成叠加（或理解为选择）的逻辑。
+ * 同类型的buff只能存在一个，buff应当实现{@link Comparable}进行与自身同类型的比较，返回负则保留后者（参数）。
  */
 public interface BuffController {
     Object remove(Object iBuff);
 
     /**
      * 添加buff。叠加逻辑由buff实现。
+     *
+     * @param buff
      */
-    <T> void add(Combinable<T> buff);
+    <T> void add(Comparable<T> buff);
 
     /**
      * 获取唯一的buff，不包括附加buff。

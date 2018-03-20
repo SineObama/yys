@@ -38,7 +38,7 @@ public class TianXiangHeZhan extends SimpleGroupAttack {
     @Override
     public void doApply(Entity target) {
         super.doApply(target);
-        getController().attack(getSelf(), target, new AttackInfoImpl(getFinalCoefficient()), null);
+        getController().attack(getSelf(), target, new AttackInfoImpl(getDebuffEffects(), getFinalCoefficient()));
     }
 
     @Override

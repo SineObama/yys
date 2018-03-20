@@ -1,7 +1,7 @@
 package com.sine.yys.base;
 
 import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Target;
+import com.sine.yys.inter.base.Target;
 
 import java.util.logging.Logger;
 

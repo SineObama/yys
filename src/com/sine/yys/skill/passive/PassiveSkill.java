@@ -1,6 +1,6 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.inter.Skill;
+import com.sine.yys.inter.base.Skill;
 
 /**
  * 被动技能

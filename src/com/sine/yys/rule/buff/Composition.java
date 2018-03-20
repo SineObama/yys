@@ -1,7 +1,7 @@
 package com.sine.yys.rule.buff;
 
 import com.sine.yys.inter.IBuff;
-import com.sine.yys.inter.IBuffProperty;
+import com.sine.yys.inter.base.IBuffProperty;
 
 import java.util.Collection;
 

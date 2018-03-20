@@ -1,6 +1,6 @@
 package com.sine.yys.base;
 
-import com.sine.yys.inter.Property;
+import com.sine.yys.inter.base.Property;
 
 /**
  * 式神属性。

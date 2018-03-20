@@ -3,7 +3,7 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.base.Container;
 import com.sine.yys.inter.EventController;
 import com.sine.yys.inter.EventHandler;
-import com.sine.yys.inter.Sealable;
+import com.sine.yys.inter.base.Sealable;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

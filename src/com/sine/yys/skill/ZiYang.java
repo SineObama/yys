@@ -3,6 +3,7 @@ package com.sine.yys.skill;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.*;
+import com.sine.yys.inter.base.Callback;
 import com.sine.yys.skill.model.QingTianWaWa;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -17,8 +18,7 @@ import java.util.List;
  * 1. 在同一次行动中，日和坊先死应该不会复活，但是后死好像会？
  * 2. 混乱（还可有最后1回合封被动）打死自己人之后会不会复活？
  */
-public class ZiYang extends BaseActiveSkill implements ActiveSkill {
-
+public class ZiYang extends BaseActiveSkill {
     private final DieHandler dieHandler = new DieHandler();
 
     @Override
@@ -91,7 +91,7 @@ public class ZiYang extends BaseActiveSkill implements ActiveSkill {
     }
 
     class DieHandler extends SealablePassiveHandler implements EventHandler<DieEvent> {
-        private final CallBack callBack = () -> {
+        private final Callback callback = () -> {
             // 查找己方式神站位，可复活的队友。
             final ShikigamiEntity choosed = RandUtil.choose(getOwn().getRevivable());
             if (choosed == null)
@@ -116,7 +116,7 @@ public class ZiYang extends BaseActiveSkill implements ActiveSkill {
             QingTianWaWa waWa = getSelf().get(QingTianWaWa.class, null);
             if (waWa.getCd() > 0)
                 return;
-            getController().addAction(400, callBack);
+            getController().addAction(400, callback);
         }
     }
 }

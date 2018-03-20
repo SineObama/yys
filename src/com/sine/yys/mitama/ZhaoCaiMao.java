@@ -4,14 +4,13 @@ import com.sine.yys.event.ZhaoCaiMaoEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
-import com.sine.yys.inter.Mitama;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 /**
  * 招财猫。
  */
-public class ZhaoCaiMao extends BaseMitama implements Mitama, EventHandler<ZhaoCaiMaoEvent> {
+public class ZhaoCaiMao extends BaseMitama implements EventHandler<ZhaoCaiMaoEvent> {
     @Override
     public String getName() {
         return "招财猫";

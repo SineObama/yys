@@ -1,12 +1,11 @@
 package com.sine.yys.effect;
 
-import com.sine.yys.inter.Effect;
 import com.sine.yys.inter.Entity;
 
 /**
  * 若目标生命***则伤害增/减***
  */
-public class DamageChangeByLife extends DamageChange implements Effect {
+public class DamageChangeByLife extends DamageChange {
     private final double begin;
     private final double end;
     private final double coefficient;

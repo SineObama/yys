@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class BaseComponent implements Component {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
-    private Entity self = null;
+    private Self self = null;
     private Controller controller = null;
     private Camp own, enemy;
 
@@ -24,7 +24,7 @@ public class BaseComponent implements Component {
         return enemy;
     }
 
-    protected final Entity getSelf() {
+    protected final Self getSelf() {
         return self;
     }
 
@@ -49,7 +49,7 @@ public class BaseComponent implements Component {
     }
 
     @Override
-    public final void init(Controller controller, Entity self) {
+    public final void init(Controller controller, Self self) {
         if (this.self != null) {
             log.warning("重复调用 init()。即将返回。");
             return;

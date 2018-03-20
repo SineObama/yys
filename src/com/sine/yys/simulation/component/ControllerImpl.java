@@ -1,16 +1,17 @@
 package com.sine.yys.simulation.component;
 
+import com.sine.yys.base.AttackTypeImpl;
 import com.sine.yys.buff.buff.DispellableBuff;
 import com.sine.yys.buff.debuff.DispellableDebuff;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.event.*;
 import com.sine.yys.inter.*;
+import com.sine.yys.inter.base.Callback;
 import com.sine.yys.rule.CalcDam;
 import com.sine.yys.rule.CalcEffect;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
-import java.util.Collection;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Logger;
@@ -30,26 +31,16 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void addAction(int prior, CallBack callBack) {
-        if (!actions.contains(new SingleAction(prior, callBack)))
-            actions.add(new SingleAction(prior, callBack));
+    public void addAction(int prior, Callback callback) {
+        if (!actions.contains(new SingleAction(prior, callback)))
+            actions.add(new SingleAction(prior, callback));
     }
 
-    CallBack getFirstAction() {
+    Callback getFirstAction() {
         final SingleAction poll = actions.poll();
         if (poll == null)
             return null;
         return poll.getCallback();
-    }
-
-    @Override
-    public Camp getCamp0() {
-        return camp0;
-    }
-
-    @Override
-    public Camp getCamp1() {
-        return camp1;
     }
 
     @Override
@@ -64,17 +55,23 @@ public class ControllerImpl implements Controller {
      * 3. 破盾，施加剩余伤害，添加御魂效果。
      */
     @Override
-    public void attack(Entity self0, Entity target0, AttackInfo attackInfo, Collection<DebuffEffect> debuffEffects) {
-        EntityImpl self = (EntityImpl) self0;
-        EntityImpl target = (EntityImpl) target0;
+    public void attack(Entity self, Entity target, AttackInfo attackInfo) {
+        attack(((EntityImpl) self), ((EntityImpl) target), attackInfo, new AttackTypeImpl());
+    }
+
+    @Override
+    public void counter(Entity self, Entity target, AttackInfo attackInfo) {
+        attack(((EntityImpl) self), ((EntityImpl) target), attackInfo, new AttackTypeImpl(true));
+    }
+
+    private void attack(EntityImpl self, EntityImpl target, AttackInfo attackInfo, AttackType type) {
         if (target.isDead())  // XXX 只是有时会出现目标已死。有更好 的逻辑？
             return;
 
         // XXX 关于触发时机
-        if (debuffEffects != null)
-            for (DebuffEffect debuffEffect : debuffEffects) {
-                applyDebuff(self, target, debuffEffect);
-            }
+        for (DebuffEffect debuffEffect : attackInfo.getDebuffEffects()) {
+            applyDebuff(self, target, debuffEffect);
+        }
 
         target.getCamp().getEventController().trigger(new BeAttackEvent());
         target.getEventController().trigger(new BeAttackEvent());
@@ -90,25 +87,21 @@ public class ControllerImpl implements Controller {
         damage *= self.getDamageCoefficient();
 
         // 3.
-        applyDamage(self, target, damage, critical, false);
+        applyDamage(self, target, damage, critical, type);
     }
 
-    /**
-     * 1. 根据旗帜buff增减。
-     * 2. 破盾，施加剩余伤害，附加效果（似乎有比如山童的眩晕）。
-     */
     @Override
-    public void realDamage(Entity self0, Entity target0, double damage) {
-        EntityImpl self = (EntityImpl) self0;
-        EntityImpl target = (EntityImpl) target0;
+    public void realDamage(Entity self, Entity target, double damage, AttackType type) {
+        realDamage(((EntityImpl) self), (EntityImpl) target, damage, (AttackTypeImpl) type);
+    }
+
+    private void realDamage(EntityImpl self, EntityImpl target, double damage, AttackTypeImpl type) {
         if (target.isDead())
             return;
-
-        // 1.
+        type.setZhenNv(true);
+        // 根据旗帜buff增减。
         damage *= self.getFlagDamageCoefficient();
-
-        // 2.
-        applyDamage(self, target, damage, false, true);
+        applyDamage(self, target, damage, false, new AttackTypeImpl(type));
     }
 
     /**
@@ -116,7 +109,7 @@ public class ControllerImpl implements Controller {
      * 破盾后计算御魂效果，进行伤害分摊。
      * XXXX 伤害的附加效果的触发位置？
      */
-    private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, boolean zhenNv) {
+    private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, AttackType type) {
         self.eventController.trigger(new AttackEvent(self, target));
 
         // 破盾
@@ -130,21 +123,22 @@ public class ControllerImpl implements Controller {
             damage *= event.getCoefficient();
 
             // 处理薙魂。未来考虑金鱼、小松丸躲避。
-            final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage);
+            final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, new AttackTypeImpl(type));
             target.eventController.trigger(damageShareEvent);
             damage = damageShareEvent.getLeft();
 
             // 附加效果
             self.eventController.trigger(new DamageEvent(self, target));
             log.info(Msg.damage(self, target, (int) damage, critical));
-            target.eventController.trigger(new BeDamageEvent(target, self, zhenNv));
+            target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type)));
             doDamage(target, (int) damage);
             if (target.getLifeInt() == 0)
                 log.info(Msg.vector(self, "击杀", target, ""));
 
+            // XXX 地藏像死亡后盾buff还在？
             if (critical) {
                 target.eventController.trigger(new BeCriticalEvent(target, self));
-                self.eventController.trigger(new CriticalEvent(self, target));
+                self.eventController.trigger(new CriticalEvent(self, target, new AttackTypeImpl(type)));
             }
         } else {
             log.info(Msg.noDamage(self, target));
@@ -152,13 +146,13 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void directDamage(Entity src, Entity self0, int damage) {
+    public void tiHunDamage(Entity src, Entity self0, int damage, AttackType type) {
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
         log.info(Msg.info(self, "受到伤害", damage));
         if (damage > 0) {
-            // XXX 薙魂伤害暂不分是否针女。毕竟也没有薙魂和狰共存的情况。
-            self.eventController.trigger(new BeDamageEvent(self, src, false));
+            type.setTiHun(true);
+            self.eventController.trigger(new BeDamageEvent(self, src, type));
             doDamage(self, damage);
         }
     }
@@ -276,17 +270,6 @@ public class ControllerImpl implements Controller {
         }
     }
 
-    @Override
-    public void xieZhan(Entity self0, Entity target) {
-        EntityImpl self = (EntityImpl) self0;
-        if (!self.getCamp().getOpposite().contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
-            log.info(Msg.vector(target, "不在", self, "敌方阵营中，随机协战"));
-            target = self.getCamp().getOpposite().randomTarget();
-        }
-        if (target != null)
-            self.getCommonAttack().xieZhan(this, self, target);
-    }
-
     /**
      * 一次“动作”结束后的逻辑。
      * <p>
@@ -363,14 +346,14 @@ public class ControllerImpl implements Controller {
      */
     public class SingleAction implements Comparable<SingleAction> {
         private final int prior;
-        private final CallBack callback;
+        private final Callback callback;
 
-        SingleAction(int prior, CallBack callback) {
+        SingleAction(int prior, Callback callback) {
             this.prior = prior;
             this.callback = callback;
         }
 
-        CallBack getCallback() {
+        Callback getCallback() {
             return callback;
         }
 

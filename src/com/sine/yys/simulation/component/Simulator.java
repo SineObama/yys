@@ -2,9 +2,9 @@ package com.sine.yys.simulation.component;
 
 import com.sine.yys.base.SimpleObject;
 import com.sine.yys.event.*;
-import com.sine.yys.inter.CallBack;
 import com.sine.yys.inter.Camp;
-import com.sine.yys.inter.Skill;
+import com.sine.yys.inter.base.Callback;
+import com.sine.yys.inter.base.Skill;
 import com.sine.yys.util.Msg;
 
 import java.util.ArrayList;
@@ -152,7 +152,7 @@ public class Simulator {
                     break;
 
                 // 回合后的行动，如反击等。通过回调实现。
-                CallBack action = controller.getFirstAction();
+                Callback action = controller.getFirstAction();
                 while (action != null) {
                     action.call();
                     controller.afterMovement();

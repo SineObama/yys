@@ -1,5 +1,7 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.inter.base.Skill;
+
 /**
  * 主动技能。
  * 包括所有普攻、群攻等等。
@@ -15,7 +17,6 @@ public interface ActiveSkill extends Skill {
 
     /**
      * 直接使用技能。由外部直接调用。
-     * 不操作鬼火。
      *
      * @param target 技能所选目标。
      */

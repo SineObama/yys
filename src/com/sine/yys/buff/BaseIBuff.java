@@ -66,10 +66,8 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     @Override
-    public IBuff combineWith(IBuff o) {
-        if (getLast() > o.getLast())
-            return this;
-        return o;
+    public int compareTo(IBuff o) {
+        return getLast() - o.getLast();
     }
 
     @Override

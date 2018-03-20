@@ -1,8 +1,8 @@
 package com.sine.yys.base;
 
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.JSONable;
 import com.sine.yys.inter.Position;
+import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.util.JSON;
 
 public class PositionImpl implements Position, JSONable {

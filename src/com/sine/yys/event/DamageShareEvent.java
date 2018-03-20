@@ -1,5 +1,6 @@
 package com.sine.yys.event;
 
+import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.Entity;
 
 import java.util.logging.Logger;
@@ -12,14 +13,14 @@ import java.util.logging.Logger;
  * 包括薙魂、金鱼姬的金鱼。
  * 未来可能实现椒图、小松丸躲避。
  */
-public class DamageShareEvent extends BaseVectorEvent {
+public class DamageShareEvent extends BaseAttackEvent {
     private final Logger log = Logger.getLogger(getClass().getName());
     private final double total;
     private double left;
     private boolean set;
 
-    public DamageShareEvent(Entity src, Entity entity, double total) {
-        super(src, entity);
+    public DamageShareEvent(Entity src, Entity entity, double total, AttackType type) {
+        super(src, entity, type);
         this.total = total;
         this.left = total;
     }

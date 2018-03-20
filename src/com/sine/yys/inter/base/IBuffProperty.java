@@ -1,4 +1,4 @@
-package com.sine.yys.inter;
+package com.sine.yys.inter.base;
 
 /**
  * buff中可提供的加成数值，正负数分别表示增减。

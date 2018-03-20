@@ -7,6 +7,7 @@ import com.sine.yys.buff.shield.DiZangXiangShield;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
 import com.sine.yys.inter.*;
+import com.sine.yys.inter.base.IBuffProperty;
 import com.sine.yys.rule.buff.*;
 import com.sine.yys.util.Msg;
 
@@ -101,18 +102,18 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     }
 
     @Override
-    public <T> void add(Combinable<T> buff) {
+    public <T> void add(Comparable<T> buff0) {
+        final IBuff buff = (IBuff) buff0;
         for (IBuff iBuff : set) {
-            if (iBuff.getClass() == buff.getClass()) {
-                final IBuff iBuff1 = iBuff.combineWith((IBuff) buff);
-                if (iBuff1 != iBuff) {
+            if (iBuff.getClass() == buff0.getClass()) {
+                if (iBuff.compareTo(buff) < 0) {
                     set.remove(iBuff);
-                    set.add(iBuff1);
+                    set.add(buff);
                 }
                 return;
             }
         }
-        set.add((IBuff) buff);
+        set.add(buff);
     }
 
     private <T> IBuff find(Class<T> clazz) {
