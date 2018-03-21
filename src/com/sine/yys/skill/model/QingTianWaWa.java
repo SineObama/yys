@@ -37,7 +37,7 @@ public class QingTianWaWa {
             added = self.getMaxLife();
             log.info(Msg.info(self, ENERGY, "达到上限"));
         }
-        log.info(Msg.info(self, "本次增加", ENERGY, (added - energy)));
+        log.info(Msg.info(self, "增加", ENERGY, (added - energy)));
         energy = added;
     }
 

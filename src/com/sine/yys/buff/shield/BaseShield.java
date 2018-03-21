@@ -30,9 +30,9 @@ public abstract class BaseShield extends BaseCommonIBuff implements Shield {
     }
 
     @Override
-    public IBuff combineWith(IBuff o) {
+    public int compareTo(IBuff o) {
         if (getLast() == o.getLast())
-            return getValue() > ((Shield) o).getValue() ? this : o;
-        return super.combineWith(o);
+            return getValue() - ((Shield) o).getValue();
+        return super.compareTo(o);
     }
 }

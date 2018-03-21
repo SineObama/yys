@@ -28,7 +28,7 @@ public class HuiYeJi extends BaseShikigami {
     /**
      * 如果没有幻境或幻境即将消失（回合数为1），则使用龙首之玉技能。否则（除去龙首之玉技能）交由父类处理……
      */
-    class HuiYeJiAI extends AutoOperationHandler implements OperationHandler {
+    class HuiYeJiAI extends AutoOperationHandler {
         @Override
         public Operation handle(Entity self, Camp own, Map<ActiveSkill, List<? extends Entity>> map) {
             LongShouZhiYuBuff buff = self.getBuffController().get(LongShouZhiYuBuff.class);

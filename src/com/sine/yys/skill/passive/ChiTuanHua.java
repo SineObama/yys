@@ -1,9 +1,9 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.event.LostLifeEvent;
 import com.sine.yys.event.BeforeActionEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
+import com.sine.yys.event.LostLifeEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -50,7 +50,7 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventH
         int level = xueZhiHuaHai.getLevel();
         if (level > 0) {
             log.info(Msg.trigger(getSelf(), ChiTuanHua.this));
-            getController().attack(getSelf(), event.getEntity(), new AttackInfoImpl(getCoefficient() * level, 0.0), null);
+            getController().attack(getSelf(), event.getEntity(), new AttackInfoImpl(null, getCoefficient() * level, 0.0));
         }
     }
 

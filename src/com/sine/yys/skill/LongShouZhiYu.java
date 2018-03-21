@@ -3,11 +3,11 @@ package com.sine.yys.skill;
 import com.sine.yys.buff.DefenseIBuff;
 import com.sine.yys.buff.EffectDefIBuff;
 import com.sine.yys.buff.buff.LongShouZhiYuBuff;
-import com.sine.yys.event.BattleStartEvent;
-import com.sine.yys.event.BeforeActionEvent;
-import com.sine.yys.event.LongShouZhiYuOff;
-import com.sine.yys.event.LongShouZhiYuOn;
-import com.sine.yys.inter.*;
+import com.sine.yys.event.*;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.ShikigamiEntity;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
@@ -15,17 +15,17 @@ import com.sine.yys.util.RandUtil;
  * 辉夜姬-龙首之玉。
  * 附带开局释放效果（游戏中写在被动技能中）。
  */
-public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
+public class LongShouZhiYu extends BaseNoTargetSkill {
     private final BeforeActionHandler beforeActionHandler = new BeforeActionHandler();
-
-    @Override
-    public int getFire() {
-        return 2;
-    }
 
     @Override
     public void doApply(Entity target) {
         deploy();
+    }
+
+    @Override
+    public int getFire() {
+        return 2;
     }
 
     /**
@@ -52,10 +52,9 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
     @Override
     public void doInit(Controller controller, Entity self) {
         getOwn().getEventController().add(BattleStartEvent.class, event -> {
-            // XXX 实际上会触发招财猫（甚至是一个回合，因为在行动条上显示了辉夜姬），然而感觉很bug
-            // 然而又不能算一个回合（没有触发彼岸花被动，也不会触发御馔津），因为鬼火进度条没变……
-            // 好像还会触发匣中少女的盾，无语。还是可以考虑定义一个新概念。
+            self.getEventController().trigger(new ZhaoCaiMaoEvent());
             deploy();
+            // 还会触发匣中少女的盾
         });
         self.getEventController().add(LongShouZhiYuOff.class, event -> {
             log.info(Msg.info(getOwn(), "龙首之玉幻境结束了"));
@@ -95,13 +94,13 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements ActiveSkill {
         return 2;
     }
 
-    class LSZYDefenseBuff extends DefenseIBuff implements Buff {
+    class LSZYDefenseBuff extends DefenseIBuff {
         LSZYDefenseBuff(double defPct, Entity src) {
             super(Integer.MAX_VALUE, LongShouZhiYu.this.getName() + "-增加", defPct, src);
         }
     }
 
-    class LSZYEffectDefBuff extends EffectDefIBuff implements Buff {
+    class LSZYEffectDefBuff extends EffectDefIBuff {
         LSZYEffectDefBuff(double effectDef, Entity src) {
             super(Integer.MAX_VALUE, LongShouZhiYu.this.getName() + "-增加", effectDef, src);
         }

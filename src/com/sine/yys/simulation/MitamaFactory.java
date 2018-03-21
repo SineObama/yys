@@ -1,6 +1,6 @@
 package com.sine.yys.simulation;
 
-import com.sine.yys.inter.Mitama;
+import com.sine.yys.inter.base.Mitama;
 import com.sine.yys.mitama.*;
 
 import java.util.HashMap;
@@ -23,6 +23,8 @@ public class MitamaFactory {
         put(XinYan::new);
         put(ZhenNv::new);
         put(TiHun::new);
+        put(ZhaoCaiMao::new);
+        put(Zheng::new);
     }
 
     private static void put(Creator creator, String... keys) {

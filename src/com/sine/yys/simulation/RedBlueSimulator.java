@@ -41,7 +41,7 @@ public class RedBlueSimulator {
                 for (EntityInfo info : blueInfo.infos) {
                     blue.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen)));
                 }
-                Simulator simulator = new Simulator(red, blue, Collections.singletonList(new BattleKoinobori(128.0)));
+                Simulator simulator = new Simulator(red, blue, Collections.singletonList(new BattleKoinobori(128.0, red, blue)));
                 while (simulator.getWin() == null)
                     simulator.step();
                 String winName = simulator.getWin().getName();

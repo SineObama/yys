@@ -40,7 +40,7 @@ public class XieZhan extends BasePassiveSkill implements PassiveSkill {
             final Entity self = getSelf();
             if (event.getEntity() != self && RandUtil.success(getPct())) {  // 前者表示非自身的普攻事件
                 log.info(Msg.trigger(self, XieZhan.this));
-                getController().xieZhan(self, event.getTarget());
+                self.xieZhan(event.getTarget());
             }
         }
     }

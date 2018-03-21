@@ -3,12 +3,11 @@ package com.sine.yys.mitama;
 import com.sine.yys.effect.DamageChangeByLife;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.Mitama;
 
 /**
  * 心眼。
  */
-public class XinYan extends BaseMitama implements Mitama {
+public class XinYan extends BaseMitama {
     private final DamageChangeByLife effect = new DamageChangeByLife(getMinLifePct(), getMaxLifePct(), getCoefficient(), getName());
 
     public double getMinLifePct() {

@@ -8,7 +8,7 @@ import com.sine.yys.inter.IBuff;
  * 包括攻击、防御、速度、命中抵抗等等。
  * 具体语义由子类给出。
  */
-public abstract class NumIBuff extends BaseCommonIBuff implements IBuff {
+public abstract class NumIBuff extends BaseCommonIBuff {
     protected final double value;
 
     /**
@@ -23,10 +23,10 @@ public abstract class NumIBuff extends BaseCommonIBuff implements IBuff {
     }
 
     @Override
-    public IBuff combineWith(IBuff o) {
+    public int compareTo(IBuff o) {
         final double ovalue = ((NumIBuff) o).value;
         if (value == ovalue)
-            return super.combineWith(o);
-        return value > ovalue ? this : o;
+            return super.compareTo(o);
+        return (int) (value - ovalue);
     }
 }

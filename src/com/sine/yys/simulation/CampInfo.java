@@ -1,6 +1,6 @@
 package com.sine.yys.simulation;
 
-import com.sine.yys.inter.Property;
+import com.sine.yys.inter.base.Property;
 
 import java.util.ArrayList;
 import java.util.List;

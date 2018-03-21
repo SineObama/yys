@@ -1,7 +1,6 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
-import com.sine.yys.inter.ActiveSkill;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.util.Msg;
 
@@ -9,8 +8,18 @@ import com.sine.yys.util.Msg;
  * 彼岸花-血之花海。
  * 当前在回合前减1层。
  */
-public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
+public class XueZhiHuaHai extends BaseNoTargetSkill {
     public static final String LEVEL = "HuaHai_LEVEL";
+
+    @Override
+    public void doApply(Entity target) {
+        int count = 2;
+        if (getSelf().getLife() < 0.5)
+            count += 1;
+        addLevel(count);
+        if (getSelf().getLife() < 0.75)
+            addShield();
+    }
 
     /**
      * @return 血之花海护盾，已损生命的百分比。
@@ -22,16 +31,6 @@ public class XueZhiHuaHai extends BaseNoTargetSkill implements ActiveSkill {
     @Override
     public int getFire() {
         return 3;
-    }
-
-    @Override
-    public void doApply(Entity target) {
-        int count = 2;
-        if (getSelf().getLife() < 0.5)
-            count += 1;
-        addLevel(count);
-        if (getSelf().getLife() < 0.75)
-            addShield();
     }
 
     public void addLevel(int count) {

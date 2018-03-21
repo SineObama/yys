@@ -4,13 +4,12 @@ import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
-import com.sine.yys.inter.Mitama;
 import com.sine.yys.util.Msg;
 
 /**
  * 火灵。
  */
-public class HuoLing extends BaseMitama implements Mitama, EventHandler<BattleStartEvent> {
+public class HuoLing extends BaseMitama implements EventHandler<BattleStartEvent> {
     @Override
     public String getName() {
         return "火灵";

@@ -1,6 +1,6 @@
 package com.sine.yys.util;
 
-import com.sine.yys.inter.JSONable;
+import com.sine.yys.inter.base.JSONable;
 
 import java.util.Collection;
 import java.util.Map;

@@ -1,9 +1,9 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.inter.Mitama;
-import com.sine.yys.inter.Property;
 import com.sine.yys.inter.Shikigami;
 import com.sine.yys.inter.ShikigamiEntity;
+import com.sine.yys.inter.base.Mitama;
+import com.sine.yys.inter.base.Property;
 
 /**
  * 式神。

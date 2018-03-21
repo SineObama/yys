@@ -1,10 +1,10 @@
-package com.sine.yys.inter;
+package com.sine.yys.inter.base;
 
 /**
  * 技能。
  * 包含冷却时间（CD）的逻辑。
  */
-public interface Skill extends Named, Component {
+public interface Skill extends Named {
     int getCD();
 
     int getMAXCD();

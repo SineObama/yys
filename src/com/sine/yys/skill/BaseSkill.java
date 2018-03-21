@@ -1,9 +1,9 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.base.BaseComponent;
-import com.sine.yys.inter.JSONable;
-import com.sine.yys.inter.Sealable;
-import com.sine.yys.inter.Skill;
+import com.sine.yys.inter.base.JSONable;
+import com.sine.yys.inter.base.Sealable;
+import com.sine.yys.inter.base.Skill;
 import com.sine.yys.util.JSON;
 
 /**
@@ -11,7 +11,7 @@ import com.sine.yys.util.JSON;
  * 包括CD的设定，战斗中CD的保存，所属式神的引用。
  */
 public abstract class BaseSkill extends BaseComponent implements Skill, JSONable {
-    protected static final String CD = "CD";
+    private static final String CD = "CD";
     private boolean prepared = false;  // 用于处理buff回合数衰减。调用beforeAction()后为true。在2个状态之间转换
 
     @Override
@@ -19,7 +19,7 @@ public abstract class BaseSkill extends BaseComponent implements Skill, JSONable
         return getSelf().get(this.toString() + CD, 0);
     }
 
-    public final void setCD(int cd) {
+    final void setCD(int cd) {
         getSelf().put(this.toString() + CD, cd);
     }
 

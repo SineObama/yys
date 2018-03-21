@@ -1,6 +1,6 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.inter.Sealable;
+import com.sine.yys.inter.base.Sealable;
 import com.sine.yys.skill.BaseSkill;
 
 /**

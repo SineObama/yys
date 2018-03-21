@@ -46,7 +46,7 @@ public class PangZou extends BaseCommonAttack implements DebuffEffect {
     }
 
     @Override
-    protected Collection<DebuffEffect> getDebuffEffects() {
+    public Collection<DebuffEffect> getDebuffEffects() {
         return Collections.singleton(this);
     }
 }

@@ -1,13 +1,10 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.base.SimpleObject;
-import com.sine.yys.event.AfterActionEvent;
-import com.sine.yys.event.BattleStartEvent;
-import com.sine.yys.event.BeforeActionEvent;
-import com.sine.yys.event.EnterEvent;
-import com.sine.yys.inter.CallBack;
+import com.sine.yys.event.*;
 import com.sine.yys.inter.Camp;
-import com.sine.yys.inter.Skill;
+import com.sine.yys.inter.base.Callback;
+import com.sine.yys.inter.base.Skill;
 import com.sine.yys.util.Msg;
 
 import java.util.ArrayList;
@@ -122,6 +119,7 @@ public class Simulator {
 
                 // 行动前事件
                 // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
+                self.eventController.trigger(new ZhaoCaiMaoEvent());
                 self.eventController.trigger(new BeforeActionEvent(self));
                 self.camp.getEventController().trigger(new BeforeActionEvent(self));
 
@@ -154,7 +152,7 @@ public class Simulator {
                     break;
 
                 // 回合后的行动，如反击等。通过回调实现。
-                CallBack action = controller.getFirstAction();
+                Callback action = controller.getFirstAction();
                 while (action != null) {
                     action.call();
                     controller.afterMovement();

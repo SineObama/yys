@@ -4,14 +4,13 @@ import com.sine.yys.event.CriticalEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
-import com.sine.yys.inter.Mitama;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 /**
  * 针女。
  */
-public class ZhenNv extends BaseMitama implements Mitama, EventHandler<CriticalEvent> {
+public class ZhenNv extends BaseMitama implements EventHandler<CriticalEvent> {
     @Override
     public String getName() {
         return "针女";
@@ -48,7 +47,7 @@ public class ZhenNv extends BaseMitama implements Mitama, EventHandler<CriticalE
             final double damage1 = self.getAttack() * getMaxDamageByAttack();
             final double damage2 = event.getTarget().getMaxLife() * getMaxDamageByMaxLife();
             double damage = damage1 < damage2 ? damage1 : damage2;
-            getController().realDamage(self, event.getTarget(), damage);
+            getController().realDamage(self, event.getTarget(), damage, event.getType());
         }
     }
 }

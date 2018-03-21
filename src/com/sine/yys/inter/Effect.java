@@ -1,5 +1,7 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.inter.base.Named;
+
 /**
  * 效果。
  * 目前定义不太明确。

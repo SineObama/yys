@@ -1,5 +1,8 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.inter.base.Property;
+import com.sine.yys.inter.base.Target;
+
 /**
  * 战场中的可见实体。
  * 包括式神和召唤物。
@@ -38,6 +41,10 @@ public interface Entity extends Target, Property {
     int getLostLifeInt();
 
     int getLifeInt();
+
+    void xieZhan(Entity target);
+
+    Entity applyControl(Entity origin);
 
     boolean isDead();
 

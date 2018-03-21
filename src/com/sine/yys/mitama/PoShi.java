@@ -3,12 +3,11 @@ package com.sine.yys.mitama;
 import com.sine.yys.effect.DamageChangeByLife;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.Mitama;
 
 /**
  * 破势。
  */
-public class PoShi extends BaseMitama implements Mitama {
+public class PoShi extends BaseMitama {
     private final DamageChangeByLife effect = new DamageChangeByLife(getMinLifePct(), getMaxLifePct(), getCoefficient(), getName());
 
     public double getMinLifePct() {

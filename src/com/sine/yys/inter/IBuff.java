@@ -1,5 +1,8 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.inter.base.IBuffProperty;
+import com.sine.yys.inter.base.Named;
+
 /**
  * 式神头上的buff，分为增益和减益两大类。
  * 基本的有增加攻击、防御、抵抗等，也包括护盾、控制效果。
@@ -11,7 +14,7 @@ package com.sine.yys.inter;
  * 其中一个问题是，当前回合给自己（或全队）加的buff，在自己回合结束时并不会减1，比如持续3回合的buff就直接显示3，回合结束后还是3。
  * 当前实现改为：设置行动前后分别调用的2个函数，保存一个状态，使得调用前者再调用后者才让回合数-1。
  */
-public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
+public interface IBuff extends IBuffProperty, Named, Comparable<IBuff> {
     /**
      * buff名称。
      */
@@ -37,18 +40,6 @@ public interface IBuff extends IBuffProperty, Named, Combinable<IBuff> {
      * @return 持续回合数。0表示buff应当被移除。永久buff以（接近）整数最大值表示。
      */
     int getLast();
-
-    /**
-     * 重复添加同类型buff时调用，因为不能同时存在2个buff。
-     * 判断被留下的实例（比如回合数大的保留，或者数值大的保留）。
-     * 也可进行回合数叠加（然后返回自己）。
-     * <p>
-     * 由于在价值相同（一般是回合数相同）的情况下，新buff会替代旧buff（根据UI表现推断），所以约定参数是新的实例。
-     *
-     * @param o 与实例同类型的buff（新）。
-     * @return 被留下的实例。
-     */
-    IBuff combineWith(IBuff o);
 
     /**
      * @return 来源式神。

@@ -9,8 +9,11 @@ import com.sine.yys.buff.debuff.control.HunLuan;
 import com.sine.yys.buff.debuff.control.Unmovable;
 import com.sine.yys.event.FinishActionEvent;
 import com.sine.yys.inter.*;
+import com.sine.yys.inter.base.JSONable;
+import com.sine.yys.inter.base.Mitama;
+import com.sine.yys.inter.base.Property;
+import com.sine.yys.inter.base.Skill;
 import com.sine.yys.shikigami.operation.OperationImpl;
-import com.sine.yys.skill.commonattack.CommonAttack;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -23,7 +26,7 @@ import java.util.Map;
 /**
  * 战场中的实体，保存了式神信息{@link Shikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
  */
-public class EntityImpl extends SimpleObject implements Entity, JSONable {
+public class EntityImpl extends SimpleObject implements Self, JSONable {
     final EventControllerImpl eventController = new EventControllerImpl();
     final BuffControllerImpl buffController = new BuffControllerImpl();
     final Shikigami shikigami;
@@ -49,10 +52,12 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
     protected final void doInit() {
         final Controller controller = getController();
         for (Skill skill : this.shikigami.getSkills()) {
-            skill.init(controller, this);
+            if (skill instanceof Component)
+                ((Component) skill).init(controller, this);
         }
         for (Mitama mitama : this.mitamas) {
-            mitama.init(controller, this);
+            if (mitama instanceof Component)
+                ((Component) mitama).init(controller, this);
         }
     }
 
@@ -288,13 +293,39 @@ public class EntityImpl extends SimpleObject implements Entity, JSONable {
         return activeSkills;
     }
 
-    CommonAttack getCommonAttack() {
+    @Override
+    public CommonAttack getCommonAttack() {
         for (Skill skill : shikigami.getSkills()) {
             if (skill instanceof CommonAttack)
                 return (CommonAttack) skill;
         }
         // XXX 没有普攻技能
         throw new RuntimeException(getFullName() + " 没有普通攻击。");
+    }
+
+    @Override
+    public void xieZhan(Entity target) {
+        target = applyControl(target);
+        if (target == null)
+            return;
+        if (!camp.getOpposite().contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
+            log.info(Msg.vector(target, "不在", this, "敌方阵营中，随机协战"));
+            target = camp.getOpposite().randomTarget();
+        }
+        if (target != null)
+            getCommonAttack().xieZhan(target);
+    }
+
+    @Override
+    public Entity applyControl(Entity origin) {
+        final ControlBuff controlBuff = buffController.getFirstControlBuff();
+        if (controlBuff instanceof Unmovable)
+            return null;
+        if (controlBuff instanceof ChaoFeng) {
+            final ChaoFeng chaoFeng = (ChaoFeng) controlBuff;
+            return chaoFeng.getSrc();
+        }
+        return origin;
     }
 
     @Override

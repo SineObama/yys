@@ -1,7 +1,6 @@
 package com.sine.yys.effect;
 
 import com.sine.yys.event.PreDamageEvent;
-import com.sine.yys.inter.Effect;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.util.Msg;
@@ -11,7 +10,7 @@ import com.sine.yys.util.Msg;
  * 包括根据目标生命百分比（破势、心眼）、根据buff（鸣屋）等。
  * 子类重写judge函数以进行判断。
  */
-public abstract class DamageChange extends BaseEffect implements Effect, EventHandler<PreDamageEvent> {
+public abstract class DamageChange extends BaseEffect implements EventHandler<PreDamageEvent> {
     DamageChange(String name) {
         super(name);
     }

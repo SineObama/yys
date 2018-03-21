@@ -9,7 +9,7 @@ import com.sine.yys.util.Msg;
  * PVP阵营。
  * 初始化时给式神设置唯一的鬼火仓库（自己）。
  */
-public class PVPCamp extends BaseCamp implements Camp, FireRepo {
+public class PVPCamp extends BaseCamp implements FireRepo {
     private int fire;
     private int fireBarPos = 0;  // 鬼火行动条位置，代表点亮的格数（包括闪烁），范围0-5
     private boolean prepared = false;  // 调用ready()后为true。在2个状态之间转换

@@ -1,9 +1,9 @@
-package com.sine.yys.inter;
+package com.sine.yys.inter.base;
 
 /**
  * 用作简单的回调。
  */
 @FunctionalInterface
-public interface CallBack {
+public interface Callback {
     void call();
 }

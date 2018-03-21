@@ -2,16 +2,31 @@ package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.event.BeMonoAttackEvent;
 import com.sine.yys.event.CommonAttackEvent;
-import com.sine.yys.inter.*;
-import com.sine.yys.skill.BaseActiveSkill;
-import com.sine.yys.skill.model.AttackInfoImpl;
+import com.sine.yys.inter.CommonAttack;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.ShikigamiEntity;
+import com.sine.yys.inter.TargetResolver;
+import com.sine.yys.skill.BaseAttackSkill;
 import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 
 /**
  * 普攻通用逻辑。
  * 在普攻结束后触发普攻事件。
  */
-public abstract class BaseCommonAttack extends BaseActiveSkill implements CommonAttack {
+public abstract class BaseCommonAttack extends BaseAttackSkill implements CommonAttack {
+    /**
+     * 普攻的具体操作。无需触发普攻事件。
+     * 默认以getAttack的攻击，对target攻击getTimes次。
+     */
+    @Override
+    protected void doApply(Entity target) {
+        for (int i = 0; i < getTimes(); i++) {
+            if (target.isDead())
+                break;
+            getController().attack(getSelf(), target, getAttack());
+        }
+    }
+
     @Override
     public final int getFire() {
         return 0;
@@ -29,17 +44,6 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
         return 1.0;
     }
 
-    /**
-     * 攻击信息。
-     * 默认以getCoefficient的系数，没有破防效果。
-     *
-     * @return 攻击信息。
-     */
-    @Override
-    public AttackInfo getAttack() {
-        return new AttackInfoImpl(getCoefficient());
-    }
-
     @Override
     public final TargetResolver getTargetResolver() {
         return new EnemyEntityResolver();
@@ -49,7 +53,7 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     protected void beforeApply(Entity target) {
         // 可能被混乱打自己人
         if (getEnemy().contain(target) && target instanceof ShikigamiEntity) {
-            getEnemy().getEventController().trigger(new BeMonoAttackEvent(getSelf(), (ShikigamiEntity) target));
+            getEnemy().getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf()));
         }
     }
 
@@ -62,27 +66,18 @@ public abstract class BaseCommonAttack extends BaseActiveSkill implements Common
     /**
      * 协战的具体操作。
      * 默认调用doApply。具体技能根据需要重写。
-     *
-     * @param self   自身。
-     * @param target 协战目标。
      */
     @Override
-    public void xieZhan(Controller controller, Entity self, Entity target) {
+    public void xieZhan(Entity target) {
         doApply(target);
     }
 
-    /**
-     * 普攻的具体操作。无需触发普攻事件。
-     * 默认以getAttack的攻击，对target攻击getTimes次。
-     *
-     * @param target 攻击目标。
-     */
     @Override
-    protected void doApply(Entity target) {
+    public void counter(Entity target) {
         for (int i = 0; i < getTimes(); i++) {
             if (target.isDead())
                 break;
-            getController().attack(getSelf(), target, getAttack(), getDebuffEffects());
+            getController().counter(getSelf(), target, getAttack());
         }
     }
 }

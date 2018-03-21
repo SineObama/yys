@@ -12,11 +12,6 @@ import com.sine.yys.util.RandUtil;
  */
 public class TianZhiLei extends BaseNoTargetSkill implements DebuffEffect {
     @Override
-    public String getName() {
-        return "天之泪";
-    }
-
-    @Override
     protected void doApply(Entity target) {
         final Controller controller = getController();
         final Entity self = getSelf();
@@ -28,6 +23,11 @@ public class TianZhiLei extends BaseNoTargetSkill implements DebuffEffect {
             if (RandUtil.success(getDispelDebuffPct()))
                 controller.dispelDebuff(entity, getMaxDispelDebuff());
         }
+    }
+
+    @Override
+    public String getName() {
+        return "天之泪";
     }
 
     @Override

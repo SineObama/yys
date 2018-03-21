@@ -1,5 +1,6 @@
 package com.sine.yys.event;
 
+import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -7,8 +8,8 @@ import com.sine.yys.inter.Entity;
  *
  * @see BeCriticalEvent
  */
-public class CriticalEvent extends BaseVectorEvent implements Event {
-    public CriticalEvent(Entity entity, Entity target) {
-        super(entity, target);
+public class CriticalEvent extends BaseAttackEvent implements Event {
+    public CriticalEvent(Entity entity, Entity target, AttackType type) {
+        super(entity, target, type);
     }
 }
