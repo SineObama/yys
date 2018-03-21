@@ -15,6 +15,8 @@ import com.sine.yys.inter.base.Named;
  * 当前实现改为：设置行动前后分别调用的2个函数，保存一个状态，使得调用前者再调用后者才让回合数-1。
  */
 public interface IBuff extends IBuffProperty, Named, Comparable<IBuff> {
+    int addLast(int count);
+
     /**
      * buff名称。
      */

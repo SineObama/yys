@@ -45,6 +45,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     private final Logger log = Logger.getLogger(getClass().getName());
 
     private final Set<IBuff> set = new HashSet<>();
+    private final BeDamage beDamage = new BeDamage();
     private final Cure cure = new Cure();
     private final DamageUp damageUp = new DamageUp();
     private final FlagDamage flagDamage = new FlagDamage();
@@ -158,6 +159,11 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     @Override
     public <T> void remove(Class<T> clazz) {
         remove(find(clazz));
+    }
+
+    @Override
+    public double getBeDamage() {
+        return beDamage.calc(set);
     }
 
     @Override

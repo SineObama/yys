@@ -56,6 +56,15 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     @Override
+    public final int addLast(int count) {
+        if (last <= 0) {
+            log.warning("异常调用 addLast()，buff已结束。即将返回。");
+            return 0;
+        }
+        return last += count;
+    }
+
+    @Override
     public final String getName() {
         return name;
     }
@@ -117,6 +126,11 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     protected void doAfterAction(DamageController controller, Entity self) {
+    }
+
+    @Override
+    public double getBeDamage() {
+        return 0;
     }
 
     @Override

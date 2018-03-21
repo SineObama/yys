@@ -7,6 +7,12 @@ package com.sine.yys.inter.base;
  */
 public interface IBuffProperty {
     /**
+     * 受到伤害增减。
+     * (1+x)*(1+x)....-1。
+     */
+    double getBeDamage();
+
+    /**
      * 治疗效果。
      * 一般减疗都不能叠加，只有和旗帜buff叠加。
      * （1+百分比）*原治疗量。
