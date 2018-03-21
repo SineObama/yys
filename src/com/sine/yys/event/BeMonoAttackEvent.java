@@ -21,7 +21,7 @@ import com.sine.yys.inter.ShikigamiEntity;
 public class BeMonoAttackEvent extends BaseVectorEvent implements Event {
     private boolean treated = false;
 
-    public BeMonoAttackEvent(Entity entity, ShikigamiEntity target) {
+    public BeMonoAttackEvent(ShikigamiEntity entity, Entity target) {
         super(entity, target);
     }
 
