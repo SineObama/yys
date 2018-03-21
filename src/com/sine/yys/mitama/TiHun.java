@@ -64,6 +64,8 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
     public void handle(BeMonoAttackEvent event) {
         if (event.isTreated())
             return;
+        if (event.getEntity() == getSelf())
+            return;
         final ControlBuff controlBuff = getSelf().getBuffController().getFirstControlBuff();
         if (controlBuff != null && !(controlBuff instanceof ChenMo))
             return;
