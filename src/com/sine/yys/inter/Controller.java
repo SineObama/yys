@@ -39,9 +39,10 @@ public interface Controller extends DamageController {
     void realDamage(Entity self, Entity target, double damage, AttackType type);
 
     /**
-     * 薙魂伤害。
+     * 薙魂伤害、椒图分摊后（其他人的）伤害。
+     * 会打醒睡眠。
      */
-    void tiHunDamage(Entity src, Entity self, int damage, AttackType type);
+    void directDamage(Entity src, Entity self, int damage, AttackType type);
 
     /**
      * 概率吸取鬼火。

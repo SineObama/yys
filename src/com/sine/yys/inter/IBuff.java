@@ -51,5 +51,5 @@ public interface IBuff extends IBuffProperty, Named, Comparable<IBuff> {
     /**
      * buff被移除时会被调用。
      */
-    void onRemove();
+    void onRemove(Entity self);
 }

@@ -18,7 +18,7 @@ public class LongShouZhiYuBuff extends BaseCommonIBuff {
     }
 
     @Override
-    public void onRemove() {
+    public void onRemove(Entity self) {
         callback.call();
     }
 }

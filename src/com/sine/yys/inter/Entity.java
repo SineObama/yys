@@ -62,6 +62,8 @@ public interface Entity extends Target, Property {
      */
     void addPosition(double count);
 
+    int addLife(int count);
+
     EventController getEventController();
 
     double getCureCoefficient();

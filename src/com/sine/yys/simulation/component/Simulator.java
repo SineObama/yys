@@ -127,7 +127,7 @@ public class Simulator {
 
                 // XXXX 行动前事件死了的影响
                 // 包括执行持续伤害
-                self.buffController.beforeAction(controller, self);
+                self.buffController.beforeAction(controller);
 
                 if (!self.isDead())
                     self.action();
@@ -135,7 +135,7 @@ public class Simulator {
                 controller.afterMovement();
 
                 // 一般buff回合数-1
-                self.buffController.afterAction(controller, self);
+                self.buffController.afterAction(controller);
 
                 // 行动后事件
                 self.eventController.trigger(new AfterActionEvent(self));

@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class EntityImpl extends SimpleObject implements Self, JSONable {
     final EventControllerImpl eventController = new EventControllerImpl();
-    final BuffControllerImpl buffController = new BuffControllerImpl();
+    final BuffControllerImpl buffController = new BuffControllerImpl(this);
     final Shikigami shikigami;
     final List<Mitama> mitamas;
     private final Property property;
@@ -223,11 +223,13 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
         this.life = life;
     }
 
-    int addLife(int count) {
+    @Override
+    public int addLife(int count) {
         if (count < 0) {
             log.warning("add life by negative value");
             return this.life;
         }
+        log.info(Msg.info(this, "回复生命", count));
         this.life += count;
         if (this.life > getMaxLife())
             this.life = getMaxLife();

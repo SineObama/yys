@@ -3,6 +3,7 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.base.AttackTypeImpl;
 import com.sine.yys.buff.buff.DispellableBuff;
 import com.sine.yys.buff.debuff.DispellableDebuff;
+import com.sine.yys.buff.debuff.control.ShuiMian;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.event.*;
 import com.sine.yys.inter.*;
@@ -112,6 +113,8 @@ public class ControllerImpl implements Controller {
     private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, AttackType type) {
         self.eventController.trigger(new AttackEvent(self, target));
 
+        damage *= self.buffController.getBeDamage() + 1;
+
         // 破盾
         int remain = breakShield(target, (int) damage);
 
@@ -130,6 +133,7 @@ public class ControllerImpl implements Controller {
             // 附加效果
             self.eventController.trigger(new DamageEvent(self, target));
             log.info(Msg.damage(self, target, (int) damage, critical));
+            target.buffController.remove(ShuiMian.class);
             target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type)));
             doDamage(target, (int) damage);
             if (target.getLifeInt() == 0)
@@ -145,18 +149,20 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    // XXXXX 薙魂、椒图传递……死亡算不算击杀？
     @Override
-    public void tiHunDamage(Entity src, Entity self0, int damage, AttackType type) {
+    public void directDamage(Entity src, Entity self0, int damage, AttackType type) {
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
         log.info(Msg.info(self, "受到伤害", damage));
         if (damage > 0) {
-            type.setTiHun(true);
+            self.buffController.remove(ShuiMian.class);
             self.eventController.trigger(new BeDamageEvent(self, src, type));
             doDamage(self, damage);
         }
     }
 
+    @Override
     public void buffDamage(Entity self0, int damage) {
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
@@ -176,7 +182,6 @@ public class ControllerImpl implements Controller {
         count = (int) (src * coefficient);
         if (count <= 0)
             count = 1;
-        log.info(Msg.info(target, "受到治疗回复", count));
         target.addLife(count);
         final BeCureEvent beCureEvent = new BeCureEvent(count);
         target.getEventController().trigger(beCureEvent);

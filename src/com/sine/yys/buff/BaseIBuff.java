@@ -119,7 +119,7 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     @Override
-    public void onRemove() {
+    public void onRemove(Entity self) {
     }
 
     protected void doBeforeAction(DamageController controller, Entity self) {
