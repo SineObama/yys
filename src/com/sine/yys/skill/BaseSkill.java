@@ -8,7 +8,7 @@ import com.sine.yys.util.JSON;
 
 /**
  * 技能通用逻辑。
- * 包括CD的设定，战斗中CD的保存，所属式神的引用。
+ * 包括CD的设定，战斗中CD的保存。
  */
 public abstract class BaseSkill extends BaseComponent implements Skill, JSONable {
     private static final String CD = "CD";

@@ -3,7 +3,7 @@ package com.sine.yys.effect;
 import com.sine.yys.inter.Entity;
 
 /**
- * 若目标生命***则伤害增/减***
+ * 若目标生命***则伤害增/减***。
  */
 public class DamageChangeByLife extends DamageChange {
     private final double begin;

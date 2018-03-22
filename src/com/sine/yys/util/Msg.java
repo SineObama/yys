@@ -13,17 +13,16 @@ public class Msg {
     /**
      * 描述性消息。谁做什么。
      */
-    public static String info(Target self, String msg) {
-        return chStr(self != null ? self.getFullName() : "", fullNameWidth) + msg;
-    }
-
     public static String info(Target self, Object... objects) {
-        return info(self, join(objects));
+        return chStr(self != null ? self.getFullName() : "", fullNameWidth) + join(objects);
     }
 
     /**
      * 把若干个对象拼接为字符串，并使用空格分离。
-     * 对浮点类型进行特殊处理，默认保留6位小数并去掉末尾的0。
+     * <p>
+     * 规则：
+     * 1. 对浮点类型进行特殊处理，默认保留6位小数并去掉末尾的0；
+     * 2. 对{@linkplain Named}类型使用{@linkplain Named#getName()}输出。
      */
     public static String join(Object... objects) {
         CharSequence[] sequences = new CharSequence[objects.length];
@@ -41,10 +40,6 @@ public class Msg {
             }
         }
         return String.join(" ", sequences);
-    }
-
-    public static String damage(Target self, Target target, int damage) {
-        return vector(self, "对", target, String.format("造成% 5d伤害", damage));
     }
 
     public static String damage(Target self, Target target, int damage, boolean critical) {
@@ -68,24 +63,17 @@ public class Msg {
     /**
      * 指向性消息。谁对谁做什么。
      */
-    public static String vector(Target self, String v, Target target, String m) {
+    public static String vector(Target self, String v, Target target, Object... objects) {
         String selfn = chStr(self != null ? self.getFullName() : "", fullNameWidth);
         String predicate = chStr(v, predicateWidth);
         String targetn = chStr(target != null ? target.getFullName() : "", fullNameWidth);
-        return String.format("%s%s%s%s", selfn, predicate, targetn, m);
-    }
-
-    /**
-     * 指向性消息。谁对谁做什么。
-     */
-    public static String vector(Target self, String v, Target target, Object... objects) {
-        return vector(self, v, target, join(objects));
+        return String.format("%s%s%s%s", selfn, predicate, targetn, join(objects));
     }
 
     /**
      * 为包含中文（宽度2）的字符串，格式化到指定宽度。
      */
-    public static String chStr(final String string, int width) {
+    private static String chStr(final String string, int width) {
         final boolean left = width < 0;
         if (left)
             width = -width;

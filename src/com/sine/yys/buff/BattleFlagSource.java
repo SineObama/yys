@@ -1,4 +1,4 @@
-package com.sine.yys.buff.buff;
+package com.sine.yys.buff;
 
 /**
  * 提供战场旗帜信息。

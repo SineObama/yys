@@ -1,11 +1,12 @@
 package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.PctEffect;
 
 /**
  * 青行灯-幽光。
  */
-public class YouGuang extends BaseCommonAttack {
+public class YouGuang extends BaseCommonAttack implements PctEffect {
     @Override
     public String getName() {
         return "幽光";
@@ -19,6 +20,7 @@ public class YouGuang extends BaseCommonAttack {
     /**
      * 吸火概率
      */
+    @Override
     public double getPct() {
         return 0.3;
     }

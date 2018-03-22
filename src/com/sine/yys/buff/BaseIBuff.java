@@ -11,38 +11,40 @@ import java.util.logging.Logger;
  * <p>
  * 保存buff名字、来源式神、持续回合。
  * 默认所有数值属性为0。
+ * 子类重写do*函数实现行动前后的逻辑。
  * <p>
- * 根据减少回合数的时机（行动前和行动后）区分为2类效果。
- * 提供行动前后的2个调用接口，子类重写do*函数实现各自逻辑。
+ * 关于回合数：与游戏中显示的数字保持一致，即在回合结束后减1。
+ * 其中一个问题是，当前回合给自己（或全队）加的buff，在自己回合结束时并不会减1。比如持续3回合的buff就直接显示3，回合结束后还是3。
+ * 当前实现为：设置行动前后分别调用的2个函数，保存一个状态，使得调用前者再调用后者才让回合数-1。
  */
 public abstract class BaseIBuff implements IBuff {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
     private final String name;
     private final Entity src;
-    int last;
+    private int last;
     private boolean prepared = false;  // 用于处理buff回合数衰减。调用beforeAction()后为true。在2个状态之间转换
 
     /**
      * @param last 持续回合数。必须为正。
-     * @param src  来源式神。
      * @param name buff名称。
+     * @param src  来源式神。
      */
-    public BaseIBuff(int last, Entity src, String name) {
+    public BaseIBuff(int last, String name, Entity src) {
+        this.last = last;
         this.name = name;
         this.src = src;
-        this.last = last;
         if (last <= 0)
             log.warning("buff持续回合不为正。" + this.toString());
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "[" +
                 "name=" +
                 name +
                 "," +
                 "src=" +
-                (src == null ? "null" : src.getFullName()) +
+                String.valueOf(src) +
                 "," +
                 "last=" +
                 last +
@@ -56,12 +58,12 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     @Override
-    public final int addLast(int count) {
+    public final void addLast(int count) {
         if (last <= 0) {
             log.warning("异常调用 addLast()，buff已结束。即将返回。");
-            return 0;
+            return;
         }
-        return last += count;
+        last += count;
     }
 
     @Override
@@ -81,6 +83,7 @@ public abstract class BaseIBuff implements IBuff {
 
     @Override
     public final int beforeAction(DamageController controller, Entity self) {
+        doBeforeAction(controller, self);
         if (last <= 0) {
             log.warning("异常调用beforeAction()，buff已结束。即将返回。");
             return 0;
@@ -90,8 +93,6 @@ public abstract class BaseIBuff implements IBuff {
             return last;
         }
         prepared = true;
-        doBeforeAction(controller, self);
-        dealLastBeforeAction();
         return last;
     }
 
@@ -100,6 +101,7 @@ public abstract class BaseIBuff implements IBuff {
      */
     @Override
     public final int afterAction(DamageController controller, Entity self) {
+        doAfterAction(controller, self);
         if (last <= 0) {
             log.warning("异常调用 afterAction()，buff已结束。即将返回。");
             return 0;
@@ -107,15 +109,8 @@ public abstract class BaseIBuff implements IBuff {
         if (!prepared)
             return last;
         prepared = false;
-        doAfterAction(controller, self);
-        dealLastAfterAction();
+        last -= 1;
         return last;
-    }
-
-    void dealLastBeforeAction() {
-    }
-
-    void dealLastAfterAction() {
     }
 
     @Override

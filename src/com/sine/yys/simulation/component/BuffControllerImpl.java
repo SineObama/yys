@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.buff.buff.BattleFlag;
+import com.sine.yys.buff.BattleFlag;
 import com.sine.yys.buff.debuff.control.*;
 import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
@@ -15,8 +15,9 @@ import java.util.*;
 import java.util.logging.Logger;
 
 /**
+ * 通过{@link IBuffProperty}返回所有buff相应属性的合计。
+ * <p>
  * 给主逻辑提供行动前后调用的接口。
- * 通过{@link IBuffProperty}接口返回所有buff相应属性的合计。
  */
 public class BuffControllerImpl implements BuffController, IBuffProperty {
     private static final Map<Class, Integer> prior = new HashMap<>();

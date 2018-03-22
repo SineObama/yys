@@ -10,7 +10,7 @@ import com.sine.yys.inter.EventHandler;
 /**
  * 雨女-净化之雨。
  */
-public class JingHuaZhiYu extends BasePassiveSkill implements PassiveSkill, EventHandler<BeforeActionEvent> {
+public class JingHuaZhiYu extends BasePassiveSkill implements EventHandler<BeforeActionEvent> {
     @Override
     public String getName() {
         return "净化之雨";
@@ -18,15 +18,14 @@ public class JingHuaZhiYu extends BasePassiveSkill implements PassiveSkill, Even
 
     @Override
     public void doInit(Controller controller, Entity self) {
-        self.getEventController().add(this, 400);
+        self.getEventController().add(this, 500);
     }
 
     @Override
     public void handle(BeforeActionEvent event) {
         final Entity self = getSelf();
         final BuffController buffController = self.getBuffController();
-        for (DispellableDebuff debuff : buffController.getBuffs(DispellableDebuff.class)) {
+        for (DispellableDebuff debuff : buffController.getBuffs(DispellableDebuff.class))
             buffController.remove(debuff.getClass());
-        }
     }
 }

@@ -17,7 +17,7 @@ public class BangJing extends BaseMitama implements EventHandler<BattleStartEven
     }
 
     /**
-     * 生成一个能够吸收生命值***的伤害的护盾。
+     * 生成一个能够吸收生命值百分比的伤害的护盾。
      */
     public double getShieldByMaxLife() {
         return 0.1;
@@ -31,11 +31,10 @@ public class BangJing extends BaseMitama implements EventHandler<BattleStartEven
     @Override
     public void handle(BattleStartEvent event) {
         final Entity self = getSelf();
-        log.info(Msg.trigger(self, BangJing.this));
+        log.info(Msg.trigger(self, this));
         final double value = self.getMaxLife() * getShieldByMaxLife();
-        Controller controller = getController();
         for (Entity entity : getOwn().getAllAlive()) {
-            entity.getBuffController().add(new BangJingShield(controller.calcCritical(self, value), self));
+            entity.getBuffController().add(new BangJingShield(getController().calcCritical(self, value), self));
         }
     }
 }

@@ -10,8 +10,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * 模拟红蓝（对弈）竞猜。
- * 可计算多次结果。
+ * 红蓝（对弈）竞猜模拟器。
+ * <p>
+ * 提供多次模拟、获取结果等方法。
  */
 public class RedBlueSimulator {
     public static final String redName = "红方";

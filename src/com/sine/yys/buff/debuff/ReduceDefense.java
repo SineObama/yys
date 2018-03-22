@@ -4,16 +4,10 @@ import com.sine.yys.buff.DefenseIBuff;
 import com.sine.yys.inter.Entity;
 
 /**
- * 防御减少debuff。
+ * 防御减少。
  */
 public abstract class ReduceDefense extends DefenseIBuff implements DispellableDebuff {
-    /**
-     * @param last      持续回合数。必须为正。
-     * @param name      buff名称。
-     * @param reducePct 防御减少百分比。
-     * @param src       来源式神。
-     */
-    public ReduceDefense(int last, String name, double reducePct, Entity src) {
+    protected ReduceDefense(int last, String name, double reducePct, Entity src) {
         super(last, name + "-减少", -reducePct, src);
     }
 }

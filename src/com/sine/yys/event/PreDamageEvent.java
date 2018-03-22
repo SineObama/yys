@@ -3,10 +3,11 @@ package com.sine.yys.event;
 import com.sine.yys.inter.Entity;
 
 /**
- * 造成真实伤害前事件。目前用于伤害加成。
- * 目前用于御魂（破势、心眼等）的伤害加成。
+ * 造成伤害前事件。
+ * <p>
+ * 用途：伤害加成（破势、心眼、鸣屋等）。
  */
-public class PreDamageEvent extends BaseVectorEvent implements Event {
+public class PreDamageEvent extends BaseVectorEvent {
     private double coefficient = 1.0;
 
     public PreDamageEvent(Entity entity, Entity target) {

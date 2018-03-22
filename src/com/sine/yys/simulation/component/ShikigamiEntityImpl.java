@@ -6,8 +6,7 @@ import com.sine.yys.inter.base.Mitama;
 import com.sine.yys.inter.base.Property;
 
 /**
- * 式神。
- * 非召唤物。
+ * 战场中的式神实体（非召唤物）。
  */
 public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity {
     public ShikigamiEntityImpl(Property property, Mitama mitama, Shikigami shiShen) {

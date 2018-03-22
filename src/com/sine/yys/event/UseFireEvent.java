@@ -4,9 +4,11 @@ import com.sine.yys.inter.Entity;
 
 /**
  * 使用鬼火事件。
- * 目前只保存最终消耗的鬼火，用于《明灯》不消耗鬼火。
+ * <p>
+ * 保存最终决定消耗的鬼火。
+ * 用途：明灯。
  */
-public class UseFireEvent extends BaseEntityEvent implements Event {
+public class UseFireEvent extends BaseEntityEvent {
     private int costFire;
 
     public UseFireEvent(Entity self, int costFire) {

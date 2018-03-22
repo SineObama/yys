@@ -12,7 +12,7 @@ import com.sine.yys.util.Msg;
  * <p>
  * 鉴于自身存活且晴天娃娃存活才拥有被动效果，监听器随自身存亡添加移除，内部再判断晴天娃娃。
  */
-public class QingYu extends BasePassiveSkill implements PassiveSkill, EventHandler<AfterActionEvent> {
+public class QingYu extends BasePassiveSkill implements EventHandler<AfterActionEvent> {
     private final BeDamageHandler beDamageHandler = new BeDamageHandler();
     private final BeCureHandler beCureHandler = new BeCureHandler();
 
@@ -66,7 +66,6 @@ public class QingYu extends BasePassiveSkill implements PassiveSkill, EventHandl
         };
     }
 
-    // XXXX 实际上治疗比较像一个独立的动作
     @Override
     public void handle(AfterActionEvent event) {
         final Entity self = getSelf();

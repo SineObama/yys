@@ -5,10 +5,10 @@ import com.sine.yys.inter.Entity;
 /**
  * 事件拓展基类，额外包含一个实体。
  */
-public abstract class BaseEntityEvent extends BaseEvent implements Event {
+public abstract class BaseEntityEvent extends BaseEvent {
     private final Entity entity;
 
-    public BaseEntityEvent(Entity entity) {
+    BaseEntityEvent(Entity entity) {
         this.entity = entity;
     }
 

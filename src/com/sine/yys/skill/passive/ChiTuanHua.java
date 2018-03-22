@@ -14,7 +14,7 @@ import com.sine.yys.util.Msg;
 /**
  * 彼岸花-赤团华。
  */
-public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventHandler<BeforeActionEvent> {
+public class ChiTuanHua extends BasePassiveSkill implements EventHandler<BeforeActionEvent> {
     private final XueZhiHuaHai xueZhiHuaHai;
 
     public ChiTuanHua(XueZhiHuaHai xueZhiHuaHai) {
@@ -37,7 +37,7 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventH
 
     @Override
     protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> getEnemy().getEventController().add(this, 300);
+        return event -> getEnemy().getEventController().add(this, 400);
     }
 
     @Override

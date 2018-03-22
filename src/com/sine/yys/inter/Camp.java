@@ -6,10 +6,9 @@ import java.util.List;
 
 /**
  * 阵营。
- * 存储一个阵营中的位置和式神，还有阵营事件。
- * 主要用作数据结构，不直接包含战斗逻辑。
  * <p>
- * 一场战斗中通常分为2个阵营。
+ * 存储一个阵营中的位置和式神，也包含事件。
+ * 主要用作数据结构，不直接包含战斗逻辑。
  */
 public interface Camp extends Target {
     List<? extends Entity> getAllAlive();
@@ -30,11 +29,17 @@ public interface Camp extends Target {
 
     Position getPosition(Entity entity);
 
+    /**
+     * 根据位置上原本的式神查找。
+     */
     Position getPositionBySrc(Entity entity);
 
     EventController getEventController();
 
     Entity randomTarget();
 
+    /**
+     * @return 敌对阵营。
+     */
     Camp getOpposite();
 }

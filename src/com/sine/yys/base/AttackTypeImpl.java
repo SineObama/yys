@@ -3,33 +3,33 @@ package com.sine.yys.base;
 import com.sine.yys.inter.AttackType;
 
 public class AttackTypeImpl implements AttackType {
-    private boolean counter, tiHun, jiaoTu, zhenNv;
+    private boolean counter, tiHun, juanLiu, zhenNv;
 
-    public AttackTypeImpl(boolean counter, boolean tiHun, boolean jiaoTu, boolean zhenNv) {
+    public AttackTypeImpl(boolean counter, boolean tiHun, boolean juanLiu, boolean zhenNv) {
         this.counter = counter;
         this.tiHun = tiHun;
-        this.jiaoTu = jiaoTu;
+        this.juanLiu = juanLiu;
         this.zhenNv = zhenNv;
     }
 
     public AttackTypeImpl(AttackType type) {
         this.counter = type.isCounter();
         this.tiHun = type.isTiHun();
-        this.jiaoTu = type.isJiaoTu();
+        this.juanLiu = type.isJuanLiu();
         this.zhenNv = type.isZhenNv();
     }
 
     public AttackTypeImpl(boolean counter) {
         this.counter = counter;
         this.tiHun = false;
-        this.jiaoTu = false;
+        this.juanLiu = false;
         this.zhenNv = false;
     }
 
     public AttackTypeImpl() {
         this.counter = false;
         this.tiHun = false;
-        this.jiaoTu = false;
+        this.juanLiu = false;
         this.zhenNv = false;
     }
 
@@ -54,13 +54,13 @@ public class AttackTypeImpl implements AttackType {
     }
 
     @Override
-    public boolean isJiaoTu() {
-        return jiaoTu;
+    public boolean isJuanLiu() {
+        return juanLiu;
     }
 
     @Override
-    public void setJiaoTu(boolean jiaoTu) {
-        this.jiaoTu = jiaoTu;
+    public void setJuanLiu(boolean juanLiu) {
+        this.juanLiu = juanLiu;
     }
 
     @Override

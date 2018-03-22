@@ -7,11 +7,15 @@ import java.util.logging.Logger;
 
 /**
  * 伤害分摊事件。
- * 在真正造成伤害前触发（破盾后）。
- * 监听器需要进行伤害分摊后的施加，并设置剩余伤害（给原本的式神）。
  * <p>
- * 包括薙魂、金鱼姬的金鱼。
- * 未来可能实现椒图、小松丸躲避。
+ * 监听器进行伤害分摊，设置剩余伤害（给原本的式神）。
+ * 在真正造成伤害前触发（破盾后）。
+ * <p>
+ * 用途：
+ * 1. 薙魂；
+ * 2. 金鱼姬的金鱼；
+ * 3. 涓流；
+ * 4. 未来：小松丸躲避。
  */
 public class DamageShareEvent extends BaseAttackEvent {
     private final Logger log = Logger.getLogger(getClass().getName());

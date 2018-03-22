@@ -13,15 +13,13 @@ import java.util.logging.Logger;
 
 /**
  * 战场模拟器。安排战斗主干流程。
- * <p>
- * 阵营和式神主要用于存储关系和状态（事件、buff），主体逻辑（施加伤害和效果，事件监听等）放在技能和御魂中。
  */
 public class Simulator {
     private final Logger log = Logger.getLogger(getClass().getName());
 
     // 引用
     private final BaseCamp camp0, camp1;
-    private final List<SimpleObject> extras;  // 额外的对象，包括不属于阵营的战场鲤鱼旗。秘闻竞赛副本的鬼头？
+    private final List<SimpleObject> extras;  // 额外的对象，包括不属于阵营的裁判旗子。秘闻竞赛副本的鬼头？
     private final ControllerImpl controller;
     private Camp win = null;
     // 状态
@@ -37,22 +35,24 @@ public class Simulator {
     }
 
     private SimpleObject next() {
-        double min = 1;  // 不可能达到的较大值
+        double min = 1.0;  // 不可能达到的较大值
         List<SimpleObject> all = new ArrayList<>(15);
         all.addAll(camp0.getAllAlive());
         all.addAll(camp1.getAllAlive());
         all.addAll(extras);
         SimpleObject rtn = all.get(0);
         for (SimpleObject entity : all) {
-            double remain = (1 - entity.getPosition()) / entity.getSpeed();
+            double remain = (1.0 - entity.getPosition()) / entity.getSpeed();
             if (min > remain) {
                 min = remain;
                 rtn = entity;
+            } else if (min == 0.0 && remain == 0.0 && entity.getSpeed() > rtn.getSpeed()) {
+                rtn = entity;
             }
         }
-        for (SimpleObject entity : all) {
-            entity.setPosition(entity.getPosition() + min * entity.getSpeed());
-        }
+        if (min != 0.0)
+            for (SimpleObject entity : all)
+                entity.addPosition(min * entity.getSpeed());
         rtn.setPosition(1.0);
         return rtn;
     }
@@ -89,7 +89,7 @@ public class Simulator {
             // 获取下一行动式神
             final SimpleObject self0 = next();
 
-            // 战场鲤鱼旗（等独立实体）行动。
+            // 裁判旗子（等独立实体）行动。
             // XXXX 暂时采用直接调用的方式，跳过后面的鬼火仓库、技能调用……
             if (!(self0 instanceof EntityImpl)) {
                 self0.setPosition(0);

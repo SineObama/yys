@@ -10,12 +10,12 @@ import com.sine.yys.skill.BaseAttackSkill;
 import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 
 /**
- * 普攻通用逻辑。
- * 在普攻结束后触发普攻事件。
+ * 普通攻击。
+ * <p>
+ * 结束后触发普攻事件。
  */
 public abstract class BaseCommonAttack extends BaseAttackSkill implements CommonAttack {
     /**
-     * 普攻的具体操作。无需触发普攻事件。
      * 默认以getAttack的攻击，对target攻击getTimes次。
      */
     @Override
@@ -51,7 +51,7 @@ public abstract class BaseCommonAttack extends BaseAttackSkill implements Common
 
     @Override
     protected void beforeApply(Entity target) {
-        // 可能被混乱打自己人
+        // 触发对方被单体攻击事件（混乱打自己人不触发）
         if (getEnemy().contain(target) && target instanceof ShikigamiEntity) {
             getEnemy().getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf()));
         }
@@ -64,7 +64,8 @@ public abstract class BaseCommonAttack extends BaseAttackSkill implements Common
     }
 
     /**
-     * 协战的具体操作。
+     * 协战。
+     * <p>
      * 默认调用doApply。具体技能根据需要重写。
      */
     @Override

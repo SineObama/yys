@@ -17,9 +17,6 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Logger;
 
-/**
- * 主要战场逻辑。
- */
 public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().getName());
     private final BaseCamp camp0;
@@ -42,11 +39,6 @@ public class ControllerImpl implements Controller {
         if (poll == null)
             return null;
         return poll.getCallback();
-    }
-
-    @Override
-    public Camp getCamp(Entity entity) {
-        return ((EntityImpl) entity).getCamp();
     }
 
     /**
@@ -73,9 +65,6 @@ public class ControllerImpl implements Controller {
         for (DebuffEffect debuffEffect : attackInfo.getDebuffEffects()) {
             applyDebuff(self, target, debuffEffect);
         }
-
-        target.getCamp().getEventController().trigger(new BeAttackEvent());
-        target.getEventController().trigger(new BeAttackEvent());
 
         // 1.
         final boolean critical = RandUtil.success(self.getCritical());
@@ -113,6 +102,9 @@ public class ControllerImpl implements Controller {
     private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, AttackType type) {
         self.eventController.trigger(new AttackEvent(self, target));
 
+        target.getCamp().getEventController().trigger(new BeAttackEvent(target, self, type));
+        target.getEventController().trigger(new BeAttackEvent(target, self, type));
+
         damage *= self.buffController.getBeDamage() + 1;
 
         // 破盾
@@ -137,7 +129,7 @@ public class ControllerImpl implements Controller {
             target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type)));
             doDamage(target, (int) damage);
             if (target.getLifeInt() == 0)
-                log.info(Msg.vector(self, "击杀", target, ""));
+                log.info(Msg.vector(self, "击杀", target));
 
             // XXX 地藏像死亡后盾buff还在？
             if (critical) {

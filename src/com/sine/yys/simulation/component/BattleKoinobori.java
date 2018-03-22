@@ -1,16 +1,18 @@
 package com.sine.yys.simulation.component;
 
 import com.sine.yys.base.SimpleObject;
-import com.sine.yys.buff.buff.BattleFlag;
-import com.sine.yys.buff.buff.BattleFlagSource;
+import com.sine.yys.buff.BattleFlag;
+import com.sine.yys.buff.BattleFlagSource;
 import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.util.Msg;
 
 /**
- * 战场鲤鱼旗。
+ * 裁判旗子。
+ * <p>
+ * 监听了{@linkplain EnterEvent 进场事件}以添加{@linkplain BattleFlag 战场旗帜效果}。
  */
-public class BattleKoinobori extends SimpleObject {
+public final class BattleKoinobori extends SimpleObject {
     private final double damageRatioAddition = 0.15;
     private final double cureRatioReduction = -0.10;
     private final BattleFlagSourceImpl battleFlagSource = new BattleFlagSourceImpl();
@@ -20,7 +22,7 @@ public class BattleKoinobori extends SimpleObject {
     private int level = 0;
 
     public BattleKoinobori(double speed, BaseCamp camp0, BaseCamp camp1) {
-        super("战场鲤鱼旗", speed);
+        super("裁判旗子", speed);
         this.camp0 = camp0;
         this.camp1 = camp1;
     }
@@ -37,7 +39,6 @@ public class BattleKoinobori extends SimpleObject {
 
     @Override
     protected void doInit() {
-        // XXXX 临时监听其中一个阵营的开始事件。
         camp0.getEventController().add(EnterEvent.class, enterHandler);
         camp1.getEventController().add(EnterEvent.class, enterHandler);
     }

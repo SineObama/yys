@@ -6,15 +6,14 @@ import com.sine.yys.event.LongShouZhiYuOn;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.PctEffect;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 /**
  * 辉夜姬-火鼠裘。
  */
-public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
-    private final BeAttackHandler beAttackHandler = new BeAttackHandler();
-
+public class HuoShuQiu extends BasePassiveSkill implements EventHandler<BeAttackEvent>, PctEffect {
     @Override
     public String getName() {
         return "火鼠裘";
@@ -23,30 +22,29 @@ public class HuoShuQiu extends BasePassiveSkill implements PassiveSkill {
     /**
      * 回火概率。
      */
+    @Override
     public double getPct() {
         return 0.4;
     }
 
     @Override
     public void doInit(Controller controller, Entity self) {
-        self.getEventController().add(beAttackHandler);
+        self.getEventController().add(this);
         self.getEventController().add(LongShouZhiYuOn.class, event -> {
-            self.getEventController().remove(beAttackHandler);
-            getOwn().getEventController().add(0, beAttackHandler);
+            self.getEventController().remove(this);
+            getOwn().getEventController().add(0, this);
         });
         self.getEventController().add(LongShouZhiYuOff.class, event -> {
-            getOwn().getEventController().remove(beAttackHandler);
-            self.getEventController().add(0, beAttackHandler);
+            getOwn().getEventController().remove(this);
+            self.getEventController().add(0, this);
         });
     }
 
-    class BeAttackHandler extends SealablePassiveHandler implements EventHandler<BeAttackEvent> {
-        @Override
-        public void handle(BeAttackEvent event) {
-            if (RandUtil.success(getPct())) {
-                log.info(Msg.trigger(getSelf(), HuoShuQiu.this));
-                getSelf().getFireRepo().addFire(1);
-            }
+    @Override
+    public void handle(BeAttackEvent event) {
+        if (RandUtil.success(getPct())) {
+            log.info(Msg.trigger(getSelf(), this));
+            event.getEntity().getFireRepo().addFire(1);
         }
     }
 }

@@ -2,20 +2,25 @@ package com.sine.yys.inter.base;
 
 /**
  * 技能。
- * 包含冷却时间（CD）的逻辑。
  */
 public interface Skill extends Named {
+    /**
+     * @return 剩余冷却时间。
+     */
     int getCD();
 
+    /**
+     * @return 最大冷却时间。
+     */
     int getMAXCD();
 
     /**
-     * 每回合开始调用。
+     * 回合开始的回调。
      */
     int beforeAction();
 
     /**
-     * 每回合结束调用。
+     * 回合结束的回调。
      */
     int afterAction();
 }

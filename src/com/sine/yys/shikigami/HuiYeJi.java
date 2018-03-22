@@ -1,6 +1,5 @@
 package com.sine.yys.shikigami;
 
-import com.sine.yys.buff.buff.LongShouZhiYuBuff;
 import com.sine.yys.inter.*;
 import com.sine.yys.shikigami.operation.AutoOperationHandler;
 import com.sine.yys.shikigami.operation.OperationImpl;
@@ -31,7 +30,7 @@ public class HuiYeJi extends BaseShikigami {
     class HuiYeJiAI extends AutoOperationHandler {
         @Override
         public Operation handle(Entity self, Camp own, Map<ActiveSkill, List<? extends Entity>> map) {
-            LongShouZhiYuBuff buff = self.getBuffController().get(LongShouZhiYuBuff.class);
+            LongShouZhiYu.Buff buff = self.getBuffController().get(LongShouZhiYu.Buff.class);
             for (ActiveSkill activeSkill : map.keySet()) {
                 if (activeSkill instanceof LongShouZhiYu) {
                     if (buff == null || buff.getLast() <= 1) {

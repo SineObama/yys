@@ -6,7 +6,7 @@ import com.sine.yys.inter.Entity;
 import com.sine.yys.util.Msg;
 
 /**
- * 主动技能通用逻辑。
+ * 主动技能。
  */
 public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
     @Override

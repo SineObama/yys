@@ -26,6 +26,9 @@ public class XiongDiZhiBan extends BaseNoTargetSkill {
         return 3;
     }
 
+    /**
+     * @return 行动条增加数值。
+     */
     public double getAddPosition() {
         return 0.3;
     }

@@ -80,7 +80,7 @@ public class ZiYang extends BaseActiveSkill {
     @Override
     public EventHandler<DieEvent> getDieHandler() {
         return event -> {
-            // XXXX 是否需要处理日光能量
+            // XXXX 死亡是否需要处理日光能量
             getOwn().getEventController().remove(dieHandler);
         };
     }
@@ -105,10 +105,9 @@ public class ZiYang extends BaseActiveSkill {
             final List<? extends ShikigamiEntity> allShikigami = getOwn().getAllShikigami();
             final int num = allShikigami.size() - 1;  // 其余队友数量
             energy /= num;  // 每人治疗量
-            for (ShikigamiEntity shikigamiEntity : allShikigami) {
+            for (ShikigamiEntity shikigamiEntity : allShikigami)
                 if (shikigamiEntity != choosed)
                     getController().cure(getSelf(), shikigamiEntity, energy);
-            }
         };
 
         @Override

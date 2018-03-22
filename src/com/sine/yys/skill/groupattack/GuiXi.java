@@ -1,12 +1,18 @@
 package com.sine.yys.skill.groupattack;
 
-import com.sine.yys.buff.buff.KuangBao;
+import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.inter.Entity;
 
 /**
  * 般若-鬼袭。
  */
 public class GuiXi extends SimpleGroupAttack {
+    @Override
+    public void doApply(Entity unused) {
+        super.doApply(unused);
+        getSelf().getBuffController().add(new KuangBao(getLast(), getSelf()));
+    }
+
     @Override
     public String getName() {
         return "鬼袭";
@@ -31,9 +37,12 @@ public class GuiXi extends SimpleGroupAttack {
         return 2;
     }
 
-    @Override
-    public void doApply(Entity unused) {
-        super.doApply(unused);
-        getSelf().getBuffController().add(new KuangBao(getLast(), getSelf()));
+    /**
+     * 般若的狂暴状态，隐藏buff。
+     */
+    public class KuangBao extends BaseIBuff {
+        KuangBao(int last, Entity src) {
+            super(last, "狂暴状态", src);
+        }
     }
 }

@@ -21,4 +21,9 @@ public abstract class BaseComposition implements Composition {
         }
         return result;
     }
+
+    @FunctionalInterface
+    public interface Getter {
+        double get(IBuff iBuff);
+    }
 }

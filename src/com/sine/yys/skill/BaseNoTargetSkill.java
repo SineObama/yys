@@ -4,7 +4,7 @@ import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.targetresolver.EmptyResolver;
 
 /**
- * 不需要选择目标的主动技能通用逻辑。
+ * 不需要选择目标的主动技能。
  * 虽然只有一个逻辑。
  */
 public abstract class BaseNoTargetSkill extends BaseActiveSkill {

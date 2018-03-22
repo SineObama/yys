@@ -9,6 +9,8 @@ import java.util.Set;
 
 /**
  * 式神工厂。
+ * <p>
+ * 定义了字符串到{@linkplain Shikigami 式神}的对应关系，以进行创建。
  * 不区分英文大小写。
  */
 public class ShikigamiFactory {

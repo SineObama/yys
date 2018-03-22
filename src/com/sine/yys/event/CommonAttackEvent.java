@@ -4,10 +4,10 @@ import com.sine.yys.inter.Entity;
 
 /**
  * 己方式神普攻事件。
- * 保存在阵营中。
- * 用于触发协战。
+ * <p>
+ * 用途：触发协战。
  */
-public class CommonAttackEvent extends BaseVectorEvent implements Event {
+public class CommonAttackEvent extends BaseVectorEvent {
     public CommonAttackEvent(Entity entity, Entity target) {
         super(entity, target);
     }

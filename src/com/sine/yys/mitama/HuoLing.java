@@ -15,7 +15,7 @@ public class HuoLing extends BaseMitama implements EventHandler<BattleStartEvent
         return "火灵";
     }
 
-    public int getFire() {
+    public int getAddFire() {
         return 3;
     }
 
@@ -27,7 +27,7 @@ public class HuoLing extends BaseMitama implements EventHandler<BattleStartEvent
     @Override
     public void handle(BattleStartEvent event) {
         final Entity self = getSelf();
-        log.info(Msg.trigger(self, HuoLing.this));
-        self.getFireRepo().addFire(getFire());
+        log.info(Msg.trigger(self, this));
+        self.getFireRepo().addFire(getAddFire());
     }
 }

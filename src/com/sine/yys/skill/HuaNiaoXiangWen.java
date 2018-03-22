@@ -36,15 +36,18 @@ public class HuaNiaoXiangWen extends BaseNoTargetSkill {
         return 3;
     }
 
+    public int getLast() {
+        return 2;
+    }
+
     @Override
     public String getName() {
         return "花鸟相闻";
     }
 
     public class FenFang extends CureBuff implements DispellableBuff {
-
         FenFang(Entity src) {
-            super(2, HuaNiaoXiangWen.this.getName() + "-芬芳", src);
+            super(HuaNiaoXiangWen.this.getLast(), HuaNiaoXiangWen.this.getName() + "-芬芳", src);
         }
 
         @Override

@@ -24,7 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 战场中的实体，保存了式神信息{@link Shikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
+ * 战场中的实体。
+ * <p>
+ * 保存了{@linkplain Shikigami 式神信息}、{@linkplain Property 属性}、{@linkplain Mitama 御魂}，
+ * 和战斗中的状态（技能cd、{@linkplain IBuff buff}、事件）。
  */
 public class EntityImpl extends SimpleObject implements Self, JSONable {
     final EventControllerImpl eventController = new EventControllerImpl();
@@ -53,17 +56,14 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
         final Controller controller = getController();
         for (Skill skill : this.shikigami.getSkills()) {
             if (skill instanceof Component)
-                ((Component) skill).init(controller, this);
+                ((Component) skill).init(controller, this, camp);
         }
         for (Mitama mitama : this.mitamas) {
             if (mitama instanceof Component)
-                ((Component) mitama).init(controller, this);
+                ((Component) mitama).init(controller, this, camp);
         }
     }
 
-    /**
-     * 式神自身的行动逻辑。
-     */
     public void action() {
         log.info(Msg.info(this, "当前鬼火", this.fireRepo.getFire()));
 
@@ -355,11 +355,6 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
 
     public void setFireRepo(FireRepo fireRepo) {
         this.fireRepo = fireRepo;
-    }
-
-    @Override
-    public String toString() {
-        return getFullName();
     }
 
     @Override

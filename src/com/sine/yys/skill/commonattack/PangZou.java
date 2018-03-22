@@ -3,9 +3,11 @@ package com.sine.yys.skill.commonattack;
 import com.sine.yys.buff.debuff.PctDoT;
 import com.sine.yys.buff.debuff.ReduceDefense;
 import com.sine.yys.buff.debuff.control.XuanYun;
+import com.sine.yys.effect.BaseDebuffEffect;
 import com.sine.yys.inter.Debuff;
 import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.PctEffect;
 import com.sine.yys.util.RandUtil;
 
 import java.util.Arrays;
@@ -15,7 +17,43 @@ import java.util.Collections;
 /**
  * 镰鼬-胖揍。
  */
-public class PangZou extends BaseCommonAttack implements DebuffEffect {
+public class PangZou extends BaseCommonAttack implements PctEffect {
+    private final DebuffEffect effect = new BaseDebuffEffect(getPct(), getName()) {
+        @Override
+        public Debuff getDebuff(Entity self) {
+            return RandUtil.choose(Arrays.asList(
+                    new ReduceDefense(getLast(), getName(), getReduceDefensePct(), self) {
+                    }, new XuanYun(self), new PctDoT(getLast(), getName(), getReduceLifePct(), self) {
+                    }));
+        }
+    };
+
+    @Override
+    public double getPct() {
+        return 0.2;
+    }
+
+    /**
+     * @return 破防数值。
+     */
+    public double getReduceDefensePct() {
+        return 0.3;
+    }
+
+    /**
+     * @return 损失生命百分比。
+     */
+    public double getReduceLifePct() {
+        return 0.05;
+    }
+
+    /**
+     * @return 负面效果持续回合。
+     */
+    public int getLast() {
+        return 2;
+    }
+
     @Override
     public String getName() {
         return "胖揍";
@@ -26,27 +64,8 @@ public class PangZou extends BaseCommonAttack implements DebuffEffect {
         return 1.0 * 1.2;
     }
 
-    /**
-     * @return 附加效果概率
-     */
-    public double getPct() {
-        return 0.2;
-    }
-
-    @Override
-    public boolean involveHitAndDef() {
-        return true;
-    }
-
-    @Override
-    public Debuff getDebuff(Entity self) {
-        return RandUtil.choose(Arrays.asList(new ReduceDefense(2, getName(), 0.3, self) {
-        }, new XuanYun(self), new PctDoT(2, getName(), 0.05, self) {
-        }));
-    }
-
     @Override
     public Collection<DebuffEffect> getDebuffEffects() {
-        return Collections.singleton(this);
+        return Collections.singleton(effect);
     }
 }

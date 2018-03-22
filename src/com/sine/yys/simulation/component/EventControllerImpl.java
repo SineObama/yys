@@ -14,7 +14,7 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 
 /**
- * 在阵营和式神中都有独立的控制器，分开定义和管理属于阵营全局和式神自身的事件。
+ * 在阵营和式神中都有独立的控制器，分别管理属于阵营全局和式神自身的事件。
  */
 public class EventControllerImpl implements EventController {
     private final Logger log = Logger.getLogger(this.getClass().getName());

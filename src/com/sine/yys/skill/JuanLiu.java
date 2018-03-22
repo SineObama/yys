@@ -12,9 +12,14 @@ import java.util.List;
 
 /**
  * 椒图-涓流。
+ * <p>
+ * 规则：
+ * 1. 回合开始时结束，断开全体链接（在赤团华前）；
+ * 2. 死亡时断开全体链接；
+ * 3. 荒川可切断其他式神的链接，不能切断椒图自身的。
  */
 public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageShareEvent> {
-    private final EventHandler<BeforeActionEvent> beforeActionEventHandler = this::add;
+    private final EventHandler<BeforeActionEvent> beforeActionEventHandler = this::addLife;
     private List<? extends Entity> shared;
     private int last = 0;
 
@@ -24,6 +29,7 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
         shared = getOwn().getAllShikigami();
         for (Entity entity : shared) {
             entity.getEventController().add(this);
+            entity.getEventController().add(BeforeActionEvent.class, beforeActionEventHandler, 300);
             entity.getBuffController().add(new JuanLiuBuff(getName(), getReduceDamage(), self));
         }
         last = getLast();
@@ -43,7 +49,7 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
             entity.getBuffController().remove(JuanLiuBuff.class);
     }
 
-    private void add(BeforeActionEvent event) {
+    private void addLife(BeforeActionEvent event) {
         event.getEntity().addLife((int) (getSelf().getMaxLife() * getAddLifePct()));
     }
 
@@ -55,7 +61,7 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
     @Override
     public void handle(DamageShareEvent event) {
         final int damage = (int) (event.getTotal() / shared.size());
-        event.getType().setJiaoTu(true);
+        event.getType().setJuanLiu(true);
         for (Entity entity : shared)
             getController().directDamage(event.getEntity(), entity, damage, event.getType());
         event.setLeft(damage);
@@ -71,6 +77,9 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
         return 3;
     }
 
+    /**
+     * @return 减速持续回合。
+     */
     public int getLast() {
         return 2;
     }
@@ -83,29 +92,24 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
     }
 
     /**
-     * @return 驱散我方减益。
+     * @return 减伤。
      */
     public double getReduceDamage() {
         return 0.05;
     }
 
-    class JuanLiuBuff extends NumIBuff {
-        /**
-         * @param name         名称前缀。
-         * @param reduceDamage 减伤百分比。
-         * @param src          来源式神。
-         */
+    public class JuanLiuBuff extends NumIBuff {
         JuanLiuBuff(String name, double reduceDamage, Entity src) {
             super(Integer.MAX_VALUE, name, -reduceDamage, src);
         }
 
         @Override
-        public double getBeDamage() {
+        public final double getBeDamage() {
             return value;
         }
 
         @Override
-        public void onRemove(Entity self) {
+        public final void onRemove(Entity self) {
             self.getEventController().remove(JuanLiu.this);
             self.getEventController().remove(beforeActionEventHandler);
             shared.remove(self);
