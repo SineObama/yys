@@ -19,9 +19,9 @@ import java.util.List;
  * 3. 荒川可切断其他式神的链接，不能切断椒图自身的。
  */
 public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageShareEvent> {
+    private static final String LAST = "JuanLiu_last";
     private final EventHandler<BeforeActionEvent> beforeActionEventHandler = this::addLife;
     private List<? extends Entity> shared;
-    private int last = 0;
 
     @Override
     protected void doApply(Entity target) {
@@ -32,13 +32,15 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
             entity.getEventController().add(BeforeActionEvent.class, beforeActionEventHandler, 300);
             entity.getBuffController().add(new JuanLiuBuff(getName(), getReduceDamage(), self));
         }
-        last = getLast();
+        getSelf().put(LAST, getLast());
     }
 
     @Override
     protected void doBeforeAction() {
+        int last = getSelf().get(LAST, 0);
         if (last > 0) {
             last -= 1;
+            getSelf().put(LAST, last);
             if (last <= 0)
                 remove(null);
         }
