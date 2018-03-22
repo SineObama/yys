@@ -8,6 +8,7 @@ import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.inter.Self;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageShareEvent> {
     private static final String LAST = "JuanLiu_last";
-    private final EventHandler<BeforeActionEvent> beforeActionEventHandler = this::addLife;
+    private final EventHandler<BeforeActionEvent> beforeActionEventHandler = new BeforeActionHandler();
     private List<? extends Entity> shared;
 
     @Override
@@ -47,12 +48,8 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
     }
 
     private void remove(DieEvent event) {
-        for (Entity entity : shared)
+        for (Entity entity : new ArrayList<>(shared))
             entity.getBuffController().remove(JuanLiuBuff.class);
-    }
-
-    private void addLife(BeforeActionEvent event) {
-        event.getEntity().addLife((int) (getSelf().getMaxLife() * getAddLifePct()));
     }
 
     @Override
@@ -64,7 +61,7 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
     public void handle(DamageShareEvent event) {
         final int damage = (int) (event.getTotal() / shared.size());
         event.getType().setJuanLiu(true);
-        for (Entity entity : shared)
+        for (Entity entity : new ArrayList<>(shared))
             getController().directDamage(event.getEntity(), entity, damage, event.getType());
         event.setLeft(damage);
     }
@@ -98,6 +95,13 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
      */
     public double getReduceDamage() {
         return 0.05;
+    }
+
+    class BeforeActionHandler implements EventHandler<BeforeActionEvent> {
+        @Override
+        public void handle(BeforeActionEvent event) {
+            event.getEntity().addLife((int) (getSelf().getMaxLife() * getAddLifePct()));
+        }
     }
 
     public class JuanLiuBuff extends NumIBuff {
