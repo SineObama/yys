@@ -18,13 +18,22 @@ public class GuiNiao extends BaseCommonAttack {
     private final AfterMovementHandler afterMovementHandler = new AfterMovementHandler();
 
     @Override
-    protected void doApply(Entity target) {
-        super.doApply(target);
+    protected void afterApply(Entity target) {
         final Controller controller = getController();
         final Entity self = getSelf();
         for (int i = 0; i < getTimes(); i++)
             if (RandUtil.success(getCurePct()))
                 controller.cure(self, getOwn().getLeastLifeShikigami(), getCureLifePct() * self.getMaxLife());
+    }
+
+    @Override
+    public void doCounter(Entity target) {
+        super.doCounter(target);
+
+        // 减少一只飞鸟
+        int niao = getFeiNiao();
+        if (niao > 1)
+            getSelf().put(GuiNiao.FeiNiao, niao - 1);
     }
 
     @Override

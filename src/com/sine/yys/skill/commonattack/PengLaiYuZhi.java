@@ -10,8 +10,7 @@ import com.sine.yys.util.RandUtil;
  */
 public class PengLaiYuZhi extends BaseCommonAttack implements PctEffect {
     @Override
-    public void doApply(Entity target) {
-        super.doApply(target);
+    public void afterApply(Entity target) {
         if (RandUtil.success(getPct()) && target.getFireRepo().grabFire(1) > 0)
             log.info(Msg.vector(getSelf(), "打掉", target, "1 点鬼火"));
     }

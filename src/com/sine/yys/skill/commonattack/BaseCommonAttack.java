@@ -1,10 +1,7 @@
 package com.sine.yys.skill.commonattack;
 
-import com.sine.yys.event.BeMonoAttackEvent;
-import com.sine.yys.event.CommonAttackEvent;
 import com.sine.yys.inter.CommonAttack;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.ShikigamiEntity;
 import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.BaseAttackSkill;
 import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
@@ -47,20 +44,6 @@ public abstract class BaseCommonAttack extends BaseAttackSkill implements Common
     @Override
     public final TargetResolver getTargetResolver() {
         return new EnemyEntityResolver();
-    }
-
-    @Override
-    protected void beforeApply(Entity target) {
-        // 触发对方被单体攻击事件（混乱打自己人不触发）
-        if (getEnemy().contain(target) && target instanceof ShikigamiEntity) {
-            getEnemy().getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf()));
-        }
-    }
-
-    @Override
-    protected void afterApply(Entity target) {
-        // 触发普攻事件
-        getOwn().getEventController().trigger(new CommonAttackEvent(getSelf(), target));
     }
 
     /**

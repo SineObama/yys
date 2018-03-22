@@ -7,7 +7,10 @@ import com.sine.yys.buff.debuff.control.ChaoFeng;
 import com.sine.yys.buff.debuff.control.ChenMo;
 import com.sine.yys.buff.debuff.control.HunLuan;
 import com.sine.yys.buff.debuff.control.Unmovable;
+import com.sine.yys.event.BeMonoAttackEvent;
+import com.sine.yys.event.CommonAttackEvent;
 import com.sine.yys.event.FinishActionEvent;
+import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.inter.base.Mitama;
@@ -129,8 +132,27 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
             Entity target = operation.getTarget();
             log.info(Msg.vector(this, target != null ? "对" : "", target, "使用了", activeSkill.getName()));
 
+            // 消耗鬼火
+            int fire = activeSkill.getFire();
+            if (fire > 0) {
+                UseFireEvent event = new UseFireEvent(this, fire);
+                camp.getEventController().trigger(event);
+                fire = event.getCostFire();
+                fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
+                log.info(Msg.info(this, "消耗", fire, "点鬼火，剩余", fireRepo.getFire(), "点"));
+            }
+
             // 执行技能
+            if (activeSkill instanceof CommonAttack) {
+                // 触发对方被单体攻击事件（混乱打自己人不触发）
+                if (camp.getOpposite().contain(target) && target instanceof ShikigamiEntity)
+                    camp.getOpposite().getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
+            }
             activeSkill.apply(target);
+            if (activeSkill instanceof CommonAttack) {
+                // 触发普攻事件
+                camp.getEventController().trigger(new CommonAttackEvent(this, target));
+            }
 
             this.eventController.trigger(new FinishActionEvent());
         } else {

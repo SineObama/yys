@@ -26,8 +26,7 @@ public class YouGuang extends BaseCommonAttack implements PctEffect {
     }
 
     @Override
-    public void doApply(Entity target) {
-        super.doApply(target);
+    public void afterApply(Entity target) {
         getController().randomGrab(getSelf(), target, getPct());
     }
 }

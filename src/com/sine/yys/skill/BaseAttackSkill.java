@@ -23,7 +23,7 @@ public abstract class BaseAttackSkill extends BaseActiveSkill {
     /**
      * 默认无效果。
      *
-     * @return 攻击时附带的debuff效果。
+     * @return 攻击时附带的debuff效果。null表示无效果。
      */
     public Collection<DebuffEffect> getDebuffEffects() {
         return null;
