@@ -58,7 +58,7 @@ public abstract class BaseCommonAttack extends BaseAttackSkill implements Common
     }
 
     @Override
-    public final void afterApply(Entity target) {
+    protected void afterApply(Entity target) {
         // 触发普攻事件
         getOwn().getEventController().trigger(new CommonAttackEvent(getSelf(), target));
     }
@@ -74,7 +74,13 @@ public abstract class BaseCommonAttack extends BaseAttackSkill implements Common
     }
 
     @Override
-    public void counter(Entity target) {
+    public final void counter(Entity target) {
+        doBeforeAction();
+        doCounter(target);
+        doAfterAction();
+    }
+
+    protected void doCounter(Entity target) {
         for (int i = 0; i < getTimes(); i++) {
             if (target.isDead())
                 break;
