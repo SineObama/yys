@@ -108,13 +108,13 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements PctEffect {
         }
     }
 
-    class BeforeActionHandler implements EventHandler<BeforeActionEvent> {
+    class BeforeActionHandler implements EventHandler<BeforeRoundEvent> {
         /**
          * 输出正则测试，消失后没有触发：龙首之玉幻境 效果消失([\s\S](?!施放 龙首之玉))*?触发 龙首之玉
          * 输出正则测试，部署后有触发：施放 龙首之玉([\s\S](?!龙首之玉幻境 效果消失))*?触发 龙首之玉
          */
         @Override
-        public void handle(BeforeActionEvent event) {
+        public void handle(BeforeRoundEvent event) {
             if (RandUtil.success(getPct())) {
                 log.info(Msg.trigger(getSelf(), LongShouZhiYu.this));
                 event.getEntity().getFireRepo().addFire(1);

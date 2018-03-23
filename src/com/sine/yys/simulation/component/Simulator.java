@@ -117,11 +117,11 @@ public class Simulator {
                 for (Skill skill : self.shikigami.getSkills())
                     skill.beforeAction();
 
-                // 行动前事件
+                // 回合前事件
                 // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
                 self.eventController.trigger(new ZhaoCaiMaoEvent());
-                self.eventController.trigger(new BeforeActionEvent(self));
-                self.camp.getEventController().trigger(new BeforeActionEvent(self));
+                self.eventController.trigger(new BeforeRoundEvent(self));
+                self.camp.getEventController().trigger(new BeforeRoundEvent(self));
 
                 controller.afterMovement();
 
@@ -137,9 +137,9 @@ public class Simulator {
                 // 一般buff回合数-1
                 self.buffController.afterAction(controller);
 
-                // 行动后事件
-                self.eventController.trigger(new AfterActionEvent(self));
-                self.camp.getEventController().trigger(new AfterActionEvent(self));
+                // 回合后事件
+                self.eventController.trigger(new AfterRoundEvent(self));
+                self.camp.getEventController().trigger(new AfterRoundEvent(self));
 
                 for (Skill skill : self.shikigami.getSkills())
                     skill.afterAction();

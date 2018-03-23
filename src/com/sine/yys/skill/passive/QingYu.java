@@ -12,7 +12,7 @@ import com.sine.yys.util.Msg;
  * <p>
  * 鉴于自身存活且晴天娃娃存活才拥有被动效果，监听器随自身存亡添加移除，内部再判断晴天娃娃。
  */
-public class QingYu extends BasePassiveSkill implements EventHandler<AfterActionEvent> {
+public class QingYu extends BasePassiveSkill implements EventHandler<AfterRoundEvent> {
     private final BeDamageHandler beDamageHandler = new BeDamageHandler();
     private final BeCureHandler beCureHandler = new BeCureHandler();
 
@@ -67,7 +67,7 @@ public class QingYu extends BasePassiveSkill implements EventHandler<AfterAction
     }
 
     @Override
-    public void handle(AfterActionEvent event) {
+    public void handle(AfterRoundEvent event) {
         final Entity self = getSelf();
         final QingTianWaWa waWa = self.get(QingTianWaWa.class, null);
         if (waWa.getCd() > 0)

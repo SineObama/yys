@@ -1,6 +1,6 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.event.AfterActionEvent;
+import com.sine.yys.event.AfterRoundEvent;
 import com.sine.yys.event.BeforeControlEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
@@ -73,9 +73,9 @@ public class HuaJing extends BasePassiveSkill implements EventHandler<BeforeCont
         }
     }
 
-    class AfterActionHandler extends SealablePassiveHandler implements EventHandler<AfterActionEvent> {
+    class AfterActionHandler extends SealablePassiveHandler implements EventHandler<AfterRoundEvent> {
         @Override
-        public void handle(AfterActionEvent event) {
+        public void handle(AfterRoundEvent event) {
             if (RandUtil.success(getPct())) {
                 log.info(Msg.trigger(getSelf(), HuaJing.this));
                 getSelf().addPosition(getAddPosition());
