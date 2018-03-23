@@ -114,7 +114,7 @@ public class ControllerImpl implements Controller {
 
             damage *= self.eventController.trigger(new PreDamageEvent(self, target)).getCoefficient();
 
-            // 处理薙魂。未来考虑金鱼、小松丸躲避。
+            // 处理薙魂和涓流。未来考虑金鱼、小松丸躲避。
             final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, new AttackTypeImpl(type));
             damage = target.eventController.trigger(damageShareEvent).getLeft();
 
