@@ -1,26 +1,23 @@
 package com.sine.yys.inter;
 
 /**
- * 伤害控制器，单纯提供给buff实现伤害和治疗。
+ * 伤害控制器。
+ * <p>
+ * {@linkplain IBuff buff}实现伤害和治疗的接口。
  */
 public interface DamageController {
     /**
      * 直接造成伤害，不再计算任何buff加成效果，可被护盾减免，不受椒图分摊。
      * <p>
      * 用于实现不会暴击的持续伤害效果。
-     * 未来也可实现椒图分摊后的伤害。
-     *
-     * @param damage 伤害值。
      */
     void buffDamage(Entity self, int damage);
 
     /**
-     * 治疗。（会计算暴击）
+     * 治疗，包含暴击计算。
      *
-     * @param self   自身
-     * @param target 治疗目标。
-     * @param pct    自身生命百分比。
-     * @return 实际治疗量（受减疗影响。不算奶满的影响）。
+     * @param src 初始治疗量。
+     * @return 实际治疗量（受减疗影响，不算奶满的影响）。
      */
     int cure(Entity self, Entity target, double src);
 

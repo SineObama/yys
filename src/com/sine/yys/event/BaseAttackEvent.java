@@ -5,12 +5,11 @@ import com.sine.yys.inter.Entity;
 
 /**
  * 事件拓展基类，包含2个实体、攻击类型。
- * （定义此为指向性信息。）
  */
-public abstract class BaseAttackEvent extends BaseVectorEvent implements Event {
+public abstract class BaseAttackEvent extends BaseVectorEvent {
     private final AttackType type;
 
-    public BaseAttackEvent(Entity entity, Entity target, AttackType type) {
+    BaseAttackEvent(Entity entity, Entity target, AttackType type) {
         super(entity, target);
         this.type = type;
     }

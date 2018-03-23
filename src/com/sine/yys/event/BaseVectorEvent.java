@@ -4,12 +4,11 @@ import com.sine.yys.inter.Entity;
 
 /**
  * 事件拓展基类，包含2个实体。
- * （定义此为指向性信息。）
  */
-public abstract class BaseVectorEvent extends BaseEntityEvent implements Event {
+public abstract class BaseVectorEvent extends BaseEntityEvent {
     private final Entity target;
 
-    public BaseVectorEvent(Entity entity, Entity target) {
+    BaseVectorEvent(Entity entity, Entity target) {
         super(entity);
         this.target = target;
     }

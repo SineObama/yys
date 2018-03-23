@@ -1,11 +1,17 @@
 package com.sine.yys.inter.base;
 
 /**
- * buff中可提供的加成数值，正负数分别表示增减。
- *
- * @see com.sine.yys.rule.buff.Composition
+ * {@linkplain com.sine.yys.inter.IBuff buff}可提供的加成数值，正负数分别表示增减。
+ * <p>
+ * 叠加规则见{@linkplain com.sine.yys.rule.buff.Composition}
  */
 public interface IBuffProperty {
+    /**
+     * 受到伤害增减。
+     * (1+x)*(1+x)....-1。
+     */
+    double getBeDamage();
+
     /**
      * 治疗效果。
      * 一般减疗都不能叠加，只有和旗帜buff叠加。

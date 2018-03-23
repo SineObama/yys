@@ -4,7 +4,8 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * 固定的随机种子。
+ * 每次运行静态生产一个随机种子。
+ * <p>
  * 种子生产方法来自{@link Random#Random()}。
  */
 public class Seed {

@@ -6,8 +6,7 @@ import com.sine.yys.inter.base.Target;
 import java.util.logging.Logger;
 
 /**
- * 战场中一个对象。
- * 包括可被选择为目标的实体（Entity，式神或召唤物）、和战场中的其他对象（战场鲤鱼旗、竞赛秘闻鬼面）。
+ * 战场中一个对象，包括可被选择为目标的{@linkplain com.sine.yys.inter.Entity 实体}（式神或召唤物）、战场中的其他对象（{@linkplain com.sine.yys.simulation.component.BattleKoinobori 裁判旗子}、竞赛秘闻鬼面）。
  */
 public abstract class SimpleObject implements Target {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
@@ -26,11 +25,14 @@ public abstract class SimpleObject implements Target {
         doInit();
     }
 
+    /**
+     * 对象自身的行动逻辑。
+     */
     public abstract void action();
 
     protected abstract void doInit();
 
-    protected Controller getController() {
+    protected final Controller getController() {
         return controller;
     }
 
@@ -42,7 +44,7 @@ public abstract class SimpleObject implements Target {
         return position;
     }
 
-    public void setPosition(double position) {
+    public final void setPosition(double position) {
         this.position = position;
     }
 
@@ -63,7 +65,7 @@ public abstract class SimpleObject implements Target {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return getFullName();
     }
 }

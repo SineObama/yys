@@ -4,8 +4,10 @@ import com.sine.yys.inter.base.Skill;
 
 /**
  * 主动技能。
+ * <p>
+ * 回合中需要选择使用的技能。
+ * <p>
  * 包括所有普攻、群攻等等。
- * 是回合中需要选择使用的技能。
  */
 public interface ActiveSkill extends Skill {
     /**
@@ -16,9 +18,9 @@ public interface ActiveSkill extends Skill {
     TargetResolver getTargetResolver();
 
     /**
-     * 直接使用技能。由外部直接调用。
+     * 使用技能。
      *
-     * @param target 技能所选目标。
+     * @param target 技能所选目标。对于不需要目标的技能可为null，值将被忽略。
      */
     void apply(Entity target);
 }

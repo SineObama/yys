@@ -4,6 +4,6 @@ import com.sine.yys.inter.Entity;
 
 public class XueZhiHuaHaiShield extends BaseShield {
     public XueZhiHuaHaiShield(int value, Entity src) {
-        super(value, Integer.MAX_VALUE, "血之花海盾", src);  // XXX 彼岸花护盾持续时间？
+        super(value, Integer.MAX_VALUE, "血之花海盾", src);
     }
 }

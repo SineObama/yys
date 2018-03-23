@@ -1,21 +1,22 @@
 package com.sine.yys.mitama;
 
 import com.sine.yys.event.CriticalEvent;
-import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.PctEffect;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 /**
  * 针女。
  */
-public class ZhenNv extends BaseMitama implements EventHandler<CriticalEvent> {
+public class ZhenNv extends BaseSelfMitama implements EventHandler<CriticalEvent>, PctEffect {
     @Override
     public String getName() {
         return "针女";
     }
 
+    @Override
     public double getPct() {
         return 0.4;
     }
@@ -35,19 +36,14 @@ public class ZhenNv extends BaseMitama implements EventHandler<CriticalEvent> {
     }
 
     @Override
-    public void doInit(Controller controller, Entity self) {
-        self.getEventController().add(this);
-    }
-
-    @Override
     public void handle(CriticalEvent event) {
         if (RandUtil.success(getPct())) {
             final Entity self = getSelf();
-            log.info(Msg.trigger(self, ZhenNv.this));
+            log.info(Msg.trigger(self, this));
+            event.getType().setZhenNv(true);
             final double damage1 = self.getAttack() * getMaxDamageByAttack();
             final double damage2 = event.getTarget().getMaxLife() * getMaxDamageByMaxLife();
-            double damage = damage1 < damage2 ? damage1 : damage2;
-            getController().realDamage(self, event.getTarget(), damage, event.getType());
+            getController().zhenNvDamage(self, event.getTarget(), Double.min(damage1, damage2), event.getType());
         }
     }
 }

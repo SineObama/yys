@@ -3,6 +3,7 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.base.AttackTypeImpl;
 import com.sine.yys.buff.buff.DispellableBuff;
 import com.sine.yys.buff.debuff.DispellableDebuff;
+import com.sine.yys.buff.debuff.control.ShuiMian;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.event.*;
 import com.sine.yys.inter.*;
@@ -16,9 +17,6 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Logger;
 
-/**
- * 主要战场逻辑。
- */
 public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().getName());
     private final BaseCamp camp0;
@@ -43,11 +41,6 @@ public class ControllerImpl implements Controller {
         return poll.getCallback();
     }
 
-    @Override
-    public Camp getCamp(Entity entity) {
-        return ((EntityImpl) entity).getCamp();
-    }
-
     /**
      * 伤害逻辑：
      * 1. 由攻击、伤害系数、对方防御（忽略防御）计算。
@@ -65,16 +58,13 @@ public class ControllerImpl implements Controller {
     }
 
     private void attack(EntityImpl self, EntityImpl target, AttackInfo attackInfo, AttackType type) {
-        if (target.isDead())  // XXX 只是有时会出现目标已死。有更好 的逻辑？
+        if (target.isDead())  // 多段攻击目标可能中途死亡
             return;
 
         // XXX 关于触发时机
         for (DebuffEffect debuffEffect : attackInfo.getDebuffEffects()) {
             applyDebuff(self, target, debuffEffect);
         }
-
-        target.getCamp().getEventController().trigger(new BeAttackEvent());
-        target.getEventController().trigger(new BeAttackEvent());
 
         // 1.
         final boolean critical = RandUtil.success(self.getCritical());
@@ -91,17 +81,12 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void realDamage(Entity self, Entity target, double damage, AttackType type) {
-        realDamage(((EntityImpl) self), (EntityImpl) target, damage, (AttackTypeImpl) type);
-    }
-
-    private void realDamage(EntityImpl self, EntityImpl target, double damage, AttackTypeImpl type) {
+    public void zhenNvDamage(Entity self, Entity target, double damage, AttackType type) {
         if (target.isDead())
             return;
-        type.setZhenNv(true);
         // 根据旗帜buff增减。
         damage *= self.getFlagDamageCoefficient();
-        applyDamage(self, target, damage, false, new AttackTypeImpl(type));
+        applyDamage((EntityImpl) self, (EntityImpl) target, damage, false, new AttackTypeImpl(type));
     }
 
     /**
@@ -112,28 +97,30 @@ public class ControllerImpl implements Controller {
     private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, AttackType type) {
         self.eventController.trigger(new AttackEvent(self, target));
 
+        target.getEventController().trigger(new BeAttackEvent(target, self, type));
+
+        damage *= self.buffController.getBeDamage() + 1;
+
         // 破盾
         int remain = breakShield(target, (int) damage);
 
         if (remain != 0) {
             damage = remain;
 
-            PreDamageEvent event = new PreDamageEvent(self, target);
-            self.eventController.trigger(event);
-            damage *= event.getCoefficient();
+            damage *= self.eventController.trigger(new PreDamageEvent(self, target)).getCoefficient();
 
-            // 处理薙魂。未来考虑金鱼、小松丸躲避。
+            // 处理薙魂和涓流。未来考虑金鱼、小松丸躲避。
             final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, new AttackTypeImpl(type));
-            target.eventController.trigger(damageShareEvent);
-            damage = damageShareEvent.getLeft();
+            damage = target.eventController.trigger(damageShareEvent).getLeft();
 
             // 附加效果
             self.eventController.trigger(new DamageEvent(self, target));
             log.info(Msg.damage(self, target, (int) damage, critical));
+            target.buffController.remove(ShuiMian.class);
             target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type)));
             doDamage(target, (int) damage);
             if (target.getLifeInt() == 0)
-                log.info(Msg.vector(self, "击杀", target, ""));
+                log.info(Msg.vector(self, "击杀", target));
 
             // XXX 地藏像死亡后盾buff还在？
             if (critical) {
@@ -145,18 +132,20 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    // XXXXX 薙魂、椒图传递……死亡算不算击杀？
     @Override
-    public void tiHunDamage(Entity src, Entity self0, int damage, AttackType type) {
+    public void directDamage(Entity src, Entity self0, int damage, AttackType type) {
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
         log.info(Msg.info(self, "受到伤害", damage));
         if (damage > 0) {
-            type.setTiHun(true);
+            self.buffController.remove(ShuiMian.class);
             self.eventController.trigger(new BeDamageEvent(self, src, type));
             doDamage(self, damage);
         }
     }
 
+    @Override
     public void buffDamage(Entity self0, int damage) {
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
@@ -176,11 +165,8 @@ public class ControllerImpl implements Controller {
         count = (int) (src * coefficient);
         if (count <= 0)
             count = 1;
-        log.info(Msg.info(target, "受到治疗回复", count));
         target.addLife(count);
-        final BeCureEvent beCureEvent = new BeCureEvent(count);
-        target.getEventController().trigger(beCureEvent);
-        target.getCamp().getEventController().trigger(beCureEvent);
+        target.getEventController().trigger(new BeCureEvent(count));
         return count;
     }
 
@@ -197,17 +183,15 @@ public class ControllerImpl implements Controller {
         final int srcLife = target.getLifeInt();
         final int life = target.reduceLife(damage);
         final double dst = target.getLife();
-        final LostLifeEvent event = new LostLifeEvent(src, dst, srcLife - life);
-        target.getEventController().trigger(event);
-        target.getCamp().getEventController().trigger(event);
+        target.getEventController().trigger(new LostLifeEvent(src, dst, srcLife - life));
         if (life == 0) {
             // 添加匣中少女逻辑，回复状态则退出
             target.getBuffController().clear();// XXX 匣中少女回复状态会不会保留buff？
+            target.eventController.clear();
             target.getCamp().getPosition(target).setCurrent(null);
             log.info(Msg.info(target, "死亡"));
             // 包括阎魔放小鬼
             target.getEventController().trigger(new DieEvent(target));
-            target.getCamp().getEventController().trigger(new DieEvent(target));
             // 添加击杀事件
         }
     }
@@ -254,12 +238,8 @@ public class ControllerImpl implements Controller {
             Debuff debuff = effect.getDebuff(self);
             if (!involveHitAndDef || RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
                 boolean effective = true;
-                if (debuff instanceof ControlBuff) {
-                    BeforeControlEvent event = new BeforeControlEvent((ControlBuff) debuff);
-                    target.getEventController().trigger(event);
-                    target.getCamp().getEventController().trigger(event);
-                    effective = !event.isNotEffective();
-                }
+                if (debuff instanceof ControlBuff)
+                    effective = !target.getEventController().trigger(new BeforeControlEvent((ControlBuff) debuff)).isNotEffective();
                 if (effective) {
                     log.info(Msg.info(target, "获得负面效果", debuff.getName()));
                     target.getBuffController().add(debuff);
@@ -313,9 +293,7 @@ public class ControllerImpl implements Controller {
         position.setCurrent(target);
         target.setLife(maxLife);
         log.info(Msg.info(target, "复活，血量", target.getLifeInt()));
-        final EnterEvent enterEvent = new EnterEvent(target);
-        target.eventController.trigger(enterEvent);
-        target.getCamp().getEventController().trigger(enterEvent);
+        target.eventController.trigger(new EnterEvent(target));
     }
 
     @Override

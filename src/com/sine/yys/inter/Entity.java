@@ -4,12 +4,12 @@ import com.sine.yys.inter.base.Property;
 import com.sine.yys.inter.base.Target;
 
 /**
- * 战场中的可见实体。
- * 包括式神和召唤物。
- * 可作为目标（攻击）的对象。
+ * 实体。
  * <p>
- * 全局广泛使用的接口，主要作存储功能（buff、事件）。
- * 还为技能保存部分变量（状态）。
+ * 战场中可作为目标（攻击）的对象，包括式神和召唤物。
+ * <p>
+ * 主要用作存储{@linkplain IBuff buff}、事件。
+ * 也可以为技能保存部分变量。
  */
 public interface Entity extends Target, Property {
     /**
@@ -42,8 +42,18 @@ public interface Entity extends Target, Property {
 
     int getLifeInt();
 
+    /**
+     * @param target 协战目标。若目标异常（已死或为友方）则随机协战敌方目标。
+     */
     void xieZhan(Entity target);
 
+    /**
+     * 根据当前控制效果，重新确认攻击目标。
+     * 目标死亡则随机攻击敌方。
+     *
+     * @param origin 期望攻击目标。
+     * @return 最终攻击目标。无法攻击则为null。
+     */
     Entity applyControl(Entity origin);
 
     boolean isDead();
@@ -62,18 +72,24 @@ public interface Entity extends Target, Property {
      */
     void addPosition(double count);
 
+    int addLife(int count);
+
     EventController getEventController();
 
+    /**
+     * @return 治疗系数。
+     */
     double getCureCoefficient();
 
     /**
-     * 造成伤害增加。
+     * @return 造成伤害系数。
      */
     double getDamageCoefficient();
 
     /**
-     * 战场旗帜buff的伤害增加系数。
-     * 用于针女。
+     * 用于改变针女伤害（不受一般伤害加成影响）。
+     *
+     * @return {@linkplain com.sine.yys.buff.BattleFlag 战场旗帜效果}的伤害系数。
      */
     double getFlagDamageCoefficient();
 

@@ -1,6 +1,6 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.event.BeforeActionEvent;
+import com.sine.yys.event.BeforeRoundEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
 import com.sine.yys.event.LostLifeEvent;
@@ -14,7 +14,7 @@ import com.sine.yys.util.Msg;
 /**
  * 彼岸花-赤团华。
  */
-public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventHandler<BeforeActionEvent> {
+public class ChiTuanHua extends BasePassiveSkill implements EventHandler<BeforeRoundEvent> {
     private final XueZhiHuaHai xueZhiHuaHai;
 
     public ChiTuanHua(XueZhiHuaHai xueZhiHuaHai) {
@@ -37,7 +37,7 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventH
 
     @Override
     protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> getEnemy().getEventController().add(this, 300);
+        return event -> getEnemy().getEventController().add(this, 400);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ChiTuanHua extends BasePassiveSkill implements PassiveSkill, EventH
     }
 
     @Override
-    public void handle(BeforeActionEvent event) {
+    public void handle(BeforeRoundEvent event) {
         int level = xueZhiHuaHai.getLevel();
         if (level > 0) {
             log.info(Msg.trigger(getSelf(), ChiTuanHua.this));

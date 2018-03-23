@@ -4,11 +4,9 @@ import com.sine.yys.inter.ControlBuff;
 
 /**
  * 实施控制效果前触发。
- * 目前用于花鸟卷抵销效果。
  * <p>
- * 冻结、眩晕、睡眠、变形、沉默、嘲讽、混乱、牢笼束缚等的技能和御魂效果。
- *
- * @version 2018-2-28
+ * 用途：
+ * 1. 花鸟卷抵消控制效果（冻结、眩晕、睡眠、变形、沉默、嘲讽、混乱、牢笼束缚等的技能和御魂效果）。
  */
 public class BeforeControlEvent extends BaseEvent {
     final ControlBuff controlBuff;

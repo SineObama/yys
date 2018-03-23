@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 /**
- * 随机 实用类。
+ * 随机实用类。
  */
 public class RandUtil {
     private static final Logger log = Logger.getLogger(RandUtil.class.getName());

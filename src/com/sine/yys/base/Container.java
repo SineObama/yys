@@ -3,8 +3,10 @@ package com.sine.yys.base;
 
 /**
  * 包装对象，以实现优先级排序。
- * 构造时必须指定优先级，删除时也要设定同样的优先级以进行对象对比。
- * 允许相同优先级的不同实例，对比时使用哈希值。
+ * <p>
+ * 构造时必须指定优先级，删除时也要设定同样的优先级。对比时会先比较优先级，再进行对象对比（使用哈希值）。
+ * <p>
+ * 允许相同优先级的不同实例。
  *
  * @param <T> 对象类型。
  */
@@ -27,10 +29,6 @@ public class Container<T> implements Comparable<Container> {
 
     public T getObj() {
         return obj;
-    }
-
-    public void setObj(T obj) {
-        this.obj = obj;
     }
 
     @Override

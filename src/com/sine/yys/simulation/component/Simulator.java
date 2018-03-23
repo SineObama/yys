@@ -13,15 +13,13 @@ import java.util.logging.Logger;
 
 /**
  * 战场模拟器。安排战斗主干流程。
- * <p>
- * 阵营和式神主要用于存储关系和状态（事件、buff），主体逻辑（施加伤害和效果，事件监听等）放在技能和御魂中。
  */
 public class Simulator {
     private final Logger log = Logger.getLogger(getClass().getName());
 
     // 引用
     private final BaseCamp camp0, camp1;
-    private final List<SimpleObject> extras;  // 额外的对象，包括不属于阵营的战场鲤鱼旗。秘闻竞赛副本的鬼头？
+    private final List<SimpleObject> extras;  // 额外的对象，包括不属于阵营的裁判旗子。秘闻竞赛副本的鬼头？
     private final ControllerImpl controller;
     private Camp win = null;
     // 状态
@@ -37,22 +35,24 @@ public class Simulator {
     }
 
     private SimpleObject next() {
-        double min = 1;  // 不可能达到的较大值
+        double min = 1.0;  // 不可能达到的较大值
         List<SimpleObject> all = new ArrayList<>(15);
         all.addAll(camp0.getAllAlive());
         all.addAll(camp1.getAllAlive());
         all.addAll(extras);
         SimpleObject rtn = all.get(0);
         for (SimpleObject entity : all) {
-            double remain = (1 - entity.getPosition()) / entity.getSpeed();
+            double remain = (1.0 - entity.getPosition()) / entity.getSpeed();
             if (min > remain) {
                 min = remain;
                 rtn = entity;
+            } else if (min == 0.0 && remain == 0.0 && entity.getSpeed() > rtn.getSpeed()) {
+                rtn = entity;
             }
         }
-        for (SimpleObject entity : all) {
-            entity.setPosition(entity.getPosition() + min * entity.getSpeed());
-        }
+        if (min != 0.0)
+            for (SimpleObject entity : all)
+                entity.addPosition(min * entity.getSpeed());
         rtn.setPosition(1.0);
         return rtn;
     }
@@ -66,15 +66,11 @@ public class Simulator {
         camp1.init(camp0, controller);
         for (SimpleObject extra : extras)
             extra.init(controller);
-        for (EntityImpl entity : camp0.getAllAlive()) {
+        for (EntityImpl entity : camp0.getAllAlive())
             entity.eventController.trigger(new EnterEvent(entity));
-            camp0.getEventController().trigger(new EnterEvent(entity));
-        }
         camp0.getEventController().trigger(new BattleStartEvent());
-        for (EntityImpl entity : camp1.getAllAlive()) {
+        for (EntityImpl entity : camp1.getAllAlive())
             entity.eventController.trigger(new EnterEvent(entity));
-            camp1.getEventController().trigger(new EnterEvent(entity));
-        }
         camp1.getEventController().trigger(new BattleStartEvent());
     }
 
@@ -89,7 +85,7 @@ public class Simulator {
             // 获取下一行动式神
             final SimpleObject self0 = next();
 
-            // 战场鲤鱼旗（等独立实体）行动。
+            // 裁判旗子（等独立实体）行动。
             // XXXX 暂时采用直接调用的方式，跳过后面的鬼火仓库、技能调用……
             if (!(self0 instanceof EntityImpl)) {
                 self0.setPosition(0);
@@ -117,17 +113,16 @@ public class Simulator {
                 for (Skill skill : self.shikigami.getSkills())
                     skill.beforeAction();
 
-                // 行动前事件
+                // 回合前事件
                 // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
                 self.eventController.trigger(new ZhaoCaiMaoEvent());
-                self.eventController.trigger(new BeforeActionEvent(self));
-                self.camp.getEventController().trigger(new BeforeActionEvent(self));
+                self.eventController.trigger(new BeforeRoundEvent(self));
 
                 controller.afterMovement();
 
                 // XXXX 行动前事件死了的影响
                 // 包括执行持续伤害
-                self.buffController.beforeAction(controller, self);
+                self.buffController.beforeAction(controller);
 
                 if (!self.isDead())
                     self.action();
@@ -135,11 +130,10 @@ public class Simulator {
                 controller.afterMovement();
 
                 // 一般buff回合数-1
-                self.buffController.afterAction(controller, self);
+                self.buffController.afterAction(controller);
 
-                // 行动后事件
-                self.eventController.trigger(new AfterActionEvent(self));
-                self.camp.getEventController().trigger(new AfterActionEvent(self));
+                // 回合后事件
+                self.eventController.trigger(new AfterRoundEvent(self));
 
                 for (Skill skill : self.shikigami.getSkills())
                     skill.afterAction();

@@ -6,9 +6,10 @@ import com.sine.yys.skill.passive.JingHuaZhiYu;
 
 import java.util.Arrays;
 
+// XXXX 雨女AI未确定。
+
 /**
  * 雨女。
- * XXXX 雨女AI未确定。
  */
 public class YuNv extends BaseShikigami {
     public YuNv() {

@@ -1,6 +1,6 @@
 package com.sine.yys.skill.commonattack;
 
-import com.sine.yys.buff.buff.KuangBao;
+import com.sine.yys.skill.groupattack.GuiXi;
 
 /**
  * 般若-鬼之假面。
@@ -13,7 +13,7 @@ public class GuiZhiJiaMian extends BaseCommonAttack {
 
     @Override
     public int getTimes() {
-        return getSelf().getBuffController().contain(KuangBao.class) ? 2 : 1;  // XXX 般若狂暴平A两段？
+        return getSelf().getBuffController().contain(GuiXi.KuangBao.class) ? 2 : 1;  // XXXX 般若狂暴平A两段？
     }
 
     @Override

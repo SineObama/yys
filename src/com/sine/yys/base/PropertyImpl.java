@@ -2,11 +2,6 @@ package com.sine.yys.base;
 
 import com.sine.yys.inter.base.Property;
 
-/**
- * 式神属性。
- * 创建式神时已经固定的各项属性。
- * 依次为：攻击，生命，防御，速度，暴击，暴击伤害，效果命中，效果抵抗。
- */
 public class PropertyImpl implements Property {
     private final double attack;
     private final double life;

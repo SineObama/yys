@@ -1,12 +1,12 @@
 package com.sine.yys.inter.base;
 
 /**
- * 只用作统一输出。
+ * 用于统一输出信息。
  * 作为主语，可能是阵营或者式神。
  */
 public interface Target extends Named {
     /**
-     * 带阵营的全名。
+     * @return 带阵营的全名。
      */
     String getFullName();
 }

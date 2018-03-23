@@ -14,20 +14,26 @@ import java.util.Collection;
  */
 public abstract class BaseAttackSkill extends BaseActiveSkill {
     /**
-     * 技能系数。
      * 仅仅提供一个比较通用的系数接口。部分技能可能有较复杂的逻辑，包含多个系数。
      *
-     * @return 系数。1表示100%。
+     * @return 技能系数。1表示100%。
      */
     public abstract double getCoefficient();
 
     /**
-     * 获取攻击时附带的debuff效果。默认无效果。
+     * 默认无效果。
+     *
+     * @return 攻击时附带的debuff效果。null表示无效果。
      */
     public Collection<DebuffEffect> getDebuffEffects() {
         return null;
     }
 
+    /**
+     * 默认使用{@linkplain #getCoefficient()}和{@linkplain #getDebuffEffects()}，无破防效果。
+     *
+     * @return 攻击信息。
+     */
     public AttackInfo getAttack() {
         return new AttackInfoImpl(getDebuffEffects(), getCoefficient());
     }

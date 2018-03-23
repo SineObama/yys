@@ -13,6 +13,7 @@ public class MeiYao extends BaseDebuffMitama {
         return "魅妖";
     }
 
+    @Override
     public double getPct() {
         return 0.25;
     }

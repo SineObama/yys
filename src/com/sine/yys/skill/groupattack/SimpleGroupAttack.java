@@ -27,6 +27,9 @@ public abstract class SimpleGroupAttack extends BaseAttackSkill {
         return 3;
     }
 
+    /**
+     * @return 攻击次数（段数）
+     */
     public int getTimes() {
         return 1;
     }

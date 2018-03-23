@@ -1,7 +1,7 @@
 package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.event.AfterMovementEvent;
-import com.sine.yys.event.BeforeActionEvent;
+import com.sine.yys.event.BeforeRoundEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.Controller;
@@ -18,14 +18,22 @@ public class GuiNiao extends BaseCommonAttack {
     private final AfterMovementHandler afterMovementHandler = new AfterMovementHandler();
 
     @Override
-    protected void doApply(Entity target) {
-        super.doApply(target);
+    protected void afterApply(Entity target) {
         final Controller controller = getController();
         final Entity self = getSelf();
-        for (int i = 0; i < getTimes(); i++) {
+        for (int i = 0; i < getTimes(); i++)
             if (RandUtil.success(getCurePct()))
                 controller.cure(self, getOwn().getLeastLifeShikigami(), getCureLifePct() * self.getMaxLife());
-        }
+    }
+
+    @Override
+    public void doCounter(Entity target) {
+        getController().counter(getSelf(), target, getAttack());
+
+        // 减少一只飞鸟
+        int niao = getFeiNiao();
+        if (niao > 1)
+            getSelf().put(GuiNiao.FeiNiao, niao - 1);
     }
 
     @Override
@@ -88,9 +96,9 @@ public class GuiNiao extends BaseCommonAttack {
         return event -> getOwn().getEventController().remove(afterMovementHandler);
     }
 
-    class BeforeActionHandler implements EventHandler<BeforeActionEvent> {
+    class BeforeActionHandler implements EventHandler<BeforeRoundEvent> {
         @Override
-        public void handle(BeforeActionEvent event) {
+        public void handle(BeforeRoundEvent event) {
             addFeiNiao();
         }
     }

@@ -1,10 +1,12 @@
 package com.sine.yys.inter;
 
 /**
- * 鬼火仓库，管理鬼火。
- * 定义：（PVP行动条的行为）在行动前调用{@link #ready()}使行动条预备推进一格（UI上显示为增加一格闪烁）；行动结束后调用{@link #finish()}完成当前格，并在完成5格时结算鬼火。
+ * 鬼火仓库。用于管理鬼火。
+ * <p>
+ * PVP行动条的行为定义：行动前调用{@link #ready()}使行动条预备推进一格（UI上显示为增加一格闪烁）；行动结束后调用{@link #finish()}完成当前格，在完成5格时结算鬼火。
  * 必须依次调用这2个函数，多次调用同一函数无效果。
  * <p>
+ * 创建原因：
  * 在PVE中，敌方式神的鬼火是独立的，有自己的仓库、管理方法，会随式神回合开始时回复1火。
  * 再参考木魅御魂效果“减少目标鬼火”，是针对式神发生的动作。
  * 故抽象出此概念，只不过在PVP中，每个式神都是引用己方唯一的仓库，而且是每5回合回火。
@@ -14,24 +16,23 @@ package com.sine.yys.inter;
  */
 public interface FireRepo {
     /**
-     * 获取鬼火数。
+     * @return 当前鬼火数。
      */
     int getFire();
 
     /**
-     * 使用（减去）鬼火数。不得使用超过已有鬼火的数量。
+     * @param count 使用（减去）鬼火数。不得使用超过已有鬼火的数量。
      */
     void useFire(int count);
 
     /**
-     * 抢夺（吸取）鬼火。
-     *
+     * @param count 抢夺（吸取）鬼火数。
      * @return 成功数（可能鬼火不足）
      */
     int grabFire(int count);
 
     /**
-     * 增加鬼火。
+     * @param count 增加鬼火数。
      */
     void addFire(int count);
 

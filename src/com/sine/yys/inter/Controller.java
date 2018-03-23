@@ -3,28 +3,22 @@ package com.sine.yys.inter;
 import com.sine.yys.inter.base.Callback;
 
 /**
- * 控制器，提供给技能和御魂实现操作。
+ * 控制器。
+ * <p>
+ * 技能和御魂实现操作的接口。
  * 包含了战斗的重要逻辑。
- * 比如进行攻击、附加效果等。
+ * 比如如何进行攻击、附加效果等。
  */
 public interface Controller extends DamageController {
     /**
-     * 添加一个动作
+     * 添加一个动作。将在当前回合（动作）结束后执行。
+     *
+     * @param prior 优先级。值小的优先级高，先执行。
      */
     void addAction(int prior, Callback action);
 
     /**
-     * 获取式神所在的阵营。
-     * <p>
-     * 由于从阵营可以获取式神，为了避免双向引用，强行写成这样。
-     */
-    Camp getCamp(Entity entity);
-
-    /**
-     * 攻击目标（主动攻击，包括彼岸花的被动，不包括持续伤害和反击），可暴击，可被护盾减免。
-     * 受一般buff、旗帜buff影响。
-     * 触发附加攻击时的效果、造成伤害时的效果、击杀时的效果等。
-     * 也触发目标被攻击的事件（导致反击等）。
+     * 主动攻击目标（包括赤团华，不包括持续伤害和反击）。
      */
     void attack(Entity self, Entity target, AttackInfo attackInfo);
 
@@ -34,14 +28,15 @@ public interface Controller extends DamageController {
     void counter(Entity self, Entity target, AttackInfo attackInfo);
 
     /**
-     * 目前只用于施加针女伤害（会被椒图或薙魂分担，不会被金鱼分担，不受一般buff影响）。
+     * 针女伤害（会被椒图或薙魂分担，不会被金鱼分担，不受一般buff影响）。
      */
-    void realDamage(Entity self, Entity target, double damage, AttackType type);
+    void zhenNvDamage(Entity self, Entity target, double damage, AttackType type);
 
     /**
-     * 薙魂伤害。
+     * 薙魂伤害、椒图分摊后（其他人的）伤害。
+     * 会打醒睡眠。
      */
-    void tiHunDamage(Entity src, Entity self, int damage, AttackType type);
+    void directDamage(Entity src, Entity self, int damage, AttackType type);
 
     /**
      * 概率吸取鬼火。
@@ -49,9 +44,10 @@ public interface Controller extends DamageController {
     void randomGrab(Entity self, Entity target, double pct);
 
     /**
-     * 以效果中的概率对目标发起负面效果。
-     * 包括计算效果命中和抵抗。
-     * 未来将会涉及相关事件，比如抵抗反击事件、花鸟卷的被动抵抗。
+     * 以指定概率对目标发起负面效果。
+     * <p>
+     * 包含效果命中和抵抗的计算。
+     * 涉及抵抗反击事件、画境抵消效果等。
      */
     void applyDebuff(Entity self, Entity target, DebuffEffect effect);
 

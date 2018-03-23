@@ -7,7 +7,10 @@ import com.sine.yys.buff.debuff.control.ChaoFeng;
 import com.sine.yys.buff.debuff.control.ChenMo;
 import com.sine.yys.buff.debuff.control.HunLuan;
 import com.sine.yys.buff.debuff.control.Unmovable;
+import com.sine.yys.event.BeMonoAttackEvent;
+import com.sine.yys.event.CommonAttackEvent;
 import com.sine.yys.event.FinishActionEvent;
+import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.inter.base.Mitama;
@@ -24,24 +27,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 战场中的实体，保存了式神信息{@link Shikigami}、属性信息{@link Property}、御魂信息{@link Mitama}，和战斗中的状态（技能cd和buff、事件）。
+ * 战场中的实体。
+ * <p>
+ * 保存了{@linkplain Shikigami 式神信息}、{@linkplain Property 属性}、{@linkplain Mitama 御魂}，
+ * 和战斗中的状态（技能cd、{@linkplain IBuff buff}、事件）。
  */
 public class EntityImpl extends SimpleObject implements Self, JSONable {
     final EventControllerImpl eventController = new EventControllerImpl();
-    final BuffControllerImpl buffController = new BuffControllerImpl();
+    final BuffControllerImpl buffController = new BuffControllerImpl(this);
     final Shikigami shikigami;
     final List<Mitama> mitamas;
     private final Property property;
     private final Map<Object, Object> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
+    private final double lifeTimes;
     // XXXX 两者的设置由谁负责比较好？
     Camp camp = null;
     FireRepo fireRepo;
     private int life;
 
-    EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name) {
+    EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name, double lifeTimes) {
         super(name, 9999);
         this.property = property;
         this.shikigami = shikigami;
+        this.lifeTimes = lifeTimes;
         this.mitamas = new ArrayList<>();
         if (mitama != null)
             this.mitamas.add(mitama);
@@ -53,17 +61,14 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
         final Controller controller = getController();
         for (Skill skill : this.shikigami.getSkills()) {
             if (skill instanceof Component)
-                ((Component) skill).init(controller, this);
+                ((Component) skill).init(controller, this, camp);
         }
         for (Mitama mitama : this.mitamas) {
             if (mitama instanceof Component)
-                ((Component) mitama).init(controller, this);
+                ((Component) mitama).init(controller, this, camp);
         }
     }
 
-    /**
-     * 式神自身的行动逻辑。
-     */
     public void action() {
         log.info(Msg.info(this, "当前鬼火", this.fireRepo.getFire()));
 
@@ -129,8 +134,25 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
             Entity target = operation.getTarget();
             log.info(Msg.vector(this, target != null ? "对" : "", target, "使用了", activeSkill.getName()));
 
+            // 消耗鬼火
+            int fire = activeSkill.getFire();
+            if (fire > 0) {
+                fire = camp.getEventController().trigger(new UseFireEvent(this, fire)).getCostFire();
+                fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
+                log.info(Msg.info(this, "消耗", fire, "点鬼火，剩余", fireRepo.getFire(), "点"));
+            }
+
             // 执行技能
+            if (activeSkill instanceof CommonAttack) {
+                // 触发对方被单体攻击事件（混乱打自己人不触发）
+                if (camp.getOpposite().contain(target) && target instanceof ShikigamiEntity)
+                    target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
+            }
             activeSkill.apply(target);
+            if (activeSkill instanceof CommonAttack) {
+                // 触发普攻事件
+                this.eventController.trigger(new CommonAttackEvent(this, target));
+            }
 
             this.eventController.trigger(new FinishActionEvent());
         } else {
@@ -164,12 +186,12 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
 
     @Override
     public final int getMaxLife() {
-        return (int) property.getLife();
+        return (int) (property.getLife() * lifeTimes);
     }
 
     @Override
     public int getLostLifeInt() {
-        return (int) property.getLife() - life;
+        return getMaxLife() - life;
     }
 
     @Override
@@ -223,11 +245,13 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
         this.life = life;
     }
 
-    int addLife(int count) {
+    @Override
+    public int addLife(int count) {
         if (count < 0) {
             log.warning("add life by negative value");
             return this.life;
         }
+        log.info(Msg.info(this, "回复生命", count));
         this.life += count;
         if (this.life > getMaxLife())
             this.life = getMaxLife();
@@ -317,15 +341,19 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
     }
 
     @Override
-    public Entity applyControl(Entity origin) {
+    public Entity applyControl(Entity target) {
         final ControlBuff controlBuff = buffController.getFirstControlBuff();
         if (controlBuff instanceof Unmovable)
             return null;
         if (controlBuff instanceof ChaoFeng) {
             final ChaoFeng chaoFeng = (ChaoFeng) controlBuff;
-            return chaoFeng.getSrc();
+            target = chaoFeng.getSrc();
         }
-        return origin;
+        if (target.isDead()) {
+            log.info(Msg.info(target, "已死，随机攻击"));
+            target = camp.getOpposite().randomTarget();
+        }
+        return target;
     }
 
     @Override
@@ -353,11 +381,6 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
 
     public void setFireRepo(FireRepo fireRepo) {
         this.fireRepo = fireRepo;
-    }
-
-    @Override
-    public String toString() {
-        return getFullName();
     }
 
     @Override

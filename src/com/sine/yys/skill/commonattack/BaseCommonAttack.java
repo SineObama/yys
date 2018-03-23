@@ -1,30 +1,24 @@
 package com.sine.yys.skill.commonattack;
 
-import com.sine.yys.event.BeMonoAttackEvent;
-import com.sine.yys.event.CommonAttackEvent;
 import com.sine.yys.inter.CommonAttack;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.ShikigamiEntity;
 import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.BaseAttackSkill;
 import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 
 /**
- * 普攻通用逻辑。
- * 在普攻结束后触发普攻事件。
+ * 普通攻击。
+ * <p>
+ * 结束后触发普攻事件。
  */
 public abstract class BaseCommonAttack extends BaseAttackSkill implements CommonAttack {
     /**
-     * 普攻的具体操作。无需触发普攻事件。
      * 默认以getAttack的攻击，对target攻击getTimes次。
      */
     @Override
     protected void doApply(Entity target) {
-        for (int i = 0; i < getTimes(); i++) {
-            if (target.isDead())
-                break;
+        for (int i = 0; i < getTimes(); i++)
             getController().attack(getSelf(), target, getAttack());
-        }
     }
 
     @Override
@@ -49,22 +43,9 @@ public abstract class BaseCommonAttack extends BaseAttackSkill implements Common
         return new EnemyEntityResolver();
     }
 
-    @Override
-    protected void beforeApply(Entity target) {
-        // 可能被混乱打自己人
-        if (getEnemy().contain(target) && target instanceof ShikigamiEntity) {
-            getEnemy().getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf()));
-        }
-    }
-
-    @Override
-    public final void afterApply(Entity target) {
-        // 触发普攻事件
-        getOwn().getEventController().trigger(new CommonAttackEvent(getSelf(), target));
-    }
-
     /**
-     * 协战的具体操作。
+     * 协战。
+     * <p>
      * 默认调用doApply。具体技能根据需要重写。
      */
     @Override
@@ -73,11 +54,14 @@ public abstract class BaseCommonAttack extends BaseAttackSkill implements Common
     }
 
     @Override
-    public void counter(Entity target) {
-        for (int i = 0; i < getTimes(); i++) {
-            if (target.isDead())
-                break;
+    public final void counter(Entity target) {
+        doBeforeAction();
+        doCounter(target);
+        doAfterAction();
+    }
+
+    protected void doCounter(Entity target) {
+        for (int i = 0; i < getTimes(); i++)
             getController().counter(getSelf(), target, getAttack());
-        }
     }
 }

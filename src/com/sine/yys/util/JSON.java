@@ -6,6 +6,10 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
+ * 将若干键值对输出为JSON格式字符串，用于输出调试信息。
+ * <p>
+ * 处理了{@linkplain Collection}和{@linkplain Map}，没有实现转义。
+ *
  * @see JSONable
  */
 public class JSON {

@@ -12,6 +12,12 @@ import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
  */
 public class TianXiangHeZhan extends SimpleGroupAttack {
     @Override
+    public void doApply(Entity target) {
+        super.doApply(target);
+        getController().attack(getSelf(), target, new AttackInfoImpl(getDebuffEffects(), getFinalCoefficient()));
+    }
+
+    @Override
     public String getName() {
         return "天翔鹤斩";
     }
@@ -36,15 +42,8 @@ public class TianXiangHeZhan extends SimpleGroupAttack {
     }
 
     @Override
-    public void doApply(Entity target) {
-        super.doApply(target);
-        getController().attack(getSelf(), target, new AttackInfoImpl(getDebuffEffects(), getFinalCoefficient()));
-    }
-
-    @Override
-    protected void beforeApply(Entity target) {
-        if (target instanceof ShikigamiEntity) {
-            getEnemy().getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf()));
-        }
+    protected final void beforeApply(Entity target) {
+        if (target instanceof ShikigamiEntity)
+            target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf()));
     }
 }

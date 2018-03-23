@@ -23,6 +23,15 @@ public class AutoOperationHandler implements OperationHandler {
         if (use == null)
             return new OperationImpl(null, null);
         final List<? extends Entity> targets = map.get(use);
-        return new OperationImpl(RandUtil.choose(targets), use);
+        Entity target = null;
+        if (use instanceof CommonAttack) {
+            for (Entity entity : targets) {
+                if (entity.getLife() < 0.1)
+                    target = entity;
+            }
+        }
+        if (target == null)
+            target = RandUtil.choose(targets);
+        return new OperationImpl(target, use);
     }
 }

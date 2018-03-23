@@ -1,6 +1,6 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.buff.buff.BattleFlag;
+import com.sine.yys.buff.BattleFlag;
 import com.sine.yys.buff.debuff.control.*;
 import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
@@ -15,8 +15,9 @@ import java.util.*;
 import java.util.logging.Logger;
 
 /**
+ * 通过{@link IBuffProperty}返回所有buff相应属性的合计。
+ * <p>
  * 给主逻辑提供行动前后调用的接口。
- * 通过{@link IBuffProperty}接口返回所有buff相应属性的合计。
  */
 public class BuffControllerImpl implements BuffController, IBuffProperty {
     private static final Map<Class, Integer> prior = new HashMap<>();
@@ -45,6 +46,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     private final Logger log = Logger.getLogger(getClass().getName());
 
     private final Set<IBuff> set = new HashSet<>();
+    private final BeDamage beDamage = new BeDamage();
     private final Cure cure = new Cure();
     private final DamageUp damageUp = new DamageUp();
     private final FlagDamage flagDamage = new FlagDamage();
@@ -56,11 +58,17 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     private final EffectHit effectHit = new EffectHit();
     private final EffectDef effectDef = new EffectDef();
 
+    private final Entity self;
+
+    BuffControllerImpl(Entity self) {
+        this.self = self;
+    }
+
     @Override
     public Object remove(Object obj) {
         final IBuff iBuff = (IBuff) obj;
         if (iBuff != null)
-            iBuff.onRemove();
+            iBuff.onRemove(self);
         return set.remove(iBuff);
     }
 
@@ -76,24 +84,24 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         return sorted.values();
     }
 
-    public void beforeAction(Controller controller, Entity self) {
+    public void beforeAction(Controller controller) {
         Collection<IBuff> buffs = new ArrayList<>(set);
         for (IBuff buff : buffs) {
             if (self.isDead())
                 break;
             if (buff.beforeAction(controller, self) == 0) {
-                buff.onRemove();
+                buff.onRemove(self);
                 set.remove(buff);
                 log.info(Msg.info(self, buff.getName(), "效果消失了"));
             }
         }
     }
 
-    public void afterAction(Controller controller, Entity self) {
+    public void afterAction(Controller controller) {
         Collection<IBuff> buffs = new ArrayList<>(set);
         for (IBuff buff : buffs) {
             if (buff.afterAction(controller, self) == 0) {
-                buff.onRemove();
+                buff.onRemove(self);
                 set.remove(buff);
                 // TODO 输出信息移到buff中？
                 log.info(Msg.info(self, buff.getName(), "效果消失了"));
@@ -161,6 +169,11 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
     }
 
     @Override
+    public double getBeDamage() {
+        return beDamage.calc(set);
+    }
+
+    @Override
     public double getCure() {
         return cure.calc(set);
     }
@@ -215,7 +228,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         final BattleFlag battleFlag = get(BattleFlag.class);
         for (IBuff iBuff : new ArrayList<>(set))
             if (iBuff != battleFlag)
-                iBuff.onRemove();
+                iBuff.onRemove(self);
         set.clear();
         if (battleFlag != null)
             set.add(battleFlag);

@@ -1,12 +1,13 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.event.AfterActionEvent;
+import com.sine.yys.event.AfterRoundEvent;
 import com.sine.yys.event.BeforeControlEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.PctEffect;
 import com.sine.yys.skill.commonattack.GuiNiao;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -14,7 +15,7 @@ import com.sine.yys.util.RandUtil;
 /**
  * 花鸟卷-画境。
  */
-public class HuaJing extends BasePassiveSkill implements PassiveSkill, EventHandler<BeforeControlEvent> {
+public class HuaJing extends BasePassiveSkill implements EventHandler<BeforeControlEvent>, PctEffect {
     @Override
     public String getName() {
         return "画境";
@@ -23,6 +24,7 @@ public class HuaJing extends BasePassiveSkill implements PassiveSkill, EventHand
     /**
      * @return 进入画卷概率。
      */
+    @Override
     public double getPct() {
         return 0.3;
     }
@@ -34,6 +36,9 @@ public class HuaJing extends BasePassiveSkill implements PassiveSkill, EventHand
         return 0.3;
     }
 
+    /**
+     * @return 增加行动条。
+     */
     public double getAddPosition() {
         return 0.3;
     }
@@ -68,9 +73,9 @@ public class HuaJing extends BasePassiveSkill implements PassiveSkill, EventHand
         }
     }
 
-    class AfterActionHandler extends SealablePassiveHandler implements EventHandler<AfterActionEvent> {
+    class AfterActionHandler extends SealablePassiveHandler implements EventHandler<AfterRoundEvent> {
         @Override
-        public void handle(AfterActionEvent event) {
+        public void handle(AfterRoundEvent event) {
             if (RandUtil.success(getPct())) {
                 log.info(Msg.trigger(getSelf(), HuaJing.this));
                 getSelf().addPosition(getAddPosition());

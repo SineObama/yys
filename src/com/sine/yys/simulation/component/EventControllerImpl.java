@@ -14,7 +14,7 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 
 /**
- * 在阵营和式神中都有独立的控制器，分开定义和管理属于阵营全局和式神自身的事件。
+ * 在阵营和式神中都有独立的控制器，分别管理属于阵营全局和式神自身的事件。
  */
 public class EventControllerImpl implements EventController {
     private final Logger log = Logger.getLogger(this.getClass().getName());
@@ -24,6 +24,11 @@ public class EventControllerImpl implements EventController {
     private final Map<Object, Integer> times = new HashMap<>();
     private final Map<EventHandler, Integer> prior = new HashMap<>();
     private final Map<EventHandler, Integer> triggerAt = new HashMap<>();
+    private EventControllerImpl parent = null;
+
+    void setParent(EventControllerImpl parent) {
+        this.parent = parent;
+    }
 
     @Override
     public void add(EventHandler<?> handler) {
@@ -61,7 +66,7 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType> void trigger(EventType event) {
+    public <EventType> EventType trigger(EventType event) {
         if (times.containsKey(event)) {
             times.put(event, times.get(event) + 1);
         } else {
@@ -76,6 +81,9 @@ public class EventControllerImpl implements EventController {
                 continue;
             obj.handle(event);
         }
+        if (parent != null)
+            parent.trigger(event);
+        return event;
     }
 
     /**

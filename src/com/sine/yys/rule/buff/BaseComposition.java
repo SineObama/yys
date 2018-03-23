@@ -8,7 +8,7 @@ import java.util.Collection;
  * 默认操作，直接加减。
  */
 public abstract class BaseComposition implements Composition {
-    private final Getter getter;
+    final Getter getter;
 
     BaseComposition(Getter getter) {
         this.getter = getter;
@@ -20,5 +20,10 @@ public abstract class BaseComposition implements Composition {
             result += getter.get(buff);
         }
         return result;
+    }
+
+    @FunctionalInterface
+    public interface Getter {
+        double get(IBuff iBuff);
     }
 }

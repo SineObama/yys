@@ -1,17 +1,17 @@
-package com.sine.yys.buff.buff;
+package com.sine.yys.buff;
 
-import com.sine.yys.buff.BaseCommonIBuff;
+import com.sine.yys.inter.IBuff;
 
 /**
- * 战场旗帜效果，随战场鲤鱼旗行动逐渐加强。
- * 造成伤害增加，治疗减少。
- * 不可驱散。
+ * 战场旗帜效果，随裁判旗子行动逐渐加强。不可驱散。
+ * <p>
+ * 目的是使全场造成伤害增加，治疗减少。
  */
-public class BattleFlag extends BaseCommonIBuff {
+public class BattleFlag extends BaseIBuff {
     private final BattleFlagSource source;
 
     public BattleFlag(BattleFlagSource source) {
-        super(Integer.MAX_VALUE, "战场效果", null);
+        super(Integer.MAX_VALUE, "战场旗帜效果", null);
         this.source = source;
     }
 
@@ -28,5 +28,10 @@ public class BattleFlag extends BaseCommonIBuff {
     @Override
     public double getFlagDamage() {
         return source.getDamageUp();
+    }
+
+    @Override
+    public int compareTo(IBuff o) {
+        return 0;
     }
 }

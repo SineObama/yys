@@ -3,11 +3,9 @@ package com.sine.yys.event;
 import com.sine.yys.inter.Entity;
 
 /**
- * 必须是造成伤害时的暴击。
- *
- * @see CriticalEvent
+ * 被伤害暴击事件（必须造成伤害）。
  */
-public class BeCriticalEvent extends BaseVectorEvent implements Event {
+public class BeCriticalEvent extends BaseVectorEvent {
     public BeCriticalEvent(Entity entity, Entity target) {
         super(entity, target);
     }

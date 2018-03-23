@@ -10,20 +10,23 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * 模拟红蓝（对弈）竞猜。
- * 可计算多次结果。
+ * 红蓝（对弈）竞猜模拟器。
+ * <p>
+ * 提供多次模拟、获取结果等方法。
  */
 public class RedBlueSimulator {
     public static final String redName = "红方";
     public static final String buleName = "蓝方";
+    private final double lifeTimes;
     private final Logger log = Logger.getLogger(getClass().getName());
     private final CampInfo redInfo, blueInfo;
     private final Map<String, Integer> count = new HashMap<>(2);
     private long start, end;
 
-    public RedBlueSimulator(CampInfo red, CampInfo blue) {
+    public RedBlueSimulator(CampInfo red, CampInfo blue, double lifeTimes) {
         this.redInfo = red;
         this.blueInfo = blue;
+        this.lifeTimes = lifeTimes;
         count.put(redName, 0);
         count.put(buleName, 0);
     }
@@ -36,10 +39,10 @@ public class RedBlueSimulator {
                 BaseCamp red = new PVPCamp(redName, 3);
                 BaseCamp blue = new PVPCamp(buleName, 3);
                 for (EntityInfo info : redInfo.infos) {
-                    red.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen)));
+                    red.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen), lifeTimes));
                 }
                 for (EntityInfo info : blueInfo.infos) {
-                    blue.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen)));
+                    blue.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen), lifeTimes));
                 }
                 Simulator simulator = new Simulator(red, blue, Collections.singletonList(new BattleKoinobori(128.0, red, blue)));
                 while (simulator.getWin() == null)

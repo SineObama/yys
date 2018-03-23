@@ -7,7 +7,8 @@ import com.sine.yys.util.Msg;
 
 /**
  * PVP阵营。
- * 初始化时给式神设置唯一的鬼火仓库（自己）。
+ * <p>
+ * 初始化时给式神设置唯一的鬼火仓库（自身）。
  */
 public class PVPCamp extends BaseCamp implements FireRepo {
     private int fire;
