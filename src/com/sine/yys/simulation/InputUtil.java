@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * 从文件读取数据，构成模拟器。
  * <p>
+ * 第一行是一个浮点值，血量加成。
  * 每行代表一个式神。
  * 先归入红方阵营，出现空行后归入蓝方阵营（或者结束输入）。
  * <p>
@@ -27,9 +28,30 @@ public class InputUtil {
         final FileReader reader = new FileReader(file);
         final List<String> lines = readFileByLines(reader);
         final Iterator<String> iterator = lines.iterator();
-        CampInfo red = readCamp(iterator);
-        CampInfo blue = readCamp(iterator);
-        return new RedBlueSimulator(red, blue, 1.0);
+        final double times = readNum(iterator);
+        final CampInfo red = readCamp(iterator);
+        final CampInfo blue = readCamp(iterator);
+        return new RedBlueSimulator(red, blue, times);
+    }
+
+    /**
+     * 尝试读取第一行血量加成系数。
+     */
+    private static double readNum(Iterator<String> iterator) {
+        while (iterator.hasNext()) {
+            final String line = iterator.next();
+            if (line.isEmpty())
+                continue;
+            if (line.startsWith("#"))
+                continue;
+            final String[] tokens = line.replaceAll("#.*", "").split("\\s+");
+            try {
+                return Double.valueOf(tokens[0]);
+            } catch (Exception e) {
+                break;
+            }
+        }
+        return 1.0;
     }
 
     /**
