@@ -341,15 +341,19 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
     }
 
     @Override
-    public Entity applyControl(Entity origin) {
+    public Entity applyControl(Entity target) {
         final ControlBuff controlBuff = buffController.getFirstControlBuff();
         if (controlBuff instanceof Unmovable)
             return null;
         if (controlBuff instanceof ChaoFeng) {
             final ChaoFeng chaoFeng = (ChaoFeng) controlBuff;
-            return chaoFeng.getSrc();
+            target = chaoFeng.getSrc();
         }
-        return origin;
+        if (target.isDead()) {
+            log.info(Msg.info(target, "已死，随机攻击"));
+            target = camp.getOpposite().randomTarget();
+        }
+        return target;
     }
 
     @Override

@@ -58,7 +58,7 @@ public class ControllerImpl implements Controller {
     }
 
     private void attack(EntityImpl self, EntityImpl target, AttackInfo attackInfo, AttackType type) {
-        if (target.isDead())  // XXX 只是有时会出现目标已死。有更好 的逻辑？
+        if (target.isDead())  // 多段攻击目标可能中途死亡
             return;
 
         // XXX 关于触发时机

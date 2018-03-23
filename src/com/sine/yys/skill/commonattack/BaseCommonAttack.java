@@ -17,11 +17,8 @@ public abstract class BaseCommonAttack extends BaseAttackSkill implements Common
      */
     @Override
     protected void doApply(Entity target) {
-        for (int i = 0; i < getTimes(); i++) {
-            if (target.isDead())
-                break;
+        for (int i = 0; i < getTimes(); i++)
             getController().attack(getSelf(), target, getAttack());
-        }
     }
 
     @Override
@@ -64,10 +61,7 @@ public abstract class BaseCommonAttack extends BaseAttackSkill implements Common
     }
 
     protected void doCounter(Entity target) {
-        for (int i = 0; i < getTimes(); i++) {
-            if (target.isDead())
-                break;
+        for (int i = 0; i < getTimes(); i++)
             getController().counter(getSelf(), target, getAttack());
-        }
     }
 }

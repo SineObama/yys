@@ -49,6 +49,7 @@ public interface Entity extends Target, Property {
 
     /**
      * 根据当前控制效果，重新确认攻击目标。
+     * 目标死亡则随机攻击敌方。
      *
      * @param origin 期望攻击目标。
      * @return 最终攻击目标。无法攻击则为null。

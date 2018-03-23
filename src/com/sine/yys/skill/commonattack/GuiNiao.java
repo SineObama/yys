@@ -28,7 +28,7 @@ public class GuiNiao extends BaseCommonAttack {
 
     @Override
     public void doCounter(Entity target) {
-        super.doCounter(target);
+        getController().counter(getSelf(), target, getAttack());
 
         // 减少一只飞鸟
         int niao = getFeiNiao();
