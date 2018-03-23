@@ -40,9 +40,10 @@ public class ZhenNv extends BaseSelfMitama implements EventHandler<CriticalEvent
         if (RandUtil.success(getPct())) {
             final Entity self = getSelf();
             log.info(Msg.trigger(self, this));
+            event.getType().setZhenNv(true);
             final double damage1 = self.getAttack() * getMaxDamageByAttack();
             final double damage2 = event.getTarget().getMaxLife() * getMaxDamageByMaxLife();
-            getController().realDamage(self, event.getTarget(), Double.min(damage1, damage2), event.getType());
+            getController().zhenNvDamage(self, event.getTarget(), Double.min(damage1, damage2), event.getType());
         }
     }
 }

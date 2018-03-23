@@ -81,17 +81,12 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void realDamage(Entity self, Entity target, double damage, AttackType type) {
-        realDamage(((EntityImpl) self), (EntityImpl) target, damage, (AttackTypeImpl) type);
-    }
-
-    private void realDamage(EntityImpl self, EntityImpl target, double damage, AttackTypeImpl type) {
+    public void zhenNvDamage(Entity self, Entity target, double damage, AttackType type) {
         if (target.isDead())
             return;
-        type.setZhenNv(true);
         // 根据旗帜buff增减。
         damage *= self.getFlagDamageCoefficient();
-        applyDamage(self, target, damage, false, new AttackTypeImpl(type));
+        applyDamage((EntityImpl) self, (EntityImpl) target, damage, false, new AttackTypeImpl(type));
     }
 
     /**
