@@ -1,6 +1,7 @@
 package com.sine.yys.mitama;
 
 import com.sine.yys.buff.debuff.control.ChaoFeng;
+import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.BeDamageEvent;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -76,6 +77,8 @@ public class Zheng extends BaseSelfMitama implements EventHandler<BeDamageEvent>
             if (target == null)
                 return;
             self.getCommonAttack().counter(target);
+            self.getEventController().trigger(new AfterActionEvent(self));
+            getOwn().getEventController().trigger(new AfterActionEvent(self));
         }
 
         @Override

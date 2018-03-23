@@ -1,7 +1,7 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.buff.NumIBuff;
-import com.sine.yys.event.BeforeRoundEvent;
+import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.DamageShareEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.inter.Entity;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageShareEvent> {
     private static final String LAST = "JuanLiu_last";
-    private final EventHandler<BeforeRoundEvent> beforeActionEventHandler = new BeforeActionHandler();
+    private final EventHandler<AfterActionEvent> afterActionEventHandler = new BeforeActionHandler();
     private List<? extends Entity> shared;
 
     @Override
@@ -30,7 +30,7 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
         shared = getOwn().getAllShikigami();
         for (Entity entity : shared) {
             entity.getEventController().add(this);
-            entity.getEventController().add(BeforeRoundEvent.class, beforeActionEventHandler, 300);
+            entity.getEventController().add(AfterActionEvent.class, afterActionEventHandler, 300);
             entity.getBuffController().add(new JuanLiuBuff(getName(), getReduceDamage(), self));
         }
         getSelf().put(LAST, getLast());
@@ -97,9 +97,9 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
         return 0.05;
     }
 
-    class BeforeActionHandler implements EventHandler<BeforeRoundEvent> {
+    class BeforeActionHandler implements EventHandler<AfterActionEvent> {
         @Override
-        public void handle(BeforeRoundEvent event) {
+        public void handle(AfterActionEvent event) {
             event.getEntity().addLife((int) (getSelf().getMaxLife() * getAddLifePct()));
         }
     }
@@ -117,7 +117,7 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
         @Override
         public final void onRemove(Entity self) {
             self.getEventController().remove(JuanLiu.this);
-            self.getEventController().remove(beforeActionEventHandler);
+            self.getEventController().remove(afterActionEventHandler);
             shared.remove(self);
         }
     }
