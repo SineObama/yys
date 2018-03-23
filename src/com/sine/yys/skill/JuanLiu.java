@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageShareEvent> {
     private static final String LAST = "JuanLiu_last";
-    private final EventHandler<AfterActionEvent> afterActionEventHandler = new BeforeActionHandler();
+    private final EventHandler<AfterActionEvent> afterActionHandler = new AfterActionHandler();
     private List<? extends Entity> shared;
 
     @Override
@@ -30,7 +30,7 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
         shared = getOwn().getAllShikigami();
         for (Entity entity : shared) {
             entity.getEventController().add(this);
-            entity.getEventController().add(AfterActionEvent.class, afterActionEventHandler, 300);
+            entity.getEventController().add(AfterActionEvent.class, afterActionHandler, 300);
             entity.getBuffController().add(new JuanLiuBuff(getName(), getReduceDamage(), self));
         }
         getSelf().put(LAST, getLast());
@@ -98,10 +98,11 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
         return 0.05;
     }
 
-    class BeforeActionHandler implements EventHandler<AfterActionEvent> {
+    class AfterActionHandler implements EventHandler<AfterActionEvent> {
         @Override
         public void handle(AfterActionEvent event) {
-            event.getEntity().addLife((int) (getSelf().getMaxLife() * getAddLifePct()));
+            final double v = getSelf().getMaxLife() * getAddLifePct();
+            event.getEntity().addLife(getController().calcCritical(getSelf(), v));
         }
     }
 
@@ -118,7 +119,7 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
         @Override
         public final void onRemove(Entity self) {
             self.getEventController().remove(JuanLiu.this);
-            self.getEventController().remove(afterActionEventHandler);
+            self.getEventController().remove(afterActionHandler);
             shared.remove(self);
         }
     }
