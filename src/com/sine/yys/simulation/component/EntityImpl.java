@@ -39,15 +39,17 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
     final List<Mitama> mitamas;
     private final Property property;
     private final Map<Object, Object> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
+    private final double lifeTimes;
     // XXXX 两者的设置由谁负责比较好？
     Camp camp = null;
     FireRepo fireRepo;
     private int life;
 
-    EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name) {
+    EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name, double lifeTimes) {
         super(name, 9999);
         this.property = property;
         this.shikigami = shikigami;
+        this.lifeTimes = lifeTimes;
         this.mitamas = new ArrayList<>();
         if (mitama != null)
             this.mitamas.add(mitama);
@@ -184,12 +186,12 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
 
     @Override
     public final int getMaxLife() {
-        return (int) property.getLife();
+        return (int) (property.getLife() * lifeTimes);
     }
 
     @Override
     public int getLostLifeInt() {
-        return (int) property.getLife() - life;
+        return getMaxLife() - life;
     }
 
     @Override

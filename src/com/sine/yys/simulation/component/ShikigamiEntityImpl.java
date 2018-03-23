@@ -9,11 +9,11 @@ import com.sine.yys.inter.base.Property;
  * 战场中的式神实体（非召唤物）。
  */
 public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity {
-    public ShikigamiEntityImpl(Property property, Mitama mitama, Shikigami shiShen) {
-        super(property, mitama, shiShen, shiShen.getName());
+    public ShikigamiEntityImpl(Property property, Mitama mitama, Shikigami shiShen, double lifeTimes) {
+        super(property, mitama, shiShen, shiShen.getName(), lifeTimes);
     }
 
-    public ShikigamiEntityImpl(Property property, Mitama mitama, Shikigami shiShen, String name) {
-        super(property, mitama, shiShen, name);
+    public ShikigamiEntityImpl(Property property, Mitama mitama, Shikigami shiShen, double lifeTimes, String name) {
+        super(property, mitama, shiShen, name, lifeTimes);
     }
 }
