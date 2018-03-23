@@ -4,6 +4,8 @@ import com.sine.yys.simulation.InputUtil;
 import com.sine.yys.simulation.RedBlueSimulator;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
     static {
@@ -12,7 +14,7 @@ public class Main {
     }
 
     /**
-     * @param args 参数：数据文件名 测试次数。
+     * @param args 参数：数据文件名 测试次数 [-i]。其中 -i 显示战斗过程信息。
      */
     public static void main(String[] args) throws IOException {
         final String filename;
@@ -25,6 +27,8 @@ public class Main {
             times = 10;
         else
             times = Integer.valueOf(args[1]);
+        if (args.length > 2 && args[2].equals("-i"))
+            Logger.getLogger("").setLevel(Level.INFO);
 
         RedBlueSimulator simulator = InputUtil.create(filename);
         simulator.test(times);
