@@ -48,13 +48,13 @@ public class RunWuWuSheng extends BasePassiveSkill implements EventHandler<BeDam
         for (Entity entity : getOwn().getAllAlive()) {
             if (RandUtil.success(getPct())) {
                 log.info(Msg.trigger(getSelf(), this));
-                AddCriticalDamage buff = entity.getBuffController().get(AddCriticalDamage.class);
-                if (buff == null) {
-                    buff = new AddCriticalDamage(getLast(), getName(), getCriticalDamage(), getSelf()) {
-                    };
+                AddCriticalDamage buff = new AddCriticalDamage(getLast(), getName(), getCriticalDamage(), getSelf()) {
+                };
+                AddCriticalDamage buff0 = entity.getBuffController().get(buff.getClass());
+                if (buff0 == null) {
                     entity.getBuffController().add(buff);
                 } else {
-                    buff.addLast(getLast());
+                    buff0.addLast(getLast());
                 }
                 log.info(Msg.addBuff(getSelf(), entity, buff));
             }
