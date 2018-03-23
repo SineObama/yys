@@ -135,9 +135,7 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
             // 消耗鬼火
             int fire = activeSkill.getFire();
             if (fire > 0) {
-                UseFireEvent event = new UseFireEvent(this, fire);
-                camp.getEventController().trigger(event);
-                fire = event.getCostFire();
+                fire = camp.getEventController().trigger(new UseFireEvent(this, fire)).getCostFire();
                 fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
                 log.info(Msg.info(this, "消耗", fire, "点鬼火，剩余", fireRepo.getFire(), "点"));
             }
@@ -146,12 +144,12 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
             if (activeSkill instanceof CommonAttack) {
                 // 触发对方被单体攻击事件（混乱打自己人不触发）
                 if (camp.getOpposite().contain(target) && target instanceof ShikigamiEntity)
-                    camp.getOpposite().getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
+                    target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
             }
             activeSkill.apply(target);
             if (activeSkill instanceof CommonAttack) {
                 // 触发普攻事件
-                camp.getEventController().trigger(new CommonAttackEvent(this, target));
+                this.eventController.trigger(new CommonAttackEvent(this, target));
             }
 
             this.eventController.trigger(new FinishActionEvent());

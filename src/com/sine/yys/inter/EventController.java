@@ -33,5 +33,5 @@ public interface EventController {
 
     void remove(EventHandler<?> handler);
 
-    <EventType> void trigger(EventType event);
+    <EventType> EventType trigger(EventType event);
 }

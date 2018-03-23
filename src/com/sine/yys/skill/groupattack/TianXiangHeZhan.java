@@ -43,8 +43,7 @@ public class TianXiangHeZhan extends SimpleGroupAttack {
 
     @Override
     protected final void beforeApply(Entity target) {
-        if (target instanceof ShikigamiEntity) {
-            getEnemy().getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf()));
-        }
+        if (target instanceof ShikigamiEntity)
+            target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf()));
     }
 }

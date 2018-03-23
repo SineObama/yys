@@ -66,15 +66,11 @@ public class Simulator {
         camp1.init(camp0, controller);
         for (SimpleObject extra : extras)
             extra.init(controller);
-        for (EntityImpl entity : camp0.getAllAlive()) {
+        for (EntityImpl entity : camp0.getAllAlive())
             entity.eventController.trigger(new EnterEvent(entity));
-            camp0.getEventController().trigger(new EnterEvent(entity));
-        }
         camp0.getEventController().trigger(new BattleStartEvent());
-        for (EntityImpl entity : camp1.getAllAlive()) {
+        for (EntityImpl entity : camp1.getAllAlive())
             entity.eventController.trigger(new EnterEvent(entity));
-            camp1.getEventController().trigger(new EnterEvent(entity));
-        }
         camp1.getEventController().trigger(new BattleStartEvent());
     }
 
@@ -121,7 +117,6 @@ public class Simulator {
                 // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
                 self.eventController.trigger(new ZhaoCaiMaoEvent());
                 self.eventController.trigger(new BeforeRoundEvent(self));
-                self.camp.getEventController().trigger(new BeforeRoundEvent(self));
 
                 controller.afterMovement();
 
@@ -139,7 +134,6 @@ public class Simulator {
 
                 // 回合后事件
                 self.eventController.trigger(new AfterRoundEvent(self));
-                self.camp.getEventController().trigger(new AfterRoundEvent(self));
 
                 for (Skill skill : self.shikigami.getSkills())
                     skill.afterAction();

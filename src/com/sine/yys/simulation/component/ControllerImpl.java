@@ -102,7 +102,6 @@ public class ControllerImpl implements Controller {
     private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, AttackType type) {
         self.eventController.trigger(new AttackEvent(self, target));
 
-        target.getCamp().getEventController().trigger(new BeAttackEvent(target, self, type));
         target.getEventController().trigger(new BeAttackEvent(target, self, type));
 
         damage *= self.buffController.getBeDamage() + 1;
@@ -113,14 +112,11 @@ public class ControllerImpl implements Controller {
         if (remain != 0) {
             damage = remain;
 
-            PreDamageEvent event = new PreDamageEvent(self, target);
-            self.eventController.trigger(event);
-            damage *= event.getCoefficient();
+            damage *= self.eventController.trigger(new PreDamageEvent(self, target)).getCoefficient();
 
             // 处理薙魂。未来考虑金鱼、小松丸躲避。
             final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, new AttackTypeImpl(type));
-            target.eventController.trigger(damageShareEvent);
-            damage = damageShareEvent.getLeft();
+            damage = target.eventController.trigger(damageShareEvent).getLeft();
 
             // 附加效果
             self.eventController.trigger(new DamageEvent(self, target));
@@ -175,9 +171,7 @@ public class ControllerImpl implements Controller {
         if (count <= 0)
             count = 1;
         target.addLife(count);
-        final BeCureEvent beCureEvent = new BeCureEvent(count);
-        target.getEventController().trigger(beCureEvent);
-        target.getCamp().getEventController().trigger(beCureEvent);
+        target.getEventController().trigger(new BeCureEvent(count));
         return count;
     }
 
@@ -194,17 +188,15 @@ public class ControllerImpl implements Controller {
         final int srcLife = target.getLifeInt();
         final int life = target.reduceLife(damage);
         final double dst = target.getLife();
-        final LostLifeEvent event = new LostLifeEvent(src, dst, srcLife - life);
-        target.getEventController().trigger(event);
-        target.getCamp().getEventController().trigger(event);
+        target.getEventController().trigger(new LostLifeEvent(src, dst, srcLife - life));
         if (life == 0) {
             // 添加匣中少女逻辑，回复状态则退出
             target.getBuffController().clear();// XXX 匣中少女回复状态会不会保留buff？
+            target.eventController.clear();
             target.getCamp().getPosition(target).setCurrent(null);
             log.info(Msg.info(target, "死亡"));
             // 包括阎魔放小鬼
             target.getEventController().trigger(new DieEvent(target));
-            target.getCamp().getEventController().trigger(new DieEvent(target));
             // 添加击杀事件
         }
     }
@@ -251,12 +243,8 @@ public class ControllerImpl implements Controller {
             Debuff debuff = effect.getDebuff(self);
             if (!involveHitAndDef || RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
                 boolean effective = true;
-                if (debuff instanceof ControlBuff) {
-                    BeforeControlEvent event = new BeforeControlEvent((ControlBuff) debuff);
-                    target.getEventController().trigger(event);
-                    target.getCamp().getEventController().trigger(event);
-                    effective = !event.isNotEffective();
-                }
+                if (debuff instanceof ControlBuff)
+                    effective = !target.getEventController().trigger(new BeforeControlEvent((ControlBuff) debuff)).isNotEffective();
                 if (effective) {
                     log.info(Msg.info(target, "获得负面效果", debuff.getName()));
                     target.getBuffController().add(debuff);
@@ -310,9 +298,7 @@ public class ControllerImpl implements Controller {
         position.setCurrent(target);
         target.setLife(maxLife);
         log.info(Msg.info(target, "复活，血量", target.getLifeInt()));
-        final EnterEvent enterEvent = new EnterEvent(target);
-        target.eventController.trigger(enterEvent);
-        target.getCamp().getEventController().trigger(enterEvent);
+        target.eventController.trigger(new EnterEvent(target));
     }
 
     @Override

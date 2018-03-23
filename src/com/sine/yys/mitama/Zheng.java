@@ -78,7 +78,6 @@ public class Zheng extends BaseSelfMitama implements EventHandler<BeDamageEvent>
                 return;
             self.getCommonAttack().counter(target);
             self.getEventController().trigger(new AfterActionEvent(self));
-            getOwn().getEventController().trigger(new AfterActionEvent(self));
         }
 
         @Override

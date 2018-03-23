@@ -24,6 +24,11 @@ public class EventControllerImpl implements EventController {
     private final Map<Object, Integer> times = new HashMap<>();
     private final Map<EventHandler, Integer> prior = new HashMap<>();
     private final Map<EventHandler, Integer> triggerAt = new HashMap<>();
+    private EventControllerImpl parent = null;
+
+    void setParent(EventControllerImpl parent) {
+        this.parent = parent;
+    }
 
     @Override
     public void add(EventHandler<?> handler) {
@@ -61,7 +66,7 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType> void trigger(EventType event) {
+    public <EventType> EventType trigger(EventType event) {
         if (times.containsKey(event)) {
             times.put(event, times.get(event) + 1);
         } else {
@@ -76,6 +81,9 @@ public class EventControllerImpl implements EventController {
                 continue;
             obj.handle(event);
         }
+        if (parent != null)
+            parent.trigger(event);
+        return event;
     }
 
     /**
