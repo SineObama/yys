@@ -14,7 +14,18 @@ import com.sine.yys.inter.Entity;
  * 3. 薙魂时受到伤害触发犬神反击；
  */
 public class BeDamageEvent extends BaseAttackEvent {
-    public BeDamageEvent(Entity entity, Entity target, AttackType type) {
+    private double damage;
+
+    public BeDamageEvent(Entity entity, Entity target, AttackType type, double damage) {
         super(entity, target, type);
+        this.damage = damage;
+    }
+
+    public double getDamage() {
+        return damage;
+    }
+
+    public void setDamage(double damage) {
+        this.damage = damage;
     }
 }

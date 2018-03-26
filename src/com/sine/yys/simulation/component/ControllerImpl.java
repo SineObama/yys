@@ -75,6 +75,7 @@ public class ControllerImpl implements Controller {
 
         // 2.
         damage *= self.getDamageCoefficient();
+        damage *= target.buffController.getBeDamage() + 1;
 
         // 3.
         applyDamage(self, target, damage, critical, type);
@@ -95,8 +96,6 @@ public class ControllerImpl implements Controller {
      * XXXX 伤害的附加效果的触发位置？
      */
     private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, AttackType type) {
-        damage *= target.buffController.getBeDamage() + 1;
-
         // 破盾
         int remain = breakShield(target, (int) damage);
 
@@ -119,7 +118,7 @@ public class ControllerImpl implements Controller {
         if (remain != 0) {
             log.info(Msg.damage(self, target, (int) damage, critical));
             target.buffController.remove(ShuiMian.class);
-            target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type)));
+            damage = target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage)).getDamage();
             doDamage(target, (int) damage);
             if (target.getLifeInt() == 0)
                 log.info(Msg.vector(self, "击杀", target));
@@ -134,7 +133,7 @@ public class ControllerImpl implements Controller {
         }
     }
 
-    // XXXXX 椒图传递死亡算击杀？
+    // XXXXX 薙魂、椒图传递死亡算击杀？
     @Override
     public void directDamage(Entity src, Entity self0, int damage, AttackType type) {
         EntityImpl self = (EntityImpl) self0;
@@ -146,7 +145,7 @@ public class ControllerImpl implements Controller {
                 damage = (int) self.eventController.trigger(damageShareEvent).getLeft();
             }
             self.buffController.remove(ShuiMian.class);
-            self.eventController.trigger(new BeDamageEvent(self, src, type));
+            self.eventController.trigger(new BeDamageEvent(self, src, type, damage));
             doDamage(self, damage);
         }
     }
