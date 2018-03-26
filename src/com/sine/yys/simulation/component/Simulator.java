@@ -85,8 +85,7 @@ public class Simulator {
             // 获取下一行动式神
             final SimpleObject self0 = next();
 
-            // 裁判旗子（等独立实体）行动。
-            // XXXX 暂时采用直接调用的方式，跳过后面的鬼火仓库、技能调用……
+            // 裁判旗子（等独立实体）行动。直接调用 action，跳过鬼火仓库、技能调用等……
             if (!(self0 instanceof EntityImpl)) {
                 self0.setPosition(0);
                 self0.action();
@@ -120,8 +119,7 @@ public class Simulator {
 
                 controller.afterMovement();
 
-                // XXXX 行动前事件死了的影响
-                // 包括执行持续伤害
+                // 包括执行持续伤害、治疗
                 self.buffController.beforeAction(controller);
 
                 if (!self.isDead())
@@ -129,7 +127,7 @@ public class Simulator {
 
                 controller.afterMovement();
 
-                // 一般buff回合数-1
+                // buff回合数-1
                 self.buffController.afterAction(controller);
 
                 // 回合后事件

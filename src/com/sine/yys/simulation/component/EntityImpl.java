@@ -40,7 +40,6 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
     private final Property property;
     private final Map<Object, Object> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
     private final double lifeTimes;
-    // XXXX 两者的设置由谁负责比较好？
     Camp camp = null;
     FireRepo fireRepo;
     private int life;
