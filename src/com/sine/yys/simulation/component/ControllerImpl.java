@@ -81,23 +81,18 @@ public class ControllerImpl implements Controller {
         applyDamage(self, target, damage, critical, type);
     }
 
-    @Override
-    public void zhenNvDamage(Entity self, Entity target, double damage, AttackType type) {
-        if (target.isDead())
-            return;
-        // 根据旗帜buff增减。
-        damage *= self.getFlagDamageCoefficient();
-        applyDamage((EntityImpl) self, (EntityImpl) target, damage, false, new AttackTypeImpl(type));
-    }
-
     /**
      * 普通伤害的施加（包括破盾）。
      * 破盾后计算御魂效果，进行伤害分摊。
      * XXXX 伤害的附加效果的触发位置？
      */
-    private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, AttackType type) {
+    @Override
+    public void applyDamage(Entity self0, Entity target0, double damage, boolean critical, AttackType type) {
+        EntityImpl self = (EntityImpl) self0;
+        EntityImpl target = (EntityImpl) target0;
+
         // 破盾
-        int remain = breakShield(target, (int) damage);
+        final int remain = breakShield(target, (int) damage);
 
         if (remain != 0) {
             damage = remain;
@@ -145,7 +140,7 @@ public class ControllerImpl implements Controller {
                 damage = (int) self.eventController.trigger(damageShareEvent).getLeft();
             }
             self.buffController.remove(ShuiMian.class);
-            self.eventController.trigger(new BeDamageEvent(self, src, type, damage));
+            self.eventController.trigger(new BeDamageEvent(self, src, new AttackTypeImpl(type), damage));
             doDamage(self, damage);
         }
     }
