@@ -28,12 +28,12 @@ public interface Controller extends DamageController {
     void counter(Entity self, Entity target, AttackInfo attackInfo);
 
     /**
-     * 针女伤害（会被椒图或薙魂分担，不会被金鱼分担，不受一般buff影响）。
+     * 针女伤害（会被涓流或薙魂分担，不会被金鱼分担，不受一般buff影响）。
      */
     void zhenNvDamage(Entity self, Entity target, double damage, AttackType type);
 
     /**
-     * 薙魂伤害、椒图分摊后（其他人的）伤害。
+     * 薙魂伤害；涓流分摊后（其他人的）伤害；草人伤害。
      * 会打醒睡眠。
      */
     void directDamage(Entity src, Entity self, int damage, AttackType type);

@@ -95,11 +95,7 @@ public class ControllerImpl implements Controller {
      * XXXX 伤害的附加效果的触发位置？
      */
     private void applyDamage(EntityImpl self, EntityImpl target, double damage, boolean critical, AttackType type) {
-        self.eventController.trigger(new AttackEvent(self, target));
-
-        target.getEventController().trigger(new BeAttackEvent(target, self, type));
-
-        damage *= self.buffController.getBeDamage() + 1;
+        damage *= target.buffController.getBeDamage() + 1;
 
         // 破盾
         int remain = breakShield(target, (int) damage);
@@ -115,6 +111,12 @@ public class ControllerImpl implements Controller {
 
             // 附加效果
             self.eventController.trigger(new DamageEvent(self, target));
+        }
+
+        self.eventController.trigger(new AttackEvent(self, target));
+        target.getEventController().trigger(new BeAttackEvent(target, self, type));
+
+        if (remain != 0) {
             log.info(Msg.damage(self, target, (int) damage, critical));
             target.buffController.remove(ShuiMian.class);
             target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type)));
@@ -132,13 +134,17 @@ public class ControllerImpl implements Controller {
         }
     }
 
-    // XXXXX 薙魂、椒图传递……死亡算不算击杀？
+    // XXXXX 椒图传递死亡算击杀？
     @Override
     public void directDamage(Entity src, Entity self0, int damage, AttackType type) {
         EntityImpl self = (EntityImpl) self0;
         damage = breakShield(self, damage);
         log.info(Msg.info(self, "受到伤害", damage));
         if (damage > 0) {
+            if (!type.isJuanLiu()) {  // 薙魂可以再被涓流分摊，涓流后不再判断涓流
+                final DamageShareEvent damageShareEvent = new DamageShareEvent(src, self, damage, new AttackTypeImpl(type));
+                damage = (int) self.eventController.trigger(damageShareEvent).getLeft();
+            }
             self.buffController.remove(ShuiMian.class);
             self.eventController.trigger(new BeDamageEvent(self, src, type));
             doDamage(self, damage);
