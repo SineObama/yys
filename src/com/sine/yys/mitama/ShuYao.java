@@ -6,6 +6,8 @@ import com.sine.yys.util.Msg;
 
 /**
  * 树妖。
+ * <p>
+ * 按照网上看到的，增减疗直接相加。
  */
 public class ShuYao extends BaseSelfMitama implements EventHandler<PreCureEvent> {
     public double getAddCure() {

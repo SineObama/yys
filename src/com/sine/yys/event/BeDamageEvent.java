@@ -10,7 +10,7 @@ import com.sine.yys.inter.Entity;
  * <p>
  * 用途：
  * 1. 受到伤害时回复鬼火（等）；
- * 2. 薙魂时受到伤害触发小僧被动；
+ * 2. 薙魂、毒伤受到伤害触发金刚经；
  * 3. 薙魂时受到伤害触发犬神反击；
  */
 public class BeDamageEvent extends BaseAttackEvent {
