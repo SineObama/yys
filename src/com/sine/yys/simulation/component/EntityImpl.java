@@ -257,7 +257,8 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
         return this.life;
     }
 
-    int reduceLife(int count) {
+    @Override
+    public int reduceLife(int count) {
         if (count < 0) {
             log.warning("reduce life by negative value");
             return this.life;
