@@ -197,6 +197,7 @@ public class ControllerImpl implements Controller {
             log.info(Msg.info(target, "死亡"));
             // 包括阎魔放小鬼
             self.getEventController().trigger(new KillEvent(self, target, type));
+            self.getEventController().trigger(new BeKillEvent(target, self, type));
             target.getEventController().trigger(new DieEvent(target));
         }
     }
