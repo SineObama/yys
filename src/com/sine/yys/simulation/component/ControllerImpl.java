@@ -84,7 +84,6 @@ public class ControllerImpl implements Controller {
     /**
      * 普通伤害的施加（包括破盾）。
      * 破盾后计算御魂效果，进行伤害分摊。
-     * XXXX 伤害的附加效果的触发位置？
      */
     @Override
     public void applyDamage(Entity self0, Entity target0, double damage, boolean critical, AttackType type) {
@@ -112,7 +111,6 @@ public class ControllerImpl implements Controller {
 
         if (remain != 0) {
             log.info(Msg.damage(self, target, (int) damage, critical));
-            target.buffController.remove(ShuiMian.class);
             damage = target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage)).getDamage();
             doDamage(target, (int) damage);
             if (target.getLifeInt() == 0)
@@ -129,19 +127,21 @@ public class ControllerImpl implements Controller {
     }
 
     // XXXXX 薙魂、椒图传递死亡算击杀？
+    // 注意与applyDamage的统一
     @Override
-    public void directDamage(Entity src, Entity self0, int damage, AttackType type) {
-        EntityImpl self = (EntityImpl) self0;
-        damage = breakShield(self, damage);
-        log.info(Msg.info(self, "受到伤害", damage));
+    public void directDamage(Entity self, Entity target0, int damage, AttackType type) {
+        EntityImpl target = (EntityImpl) target0;
+        damage = breakShield(target, damage);
         if (damage > 0) {
             if (!type.isJuanLiu()) {  // 薙魂可以再被涓流分摊，涓流后不再判断涓流
-                final DamageShareEvent damageShareEvent = new DamageShareEvent(src, self, damage, new AttackTypeImpl(type));
-                damage = (int) self.eventController.trigger(damageShareEvent).getLeft();
+                final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, new AttackTypeImpl(type));
+                damage = (int) target.eventController.trigger(damageShareEvent).getLeft();
+            } else if (!type.isTiHun()) {
+                self.getEventController().trigger(new JuanLiuDamageEvent(target));
             }
-            self.buffController.remove(ShuiMian.class);
-            self.eventController.trigger(new BeDamageEvent(self, src, new AttackTypeImpl(type), damage));
-            doDamage(self, damage);
+            log.info(Msg.info(target, "受到伤害", damage));
+            target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage));
+            doDamage(target, damage);
         }
     }
 
@@ -176,9 +176,10 @@ public class ControllerImpl implements Controller {
     }
 
     /**
-     * 直接减少目标生命，触发{@link LostLifeEvent}事件。
+     * 直接减少目标生命，打醒睡眠，触发{@link LostLifeEvent}事件。
      */
     private void doDamage(EntityImpl target, int damage) {
+        target.buffController.remove(ShuiMian.class);
         final double src = target.getLife();
         final int srcLife = target.getLifeInt();
         final int life = target.reduceLife(damage);
