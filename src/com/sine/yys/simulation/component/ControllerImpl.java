@@ -112,7 +112,7 @@ public class ControllerImpl implements Controller {
         if (remain != 0) {
             log.info(Msg.damage(self, target, (int) damage, critical));
             damage = target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage)).getDamage();
-            doDamage(target, (int) damage);
+            doDamage(self, target, (int) damage, type);
             if (target.getLifeInt() == 0)
                 log.info(Msg.vector(self, "击杀", target));
 
@@ -141,17 +141,17 @@ public class ControllerImpl implements Controller {
             }
             log.info(Msg.info(target, "受到伤害", damage));
             target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage));
-            doDamage(target, damage);
+            doDamage(self, target, damage, type);
         }
     }
 
     @Override
-    public void buffDamage(Entity self0, int damage) {
-        EntityImpl self = (EntityImpl) self0;
-        damage = breakShield(self, damage);
-        log.info(Msg.info(self, "受到伤害", damage));
+    public void buffDamage(Entity self, Entity target0, int damage) {
+        EntityImpl target = (EntityImpl) target0;
+        damage = breakShield(target, damage);
+        log.info(Msg.info(target, "受到伤害", damage));
         if (damage > 0)
-            doDamage(self, damage);
+            doDamage(self, target, damage, new AttackTypeImpl(false, false, false, false, true));
     }
 
     /**
@@ -178,9 +178,11 @@ public class ControllerImpl implements Controller {
     /**
      * 直接减少目标生命，打醒睡眠，触发{@link LostLifeEvent}事件。
      * <p>
+     * 目标死亡则触发{@linkplain KillEvent}
+     * <p>
      * 毒伤会打醒睡眠。
      */
-    private void doDamage(EntityImpl target, int damage) {
+    private void doDamage(Entity self, EntityImpl target, int damage, AttackType type) {
         target.buffController.remove(ShuiMian.class);
         final double src = target.getLife();
         final int srcLife = target.getLifeInt();
@@ -194,8 +196,8 @@ public class ControllerImpl implements Controller {
             target.getCamp().getPosition(target).setCurrent(null);
             log.info(Msg.info(target, "死亡"));
             // 包括阎魔放小鬼
+            self.getEventController().trigger(new KillEvent(self, target, type));
             target.getEventController().trigger(new DieEvent(target));
-            // 添加击杀事件
         }
     }
 

@@ -3,13 +3,18 @@ package com.sine.yys.base;
 import com.sine.yys.inter.AttackType;
 
 public class AttackTypeImpl implements AttackType {
-    private boolean counter, tiHun, juanLiu, zhenNv;
+    private boolean counter = false;
+    private boolean tiHun = false;
+    private boolean juanLiu = false;
+    private boolean zhenNv = false;
+    private boolean buff = false;
 
-    public AttackTypeImpl(boolean counter, boolean tiHun, boolean juanLiu, boolean zhenNv) {
+    public AttackTypeImpl(boolean counter, boolean tiHun, boolean juanLiu, boolean zhenNv, boolean buff) {
         this.counter = counter;
         this.tiHun = tiHun;
         this.juanLiu = juanLiu;
         this.zhenNv = zhenNv;
+        this.buff = buff;
     }
 
     public AttackTypeImpl(AttackType type) {
@@ -17,20 +22,14 @@ public class AttackTypeImpl implements AttackType {
         this.tiHun = type.isTiHun();
         this.juanLiu = type.isJuanLiu();
         this.zhenNv = type.isZhenNv();
+        this.buff = type.isBuff();
     }
 
     public AttackTypeImpl(boolean counter) {
         this.counter = counter;
-        this.tiHun = false;
-        this.juanLiu = false;
-        this.zhenNv = false;
     }
 
     public AttackTypeImpl() {
-        this.counter = false;
-        this.tiHun = false;
-        this.juanLiu = false;
-        this.zhenNv = false;
     }
 
     @Override
@@ -71,5 +70,15 @@ public class AttackTypeImpl implements AttackType {
     @Override
     public void setZhenNv(boolean zhenNv) {
         this.zhenNv = zhenNv;
+    }
+
+    @Override
+    public boolean isBuff() {
+        return buff;
+    }
+
+    @Override
+    public void setBuff(boolean buff) {
+        this.buff = buff;
     }
 }

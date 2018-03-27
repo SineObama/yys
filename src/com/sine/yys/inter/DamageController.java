@@ -11,7 +11,7 @@ public interface DamageController {
      * <p>
      * 用于实现不会暴击的持续伤害效果。
      */
-    void buffDamage(Entity self, int damage);
+    void buffDamage(Entity self, Entity target, int damage);
 
     /**
      * 治疗，包含暴击计算。
