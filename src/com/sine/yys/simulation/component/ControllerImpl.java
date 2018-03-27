@@ -111,9 +111,7 @@ public class ControllerImpl implements Controller {
         target.getEventController().trigger(new BeAttackEvent(target, self, type));
 
         if (remain != 0) {
-            log.info(Msg.damage(self, target, (int) damage, critical));
-            damage = target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage)).getDamage();
-            doDamage(self, target, (int) damage, type);
+            doDamage(self, target, (int) damage, type, critical);
             if (target.getLifeInt() == 0)
                 log.info(Msg.vector(self, "击杀", target));
 
@@ -140,9 +138,7 @@ public class ControllerImpl implements Controller {
             } else if (!type.isTiHun()) {
                 self.getEventController().trigger(new JuanLiuDamageEvent(target));
             }
-            log.info(Msg.info(target, "受到伤害", damage));
-            damage = (int) target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage)).getDamage();
-            doDamage(self, target, damage, type);
+            doDamage(self, target, damage, type, false);
         }
     }
 
@@ -150,9 +146,8 @@ public class ControllerImpl implements Controller {
     public void buffDamage(Entity self, Entity target0, int damage) {
         EntityImpl target = (EntityImpl) target0;
         damage = breakShield(target, damage);
-        log.info(Msg.info(target, "受到伤害", damage));
         if (damage > 0)
-            doDamage(self, target, damage, new AttackTypeImpl(true));
+            doDamage(self, target, damage, new AttackTypeImpl(true), false);
     }
 
     @Override
@@ -181,12 +176,15 @@ public class ControllerImpl implements Controller {
      * 目标死亡则触发{@linkplain KillEvent}
      * <p>
      * 毒伤会打醒睡眠。
+     * 毒伤算击杀（阴摩罗）。
      */
-    private void doDamage(Entity self, EntityImpl target, int damage, AttackType type) {
+    private void doDamage(Entity self, EntityImpl target, double damage, AttackType type, boolean critical) {
+        log.info(Msg.damage(self, target, (int) damage, critical));
+        damage = target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage)).getDamage();
         target.buffController.remove(ShuiMian.class);
         final double src = target.getLife();
         final int srcLife = target.getLifeInt();
-        final int life = target.reduceLife(damage);
+        final int life = target.reduceLife((int) damage);
         final double dst = target.getLife();
         target.getEventController().trigger(new LostLifeEvent(src, dst, srcLife - life));
         if (life == 0) {
