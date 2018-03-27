@@ -173,10 +173,9 @@ public class ControllerImpl implements Controller {
     /**
      * 直接减少目标生命，打醒睡眠，触发{@link LostLifeEvent}事件。
      * <p>
-     * 目标死亡则触发{@linkplain KillEvent}
+     * 目标死亡则触发{@linkplain KillEvent}、{@linkplain BeKillEvent}。
      * <p>
      * 毒伤会打醒睡眠。
-     * 毒伤算击杀（阴摩罗）。
      */
     private void doDamage(Entity self, EntityImpl target, double damage, AttackType type, boolean critical) {
         log.info(Msg.damage(self, target, (int) damage, critical));
