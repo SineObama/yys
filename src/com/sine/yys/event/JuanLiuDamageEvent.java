@@ -11,7 +11,17 @@ import com.sine.yys.inter.Entity;
  * 注意必须是直接伤害被分摊，薙魂后被涓流不算。
  */
 public class JuanLiuDamageEvent extends BaseEntityEvent {
+    private double coefficient = 1.0;
+
     public JuanLiuDamageEvent(Entity entity) {
         super(entity);
+    }
+
+    public double getCoefficient() {
+        return coefficient;
+    }
+
+    public void multiplyCoefficient(double coefficient) {
+        this.coefficient *= coefficient;
     }
 }

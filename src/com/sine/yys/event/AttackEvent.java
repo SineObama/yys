@@ -9,7 +9,18 @@ import com.sine.yys.inter.Entity;
  * 用于附加效果。
  */
 public class AttackEvent extends BaseVectorEvent {
+    private double coefficient = 1.0;
+
     public AttackEvent(Entity entity, Entity target) {
         super(entity, target);
     }
+
+    public double getCoefficient() {
+        return coefficient;
+    }
+
+    public void multiplyCoefficient(double coefficient) {
+        this.coefficient *= coefficient;
+    }
+
 }
