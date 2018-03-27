@@ -126,7 +126,7 @@ public class ControllerImpl implements Controller {
         }
     }
 
-    // XXXXX 薙魂、椒图传递死亡算击杀？
+    // 涓流死亡算击杀，薙魂不算（阴摩罗）
     // 注意与applyDamage的统一
     @Override
     public void directDamage(Entity self, Entity target0, int damage, AttackType type) {
@@ -177,6 +177,8 @@ public class ControllerImpl implements Controller {
 
     /**
      * 直接减少目标生命，打醒睡眠，触发{@link LostLifeEvent}事件。
+     * <p>
+     * 毒伤会打醒睡眠。
      */
     private void doDamage(EntityImpl target, int damage) {
         target.buffController.remove(ShuiMian.class);

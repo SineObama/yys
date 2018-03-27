@@ -31,7 +31,6 @@ public interface Controller extends DamageController {
 
     /**
      * 薙魂伤害；涓流分摊后（其他人的）伤害；草人伤害。
-     * 会打醒睡眠。
      */
     void directDamage(Entity src, Entity self, int damage, AttackType type);
 
@@ -49,7 +48,7 @@ public interface Controller extends DamageController {
     void applyDebuff(Entity self, Entity target, DebuffEffect effect);
 
     /**
-     * 获得一次行动机会
+     * 获得一次行动机会。
      */
     void actionChance(Entity self);
 

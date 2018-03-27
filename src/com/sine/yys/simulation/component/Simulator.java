@@ -106,7 +106,7 @@ public class Simulator {
                 round += 1;
                 log.info(Msg.info(self, "行动，序号", round));
 
-                // 重置行动条
+                // 重置行动条。使死于赤团华或buff的情况下行动条归0
                 self.setPosition(0);
 
                 for (Skill skill : self.shikigami.getSkills())
