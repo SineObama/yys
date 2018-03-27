@@ -101,13 +101,15 @@ public class Simulator {
             // 预备推进鬼火行动条
             self.fireRepo.ready();
 
+            // 重置行动条
+            self.setPosition(0.0);  // 行动条位置也用于保存再次行动的信息，提前重置
+
             // 用于多次行动
+            boolean actionChance;
             do {
                 round += 1;
                 log.info(Msg.info(self, "行动，序号", round));
 
-                // 重置行动条。使死于赤团华或buff的情况下行动条归0
-                self.setPosition(0);
 
                 for (Skill skill : self.shikigami.getSkills())
                     skill.beforeAction();
@@ -143,6 +145,10 @@ public class Simulator {
                 if (checkWin())
                     break;
 
+                actionChance = self.getPosition() == 1.0;
+                if (actionChance)
+                    self.setPosition(0.0);  // 提前重置，使被反击等死亡后位置归0
+
                 // 回合后的行动，如反击等。通过回调实现。
                 Callback action = controller.getFirstAction();
                 while (action != null) {
@@ -154,7 +160,7 @@ public class Simulator {
                 }
                 if (checkWin())
                     break;
-            } while (self.getPosition() == 1.0 && !self.isDead());
+            } while (actionChance && !self.isDead());
 
         } catch (Exception e) {
             log.severe(camp0.toJSON());
