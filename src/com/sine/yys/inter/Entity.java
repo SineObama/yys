@@ -77,16 +77,6 @@ public interface Entity extends Target, Property {
     EventController getEventController();
 
     /**
-     * @return 治疗系数。
-     */
-    double getCureCoefficient();
-
-    /**
-     * @return 造成伤害系数。
-     */
-    double getDamageCoefficient();
-
-    /**
      * 用于改变针女伤害（不受一般伤害加成影响）。
      *
      * @return {@linkplain com.sine.yys.buff.BattleFlag 战场旗帜效果}的伤害系数。

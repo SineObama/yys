@@ -76,7 +76,7 @@ public class ControllerImpl implements Controller {
 
         // 2.
         damage *= self.getDamageCoefficient();
-        damage *= target.buffController.getBeDamage() + 1;
+        damage *= target.getBeDamageCoefficient();
 
         // 3.
         applyDamage(self, target, damage, critical, type);

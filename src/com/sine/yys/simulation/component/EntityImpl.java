@@ -274,14 +274,25 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
         return this.eventController;
     }
 
-    @Override
+    /**
+     * @return 治疗系数。
+     */
     public double getCureCoefficient() {
         return 1.0 + buffController.getCure();
     }
 
-    @Override
+    /**
+     * @return 造成伤害系数。
+     */
     public double getDamageCoefficient() {
         return 1.0 + buffController.getDamageUp();
+    }
+
+    /**
+     * @return 受到伤害系数。
+     */
+    public double getBeDamageCoefficient() {
+        return 1.0 + buffController.getBeDamage();
     }
 
     @Override
