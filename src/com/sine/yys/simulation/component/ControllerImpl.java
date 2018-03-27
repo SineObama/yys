@@ -180,8 +180,11 @@ public class ControllerImpl implements Controller {
      */
     private void doDamage(Entity self, EntityImpl target, double damage, AttackType type, boolean critical) {
         log.info(Msg.damage(self, target, (int) damage, critical));
-        damage = target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage)).getDamage();
-        target.buffController.remove(ShuiMian.class);
+        final BeDamageEvent event = new BeDamageEvent(target, self, new AttackTypeImpl(type), damage);
+        target.eventController.trigger(event);
+        damage = event.getDamage();
+        if (event.isWake())
+            target.buffController.remove(ShuiMian.class);
         final double src = target.getLife();
         final int srcLife = target.getLifeInt();
         final int life = target.reduceLife((int) damage);
