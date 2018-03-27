@@ -114,7 +114,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
         final IBuff buff = (IBuff) buff0;
         for (IBuff iBuff : set) {
             if (iBuff.getClass() == buff0.getClass()) {
-                if (iBuff.compareTo(buff) < 0) {
+                if (iBuff.compareTo(buff) <= 0) {
                     set.remove(iBuff);
                     set.add(buff);
                 }
