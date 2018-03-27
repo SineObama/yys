@@ -9,11 +9,7 @@ public class AttackTypeImpl implements AttackType {
     private boolean zhenNv = false;
     private boolean buff = false;
 
-    public AttackTypeImpl(boolean counter, boolean tiHun, boolean juanLiu, boolean zhenNv, boolean buff) {
-        this.counter = counter;
-        this.tiHun = tiHun;
-        this.juanLiu = juanLiu;
-        this.zhenNv = zhenNv;
+    public AttackTypeImpl(boolean buff) {
         this.buff = buff;
     }
 
@@ -25,7 +21,8 @@ public class AttackTypeImpl implements AttackType {
         this.buff = type.isBuff();
     }
 
-    public AttackTypeImpl(boolean counter) {
+    public AttackTypeImpl(boolean buff, boolean counter) {
+        this.buff = buff;
         this.counter = counter;
     }
 

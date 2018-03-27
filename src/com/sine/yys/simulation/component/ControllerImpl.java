@@ -54,7 +54,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void counter(Entity self, Entity target, AttackInfo attackInfo) {
-        attack(((EntityImpl) self), ((EntityImpl) target), attackInfo, new AttackTypeImpl(true));
+        attack(((EntityImpl) self), ((EntityImpl) target), attackInfo, new AttackTypeImpl(false, true));
     }
 
     private void attack(EntityImpl self, EntityImpl target, AttackInfo attackInfo, AttackType type) {
@@ -151,7 +151,7 @@ public class ControllerImpl implements Controller {
         damage = breakShield(target, damage);
         log.info(Msg.info(target, "受到伤害", damage));
         if (damage > 0)
-            doDamage(self, target, damage, new AttackTypeImpl(false, false, false, false, true));
+            doDamage(self, target, damage, new AttackTypeImpl(true));
     }
 
     /**
