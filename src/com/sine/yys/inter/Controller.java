@@ -35,6 +35,14 @@ public interface Controller extends DamageController {
     void directDamage(Entity src, Entity self, int damage, AttackType type);
 
     /**
+     * 治疗。（不会计算暴击）
+     *
+     * @param src 初始治疗量。
+     * @return 实际治疗量（受减疗影响，不算奶满的影响）。
+     */
+    int cureWithoutCritical(Entity self, Entity target0, double src);
+
+    /**
      * 概率吸取鬼火。
      */
     void randomGrab(Entity self, Entity target, double pct);

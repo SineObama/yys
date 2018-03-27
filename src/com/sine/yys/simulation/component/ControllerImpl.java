@@ -10,6 +10,7 @@ import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.Callback;
 import com.sine.yys.rule.CalcDam;
 import com.sine.yys.rule.CalcEffect;
+import com.sine.yys.rule.buff.Cure;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
@@ -140,7 +141,7 @@ public class ControllerImpl implements Controller {
                 self.getEventController().trigger(new JuanLiuDamageEvent(target));
             }
             log.info(Msg.info(target, "受到伤害", damage));
-            target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage));
+            damage = (int) target.eventController.trigger(new BeDamageEvent(target, self, new AttackTypeImpl(type), damage)).getDamage();
             doDamage(self, target, damage, type);
         }
     }
@@ -154,15 +155,14 @@ public class ControllerImpl implements Controller {
             doDamage(self, target, damage, new AttackTypeImpl(true));
     }
 
-    /**
-     * 治疗。（不会计算暴击）
-     */
-    private int cure(Entity target0, double src) {
+    @Override
+    public int cureWithoutCritical(Entity self, Entity target0, double src) {
         EntityImpl target = (EntityImpl) target0;
-        final double coefficient = target.getCureCoefficient();
-        int count;
+        double coefficient = target.getCureCoefficient();
+        double cure = self.getEventController().trigger(new PreCureEvent()).getCure();
+        coefficient = new Cure().calc(coefficient, cure);
         log.info(Msg.info(target, "治疗效果", coefficient));
-        count = (int) (src * coefficient);
+        int count = (int) (src * coefficient);
         if (count <= 0)
             count = 1;
         target.addLife(count);
@@ -172,7 +172,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public int cure(Entity self, Entity target, double src) {
-        return cure(target, calcCritical(self, src));
+        return cureWithoutCritical(self, target, calcCritical(self, src));
     }
 
     /**
