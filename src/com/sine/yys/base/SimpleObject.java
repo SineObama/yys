@@ -40,7 +40,7 @@ public abstract class SimpleObject implements Target {
         return speed;
     }
 
-    public double getPosition() {
+    public final double getPosition() {
         return position;
     }
 
@@ -48,7 +48,7 @@ public abstract class SimpleObject implements Target {
         this.position = position;
     }
 
-    public void addPosition(double count) {
+    public final void addPosition(double count) {
         this.position += count;
         if (this.position > 1.0)
             this.position = 1.0;

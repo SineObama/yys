@@ -110,7 +110,6 @@ public class Simulator {
                 round += 1;
                 log.info(Msg.info(self, "行动，序号", round));
 
-
                 for (Skill skill : self.shikigami.getSkills())
                     skill.beforeAction();
 
