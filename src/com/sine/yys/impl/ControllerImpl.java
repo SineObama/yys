@@ -270,6 +270,7 @@ public class ControllerImpl implements Controller {
      * 之前用于实现群体/多段攻击不重复计算，触发一次后会关闭BeAttackEvent事件。
      * 技能调用此函数以重置状态。
      */
+    @Override
     public void afterMovement() {
         camp0.getEventController().trigger(new AfterMovementEvent());
         camp1.getEventController().trigger(new AfterMovementEvent());

@@ -1,10 +1,10 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.event.*;
+import com.sine.yys.event.BattleStartEvent;
+import com.sine.yys.event.EnterEvent;
 import com.sine.yys.impl.ControllerImpl;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.base.Callback;
-import com.sine.yys.inter.base.Skill;
 import com.sine.yys.util.Msg;
 
 import java.util.ArrayList;
@@ -81,85 +81,44 @@ public class Simulator {
             init();
 
         try {
-
             // 获取下一行动式神
-            final SimpleObject self0 = next();
-
-            // 裁判旗子（等独立实体）行动。直接调用 action，跳过鬼火仓库、技能调用等……
-            if (!(self0 instanceof EntityImpl)) {
-                self0.setPosition(0);
-                self0.action();
-                return;
-            }
-            final EntityImpl self = (EntityImpl) self0;
-
-            /*
-             * 整个行动，包括鬼火处理、技能处理、事件触发、行动后的反击等。
-             * 多次行动不会返回。
-             */
+            final SimpleObject self = next();
 
             // 预备推进鬼火行动条
-            self.fireRepo.ready();
+            self.getFireRepo().ready();
 
             // 重置行动条
             self.setPosition(0.0);  // 行动条位置也用于保存再次行动的信息，提前重置
 
-            // 用于多次行动
-            boolean actionChance;
-            do {
-                round += 1;
-                log.info(Msg.info(self, "行动，序号", round));
-
-                for (Skill skill : self.shikigami.getSkills())
-                    skill.beforeAction();
-
-                // 回合前事件
-                // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
-                self.eventController.trigger(new ZhaoCaiMaoEvent());
-                self.eventController.trigger(new BeforeRoundEvent(self));
-
-                controller.afterMovement();
-
-                // 包括执行持续伤害、治疗
-                self.buffController.beforeAction(controller);
-
-                if (!self.isDead())
+            class EntityAction implements Callback {
+                @Override
+                public void call() {
+                    if (self.isDead())
+                        return;
+                    round += 1;
+                    log.info(Msg.info(self, "行动，序号", round));
                     self.action();
+                    log.info(Msg.info(self, "行动结束，序号", round));
 
-                controller.afterMovement();
+                    // 完成推进鬼火行动条
+                    self.getFireRepo().finish();
 
-                // buff回合数-1
-                self.buffController.afterAction(controller);
-
-                // 回合后事件
-                self.eventController.trigger(new AfterRoundEvent(self));
-
-                for (Skill skill : self.shikigami.getSkills())
-                    skill.afterAction();
-
-                // 完成推进鬼火行动条
-                self.fireRepo.finish();
-
-                log.info(Msg.info(self, "行动结束，序号", round));
-                if (checkWin())
-                    break;
-
-                actionChance = self.getPosition() == 1.0;
-                if (actionChance)
-                    self.setPosition(0.0);  // 提前重置，使被反击等死亡后位置归0
-
-                // 回合后的行动，如反击等。通过回调实现。
-                Callback action = controller.pollAction();
-                while (action != null) {
-                    action.call();
-                    controller.afterMovement();
-                    if (checkWin())
-                        break;
-                    action = controller.pollAction();
+                    // 多次行动
+                    if (self.getPosition() == 1.0) {
+                        self.setPosition(0.0);  // 提前重置，使被反击等死亡后位置归0
+                        controller.addAction(Integer.MAX_VALUE, this);
+                    }
                 }
+            }
+
+            Callback action = new EntityAction();
+            do {
+                action.call();
+                controller.afterMovement();
                 if (checkWin())
                     break;
-            } while (actionChance && !self.isDead());
+                action = controller.pollAction();
+            } while (action != null);
 
         } catch (Exception e) {
             log.severe(camp0.toJSON());

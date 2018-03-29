@@ -57,6 +57,8 @@ public interface Controller extends DamageController {
      */
     void applyDebuff(Entity self, Entity target, DebuffEffect effect);
 
+    void afterMovement();
+
     /**
      * 获得一次行动机会。
      */

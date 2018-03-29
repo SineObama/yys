@@ -3,10 +3,7 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
 import com.sine.yys.buff.debuff.control.*;
-import com.sine.yys.event.BeMonoAttackEvent;
-import com.sine.yys.event.CommonAttackEvent;
-import com.sine.yys.event.FinishActionEvent;
-import com.sine.yys.event.UseFireEvent;
+import com.sine.yys.event.*;
 import com.sine.yys.impl.BuffControllerImpl;
 import com.sine.yys.impl.EventControllerImpl;
 import com.sine.yys.inter.*;
@@ -32,14 +29,14 @@ import java.util.Map;
  */
 public class EntityImpl extends SimpleObject implements Self, JSONable {
     final EventControllerImpl eventController = new EventControllerImpl();
-    final BuffControllerImpl buffController = new BuffControllerImpl(this);
-    final Shikigami shikigami;
-    final List<Mitama> mitamas;
+    private final BuffControllerImpl buffController = new BuffControllerImpl(this);
+    private final Shikigami shikigami;
+    private final List<Mitama> mitamas;
     private final Property property;
     private final Map<Object, Object> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
     private final double lifeTimes;
-    Camp camp = null;
-    FireRepo fireRepo;
+    private Camp camp = null;
+    private FireRepo fireRepo;
     private int life;
 
     EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name, double lifeTimes) {
@@ -66,7 +63,39 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
         }
     }
 
+    /*
+     * 整个行动，包括鬼火处理、技能处理、事件触发、行动后的反击等。
+     * 多次行动不会返回。
+     */
+    @Override
     public void action() {
+        for (Skill skill : this.shikigami.getSkills())
+            skill.beforeAction();
+
+        // 回合前事件
+        // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
+        this.eventController.trigger(new ZhaoCaiMaoEvent());
+        this.eventController.trigger(new BeforeRoundEvent(this));
+
+        getController().afterMovement();
+
+        // 包括执行持续伤害、治疗
+        this.buffController.beforeAction(getController());
+
+        if (!this.isDead())
+            this.action2();
+
+        // buff回合数-1
+        this.buffController.afterAction(getController());
+
+        // 回合后事件
+        this.eventController.trigger(new AfterRoundEvent(this));
+
+        for (Skill skill : this.shikigami.getSkills())
+            skill.afterAction();
+    }
+
+    private void action2() {
         log.info(Msg.info(this, "当前鬼火", this.fireRepo.getFire()));
 
         final Operation operation;
