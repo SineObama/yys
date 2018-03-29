@@ -12,6 +12,7 @@ import com.sine.yys.inter.base.Mitama;
 import com.sine.yys.inter.base.Property;
 import com.sine.yys.inter.base.Skill;
 import com.sine.yys.shikigami.operation.OperationImpl;
+import com.sine.yys.skill.BaseAttackSkill;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -169,10 +170,9 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
             }
 
             // 执行技能
-            if (activeSkill instanceof CommonAttack) {
-                // 触发对方被单体攻击事件（混乱打自己人不触发）
-                if (camp.getOpposite().contain(target) && target instanceof ShikigamiEntity)
-                    target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
+            if (activeSkill instanceof BaseAttackSkill && target instanceof ShikigamiEntity) {
+                // 触发对方被单体攻击事件
+                target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
             }
             activeSkill.apply(target);
             if (activeSkill instanceof CommonAttack) {
