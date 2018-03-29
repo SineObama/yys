@@ -1,6 +1,7 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.base.PositionImpl;
+import com.sine.yys.impl.EventControllerImpl;
+import com.sine.yys.impl.PositionImpl;
 import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.util.JSON;

@@ -12,6 +12,8 @@ import com.sine.yys.inter.base.Callback;
 public interface Controller extends DamageController {
     /**
      * 添加一个动作。将在当前回合（动作）结束后执行。
+     * <p>
+     * 用于实现反击等。
      *
      * @param prior 优先级。值小的优先级高，先执行。
      */

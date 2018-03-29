@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.impl;
 
 import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.buff.BattleFlag;
@@ -62,7 +62,7 @@ public class BuffControllerImpl implements BuffController, IBuffProperty {
 
     private final Entity self;
 
-    BuffControllerImpl(Entity self) {
+    public BuffControllerImpl(Entity self) {
         this.self = self;
     }
 

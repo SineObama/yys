@@ -1,4 +1,4 @@
-package com.sine.yys.base;
+package com.sine.yys.impl;
 
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.Position;

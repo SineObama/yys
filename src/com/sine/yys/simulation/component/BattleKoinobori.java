@@ -1,9 +1,9 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.base.SimpleObject;
 import com.sine.yys.buff.BattleFlag;
 import com.sine.yys.buff.BattleFlagSource;
 import com.sine.yys.event.EnterEvent;
+import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.util.Msg;
 
@@ -17,11 +17,11 @@ public final class BattleKoinobori extends SimpleObject {
     private final double cureRatioReduction = -0.10;
     private final BattleFlagSourceImpl battleFlagSource = new BattleFlagSourceImpl();
     private final EventHandler<EnterEvent> enterHandler = event -> event.getEntity().getBuffController().add(new BattleFlag(battleFlagSource));
-    private final BaseCamp camp0;
-    private final BaseCamp camp1;
+    private final Camp camp0;
+    private final Camp camp1;
     private int level = 0;
 
-    public BattleKoinobori(double speed, BaseCamp camp0, BaseCamp camp1) {
+    public BattleKoinobori(double speed, Camp camp0, Camp camp1) {
         super("裁判旗子", speed);
         this.camp0 = camp0;
         this.camp1 = camp1;

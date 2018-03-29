@@ -1,7 +1,7 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.base.SimpleObject;
 import com.sine.yys.event.*;
+import com.sine.yys.impl.ControllerImpl;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.base.Callback;
 import com.sine.yys.inter.base.Skill;
@@ -149,13 +149,13 @@ public class Simulator {
                     self.setPosition(0.0);  // 提前重置，使被反击等死亡后位置归0
 
                 // 回合后的行动，如反击等。通过回调实现。
-                Callback action = controller.getFirstAction();
+                Callback action = controller.pollAction();
                 while (action != null) {
                     action.call();
                     controller.afterMovement();
                     if (checkWin())
                         break;
-                    action = controller.getFirstAction();
+                    action = controller.pollAction();
                 }
                 if (checkWin())
                     break;

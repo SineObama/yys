@@ -1,6 +1,5 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.impl;
 
-import com.sine.yys.base.AttackTypeImpl;
 import com.sine.yys.buff.buff.DispellableBuff;
 import com.sine.yys.buff.debuff.DispellableDebuff;
 import com.sine.yys.buff.debuff.control.ControlBuff;
@@ -21,16 +20,16 @@ import java.util.logging.Logger;
 
 public class ControllerImpl implements Controller {
     private final Logger log = Logger.getLogger(getClass().getName());
-    private final BaseCamp camp0;
-    private final BaseCamp camp1;
+    private final Camp camp0;
+    private final Camp camp1;
     private final Queue<SingleAction> actions = new PriorityQueue<>();
 
-    ControllerImpl(BaseCamp camp0, BaseCamp camp1) {
+    public ControllerImpl(Camp camp0, Camp camp1) {
         this.camp0 = camp0;
         this.camp1 = camp1;
     }
 
-    private BaseCamp getCamp(Entity entity) {
+    private Camp getCamp(Entity entity) {
         return camp0.contain(entity) ? camp0 : camp1;
     }
 
@@ -40,7 +39,11 @@ public class ControllerImpl implements Controller {
             actions.add(new SingleAction(prior, callback));
     }
 
-    Callback getFirstAction() {
+    /**
+     * @return 取出第一个动作。
+     * @see #addAction(int, Callback)
+     */
+    public Callback pollAction() {
         final SingleAction poll = actions.poll();
         if (poll == null)
             return null;

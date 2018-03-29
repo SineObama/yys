@@ -1,6 +1,6 @@
 package com.sine.yys.simulation;
 
-import com.sine.yys.base.PropertyImpl;
+import com.sine.yys.impl.PropertyImpl;
 
 import java.io.BufferedReader;
 import java.io.File;

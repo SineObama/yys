@@ -1,4 +1,4 @@
-package com.sine.yys.base;
+package com.sine.yys.simulation.component;
 
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.base.Target;

@@ -1,6 +1,5 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.impl;
 
-import com.sine.yys.base.Container;
 import com.sine.yys.inter.EventController;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.inter.base.Sealable;
@@ -26,7 +25,7 @@ public class EventControllerImpl implements EventController {
     private final Map<EventHandler, Integer> triggerAt = new HashMap<>();
     private EventControllerImpl parent = null;
 
-    void setParent(EventControllerImpl parent) {
+    public void setParent(EventControllerImpl parent) {
         this.parent = parent;
     }
 

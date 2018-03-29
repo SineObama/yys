@@ -1,6 +1,5 @@
 package com.sine.yys.simulation.component;
 
-import com.sine.yys.base.SimpleObject;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
 import com.sine.yys.buff.debuff.control.*;
@@ -8,6 +7,8 @@ import com.sine.yys.event.BeMonoAttackEvent;
 import com.sine.yys.event.CommonAttackEvent;
 import com.sine.yys.event.FinishActionEvent;
 import com.sine.yys.event.UseFireEvent;
+import com.sine.yys.impl.BuffControllerImpl;
+import com.sine.yys.impl.EventControllerImpl;
 import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.inter.base.Mitama;

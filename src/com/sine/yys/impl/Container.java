@@ -1,4 +1,4 @@
-package com.sine.yys.base;
+package com.sine.yys.impl;
 
 
 /**
