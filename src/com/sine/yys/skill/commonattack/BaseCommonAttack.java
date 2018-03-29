@@ -8,8 +8,6 @@ import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 
 /**
  * 普通攻击。
- * <p>
- * 结束后触发普攻事件。
  */
 public abstract class BaseCommonAttack extends BaseAttackSkill implements CommonAttack {
     /**
