@@ -2,7 +2,6 @@ package com.sine.yys.buff.debuff.control;
 
 import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.buff.debuff.DispellableDebuff;
-import com.sine.yys.inter.ControlBuff;
 import com.sine.yys.inter.Entity;
 
 /**

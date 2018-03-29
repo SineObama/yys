@@ -18,5 +18,5 @@ public interface Composition {
      *
      * @return 最终加成数值。
      */
-    double calc(Collection<IBuff> list);
+    double calc(Collection<? extends IBuff> list);
 }

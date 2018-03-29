@@ -3,10 +3,7 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.base.SimpleObject;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
-import com.sine.yys.buff.debuff.control.ChaoFeng;
-import com.sine.yys.buff.debuff.control.ChenMo;
-import com.sine.yys.buff.debuff.control.HunLuan;
-import com.sine.yys.buff.debuff.control.Unmovable;
+import com.sine.yys.buff.debuff.control.*;
 import com.sine.yys.event.BeMonoAttackEvent;
 import com.sine.yys.event.CommonAttackEvent;
 import com.sine.yys.event.FinishActionEvent;
@@ -73,7 +70,7 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
 
         final Operation operation;
         // 判断是否有行动控制debuff，进行相关操作。
-        final ControlBuff controlBuff = this.buffController.getFirstControlBuff();
+        final ControlBuff controlBuff = this.buffController.getFirstWithPrior(ControlBuff.class);
         if (controlBuff == null) {  // 无行动控制debuff
             // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
             Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
@@ -235,10 +232,8 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
         return (double) life / getMaxLife();
     }
 
-    /**
-     * 不会超过最大值。
-     */
-    void setLife(int life) {
+    @Override
+    public void setLife(int life) {
         if (life > getMaxLife())
             life = getMaxLife();
         this.life = life;
@@ -274,23 +269,17 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
         return this.eventController;
     }
 
-    /**
-     * @return 治疗系数。
-     */
+    @Override
     public double getCureCoefficient() {
         return 1.0 + buffController.getCure();
     }
 
-    /**
-     * @return 造成伤害系数。
-     */
+    @Override
     public double getDamageCoefficient() {
         return 1.0 + buffController.getDamageUp();
     }
 
-    /**
-     * @return 受到伤害系数。
-     */
+    @Override
     public double getBeDamageCoefficient() {
         return 1.0 + buffController.getBeDamage();
     }
@@ -353,7 +342,7 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
 
     @Override
     public Entity applyControl(Entity target) {
-        final ControlBuff controlBuff = buffController.getFirstControlBuff();
+        final ControlBuff controlBuff = buffController.getFirstWithPrior(ControlBuff.class);
         if (controlBuff instanceof Unmovable)
             return null;
         if (controlBuff instanceof ChaoFeng) {
@@ -370,10 +359,6 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
     @Override
     public final boolean isDead() {
         return life <= 0;
-    }
-
-    public final Camp getCamp() {
-        return camp;
     }
 
     public void setCamp(Camp camp) {

@@ -89,7 +89,8 @@ public class EventControllerImpl implements EventController {
     /**
      * 清空事件触发计数。
      */
-    void clear() {
+    @Override
+    public void clear() {
         times.clear();
     }
 

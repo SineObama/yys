@@ -1,5 +1,6 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.buff.debuff.Debuff;
 import com.sine.yys.inter.base.Named;
 
 /**
@@ -18,5 +19,5 @@ public interface DebuffEffect extends Named, PctEffect {
      *
      * @param self 施加的式神。
      */
-    Debuff getDebuff(Entity self);
+    IBuff getDebuff(Entity self);
 }

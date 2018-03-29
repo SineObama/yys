@@ -13,6 +13,8 @@ import java.util.logging.Logger;
  * 默认所有数值属性为0。
  * 子类重写do*函数实现行动前后的逻辑。
  * <p>
+ * 需要在行动前后分别调用{@linkplain #beforeAction(DamageController, Entity)}和{@linkplain #afterAction(DamageController, Entity)}，以实现回合数的管理，以及回合前持续伤害、治疗的实施。
+ * <p>
  * 关于回合数：与游戏中显示的数字保持一致，即在回合结束后减1。
  * 其中一个问题是，当前回合给自己（或全队）加的buff，在自己回合结束时并不会减1。比如持续3回合的buff就直接显示3，回合结束后还是3。
  * 当前实现为：设置行动前后分别调用的2个函数，保存一个状态，使得调用前者再调用后者才让回合数-1。
@@ -81,7 +83,13 @@ public abstract class BaseIBuff implements IBuff {
         return getLast() - o.getLast();
     }
 
-    @Override
+    /**
+     * 每回合开始调用。
+     *
+     * @param controller 控制器。
+     * @param self       所在式神。
+     * @return 剩余持续回合数，0表示效果消失，应当被移除。
+     */
     public final int beforeAction(DamageController controller, Entity self) {
         doBeforeAction(controller, self);
         if (last <= 0) {
@@ -97,9 +105,14 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     /**
+     * 每回合结束调用。
+     * <p>
      * 可能由在自身回合添加buff，导致调用 afterAction，即会返回，无效果。
+     *
+     * @param controller 控制器。
+     * @param self       所在式神。
+     * @return 剩余持续回合数，0表示效果消失，应当被移除。
      */
-    @Override
     public final int afterAction(DamageController controller, Entity self) {
         doAfterAction(controller, self);
         if (last <= 0) {
@@ -113,7 +126,11 @@ public abstract class BaseIBuff implements IBuff {
         return last;
     }
 
-    @Override
+    /**
+     * buff被移除时的回调。
+     *
+     * @param self 所在式神。
+     */
     public void onRemove(Entity self) {
     }
 

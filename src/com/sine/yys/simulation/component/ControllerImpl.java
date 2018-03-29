@@ -3,6 +3,7 @@ package com.sine.yys.simulation.component;
 import com.sine.yys.base.AttackTypeImpl;
 import com.sine.yys.buff.buff.DispellableBuff;
 import com.sine.yys.buff.debuff.DispellableDebuff;
+import com.sine.yys.buff.debuff.control.ControlBuff;
 import com.sine.yys.buff.debuff.control.ShuiMian;
 import com.sine.yys.buff.shield.Shield;
 import com.sine.yys.event.*;
@@ -29,6 +30,10 @@ public class ControllerImpl implements Controller {
         this.camp1 = camp1;
     }
 
+    private BaseCamp getCamp(Entity entity) {
+        return camp0.contain(entity) ? camp0 : camp1;
+    }
+
     @Override
     public void addAction(int prior, Callback callback) {
         if (!actions.contains(new SingleAction(prior, callback)))
@@ -50,15 +55,15 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void attack(Entity self, Entity target, AttackInfo attackInfo) {
-        attack(((EntityImpl) self), ((EntityImpl) target), attackInfo, new AttackTypeImpl());
+        attack(self, ((Entity) target), attackInfo, new AttackTypeImpl());
     }
 
     @Override
     public void counter(Entity self, Entity target, AttackInfo attackInfo) {
-        attack(((EntityImpl) self), ((EntityImpl) target), attackInfo, new AttackTypeImpl(false, true));
+        attack(((Entity) self), ((Entity) target), attackInfo, new AttackTypeImpl(false, true));
     }
 
-    private void attack(EntityImpl self, EntityImpl target, AttackInfo attackInfo, AttackType type) {
+    private void attack(Entity self, Entity target, AttackInfo attackInfo, AttackType type) {
         if (target.isDead())  // 多段攻击目标可能中途死亡
             return;
 
@@ -88,8 +93,8 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void applyDamage(Entity self0, Entity target0, double damage, boolean critical, AttackType type) {
-        EntityImpl self = (EntityImpl) self0;
-        EntityImpl target = (EntityImpl) target0;
+        Entity self = (Entity) self0;
+        Entity target = (Entity) target0;
 
         // 破盾
         final int remain = breakShield(target, (int) damage);
@@ -97,17 +102,17 @@ public class ControllerImpl implements Controller {
         if (remain != 0) {
             damage = remain;
 
-            damage *= self.eventController.trigger(new PreDamageEvent(self, target)).getCoefficient();
+            damage *= self.getEventController().trigger(new PreDamageEvent(self, target)).getCoefficient();
 
             // 处理薙魂和涓流。未来考虑金鱼、小松丸躲避。
             final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, new AttackTypeImpl(type));
-            damage = target.eventController.trigger(damageShareEvent).getLeft();
+            damage = target.getEventController().trigger(damageShareEvent).getLeft();
 
             // 附加效果
-            self.eventController.trigger(new DamageEvent(self, target));
+            self.getEventController().trigger(new DamageEvent(self, target));
         }
 
-        self.eventController.trigger(new AttackEvent(self, target));
+        self.getEventController().trigger(new AttackEvent(self, target));
         target.getEventController().trigger(new BeAttackEvent(target, self, type));
 
         if (remain != 0) {
@@ -117,8 +122,8 @@ public class ControllerImpl implements Controller {
 
             // XXX 地藏像死亡后盾buff还在？
             if (critical) {
-                target.eventController.trigger(new BeCriticalEvent(target, self));
-                self.eventController.trigger(new CriticalEvent(self, target, new AttackTypeImpl(type)));
+                target.getEventController().trigger(new BeCriticalEvent(target, self));
+                self.getEventController().trigger(new CriticalEvent(self, target, new AttackTypeImpl(type)));
             }
         } else {
             log.info(Msg.noDamage(self, target));
@@ -129,12 +134,12 @@ public class ControllerImpl implements Controller {
     // 注意与applyDamage的统一
     @Override
     public void directDamage(Entity self, Entity target0, int damage, AttackType type) {
-        EntityImpl target = (EntityImpl) target0;
+        Entity target = (Entity) target0;
         damage = breakShield(target, damage);
         if (damage > 0) {
             if (!type.isJuanLiu()) {  // 薙魂可以再被涓流分摊，涓流后不再判断涓流
                 final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, new AttackTypeImpl(type));
-                damage = (int) target.eventController.trigger(damageShareEvent).getLeft();
+                damage = (int) target.getEventController().trigger(damageShareEvent).getLeft();
             } else if (!type.isTiHun()) {
                 self.getEventController().trigger(new JuanLiuDamageEvent(target));
             }
@@ -144,7 +149,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void buffDamage(Entity self, Entity target0, int damage) {
-        EntityImpl target = (EntityImpl) target0;
+        Entity target = (Entity) target0;
         damage = breakShield(target, damage);
         if (damage > 0)
             doDamage(self, target, damage, new AttackTypeImpl(true), false);
@@ -152,7 +157,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public int cureWithoutCritical(Entity self, Entity target0, double src) {
-        EntityImpl target = (EntityImpl) target0;
+        Entity target = (Entity) target0;
         double coefficient = target.getCureCoefficient();
         double cure = self.getEventController().trigger(new PreCureEvent()).getCure();
         coefficient = new Cure().calc(coefficient, cure);
@@ -177,13 +182,13 @@ public class ControllerImpl implements Controller {
      * <p>
      * 毒伤会打醒睡眠。
      */
-    private void doDamage(Entity self, EntityImpl target, double damage, AttackType type, boolean critical) {
+    private void doDamage(Entity self, Entity target, double damage, AttackType type, boolean critical) {
         log.info(Msg.damage(self, target, (int) damage, critical));
         final BeDamageEvent event = new BeDamageEvent(target, self, new AttackTypeImpl(type), damage);
-        target.eventController.trigger(event);
+        target.getEventController().trigger(event);
         damage = event.getDamage();
         if (event.isWake())
-            target.buffController.remove(ShuiMian.class);
+            target.getBuffController().remove(ShuiMian.class);
         final double src = target.getLife();
         final int srcLife = target.getLifeInt();
         final int life = target.reduceLife((int) damage);
@@ -192,8 +197,8 @@ public class ControllerImpl implements Controller {
         if (life == 0) {
             // 添加匣中少女逻辑，回复状态则退出
             target.getBuffController().clear();// XXX 匣中少女回复状态会不会保留buff？
-            target.eventController.clear();
-            target.getCamp().getPosition(target).setCurrent(null);
+            target.getEventController().clear();
+            getCamp(target).getPosition(target).setCurrent(null);
             log.info(Msg.info(target, "死亡"));
             // 包括阎魔放小鬼
             self.getEventController().trigger(new KillEvent(self, target, type));
@@ -207,12 +212,12 @@ public class ControllerImpl implements Controller {
      *
      * @return 剩余伤害。
      */
-    private int breakShield(EntityImpl target, int damage) {
-        for (Shield shield : target.buffController.getShields()) {
+    private int breakShield(Entity target, int damage) {
+        for (Shield shield : target.getBuffController().getWithPrior(Shield.class)) {
             damage = shield.doDamage(damage);
             if (damage == -1)
                 break;
-            target.buffController.remove(shield);
+            target.getBuffController().remove(shield);
             log.info(Msg.info(target, shield.getName(), "被击破"));
         }
         if (damage == -1)
@@ -232,7 +237,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void applyDebuff(Entity self, Entity target0, DebuffEffect effect) {
-        EntityImpl target = (EntityImpl) target0;
+        Entity target = (Entity) target0;
         final double pct;
         final boolean involveHitAndDef = effect.involveHitAndDef();
         if (involveHitAndDef)
@@ -241,7 +246,7 @@ public class ControllerImpl implements Controller {
             pct = effect.getPct();
         if (RandUtil.success(pct)) {
             log.info(Msg.trigger(self, effect));
-            Debuff debuff = effect.getDebuff(self);
+            IBuff debuff = effect.getDebuff(self);
             if (!involveHitAndDef || RandUtil.success(CalcEffect.hitPct(target.getEffectDef()))) {
                 boolean effective = true;
                 if (debuff instanceof ControlBuff)
@@ -267,19 +272,19 @@ public class ControllerImpl implements Controller {
         camp1.getEventController().trigger(new AfterMovementEvent());
 
         // 重置事件状态
-        camp0.eventController.clear();
-        camp1.eventController.clear();
-        for (EntityImpl entity : camp0.getAllAlive()) {
-            entity.eventController.clear();
+        camp0.getEventController().clear();
+        camp1.getEventController().clear();
+        for (Entity entity : camp0.getAllAlive()) {
+            entity.getEventController().clear();
         }
-        for (EntityImpl entity : camp1.getAllAlive()) {
-            entity.eventController.clear();
+        for (Entity entity : camp1.getAllAlive()) {
+            entity.getEventController().clear();
         }
     }
 
     @Override
     public void actionChance(Entity self0) {
-        EntityImpl self = (EntityImpl) self0;
+        Entity self = (Entity) self0;
         self.setPosition(1.0);
         log.info(Msg.info(self, "获得一次行动机会"));
     }
@@ -293,13 +298,12 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void revive(Entity target0, int maxLife) {
-        EntityImpl target = (EntityImpl) target0;
-        final Position position = target.getCamp().getPositionBySrc(target);
+    public void revive(Entity target, int maxLife) {
+        final Position position = getCamp(target).getPositionBySrc(target);
         position.setCurrent(target);
         target.setLife(maxLife);
         log.info(Msg.info(target, "复活，血量", target.getLifeInt()));
-        target.eventController.trigger(new EnterEvent(target));
+        target.getEventController().trigger(new EnterEvent(target));
     }
 
     @Override

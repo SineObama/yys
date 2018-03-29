@@ -34,4 +34,6 @@ public interface EventController {
     void remove(EventHandler<?> handler);
 
     <EventType> EventType trigger(EventType event);
+
+    void clear();
 }

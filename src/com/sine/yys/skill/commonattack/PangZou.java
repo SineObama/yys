@@ -4,9 +4,9 @@ import com.sine.yys.buff.debuff.PctDoT;
 import com.sine.yys.buff.debuff.ReduceDefense;
 import com.sine.yys.buff.debuff.control.XuanYun;
 import com.sine.yys.effect.BaseDebuffEffect;
-import com.sine.yys.inter.Debuff;
 import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.IBuff;
 import com.sine.yys.inter.PctEffect;
 import com.sine.yys.util.RandUtil;
 
@@ -20,7 +20,7 @@ import java.util.Collections;
 public class PangZou extends BaseCommonAttack implements PctEffect {
     private final DebuffEffect effect = new BaseDebuffEffect(getPct(), getName()) {
         @Override
-        public Debuff getDebuff(Entity self) {
+        public IBuff getDebuff(Entity self) {
             return RandUtil.choose(Arrays.asList(
                     new ReduceDefense(getLast(), getName(), getReduceDefensePct(), self) {
                     }, new XuanYun(self), new PctDoT(getLast(), getName(), getReduceLifePct(), self) {

@@ -1,8 +1,8 @@
 package com.sine.yys.mitama;
 
 import com.sine.yys.buff.debuff.control.HunLuan;
-import com.sine.yys.inter.Debuff;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.IBuff;
 
 /**
  * 魅妖。
@@ -19,7 +19,7 @@ public class MeiYao extends BaseDebuffMitama {
     }
 
     @Override
-    public Debuff getDebuff(Entity self) {
+    public IBuff getDebuff(Entity self) {
         return new HunLuan(self);
     }
 }

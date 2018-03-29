@@ -14,7 +14,7 @@ import com.sine.yys.inter.*;
 public class JiHenZhiXin extends BasePassiveSkill implements EventHandler<AttackEvent>, PctEffect {
     private final DebuffEffect effect = new BaseDebuffEffect(getPct(), getName()) {
         @Override
-        public Debuff getDebuff(Entity self) {
+        public IBuff getDebuff(Entity self) {
             return new FengYin(getLast(), getName(), self);
         }
     };

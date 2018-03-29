@@ -3,11 +3,20 @@ package com.sine.yys.inter;
 import java.util.Collection;
 
 /**
- * 存储{@linkplain IBuff buff}，提供添加、查找等操作。
- * 部分buff只能存在一个，此约束由外部实现。
+ * 存储{@linkplain IBuff buff}，提供添加、查找、统计属性等操作。
  */
 public interface BuffController {
     Object remove(Object iBuff);
+
+    /**
+     * 按照优先级顺序返回指定类型（及其子类）的buff。
+     */
+    <T> Collection<T> getWithPrior(Class<T> tClass);
+
+    /**
+     * 返回指定类型（及其子类）中优先级最高的buff。
+     */
+    <T> T getFirstWithPrior(Class<T> tClass);
 
     /**
      * 添加唯一的buff。
@@ -21,8 +30,6 @@ public interface BuffController {
     <T> T get(Class<T> clazz);
 
     <T> boolean contain(Class<T> clazz);
-
-    ControlBuff getFirstControlBuff();
 
     /**
      * 移除一个指定类型的buff。

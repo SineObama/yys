@@ -1,8 +1,12 @@
 package com.sine.yys.mitama;
 
 import com.sine.yys.buff.debuff.control.ChenMo;
+import com.sine.yys.buff.debuff.control.ControlBuff;
 import com.sine.yys.event.*;
-import com.sine.yys.inter.*;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.PctEffect;
 import com.sine.yys.skill.JuanLiu;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -68,7 +72,7 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
     public void handle(BeMonoAttackEvent event) {
         if (event.isTreated() || event.getEntity() == getSelf() || event.getEntity().getBuffController().contain(JuanLiu.JuanLiuBuff.class))
             return;
-        final ControlBuff controlBuff = getSelf().getBuffController().getFirstControlBuff();
+        final ControlBuff controlBuff = getSelf().getBuffController().getFirstWithPrior(ControlBuff.class);
         if (controlBuff != null && !(controlBuff instanceof ChenMo))
             return;
         if (RandUtil.success(getPct())) {
