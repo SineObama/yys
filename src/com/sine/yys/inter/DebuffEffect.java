@@ -1,9 +1,10 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.buff.debuff.Debuff;
 import com.sine.yys.inter.base.Named;
 
 /**
- * 定义一个可以附加{@linkplain Debuff}的效果（在攻击的时候，不需要造成伤害）。
+ * 定义一个可以附加{@linkplain Debuff}的效果。
  */
 public interface DebuffEffect extends Named, PctEffect {
     /**
@@ -18,5 +19,5 @@ public interface DebuffEffect extends Named, PctEffect {
      *
      * @param self 施加的式神。
      */
-    Debuff getDebuff(Entity self);
+    IBuff getDebuff(Entity self);
 }

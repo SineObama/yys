@@ -43,7 +43,7 @@ public class Zheng extends BaseSelfMitama implements EventHandler<BeDamageEvent>
 
     @Override
     public void handle(BeDamageEvent event) {
-        if (event.getType().isCounter())
+        if (event.getType().isCounter() || event.getType().isBuff())
             return;
         if (RandUtil.success(getPct(event.getTarget()))) {
             log.info(Msg.trigger(getSelf(), Zheng.this));

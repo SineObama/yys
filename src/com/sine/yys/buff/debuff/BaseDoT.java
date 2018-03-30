@@ -17,7 +17,7 @@ public abstract class BaseDoT extends BaseIBuff {
     protected final void doBeforeAction(DamageController controller, Entity self) {
         log.info(Msg.info(self, "受到效果", getName()));
         double damage = handle(self);
-        controller.buffDamage(self, (int) damage);
+        controller.buffDamage(getSrc(), self, (int) damage);
     }
 
     /**

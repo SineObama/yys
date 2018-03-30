@@ -9,6 +9,10 @@ import com.sine.yys.util.RandUtil;
 
 /**
  * 针女。
+ * <p>
+ * 1. 可以被涓流或薙魂分担；
+ * 2. 不被金鱼分担；
+ * 3. 不受一般buff影响，只受旗帜buff增伤影响。
  */
 public class ZhenNv extends BaseSelfMitama implements EventHandler<CriticalEvent>, PctEffect {
     @Override
@@ -38,12 +42,17 @@ public class ZhenNv extends BaseSelfMitama implements EventHandler<CriticalEvent
     @Override
     public void handle(CriticalEvent event) {
         if (RandUtil.success(getPct())) {
+            if (event.getTarget().isDead())
+                return;
             final Entity self = getSelf();
             log.info(Msg.trigger(self, this));
             event.getType().setZhenNv(true);
             final double damage1 = self.getAttack() * getMaxDamageByAttack();
             final double damage2 = event.getTarget().getMaxLife() * getMaxDamageByMaxLife();
-            getController().zhenNvDamage(self, event.getTarget(), Double.min(damage1, damage2), event.getType());
+            double damage = Double.min(damage1, damage2);
+            // 根据旗帜buff增减。
+            damage *= self.getFlagDamageCoefficient();
+            getController().applyDamage(self, event.getTarget(), damage, false, event.getType());
         }
     }
 }

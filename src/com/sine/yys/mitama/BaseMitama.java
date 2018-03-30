@@ -1,6 +1,6 @@
 package com.sine.yys.mitama;
 
-import com.sine.yys.base.BaseComponent;
+import com.sine.yys.impl.BaseComponent;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.inter.base.Mitama;
 import com.sine.yys.inter.base.Sealable;

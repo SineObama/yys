@@ -32,6 +32,6 @@ public class BattleFlag extends BaseIBuff {
 
     @Override
     public int compareTo(IBuff o) {
-        return 0;
+        return 1;
     }
 }

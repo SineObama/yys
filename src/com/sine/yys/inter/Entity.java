@@ -36,6 +36,11 @@ public interface Entity extends Target, Property {
     @Override
     double getLife();
 
+    /**
+     * 不会超过最大值。
+     */
+    void setLife(int life);
+
     int getMaxLife();
 
     int getLostLifeInt();
@@ -68,11 +73,18 @@ public interface Entity extends Target, Property {
     double getPosition();
 
     /**
+     * @param position 行动条位置。
+     */
+    void setPosition(double position);
+
+    /**
      * 增加行动条（拉条）。
      */
     void addPosition(double count);
 
     int addLife(int count);
+
+    int reduceLife(int count);
 
     EventController getEventController();
 
@@ -85,6 +97,11 @@ public interface Entity extends Target, Property {
      * @return 造成伤害系数。
      */
     double getDamageCoefficient();
+
+    /**
+     * @return 受到伤害系数。
+     */
+    double getBeDamageCoefficient();
 
     /**
      * 用于改变针女伤害（不受一般伤害加成影响）。

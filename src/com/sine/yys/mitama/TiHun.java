@@ -1,8 +1,12 @@
 package com.sine.yys.mitama;
 
 import com.sine.yys.buff.debuff.control.ChenMo;
+import com.sine.yys.buff.debuff.control.ControlBuff;
 import com.sine.yys.event.*;
-import com.sine.yys.inter.*;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.PctEffect;
 import com.sine.yys.skill.JuanLiu;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -68,7 +72,7 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
     public void handle(BeMonoAttackEvent event) {
         if (event.isTreated() || event.getEntity() == getSelf() || event.getEntity().getBuffController().contain(JuanLiu.JuanLiuBuff.class))
             return;
-        final ControlBuff controlBuff = getSelf().getBuffController().getFirstControlBuff();
+        final ControlBuff controlBuff = getSelf().getBuffController().getFirstWithPrior(ControlBuff.class);
         if (controlBuff != null && !(controlBuff instanceof ChenMo))
             return;
         if (RandUtil.success(getPct())) {
@@ -97,10 +101,10 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
     class DamageShareHandler implements EventHandler<DamageShareEvent> {
         @Override
         public void handle(DamageShareEvent event) {
-            // XXXX 薙魂的减伤目前只对破盾后的伤害生效
+            // XXXX 薙魂的减伤只对破盾后的伤害生效
             final double damage = event.getTotal() * (1 - getDamageReducePct());
             event.getType().setTiHun(true);
-            // XXXXX 不清楚单人断涓流的情况。当前会触发薙魂，分担的伤害不会再被椒图分担
+            // 单人断涓流的也会触发薙魂
             getController().directDamage(event.getEntity(), getSelf(), (int) (damage * getSharePct()), event.getType());
             event.setLeft(damage * (1 - getSharePct()));
         }

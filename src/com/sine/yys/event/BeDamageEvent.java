@@ -10,11 +10,32 @@ import com.sine.yys.inter.Entity;
  * <p>
  * 用途：
  * 1. 受到伤害时回复鬼火（等）；
- * 2. 薙魂时受到伤害触发小僧被动；
+ * 2. 薙魂、毒伤受到伤害触发金刚经；
  * 3. 薙魂时受到伤害触发犬神反击；
+ * 4. 食梦貘不打醒睡眠目标；
  */
 public class BeDamageEvent extends BaseAttackEvent {
-    public BeDamageEvent(Entity entity, Entity target, AttackType type) {
+    private double damage;
+    private boolean wake = true;  // 是否打醒睡眠
+
+    public BeDamageEvent(Entity entity, Entity target, AttackType type, double damage) {
         super(entity, target, type);
+        this.damage = damage;
+    }
+
+    public double getDamage() {
+        return damage;
+    }
+
+    public void setDamage(double damage) {
+        this.damage = damage;
+    }
+
+    public boolean isWake() {
+        return wake;
+    }
+
+    public void setNotWake() {
+        wake = false;
     }
 }

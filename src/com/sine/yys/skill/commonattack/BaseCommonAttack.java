@@ -2,45 +2,20 @@ package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.inter.CommonAttack;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.TargetResolver;
-import com.sine.yys.skill.BaseAttackSkill;
-import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
+import com.sine.yys.skill.mono.BaseMonoAttack;
 
 /**
  * 普通攻击。
- * <p>
- * 结束后触发普攻事件。
  */
-public abstract class BaseCommonAttack extends BaseAttackSkill implements CommonAttack {
-    /**
-     * 默认以getAttack的攻击，对target攻击getTimes次。
-     */
-    @Override
-    protected void doApply(Entity target) {
-        for (int i = 0; i < getTimes(); i++)
-            getController().attack(getSelf(), target, getAttack());
-    }
-
+public abstract class BaseCommonAttack extends BaseMonoAttack implements CommonAttack {
     @Override
     public final int getFire() {
         return 0;
     }
 
-    /**
-     * @return 攻击次数（段数）。
-     */
-    public int getTimes() {
-        return 1;
-    }
-
     @Override
     public double getCoefficient() {
         return 1.0;
-    }
-
-    @Override
-    public final TargetResolver getTargetResolver() {
-        return new EnemyEntityResolver();
     }
 
     /**

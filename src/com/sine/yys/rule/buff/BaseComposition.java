@@ -14,7 +14,7 @@ public abstract class BaseComposition implements Composition {
         this.getter = getter;
     }
 
-    public double calc(Collection<IBuff> list) {
+    public double calc(Collection<? extends IBuff> list) {
         double result = 0;
         for (IBuff buff : list) {
             result += getter.get(buff);

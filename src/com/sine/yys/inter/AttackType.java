@@ -35,4 +35,8 @@ public interface AttackType {
     boolean isZhenNv();
 
     void setZhenNv(boolean zhenNv);
+
+    boolean isBuff();
+
+    void setBuff(boolean buff);
 }

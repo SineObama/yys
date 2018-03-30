@@ -33,10 +33,10 @@ public class LongShouZhiYu extends BaseNoTargetSkill implements PctEffect {
 
     private void deploy() {
         Entity self = getSelf();
-        Buff buff = new Buff(getLast(), () -> self.getEventController().trigger(new LongShouZhiYuOff()), self);  // XXXX 在回合后buff减1回合，为了把本回合算进去，加1
+        Buff buff = new Buff(getLast(), () -> self.getEventController().trigger(new LongShouZhiYuOff()), self);
         log.info(Msg.info(self, "施放", buff.getName()));
         self.getBuffController().add(buff);
-        for (ShikigamiEntity shikigami : getOwn().getAllShikigami()) {  // DESIGN 给式神不包括召唤物加buff
+        for (ShikigamiEntity shikigami : getOwn().getAllShikigami()) {  // XXX 不为召唤物加buff
             shikigami.getBuffController().add(new LSZYDefenseBuff(getDefPct(), self));
             shikigami.getBuffController().add(new LSZYEffectDefBuff(getEffectDef(), self));
         }

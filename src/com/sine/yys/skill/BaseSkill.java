@@ -1,6 +1,6 @@
 package com.sine.yys.skill;
 
-import com.sine.yys.base.BaseComponent;
+import com.sine.yys.impl.BaseComponent;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.inter.base.Sealable;
 import com.sine.yys.inter.base.Skill;

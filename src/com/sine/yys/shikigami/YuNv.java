@@ -6,7 +6,7 @@ import com.sine.yys.skill.passive.JingHuaZhiYu;
 
 import java.util.Arrays;
 
-// XXXX 雨女AI未确定。
+// XXXX AI。
 
 /**
  * 雨女。

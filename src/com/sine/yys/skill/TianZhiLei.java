@@ -3,9 +3,9 @@ package com.sine.yys.skill;
 import com.sine.yys.buff.debuff.ReduceSpeed;
 import com.sine.yys.effect.BaseDebuffEffect;
 import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Debuff;
 import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.IBuff;
 import com.sine.yys.util.RandUtil;
 
 /**
@@ -14,7 +14,7 @@ import com.sine.yys.util.RandUtil;
 public class TianZhiLei extends BaseNoTargetSkill {
     private final DebuffEffect effect = new BaseDebuffEffect(getReduceSpeedPct(), getName()) {
         @Override
-        public Debuff getDebuff(Entity self) {
+        public IBuff getDebuff(Entity self) {
             return new ReduceSpeed(getLast(), getName(), getReduceSpeed(), self) {
             };
         }

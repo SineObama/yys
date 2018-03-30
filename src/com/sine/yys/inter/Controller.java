@@ -12,6 +12,8 @@ import com.sine.yys.inter.base.Callback;
 public interface Controller extends DamageController {
     /**
      * 添加一个动作。将在当前回合（动作）结束后执行。
+     * <p>
+     * 用于实现反击等。
      *
      * @param prior 优先级。值小的优先级高，先执行。
      */
@@ -27,16 +29,20 @@ public interface Controller extends DamageController {
      */
     void counter(Entity self, Entity target, AttackInfo attackInfo);
 
-    /**
-     * 针女伤害（会被椒图或薙魂分担，不会被金鱼分担，不受一般buff影响）。
-     */
-    void zhenNvDamage(Entity self, Entity target, double damage, AttackType type);
+    void applyDamage(Entity self, Entity target, double damage, boolean critical, AttackType type);
 
     /**
-     * 薙魂伤害、椒图分摊后（其他人的）伤害。
-     * 会打醒睡眠。
+     * 薙魂伤害；涓流分摊后（其他人的）伤害；草人伤害。
      */
     void directDamage(Entity src, Entity self, int damage, AttackType type);
+
+    /**
+     * 治疗。（不会计算暴击）
+     *
+     * @param src 初始治疗量。
+     * @return 实际治疗量（受减疗影响，不算奶满的影响）。
+     */
+    int cureWithoutCritical(Entity self, Entity target0, double src);
 
     /**
      * 概率吸取鬼火。
@@ -51,8 +57,10 @@ public interface Controller extends DamageController {
      */
     void applyDebuff(Entity self, Entity target, DebuffEffect effect);
 
+    void afterMovement();
+
     /**
-     * 获得一次行动机会
+     * 获得一次行动机会。
      */
     void actionChance(Entity self);
 
