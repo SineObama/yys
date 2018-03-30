@@ -104,6 +104,7 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
         this.buffController.afterAction(getController());
 
         // 回合后事件
+        this.eventController.trigger(new AfterActionEvent(this));
         this.eventController.trigger(new AfterRoundEvent(this));
 
         for (Skill skill : this.shikigami.getSkills())
