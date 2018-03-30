@@ -23,9 +23,9 @@ public class EventControllerImpl implements EventController {
     private final Map<Object, Integer> times = new HashMap<>();
     private final Map<EventHandler, Integer> prior = new HashMap<>();
     private final Map<EventHandler, Integer> triggerAt = new HashMap<>();
-    private EventControllerImpl parent = null;
+    private EventController parent = null;
 
-    public void setParent(EventControllerImpl parent) {
+    public void setParent(EventController parent) {
         this.parent = parent;
     }
 

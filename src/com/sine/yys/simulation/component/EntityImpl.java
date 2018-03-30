@@ -53,6 +53,7 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
 
     @Override
     protected final void doInit() {
+        eventController.setParent(camp.getEventController());
         final Controller controller = getController();
         for (Skill skill : this.shikigami.getSkills()) {
             if (skill instanceof Component)

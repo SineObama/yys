@@ -95,7 +95,6 @@ public abstract class BaseCamp implements Camp, JSONable {
         opposite = enemy;
         for (ShikigamiEntityImpl shikigami : getAllShikigami()) {
             shikigami.setCamp(this);
-            shikigami.eventController.setParent(eventController);
             shikigami.init(controller);
         }
     }
