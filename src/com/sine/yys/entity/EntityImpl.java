@@ -7,10 +7,7 @@ import com.sine.yys.event.*;
 import com.sine.yys.impl.BuffControllerImpl;
 import com.sine.yys.impl.EventControllerImpl;
 import com.sine.yys.inter.*;
-import com.sine.yys.inter.base.JSONable;
-import com.sine.yys.inter.base.Mitama;
-import com.sine.yys.inter.base.Property;
-import com.sine.yys.inter.base.Skill;
+import com.sine.yys.inter.base.*;
 import com.sine.yys.shikigami.operation.OperationImpl;
 import com.sine.yys.skill.BaseAttackSkill;
 import com.sine.yys.util.JSON;
@@ -28,7 +25,7 @@ import java.util.Map;
  * 保存了{@linkplain Shikigami 式神信息}、{@linkplain Property 属性}、{@linkplain Mitama 御魂}，
  * 和战斗中的状态（技能cd、{@linkplain IBuff buff}、事件）。
  */
-public class EntityImpl extends SimpleObject implements Self, JSONable {
+public abstract class EntityImpl extends SimpleObject implements Self, JSONable, Callback {
     final EventControllerImpl eventController = new EventControllerImpl();
     private final BuffControllerImpl buffController = new BuffControllerImpl(this);
     private final Shikigami shikigami;
@@ -40,7 +37,7 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
     private FireRepo fireRepo;
     private int life;
 
-    public EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name, double lifeTimes) {
+    EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name, double lifeTimes) {
         super(name, 9999);
         this.property = property;
         this.shikigami = shikigami;
@@ -67,10 +64,26 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
 
     /*
      * 整个行动，包括鬼火处理、技能处理、事件触发、行动后的反击等。
-     * 多次行动不会返回。
      */
     @Override
     public void action() {
+        // 预备推进鬼火行动条
+        this.getFireRepo().ready();
+
+        call();
+
+        // 完成推进鬼火行动条
+        this.getFireRepo().finish();
+    }
+
+    /**
+     * 除去鬼火推进的整个行动。用于多次行动时作为回调。
+     */
+    public void call() {
+        if (this.isDead())
+            return;
+        log.info(Msg.info(this, "行动"));
+
         for (Skill skill : this.shikigami.getSkills())
             skill.beforeAction();
 
@@ -95,6 +108,14 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
 
         for (Skill skill : this.shikigami.getSkills())
             skill.afterAction();
+
+        // 多次行动
+        if (this.getPosition() == 1.0) {
+            this.setPosition(0.0);  // 提前重置，使被反击等死亡后位置归0
+            getController().addAction(Integer.MAX_VALUE, this);
+        }
+
+        log.info(Msg.info(this, "行动结束"));
     }
 
     private void action2() {
@@ -408,6 +429,11 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
 
     public void setFireRepo(FireRepo fireRepo) {
         this.fireRepo = fireRepo;
+    }
+
+    @Override
+    public String toString() {
+        return Msg.join(super.toString(), getPosition(), life);
     }
 
     @Override

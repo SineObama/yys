@@ -1,8 +1,6 @@
 package com.sine.yys.entity;
 
-import com.sine.yys.impl.EmptyFireRepo;
 import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.FireRepo;
 import com.sine.yys.inter.base.Target;
 
 import java.util.logging.Logger;
@@ -16,7 +14,6 @@ public abstract class SimpleObject implements Target {
     private final double speed;
     private double position = 0;  // 行动位置，范围0-1。
     private Controller controller;
-    private FireRepo fireRepo = new EmptyFireRepo();
 
     SimpleObject(String name, double speed) {
         this.name = name;
@@ -68,15 +65,11 @@ public abstract class SimpleObject implements Target {
     }
 
     @Override
-    public final String toString() {
+    public String toString() {
         return getFullName();
     }
 
     public boolean isDead() {
         return false;
-    }
-
-    public FireRepo getFireRepo() {
-        return fireRepo;
     }
 }

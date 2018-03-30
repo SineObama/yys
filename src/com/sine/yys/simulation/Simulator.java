@@ -55,7 +55,7 @@ public class Simulator {
         if (min != 0.0)
             for (SimpleObject entity : all)
                 entity.addPosition(min * entity.getSpeed());
-        rtn.setPosition(1.0);
+        rtn.setPosition(0.0);  // 行动条位置也用于保存再次行动的信息，提前重置
         return rtn;
     }
 
@@ -86,41 +86,18 @@ public class Simulator {
             // 获取下一行动式神
             final SimpleObject self = next();
 
-            // 预备推进鬼火行动条
-            self.getFireRepo().ready();
+            round += 1;
+            log.info(Msg.info(self, "行动，序号", round));
+            self.action();
+            log.info(Msg.info(self, "行动结束，序号", round));
 
-            // 重置行动条
-            self.setPosition(0.0);  // 行动条位置也用于保存再次行动的信息，提前重置
-
-            class EntityAction implements Callback {
-                @Override
-                public void call() {
-                    if (self.isDead())
-                        return;
-                    round += 1;
-                    log.info(Msg.info(self, "行动，序号", round));
-                    self.action();
-                    log.info(Msg.info(self, "行动结束，序号", round));
-
-                    // 完成推进鬼火行动条
-                    self.getFireRepo().finish();
-
-                    // 多次行动
-                    if (self.getPosition() == 1.0) {
-                        self.setPosition(0.0);  // 提前重置，使被反击等死亡后位置归0
-                        controller.addAction(Integer.MAX_VALUE, this);
-                    }
-                }
-            }
-
-            Callback action = new EntityAction();
-            do {
-                action.call();
+            while (true) {
                 controller.afterMovement();
-                if (checkWin())
+                Callback action = controller.pollAction();
+                if (checkWin() || action == null)
                     break;
-                action = controller.pollAction();
-            } while (action != null);
+                action.call();
+            }
 
         } catch (Exception e) {
             log.severe(camp0.toJSON());
