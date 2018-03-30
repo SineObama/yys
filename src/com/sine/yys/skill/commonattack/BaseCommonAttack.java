@@ -2,10 +2,7 @@ package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.inter.CommonAttack;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.TargetResolver;
-import com.sine.yys.skill.BaseAttackSkill;
 import com.sine.yys.skill.mono.BaseMonoAttack;
-import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 
 /**
  * 普通攻击。

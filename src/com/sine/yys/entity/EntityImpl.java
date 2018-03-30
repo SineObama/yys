@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.entity;
 
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
@@ -40,7 +40,7 @@ public class EntityImpl extends SimpleObject implements Self, JSONable {
     private FireRepo fireRepo;
     private int life;
 
-    EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name, double lifeTimes) {
+    public EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name, double lifeTimes) {
         super(name, 9999);
         this.property = property;
         this.shikigami = shikigami;

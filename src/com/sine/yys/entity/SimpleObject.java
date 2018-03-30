@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.entity;
 
 import com.sine.yys.impl.EmptyFireRepo;
 import com.sine.yys.inter.Controller;
@@ -8,7 +8,7 @@ import com.sine.yys.inter.base.Target;
 import java.util.logging.Logger;
 
 /**
- * 战场中一个对象，包括可被选择为目标的{@linkplain com.sine.yys.inter.Entity 实体}（式神或召唤物）、战场中的其他对象（{@linkplain com.sine.yys.simulation.component.BattleKoinobori 裁判旗子}、竞赛秘闻鬼面）。
+ * 战场中一个对象，包括可被选择为目标的{@linkplain com.sine.yys.inter.Entity 实体}（式神或召唤物）、战场中的其他对象（{@linkplain BattleKoinobori 裁判旗子}、竞赛秘闻鬼面）。
  */
 public abstract class SimpleObject implements Target {
     protected final Logger log = Logger.getLogger(this.getClass().getName());

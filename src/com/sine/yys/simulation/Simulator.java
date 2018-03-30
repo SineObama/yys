@@ -1,5 +1,7 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.simulation;
 
+import com.sine.yys.entity.EntityImpl;
+import com.sine.yys.entity.SimpleObject;
 import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.EnterEvent;
 import com.sine.yys.impl.ControllerImpl;
@@ -67,10 +69,10 @@ public class Simulator {
         for (SimpleObject extra : extras)
             extra.init(controller);
         for (EntityImpl entity : camp0.getAllAlive())
-            entity.eventController.trigger(new EnterEvent(entity));
+            entity.getEventController().trigger(new EnterEvent(entity));
         camp0.getEventController().trigger(new BattleStartEvent());
         for (EntityImpl entity : camp1.getAllAlive())
-            entity.eventController.trigger(new EnterEvent(entity));
+            entity.getEventController().trigger(new EnterEvent(entity));
         camp1.getEventController().trigger(new BattleStartEvent());
     }
 

@@ -1,4 +1,4 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.entity;
 
 import com.sine.yys.buff.BattleFlag;
 import com.sine.yys.buff.BattleFlagSource;

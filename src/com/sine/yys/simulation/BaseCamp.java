@@ -1,5 +1,7 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.simulation;
 
+import com.sine.yys.entity.EntityImpl;
+import com.sine.yys.entity.ShikigamiEntityImpl;
 import com.sine.yys.impl.EventControllerImpl;
 import com.sine.yys.impl.PositionImpl;
 import com.sine.yys.inter.*;

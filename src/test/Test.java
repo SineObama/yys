@@ -1,7 +1,7 @@
 package test;
 
-import com.sine.yys.simulation.InputUtil;
-import com.sine.yys.simulation.RedBlueSimulator;
+import com.sine.yys.InputUtil;
+import com.sine.yys.RedBlueSimulator;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

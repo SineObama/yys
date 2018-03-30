@@ -1,6 +1,10 @@
-package com.sine.yys.simulation;
+package com.sine.yys;
 
-import com.sine.yys.simulation.component.*;
+import com.sine.yys.entity.BattleKoinobori;
+import com.sine.yys.entity.ShikigamiEntityImpl;
+import com.sine.yys.simulation.BaseCamp;
+import com.sine.yys.simulation.PVPCamp;
+import com.sine.yys.simulation.Simulator;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 

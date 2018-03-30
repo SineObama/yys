@@ -1,5 +1,6 @@
-package com.sine.yys.simulation.component;
+package com.sine.yys.simulation;
 
+import com.sine.yys.entity.ShikigamiEntityImpl;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.FireRepo;
@@ -15,7 +16,6 @@ public class PVPCamp extends BaseCamp implements FireRepo {
     private int fireBarPos = 0;  // 鬼火行动条位置，代表点亮的格数（包括闪烁），范围0-5
     private boolean prepared = false;  // 调用ready()后为true。在2个状态之间转换
     private int increase = 3;  // 每次行动满5回合的回复鬼火数。此数字依次增长，最高5点：3 4 5 5 5...
-
 
     public PVPCamp(String name, int fire) {
         super(name);

@@ -1,4 +1,4 @@
-package com.sine.yys.simulation;
+package com.sine.yys;
 
 import com.sine.yys.inter.Shikigami;
 import com.sine.yys.shikigami.*;
