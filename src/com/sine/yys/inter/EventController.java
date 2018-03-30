@@ -1,5 +1,7 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.inter.base.Event;
+
 /**
  * 事件控制器。
  * <p>
@@ -25,15 +27,15 @@ public interface EventController {
      */
     void add(int triggerAt, EventHandler<?> handler);
 
-    <EventType extends T, T> void add(Class<EventType> clazz, EventHandler<T> handler);
+    <EventType extends T, T extends Event> void add(Class<EventType> clazz, EventHandler<T> handler);
 
     void add(EventHandler<?> handler, int priority);
 
-    <EventType extends T, T> void add(Class<EventType> clazz, EventHandler<T> handler, int priority);
+    <EventType extends T, T extends Event> void add(Class<EventType> clazz, EventHandler<T> handler, int priority);
 
     void remove(EventHandler<?> handler);
 
-    <EventType> EventType trigger(EventType event);
+    <EventType extends Event> EventType trigger(EventType event);
 
     void clear();
 }
