@@ -28,6 +28,7 @@ public class ShikigamiFactory {
         put(YuNv::new);
         put(JiaoTu::new);
         put(TongNv::new);
+        put(XueTongZi::new);
     }
 
     private static void put(Creator creator, String... keys) {
