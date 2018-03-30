@@ -1,6 +1,7 @@
 package com.sine.yys.shikigami.operation;
 
 import com.sine.yys.inter.*;
+import com.sine.yys.util.Helper;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Map;
 /**
  * 简单的治疗式神AI，在有队友低于一定血量时使用指定技能。
  */
-public class SimpleCureHandler<T> extends AutoOperationHandler {
+public class SimpleCureHandler<T extends ActiveSkill> extends AutoOperationHandler {
     private final Class<T> cureSkillClass;
     private final double lifePct;
     private final boolean needTarget;
@@ -24,15 +25,10 @@ public class SimpleCureHandler<T> extends AutoOperationHandler {
 
     @Override
     public Operation handle(Entity self, Camp own, Map<ActiveSkill, List<? extends Entity>> map) {
-        for (ActiveSkill activeSkill : map.keySet()) {
-            if (cureSkillClass.isAssignableFrom(activeSkill.getClass())) {
-                ShikigamiEntity shikigamiEntity = own.getLeastLifeShikigami();
-                if (shikigamiEntity.getLife() < lifePct)
-                    return new OperationImpl(needTarget ? shikigamiEntity : null, activeSkill);
-                map.remove(activeSkill);
-                break;
-            }
-        }
+        ShikigamiEntity shikigamiEntity = own.getLeastLifeShikigami();
+        final T t = Helper.findKeyBySubClassAndRemove(map, cureSkillClass);
+        if (t != null && shikigamiEntity.getLife() < lifePct)
+            return new OperationImpl(needTarget ? shikigamiEntity : null, t);
         return super.handle(self, own, map);
     }
 }

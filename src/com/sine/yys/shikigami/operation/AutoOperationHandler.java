@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 基础AI，使用最大耗火技能。
+ * 基础AI，使用最大耗火技能，在普攻时有补刀机制。
  */
 public class AutoOperationHandler implements OperationHandler {
     @Override
