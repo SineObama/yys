@@ -76,7 +76,7 @@ public class HuaJing extends BasePassiveSkill implements EventHandler<BeforeCont
     class AfterActionHandler extends SealablePassiveHandler implements EventHandler<AfterRoundEvent> {
         @Override
         public void handle(AfterRoundEvent event) {
-            if (RandUtil.success(getPct())) {
+            if (!getSelf().isDead() && RandUtil.success(getPct())) {
                 log.info(Msg.trigger(getSelf(), HuaJing.this));
                 getSelf().addPosition(getAddPosition());
             }
