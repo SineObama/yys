@@ -1,8 +1,8 @@
 package com.sine.yys.entity;
 
+import com.sine.yys.buff.control.*;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
-import com.sine.yys.buff.debuff.control.*;
 import com.sine.yys.event.*;
 import com.sine.yys.impl.BuffControllerImpl;
 import com.sine.yys.impl.EventControllerImpl;

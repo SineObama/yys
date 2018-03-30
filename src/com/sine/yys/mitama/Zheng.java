@@ -1,6 +1,6 @@
 package com.sine.yys.mitama;
 
-import com.sine.yys.buff.debuff.control.ChaoFeng;
+import com.sine.yys.buff.control.ChaoFeng;
 import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.BeDamageEvent;
 import com.sine.yys.inter.Entity;

@@ -1,4 +1,4 @@
-package com.sine.yys.buff.debuff.control;
+package com.sine.yys.buff.control;
 
 import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.buff.debuff.SealMitama;

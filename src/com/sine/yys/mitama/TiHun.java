@@ -1,7 +1,7 @@
 package com.sine.yys.mitama;
 
-import com.sine.yys.buff.debuff.control.ChenMo;
-import com.sine.yys.buff.debuff.control.ControlBuff;
+import com.sine.yys.buff.control.ChenMo;
+import com.sine.yys.buff.control.ControlBuff;
 import com.sine.yys.event.*;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;

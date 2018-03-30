@@ -14,7 +14,7 @@ import com.sine.yys.util.RandUtil;
  * 行动结束时有概率获得1次额外行动机会（将自身行动条置为1）。
  * <p>
  * 规则：
- * 1. {@linkplain com.sine.yys.buff.debuff.control.Unmovable 无法行动控制}下不会触发；
+ * 1. {@linkplain com.sine.yys.buff.control.Unmovable 无法行动控制}下不会触发；
  * 2. 触发后能触发轮入道，轮入道触发后不能触发。
  * 3. 触发后拉条效果消失（拉条后行动条增加30%，行动后行动条在0.3位置，但拉条后触发，若不再拉条，行动条重置为0）。
  * 4. 触发后的行动不会推进鬼火条。
