@@ -3,7 +3,7 @@ package com.sine.yys.buff.debuff.control;
 import com.sine.yys.buff.debuff.Debuff;
 
 /**
- * 行动控制效果。
+ * 控制buff。
  * <p>
  * 包括无法行动的效果：变形、眩晕、冰冻、睡眠；
  * 无法自由行动的效果：混乱、嘲讽；

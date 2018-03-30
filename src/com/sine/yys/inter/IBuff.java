@@ -4,10 +4,9 @@ import com.sine.yys.inter.base.IBuffProperty;
 import com.sine.yys.inter.base.Named;
 
 /**
- * 式神头上显示的buff。
+ * 式神头上显示的buff。提供属性加成、护盾、控制等。
  * <p>
  * 一般可分为增益和减益两大类。
- * 有数值类型的（增加攻击、防御、抵抗等），也有护盾、控制效果。
  * <p>
  * 统一实现{@linkplain IBuffProperty}以便统计数值。
  *
