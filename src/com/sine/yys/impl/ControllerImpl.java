@@ -58,12 +58,12 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void attack(Entity self, Entity target, AttackInfo attackInfo) {
-        attack(self, ((Entity) target), attackInfo, new AttackTypeImpl());
+        attack(self, target, attackInfo, new AttackTypeImpl());
     }
 
     @Override
     public void counter(Entity self, Entity target, AttackInfo attackInfo) {
-        attack(((Entity) self), ((Entity) target), attackInfo, new AttackTypeImpl(false, true));
+        attack(self, target, attackInfo, new AttackTypeImpl(false, true));
     }
 
     private void attack(Entity self, Entity target, AttackInfo attackInfo, AttackType type) {
@@ -95,10 +95,7 @@ public class ControllerImpl implements Controller {
      * 破盾后计算御魂效果，进行伤害分摊。
      */
     @Override
-    public void applyDamage(Entity self0, Entity target0, double damage, boolean critical, AttackType type) {
-        Entity self = (Entity) self0;
-        Entity target = (Entity) target0;
-
+    public void applyDamage(Entity self, Entity target, double damage, boolean critical, AttackType type) {
         // 破盾
         final int remain = breakShield(target, (int) damage);
 
@@ -136,8 +133,7 @@ public class ControllerImpl implements Controller {
     // 涓流死亡算击杀，薙魂不算（阴摩罗）
     // 注意与applyDamage的统一
     @Override
-    public void directDamage(Entity self, Entity target0, int damage, AttackType type) {
-        Entity target = (Entity) target0;
+    public void directDamage(Entity self, Entity target, int damage, AttackType type) {
         damage = breakShield(target, damage);
         if (damage > 0) {
             if (!type.isJuanLiu()) {  // 薙魂可以再被涓流分摊，涓流后不再判断涓流
@@ -151,16 +147,14 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void buffDamage(Entity self, Entity target0, int damage) {
-        Entity target = (Entity) target0;
+    public void buffDamage(Entity self, Entity target, int damage) {
         damage = breakShield(target, damage);
         if (damage > 0)
             doDamage(self, target, damage, new AttackTypeImpl(true), false);
     }
 
     @Override
-    public int cureWithoutCritical(Entity self, Entity target0, double src) {
-        Entity target = (Entity) target0;
+    public int cureWithoutCritical(Entity self, Entity target, double src) {
         double coefficient = target.getCureCoefficient();
         double cure = self.getEventController().trigger(new PreCureEvent()).getCure();
         coefficient = new Cure().calc(coefficient, cure);
@@ -239,8 +233,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void applyDebuff(Entity self, Entity target0, DebuffEffect effect) {
-        Entity target = (Entity) target0;
+    public void applyDebuff(Entity self, Entity target, DebuffEffect effect) {
         final double pct;
         final boolean involveHitAndDef = effect.involveHitAndDef();
         if (involveHitAndDef)
@@ -287,8 +280,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void actionChance(Entity self0) {
-        Entity self = (Entity) self0;
+    public void actionChance(Entity self) {
         self.setPosition(1.0);
         log.info(Msg.info(self, "获得一次行动机会"));
     }
