@@ -1,11 +1,15 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.inter.base.IBuffProperty;
+
 import java.util.Collection;
 
 /**
  * 存储{@linkplain IBuff buff}，提供添加、查找、统计属性等操作。
+ * <p>
+ * 通过{@link IBuffProperty}返回所有buff相应属性的合计。
  */
-public interface BuffController {
+public interface BuffController extends IBuffProperty {
     Object remove(Object iBuff);
 
     /**

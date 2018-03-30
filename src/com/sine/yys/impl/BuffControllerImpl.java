@@ -9,7 +9,6 @@ import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
 import com.sine.yys.inter.BuffController;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.base.IBuffProperty;
 import com.sine.yys.rule.buff.*;
 import com.sine.yys.util.Msg;
 
@@ -17,11 +16,9 @@ import java.util.*;
 import java.util.logging.Logger;
 
 /**
- * 通过{@link IBuffProperty}返回所有buff相应属性的合计。
- * <p>
  * 给主逻辑提供行动前后调用的接口。
  */
-public class BuffControllerImpl implements BuffController, IBuffProperty {
+public class BuffControllerImpl implements BuffController {
     private static final Map<Class, Integer> prior = new HashMap<>();
 
     /*
