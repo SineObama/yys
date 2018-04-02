@@ -21,8 +21,8 @@ import com.sine.yys.util.RandUtil;
  * 4. 反击触发溢彩。
  */
 public class Zheng extends BaseSelfMitama implements EventHandler<BeDamageEvent> {
-    private Runner common = new Runner("普通狰反击");
-    private Runner zhenNv = new Runner("针女狰反击");
+    private final Runner common = new Runner("普通狰反击");
+    private final Runner zhenNv = new Runner("针女狰反击");
 
     @Override
     public String getName() {

@@ -34,7 +34,7 @@ import java.util.Map;
  * 和战斗中的状态（技能cd、{@linkplain IBuff buff}、事件）。
  */
 public abstract class EntityImpl extends SimpleObject implements Self, JSONable, Callback {
-    final EventControllerImpl eventController = new EventControllerImpl();
+    private final EventControllerImpl eventController = new EventControllerImpl();
     private final BuffControllerImpl buffController = new BuffControllerImpl(this);
     private final BaseShikigami shikigami;
     private final List<BaseMitama> mitamas;
