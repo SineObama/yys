@@ -2,6 +2,8 @@ package com.sine.yys.simulation;
 
 import com.sine.yys.entity.EntityImpl;
 import com.sine.yys.entity.ShikigamiEntityImpl;
+import com.sine.yys.impl.CampInfo;
+import com.sine.yys.impl.EntityInfo;
 import com.sine.yys.impl.EventControllerImpl;
 import com.sine.yys.impl.PositionImpl;
 import com.sine.yys.inter.*;
@@ -15,16 +17,17 @@ import java.util.logging.Logger;
 
 public abstract class BaseCamp implements Camp, JSONable {
     protected final Logger log = Logger.getLogger(getClass().getName());
-
     final EventControllerImpl eventController = new EventControllerImpl();
     private final String name;
     private final String fullName;
+    private final CampInfo infos;
     private final List<PositionImpl> positions = new ArrayList<>();
     private Camp opposite;
 
-    public BaseCamp(String name) {
+    public BaseCamp(String name, CampInfo info) {
         this.name = name;
         this.fullName = "[" + name + "]";
+        this.infos = info;
     }
 
     @Override
@@ -35,10 +38,6 @@ public abstract class BaseCamp implements Camp, JSONable {
     @Override
     public final String getFullName() {
         return fullName;
-    }
-
-    public final void addEntity(EntityImpl entity) {
-        positions.add(new PositionImpl(entity));
     }
 
     @Override
@@ -95,9 +94,11 @@ public abstract class BaseCamp implements Camp, JSONable {
 
     public void init(Camp enemy, Controller controller) {
         opposite = enemy;
-        for (ShikigamiEntityImpl shikigami : getAllShikigami()) {
+        for (EntityInfo info : infos.infos) {
+            final ShikigamiEntityImpl shikigami = new ShikigamiEntityImpl(info, infos.lifeTimes);
             shikigami.setCamp(this);
             shikigami.init(controller);
+            positions.add(new PositionImpl(shikigami));
         }
     }
 

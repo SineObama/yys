@@ -1,7 +1,4 @@
-package com.sine.yys;
-
-import com.sine.yys.inter.base.Mitama;
-import com.sine.yys.mitama.*;
+package com.sine.yys.mitama;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +7,7 @@ import java.util.Set;
 /**
  * 御魂工厂。
  * <p>
- * 定义了字符串到{@linkplain Mitama 御魂}的对应关系，以进行创建。
+ * 定义了字符串到{@linkplain BaseMitama 御魂}的对应关系，以进行创建。
  * 不区分英文大小写。
  */
 public class MitamaFactory {
@@ -31,7 +28,7 @@ public class MitamaFactory {
     }
 
     private static void put(Creator creator, String... keys) {
-        Mitama mitama = creator.create();
+        BaseMitama mitama = creator.create();
         map.put(mitama.getName().toLowerCase(), creator);
         map.put(mitama.getClass().getName().replaceAll(".*\\.", "").toLowerCase(), creator);
         for (String key : keys) {
@@ -39,7 +36,7 @@ public class MitamaFactory {
         }
     }
 
-    static Mitama create(String key) {
+    public static BaseMitama create(String key) {
         if (key == null)
             return null;
         final Creator creator = map.get(key.toLowerCase());
@@ -53,6 +50,6 @@ public class MitamaFactory {
     }
 
     interface Creator {
-        Mitama create();
+        BaseMitama create();
     }
 }

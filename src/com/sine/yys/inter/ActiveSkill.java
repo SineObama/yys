@@ -1,7 +1,5 @@
 package com.sine.yys.inter;
 
-import com.sine.yys.inter.base.Skill;
-
 /**
  * 主动技能。
  * <p>

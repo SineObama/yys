@@ -1,7 +1,7 @@
 package com.sine.yys;
 
 import com.sine.yys.entity.BattleKoinobori;
-import com.sine.yys.entity.ShikigamiEntityImpl;
+import com.sine.yys.impl.CampInfo;
 import com.sine.yys.simulation.BaseCamp;
 import com.sine.yys.simulation.PVPCamp;
 import com.sine.yys.simulation.Simulator;
@@ -21,16 +21,14 @@ import java.util.logging.Logger;
 public class RedBlueSimulator {
     public static final String redName = "红方";
     public static final String buleName = "蓝方";
-    private final double lifeTimes;
     private final Logger log = Logger.getLogger(getClass().getName());
     private final CampInfo redInfo, blueInfo;
     private final Map<String, Integer> count = new HashMap<>(2);
     private long start, end;
 
-    public RedBlueSimulator(CampInfo red, CampInfo blue, double lifeTimes) {
+    public RedBlueSimulator(CampInfo red, CampInfo blue) {
         this.redInfo = red;
         this.blueInfo = blue;
-        this.lifeTimes = lifeTimes;
         count.put(redName, 0);
         count.put(buleName, 0);
     }
@@ -40,14 +38,8 @@ public class RedBlueSimulator {
         try {
             start = System.currentTimeMillis();
             for (; i <= times; i++) {
-                BaseCamp red = new PVPCamp(redName, 3);
-                BaseCamp blue = new PVPCamp(buleName, 3);
-                for (EntityInfo info : redInfo.infos) {
-                    red.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen), lifeTimes));
-                }
-                for (EntityInfo info : blueInfo.infos) {
-                    blue.addEntity(new ShikigamiEntityImpl(info.property, MitamaFactory.create(info.mitama), ShikigamiFactory.create(info.shiShen), lifeTimes));
-                }
+                BaseCamp red = new PVPCamp(redName, redInfo, 3);
+                BaseCamp blue = new PVPCamp(buleName, blueInfo, 3);
                 Simulator simulator = new Simulator(red, blue, Collections.singletonList(new BattleKoinobori(128.0, red, blue)));
                 while (simulator.getWin() == null)
                     simulator.step();

@@ -2,8 +2,8 @@ package com.sine.yys.shikigami;
 
 import com.sine.yys.inter.OperationHandler;
 import com.sine.yys.inter.Shikigami;
-import com.sine.yys.inter.base.Skill;
 import com.sine.yys.shikigami.operation.AutoOperationHandler;
+import com.sine.yys.skill.BaseSkill;
 
 import java.util.Collection;
 
@@ -11,11 +11,11 @@ import java.util.Collection;
  * 式神基类。
  */
 public abstract class BaseShikigami implements Shikigami {
-    private final Collection<Skill> skills;
+    private final Collection<BaseSkill> skills;
     private final String name;
     private final double originAttack;
 
-    BaseShikigami(Collection<Skill> skills, String name, double originAttack) {
+    BaseShikigami(Collection<BaseSkill> skills, String name, double originAttack) {
         this.skills = skills;
         this.name = name;
         this.originAttack = originAttack;
@@ -43,7 +43,7 @@ public abstract class BaseShikigami implements Shikigami {
     }
 
     @Override
-    public Collection<? extends Skill> getSkills() {
+    public Collection<BaseSkill> getSkills() {
         return skills;
     }
 
@@ -54,6 +54,6 @@ public abstract class BaseShikigami implements Shikigami {
 
     @FunctionalInterface
     interface InitSkill {
-        Collection<Skill> init();
+        Collection<BaseSkill> init();
     }
 }

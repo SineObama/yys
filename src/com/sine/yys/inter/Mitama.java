@@ -1,4 +1,6 @@
-package com.sine.yys.inter.base;
+package com.sine.yys.inter;
+
+import com.sine.yys.inter.base.Named;
 
 /**
  * 御魂。

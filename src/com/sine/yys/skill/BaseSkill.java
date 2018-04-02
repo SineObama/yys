@@ -3,7 +3,7 @@ package com.sine.yys.skill;
 import com.sine.yys.impl.BaseComponent;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.inter.base.Sealable;
-import com.sine.yys.inter.base.Skill;
+import com.sine.yys.inter.Skill;
 import com.sine.yys.util.JSON;
 
 /**

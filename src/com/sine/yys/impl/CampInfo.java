@@ -1,4 +1,4 @@
-package com.sine.yys;
+package com.sine.yys.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,5 +7,6 @@ import java.util.List;
  * 一方阵营信息，包括若干个式神的信息。
  */
 public class CampInfo {
-    final List<EntityInfo> infos = new ArrayList<>();
+    public final List<EntityInfo> infos = new ArrayList<>();
+    public double lifeTimes = 1.0;
 }

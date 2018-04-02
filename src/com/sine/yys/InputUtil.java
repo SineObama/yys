@@ -1,5 +1,7 @@
 package com.sine.yys;
 
+import com.sine.yys.impl.CampInfo;
+import com.sine.yys.impl.EntityInfo;
 import com.sine.yys.impl.PropertyImpl;
 
 import java.io.BufferedReader;
@@ -30,8 +32,10 @@ public class InputUtil {
         final Iterator<String> iterator = lines.iterator();
         final double times = readNum(iterator);
         final CampInfo red = readCamp(iterator);
+        red.lifeTimes = times;
         final CampInfo blue = readCamp(iterator);
-        return new RedBlueSimulator(red, blue, times);
+        blue.lifeTimes = times;
+        return new RedBlueSimulator(red, blue);
     }
 
     /**
