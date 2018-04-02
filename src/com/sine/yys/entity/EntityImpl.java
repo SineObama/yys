@@ -8,14 +8,16 @@ import com.sine.yys.impl.BuffControllerImpl;
 import com.sine.yys.impl.EntityInfo;
 import com.sine.yys.impl.EventControllerImpl;
 import com.sine.yys.inter.*;
-import com.sine.yys.inter.base.*;
+import com.sine.yys.inter.base.Callback;
+import com.sine.yys.inter.base.JSONable;
+import com.sine.yys.inter.base.Property;
 import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.mitama.MitamaFactory;
 import com.sine.yys.shikigami.BaseShikigami;
 import com.sine.yys.shikigami.ShikigamiFactory;
 import com.sine.yys.shikigami.operation.OperationImpl;
-import com.sine.yys.skill.BaseAttackSkill;
 import com.sine.yys.skill.BaseSkill;
+import com.sine.yys.skill.mono.BaseMonoAttack;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -195,7 +197,7 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
             }
 
             // 执行技能
-            if (activeSkill instanceof BaseAttackSkill && target instanceof ShikigamiEntity) {
+            if (activeSkill instanceof BaseMonoAttack && target instanceof ShikigamiEntity) {
                 // 触发对方被单体攻击事件
                 target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
             }

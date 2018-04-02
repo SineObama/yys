@@ -7,11 +7,11 @@ import com.sine.yys.inter.*;
 import java.util.logging.Logger;
 
 /**
- * 技能和御魂的通用逻辑。
+ * 技能和御魂的通用逻辑，需要进行初始化的逻辑组件。
  * 初始化时设定上下文。
  * 可以定义初始化、入场和死亡的操作。
  */
-public class BaseComponent implements Component {
+public class BaseComponent  {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
     private Self self = null;
     private Controller controller = null;
@@ -56,7 +56,10 @@ public class BaseComponent implements Component {
         return null;
     }
 
-    @Override
+    /**
+     * @param self 所属式神。
+     * @param own  所在阵营。
+     */
     public final void init(Controller controller, Self self, Camp own) {
         if (this.self != null) {
             log.warning("重复调用 init()。即将返回。");
