@@ -112,7 +112,7 @@ public class ControllerImpl implements Controller {
             self.getEventController().trigger(new DamageEvent(self, target));
         }
 
-        self.getEventController().trigger(new AttackEvent(self, target));
+        damage *= self.getEventController().trigger(new AttackEvent(self, target)).getCoefficient();
         target.getEventController().trigger(new BeAttackEvent(target, self, type));
 
         if (remain != 0) {
