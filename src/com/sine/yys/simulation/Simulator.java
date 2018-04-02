@@ -63,6 +63,8 @@ public class Simulator {
      * 初始化。
      */
     private void init() {
+        if (started)
+            return;
         started = true;
         camp0.init(camp1, controller);
         camp1.init(camp0, controller);
@@ -79,8 +81,7 @@ public class Simulator {
     public void step() {
         if (ended)
             return;
-        if (!started)
-            init();
+        init();
 
         try {
             // 获取下一行动式神
