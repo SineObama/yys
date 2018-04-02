@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public abstract class BaseCamp implements Camp, JSONable {
     protected final Logger log = Logger.getLogger(getClass().getName());
-    final EventControllerImpl eventController = new EventControllerImpl();
+    private final EventControllerImpl eventController = new EventControllerImpl();
     private final String name;
     private final String fullName;
     private final CampInfo infos;
