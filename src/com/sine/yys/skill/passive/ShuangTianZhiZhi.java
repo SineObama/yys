@@ -5,6 +5,7 @@ import com.sine.yys.effect.BaseDebuffEffect;
 import com.sine.yys.event.AttackEvent;
 import com.sine.yys.event.JuanLiuDamageEvent;
 import com.sine.yys.inter.*;
+import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 /**
@@ -56,8 +57,11 @@ public class ShuangTianZhiZhi extends BasePassiveSkill implements EventHandler<A
     }
 
     private double apply(Entity target) {
-        if (target.getBuffController().contain(BingDong.class))
+        if (target.getBuffController().contain(BingDong.class)) {
+            log.info(Msg.vector(getSelf(), "对", target, "破冰"));
+            target.getBuffController().remove(BingDong.class);
             return getBreakCoefficient();
+        }
         getController().applyDebuff(getSelf(), target, effect);
         return 1.0;
     }
