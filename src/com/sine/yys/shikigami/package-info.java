@@ -1,4 +1,4 @@
 /**
- * 式神的信息，包括技能、战斗AI等。
+ * {@linkplain com.sine.yys.inter.Shikigami 式神}。
  */
 package com.sine.yys.shikigami;
