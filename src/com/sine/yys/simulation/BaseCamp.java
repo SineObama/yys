@@ -21,7 +21,7 @@ public abstract class BaseCamp implements Camp, JSONable {
     private final String name;
     private final String fullName;
     private final CampInfo infos;
-    private final List<PositionImpl> positions = new ArrayList<>();
+    private final List<PositionImpl<EntityImpl>> positions = new ArrayList<>();
     private Camp opposite;
 
     public BaseCamp(String name, CampInfo info) {
@@ -43,7 +43,7 @@ public abstract class BaseCamp implements Camp, JSONable {
     @Override
     public final List<EntityImpl> getAllAlive() {
         List<EntityImpl> entities = new ArrayList<>();
-        for (Position position : positions) {
+        for (Position<EntityImpl> position : positions) {
             if (position.getCurrent() != null)
                 entities.add(position.getCurrent());
         }
@@ -53,9 +53,9 @@ public abstract class BaseCamp implements Camp, JSONable {
     @Override
     public final List<ShikigamiEntityImpl> getAllShikigami() {
         List<ShikigamiEntityImpl> entities = new ArrayList<>();
-        for (Position position : positions) {
+        for (Position<EntityImpl> position : positions) {
             if (position.getCurrent() instanceof ShikigamiEntityImpl)
-                entities.add(position.getCurrent());
+                entities.add((ShikigamiEntityImpl) position.getCurrent());
         }
         return entities;
     }
@@ -98,7 +98,7 @@ public abstract class BaseCamp implements Camp, JSONable {
             final ShikigamiEntityImpl shikigami = new ShikigamiEntityImpl(info, infos.lifeTimes);
             shikigami.setCamp(this);
             shikigami.init(controller);
-            positions.add(new PositionImpl(shikigami));
+            positions.add(new PositionImpl<>(shikigami));
         }
     }
 

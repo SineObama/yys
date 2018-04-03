@@ -7,21 +7,21 @@ package com.sine.yys.inter;
  * <p>
  * 用于死后复活、召唤物放置。
  */
-public interface Position {
+public interface Position<T extends Entity> {
     /**
      * @return 当前位置上的实体。
      */
-    <T extends Entity> T getCurrent();
+    T getCurrent();
 
     /**
      * 设置当前位置的实体。
      *
      * @param entity 实体。
      */
-    <T extends Entity> void setCurrent(T entity);
+    void setCurrent(T entity);
 
     /**
      * @return 位置上原本的实体。
      */
-    <T extends Entity> T getSource();
+    T getSource();
 }

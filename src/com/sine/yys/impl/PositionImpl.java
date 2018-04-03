@@ -5,29 +5,27 @@ import com.sine.yys.inter.Position;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.util.JSON;
 
-public class PositionImpl implements Position, JSONable {
-    private final Entity source;
-    private Entity current;
+public class PositionImpl<T extends Entity> implements Position<T>, JSONable {
+    private final T source;
+    private T current;
 
-    public PositionImpl(Entity source) {
+    public PositionImpl(T source) {
         this.current = source;
         this.source = source;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <T extends Entity> T getSource() {
-        return (T) source;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends Entity> T getCurrent() {
-        return (T) current;
+    public T getSource() {
+        return source;
     }
 
     @Override
-    public void setCurrent(Entity entity) {
+    public T getCurrent() {
+        return current;
+    }
+
+    @Override
+    public void setCurrent(T entity) {
         current = entity;
     }
 
