@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 青行灯-吸魂灯。
  */
-public class XiHunDeng extends SimpleGroupAttack implements PctEffect {
+public class XiHunDeng extends BaseGroupAttack implements PctEffect {
     @Override
     public void doApply(Entity target) {
         final Controller controller = getController();

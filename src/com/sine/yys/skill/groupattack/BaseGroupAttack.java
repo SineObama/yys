@@ -10,7 +10,7 @@ import com.sine.yys.skill.targetresolver.EnemyCampResolver;
 /**
  * 简单群攻，可多段。
  */
-public abstract class SimpleGroupAttack extends BaseAttackSkill {
+public abstract class BaseGroupAttack extends BaseAttackSkill {
     @Override
     public void doApply(Entity unused) {
         final Controller controller = getController();
