@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * 初始化时设定上下文。
  * 可以定义初始化、入场和死亡的操作。
  */
-public class BaseComponent  {
+public class BaseComponent {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
     private Self self = null;
     private Controller controller = null;
