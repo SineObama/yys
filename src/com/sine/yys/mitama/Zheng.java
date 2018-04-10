@@ -73,11 +73,7 @@ public class Zheng extends BaseSelfMitama implements EventHandler<BeDamageEvent>
             if (self.isDead())
                 return;
             log.info(Msg.info(self, name));
-            Entity target = self.applyControl(this.target);
-            if (target == null)
-                return;
-            self.getCommonAttack().counter(target);
-            self.getEventController().trigger(new AfterActionEvent(self));
+            self.counter(target);
         }
 
         @Override

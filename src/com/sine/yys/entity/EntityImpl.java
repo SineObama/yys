@@ -202,6 +202,7 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
                 target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
             }
             activeSkill.apply(target);
+            // XXXX 协战的时机，各个普攻各不相同
             if (activeSkill instanceof CommonAttack) {
                 // 触发普攻事件
                 this.eventController.trigger(new CommonAttackEvent(this, target));
@@ -374,8 +375,7 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
         return activeSkills;
     }
 
-    @Override
-    public CommonAttack getCommonAttack() {
+    private CommonAttack getCommonAttack() {
         for (Skill skill : shikigami.getSkills()) {
             if (skill instanceof CommonAttack)
                 return (CommonAttack) skill;
@@ -389,26 +389,62 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
         target = applyControl(target);
         if (target == null)
             return;
-        if (!camp.getOpposite().contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
+        if (target.isDead()) {
+            log.info(Msg.info(target, "已死，随机协战"));
+            target = this.randomTarget();
+        } else if (!camp.getOpposite().contain(target)) {  // 目标不在对方阵营中。可能目标为自己人（队友混乱攻击）
             log.info(Msg.vector(target, "不在", this, "敌方阵营中，随机协战"));
-            target = camp.getOpposite().randomTarget();
+            target = this.randomTarget();
         }
         if (target != null)
             getCommonAttack().xieZhan(target);
     }
 
     @Override
-    public Entity applyControl(Entity target) {
+    public void counter(Entity target) {
+        target = applyControl(target);
+        if (target == null)
+            return;
+        if (target.isDead()) {
+            log.info(Msg.info(target, "已死，随机反击"));
+            target = this.randomTarget();
+        }
+        if (target != null)
+            this.getCommonAttack().counter(target);
+        this.eventController.trigger(new AfterActionEvent(this));
+    }
+
+    /**
+     * 根据是否混乱，获取选择攻击目标。混乱时可能攻击所有人，包括己方。
+     */
+    private Entity randomTarget() {
+        if (buffController.contain(HunLuan.class)) {
+            final List<Entity> allAlive = new ArrayList<>();
+            allAlive.addAll(this.camp.getAllAlive());
+            allAlive.addAll(this.camp.getOpposite().getAllAlive());
+            allAlive.remove(this);
+            return RandUtil.choose(allAlive);
+        }
+        return RandUtil.choose(this.camp.getOpposite().getAllAlive());
+    }
+
+    /**
+     * 根据当前控制效果（强控或嘲讽），重新确认攻击目标。
+     * 不处理目标死亡。
+     *
+     * @param origin 期望攻击目标。
+     * @return 最终攻击目标。无法攻击则为null。
+     */
+    private Entity applyControl(Entity target) {
         final ControlBuff controlBuff = buffController.getFirstWithPrior(ControlBuff.class);
-        if (controlBuff instanceof Unmovable)
+        if (controlBuff instanceof Unmovable) {
+            log.info(Msg.info(this, "无法攻击"));
             return null;
+        }
         if (controlBuff instanceof ChaoFeng) {
             final ChaoFeng chaoFeng = (ChaoFeng) controlBuff;
             target = chaoFeng.getSrc();
-        }
-        if (target.isDead()) {
-            log.info(Msg.info(target, "已死，随机攻击"));
-            target = camp.getOpposite().randomTarget();
+            log.info(Msg.info(this, "攻击嘲讽目标", target));
         }
         return target;
     }

@@ -48,18 +48,20 @@ public interface Entity extends Target, Property {
     int getLifeInt();
 
     /**
-     * @param target 协战目标。若目标异常（已死或为友方）则随机协战敌方目标。
+     * 进行协战。
+     * 包括受控状态、目标死亡、目标不是敌方、自己混乱的处理。
+     *
+     * @param target 原协战目标。
      */
     void xieZhan(Entity target);
 
     /**
-     * 根据当前控制效果，重新确认攻击目标。
-     * 目标死亡则随机攻击敌方。
+     * 进行反击。
+     * 包括受控状态、目标死亡、自己混乱的处理。
      *
-     * @param origin 期望攻击目标。
-     * @return 最终攻击目标。无法攻击则为null。
+     * @param target 原反击目标。
      */
-    Entity applyControl(Entity origin);
+    void counter(Entity target);
 
     boolean isDead();
 
