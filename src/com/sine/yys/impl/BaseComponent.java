@@ -2,7 +2,10 @@ package com.sine.yys.impl;
 
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
-import com.sine.yys.inter.*;
+import com.sine.yys.inter.Camp;
+import com.sine.yys.inter.Controller;
+import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.EventHandler;
 
 import java.util.logging.Logger;
 
@@ -13,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class BaseComponent {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
-    private Self self = null;
+    private Entity self = null;
     private Controller controller = null;
     private Camp own, enemy;
 
@@ -34,7 +37,7 @@ public class BaseComponent {
     /**
      * @return 自身所属式神。
      */
-    protected final Self getSelf() {
+    protected final Entity getSelf() {
         return self;
     }
 
@@ -60,7 +63,7 @@ public class BaseComponent {
      * @param self 所属式神。
      * @param own  所在阵营。
      */
-    public final void init(Controller controller, Self self, Camp own) {
+    public final void init(Controller controller, Entity self, Camp own) {
         if (this.self != null) {
             log.warning("重复调用 init()。即将返回。");
             return;

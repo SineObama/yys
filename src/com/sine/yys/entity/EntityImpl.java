@@ -33,7 +33,7 @@ import java.util.Map;
  * 保存了{@linkplain Shikigami 式神信息}、{@linkplain Property 属性}、{@linkplain Mitama 御魂}，
  * 和战斗中的状态（技能cd、{@linkplain IBuff buff}、事件）。
  */
-public abstract class EntityImpl extends SimpleObject implements Self, JSONable, Callback {
+public abstract class EntityImpl extends SimpleObject implements Entity, JSONable, Callback {
     private final EventControllerImpl eventController = new EventControllerImpl();
     private final BuffControllerImpl buffController = new BuffControllerImpl(this);
     private final BaseShikigami shikigami;
