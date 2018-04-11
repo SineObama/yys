@@ -78,9 +78,15 @@ public class Simulator {
         camp1.getEventController().trigger(new BattleStartEvent());
     }
 
-    public void step() {
+    /**
+     * 行动条前进一次，一般会让一个式神行动一次。
+     * 获得新回合不会返回，也包括反击等动作。
+     *
+     * @return 战斗是否还能继续。
+     */
+    public boolean step() {
         if (ended)
-            return;
+            return false;
         init();
 
         try {
@@ -105,6 +111,8 @@ public class Simulator {
             log.severe(camp1.toJSON());
             throw e;
         }
+
+        return !checkWin();
     }
 
     private boolean checkWin() {

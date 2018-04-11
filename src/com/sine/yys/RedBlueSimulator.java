@@ -41,8 +41,7 @@ public class RedBlueSimulator {
                 BaseCamp red = new PVPCamp(redName, redInfo, 3);
                 BaseCamp blue = new PVPCamp(buleName, blueInfo, 3);
                 Simulator simulator = new Simulator(red, blue, Collections.singletonList(new BattleKoinobori(128.0, red, blue)));
-                while (simulator.getWin() == null)
-                    simulator.step();
+                while (simulator.step()) ;
                 String winName = simulator.getWin().getName();
                 log.info(Msg.join("测试", i, winName, "胜利"));
                 count.put(winName, count.get(winName) + 1);
