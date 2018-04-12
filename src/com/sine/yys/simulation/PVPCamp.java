@@ -49,6 +49,7 @@ public class PVPCamp extends BaseCamp implements FireRepo {
         if (count > fire)
             count = fire;
         fire -= count;
+        log.info(Msg.info(this, "减少", count, "点鬼火，当前剩余", fire, "点"));
         return count;
     }
 
