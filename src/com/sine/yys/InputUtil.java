@@ -4,16 +4,14 @@ import com.sine.yys.impl.CampInfo;
 import com.sine.yys.impl.EntityInfo;
 import com.sine.yys.impl.PropertyImpl;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * 从文件读取数据，构成模拟器。
+ * 默认文件编码UTF-8。
  * <p>
  * 第一行是一个浮点值，血量加成。
  * 每行代表一个式神。
@@ -26,8 +24,13 @@ import java.util.List;
  */
 public class InputUtil {
     public static RedBlueSimulator create(String filename) throws IOException {
+        return create(filename, null);
+    }
+
+    public static RedBlueSimulator create(String filename, String encoding) throws IOException {
         File file = new File(filename);
-        final FileReader reader = new FileReader(file);
+        final InputStreamReader reader;
+        reader = new InputStreamReader(new FileInputStream(file), encoding == null ? "UTF-8" : encoding);
         final List<String> lines = readFileByLines(reader);
         final Iterator<String> iterator = lines.iterator();
         final double times = readNum(iterator);
@@ -99,7 +102,7 @@ public class InputUtil {
         return doubles;
     }
 
-    private static List<String> readFileByLines(FileReader reader) throws IOException {
+    private static List<String> readFileByLines(Reader reader) throws IOException {
         List<String> lines = new ArrayList<>(11);
         BufferedReader bufferedReader = new BufferedReader(reader);
         String line;
