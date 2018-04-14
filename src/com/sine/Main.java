@@ -4,6 +4,7 @@ import com.sine.yys.InputUtil;
 import com.sine.yys.RedBlueSimulator;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +20,7 @@ public class Main {
      * @param args 参数：数据文件名 测试次数 [可选参数]
      *             可选参数：-i 显示战斗过程信息；-fe=gbk 设置读取文件的编码为gbk。
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         args = process(args);
         final String filename;
         final int times;
@@ -28,24 +29,30 @@ public class Main {
         else
             filename = args[0];
         if (args.length < 2)
-            times = 10;
+            times = 100;
         else
             times = Integer.valueOf(args[1]);
 
-        RedBlueSimulator simulator = InputUtil.create(filename, fileEncoding);
-        simulator.test(times);
+        try {
+            RedBlueSimulator simulator = InputUtil.create(filename, fileEncoding);
+            simulator.test(times);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("unsupported encoding: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("read file failed: " + e.getLocalizedMessage());
+        }
     }
 
     private static String[] process(String[] args) {
         String[] temp = new String[args.length];
         int count = 0;
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-i")) {
+        for (String arg : args) {
+            if (arg.equals("-i")) {
                 Logger.getLogger("").setLevel(Level.INFO);
-            } else if (args[i].startsWith("-fe=")) {
-                fileEncoding = args[i].substring(4);
+            } else if (arg.startsWith("-fe=")) {
+                fileEncoding = arg.substring(4);
             } else {
-                temp[count] = args[i];
+                temp[count] = arg;
                 count++;
             }
         }
