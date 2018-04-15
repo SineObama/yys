@@ -17,8 +17,10 @@ public class Main {
     }
 
     /**
-     * @param args 参数：数据文件名 测试次数 [可选参数]
-     *             可选参数：-i 显示战斗过程信息；-fe=gbk 设置读取文件的编码为gbk。
+     * @param args 参数：{@code [输入文件 [测试次数]] [-i] [-fe=<encoding>]}
+     *             <p>
+     *             -i 显示战斗过程信息；<br/>
+     *             {@code [-fe=<encoding>]} 设置读取文件的编码为gbk。
      */
     public static void main(String[] args) {
         args = process(args);
