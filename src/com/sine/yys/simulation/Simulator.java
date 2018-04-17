@@ -63,6 +63,8 @@ public class Simulator {
      * 初始化。
      */
     private void init() {
+        if (started)
+            return;
         started = true;
         camp0.init(camp1, controller);
         camp1.init(camp0, controller);
@@ -76,11 +78,16 @@ public class Simulator {
         camp1.getEventController().trigger(new BattleStartEvent());
     }
 
-    public void step() {
+    /**
+     * 行动条前进一次，一般会让一个式神行动一次。
+     * 获得新回合不会返回，也包括反击等动作。
+     *
+     * @return 战斗是否还能继续。
+     */
+    public boolean step() {
         if (ended)
-            return;
-        if (!started)
-            init();
+            return false;
+        init();
 
         try {
             // 获取下一行动式神
@@ -104,6 +111,8 @@ public class Simulator {
             log.severe(camp1.toJSON());
             throw e;
         }
+
+        return !checkWin();
     }
 
     private boolean checkWin() {

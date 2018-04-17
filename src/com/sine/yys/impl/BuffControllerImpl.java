@@ -2,7 +2,7 @@ package com.sine.yys.impl;
 
 import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.buff.BattleFlag;
-import com.sine.yys.buff.debuff.control.*;
+import com.sine.yys.buff.control.*;
 import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
 import com.sine.yys.buff.shield.XueZhiHuaHaiShield;

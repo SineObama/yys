@@ -6,7 +6,7 @@ import com.sine.yys.inter.Entity;
 /**
  * 般若-鬼袭。
  */
-public class GuiXi extends SimpleGroupAttack {
+public class GuiXi extends BaseGroupAttack {
     @Override
     public void doApply(Entity unused) {
         super.doApply(unused);

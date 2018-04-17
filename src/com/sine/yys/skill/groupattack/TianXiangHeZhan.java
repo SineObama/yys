@@ -10,7 +10,7 @@ import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 /**
  * 姑获鸟-天翔鹤斩。
  */
-public class TianXiangHeZhan extends SimpleGroupAttack {
+public class TianXiangHeZhan extends BaseGroupAttack {
     @Override
     public void doApply(Entity target) {
         super.doApply(target);

@@ -1,7 +1,6 @@
 package com.sine.yys.inter;
 
 import com.sine.yys.inter.base.Named;
-import com.sine.yys.inter.base.Skill;
 
 import java.util.Collection;
 

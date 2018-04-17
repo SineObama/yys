@@ -2,6 +2,7 @@ package com.sine.yys.impl;
 
 import com.sine.yys.inter.EventController;
 import com.sine.yys.inter.EventHandler;
+import com.sine.yys.inter.base.Event;
 import com.sine.yys.inter.base.Sealable;
 
 import java.lang.reflect.ParameterizedType;
@@ -41,7 +42,7 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType extends T, T> void add(Class<EventType> clazz, EventHandler<T> handler) {
+    public <EventType extends T, T extends Event> void add(Class<EventType> clazz, EventHandler<T> handler) {
         get(clazz).add(new Container<>(null, handler));
     }
 
@@ -52,7 +53,7 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType extends T, T> void add(Class<EventType> clazz, EventHandler<T> handler, int priority) {
+    public <EventType extends T, T extends Event> void add(Class<EventType> clazz, EventHandler<T> handler, int priority) {
         prior.put(handler, priority);
         get(clazz).add(new Container<>(priority, handler));
     }
@@ -65,7 +66,7 @@ public class EventControllerImpl implements EventController {
     }
 
     @Override
-    public <EventType> EventType trigger(EventType event) {
+    public <EventType extends Event> EventType trigger(EventType event) {
         if (times.containsKey(event)) {
             times.put(event, times.get(event) + 1);
         } else {

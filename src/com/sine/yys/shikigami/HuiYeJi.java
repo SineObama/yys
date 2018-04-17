@@ -6,6 +6,7 @@ import com.sine.yys.shikigami.operation.OperationImpl;
 import com.sine.yys.skill.LongShouZhiYu;
 import com.sine.yys.skill.commonattack.PengLaiYuZhi;
 import com.sine.yys.skill.passive.HuoShuQiu;
+import com.sine.yys.util.Helper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,16 +32,9 @@ public class HuiYeJi extends BaseShikigami {
         @Override
         public Operation handle(Entity self, Camp own, Map<ActiveSkill, List<? extends Entity>> map) {
             LongShouZhiYu.Buff buff = self.getBuffController().get(LongShouZhiYu.Buff.class);
-            for (ActiveSkill activeSkill : map.keySet()) {
-                if (activeSkill instanceof LongShouZhiYu) {
-                    if (buff == null || buff.getLast() <= 1) {
-                        return new OperationImpl(null, activeSkill);
-                    } else {
-                        map.remove(activeSkill);
-                        break;
-                    }
-                }
-            }
+            final LongShouZhiYu longShouZhiYu = Helper.findKeyBySubClassAndRemove(map, LongShouZhiYu.class);
+            if (longShouZhiYu != null && (buff == null || buff.getLast() <= 1))
+                return new OperationImpl(null, longShouZhiYu);
             return super.handle(self, own, map);
         }
     }

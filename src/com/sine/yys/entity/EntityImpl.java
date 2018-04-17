@@ -1,15 +1,23 @@
 package com.sine.yys.entity;
 
+import com.sine.yys.buff.control.*;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
-import com.sine.yys.buff.debuff.control.*;
 import com.sine.yys.event.*;
 import com.sine.yys.impl.BuffControllerImpl;
+import com.sine.yys.impl.EntityInfo;
 import com.sine.yys.impl.EventControllerImpl;
 import com.sine.yys.inter.*;
-import com.sine.yys.inter.base.*;
+import com.sine.yys.inter.base.Callback;
+import com.sine.yys.inter.base.JSONable;
+import com.sine.yys.inter.base.Property;
+import com.sine.yys.mitama.BaseMitama;
+import com.sine.yys.mitama.MitamaFactory;
+import com.sine.yys.shikigami.BaseShikigami;
+import com.sine.yys.shikigami.ShikigamiFactory;
 import com.sine.yys.shikigami.operation.OperationImpl;
-import com.sine.yys.skill.BaseAttackSkill;
+import com.sine.yys.skill.BaseSkill;
+import com.sine.yys.skill.mono.BaseMonoAttack;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -25,11 +33,11 @@ import java.util.Map;
  * 保存了{@linkplain Shikigami 式神信息}、{@linkplain Property 属性}、{@linkplain Mitama 御魂}，
  * 和战斗中的状态（技能cd、{@linkplain IBuff buff}、事件）。
  */
-public abstract class EntityImpl extends SimpleObject implements Self, JSONable, Callback {
-    final EventControllerImpl eventController = new EventControllerImpl();
+public abstract class EntityImpl extends SimpleObject implements Entity, JSONable, Callback {
+    private final EventControllerImpl eventController = new EventControllerImpl();
     private final BuffControllerImpl buffController = new BuffControllerImpl(this);
-    private final Shikigami shikigami;
-    private final List<Mitama> mitamas;
+    private final BaseShikigami shikigami;
+    private final List<BaseMitama> mitamas;
     private final Property property;
     private final Map<Object, Object> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
     private final double lifeTimes;
@@ -37,14 +45,14 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
     private FireRepo fireRepo;
     private int life;
 
-    EntityImpl(Property property, Mitama mitama, Shikigami shikigami, String name, double lifeTimes) {
-        super(name, 9999);
-        this.property = property;
-        this.shikigami = shikigami;
+    EntityImpl(EntityInfo info, double lifeTimes) {
+        super(ShikigamiFactory.getDefaultName(info.shiShen), 9999);
+        this.property = info.property;
+        this.shikigami = ShikigamiFactory.create(info.shiShen);
         this.lifeTimes = lifeTimes;
         this.mitamas = new ArrayList<>();
-        if (mitama != null)
-            this.mitamas.add(mitama);
+        if (info.mitama != null)
+            this.mitamas.add(MitamaFactory.create(info.mitama));
         this.life = getMaxLife();
     }
 
@@ -52,14 +60,10 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
     protected final void doInit() {
         eventController.setParent(camp.getEventController());
         final Controller controller = getController();
-        for (Skill skill : this.shikigami.getSkills()) {
-            if (skill instanceof Component)
-                ((Component) skill).init(controller, this, camp);
-        }
-        for (Mitama mitama : this.mitamas) {
-            if (mitama instanceof Component)
-                ((Component) mitama).init(controller, this, camp);
-        }
+        for (BaseSkill skill : this.shikigami.getSkills())
+            skill.init(controller, this, camp);
+        for (BaseMitama mitama : this.mitamas)
+            mitama.init(controller, this, camp);
     }
 
     /*
@@ -104,6 +108,7 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
         this.buffController.afterAction(getController());
 
         // 回合后事件
+        this.eventController.trigger(new AfterActionEvent(this));
         this.eventController.trigger(new AfterRoundEvent(this));
 
         for (Skill skill : this.shikigami.getSkills())
@@ -192,11 +197,12 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
             }
 
             // 执行技能
-            if (activeSkill instanceof BaseAttackSkill && target instanceof ShikigamiEntity) {
+            if (activeSkill instanceof BaseMonoAttack && target instanceof ShikigamiEntity) {
                 // 触发对方被单体攻击事件
                 target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
             }
             activeSkill.apply(target);
+            // XXXX 协战的时机，各个普攻各不相同
             if (activeSkill instanceof CommonAttack) {
                 // 触发普攻事件
                 this.eventController.trigger(new CommonAttackEvent(this, target));
@@ -369,8 +375,7 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
         return activeSkills;
     }
 
-    @Override
-    public CommonAttack getCommonAttack() {
+    private CommonAttack getCommonAttack() {
         for (Skill skill : shikigami.getSkills()) {
             if (skill instanceof CommonAttack)
                 return (CommonAttack) skill;
@@ -384,26 +389,62 @@ public abstract class EntityImpl extends SimpleObject implements Self, JSONable,
         target = applyControl(target);
         if (target == null)
             return;
-        if (!camp.getOpposite().contain(target)) {  // 目标不在对方阵营中。可能已被（队友普攻）击杀，或者目标为自己人（队友混乱攻击）
+        if (target.isDead()) {
+            log.info(Msg.info(target, "已死，随机协战"));
+            target = this.randomTarget();
+        } else if (!camp.getOpposite().contain(target)) {  // 目标不在对方阵营中。可能目标为自己人（队友混乱攻击）
             log.info(Msg.vector(target, "不在", this, "敌方阵营中，随机协战"));
-            target = camp.getOpposite().randomTarget();
+            target = this.randomTarget();
         }
         if (target != null)
             getCommonAttack().xieZhan(target);
     }
 
     @Override
-    public Entity applyControl(Entity target) {
+    public void counter(Entity target) {
+        target = applyControl(target);
+        if (target == null)
+            return;
+        if (target.isDead()) {
+            log.info(Msg.info(target, "已死，随机反击"));
+            target = this.randomTarget();
+        }
+        if (target != null)
+            this.getCommonAttack().counter(target);
+        this.eventController.trigger(new AfterActionEvent(this));
+    }
+
+    /**
+     * 根据是否混乱，获取选择攻击目标。混乱时可能攻击所有人，包括己方。
+     */
+    private Entity randomTarget() {
+        if (buffController.contain(HunLuan.class)) {
+            final List<Entity> allAlive = new ArrayList<>();
+            allAlive.addAll(this.camp.getAllAlive());
+            allAlive.addAll(this.camp.getOpposite().getAllAlive());
+            allAlive.remove(this);
+            return RandUtil.choose(allAlive);
+        }
+        return RandUtil.choose(this.camp.getOpposite().getAllAlive());
+    }
+
+    /**
+     * 根据当前控制效果（强控或嘲讽），重新确认攻击目标。
+     * 不处理目标死亡。
+     *
+     * @param origin 期望攻击目标。
+     * @return 最终攻击目标。无法攻击则为null。
+     */
+    private Entity applyControl(Entity target) {
         final ControlBuff controlBuff = buffController.getFirstWithPrior(ControlBuff.class);
-        if (controlBuff instanceof Unmovable)
+        if (controlBuff instanceof Unmovable) {
+            log.info(Msg.info(this, "无法攻击"));
             return null;
+        }
         if (controlBuff instanceof ChaoFeng) {
             final ChaoFeng chaoFeng = (ChaoFeng) controlBuff;
             target = chaoFeng.getSrc();
-        }
-        if (target.isDead()) {
-            log.info(Msg.info(target, "已死，随机攻击"));
-            target = camp.getOpposite().randomTarget();
+            log.info(Msg.info(this, "攻击嘲讽目标", target));
         }
         return target;
     }

@@ -6,7 +6,6 @@ import com.sine.yys.event.DamageShareEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
-import com.sine.yys.inter.Self;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
 
     @Override
     protected void doApply(Entity target) {
-        final Self self = getSelf();
+        final Entity self = getSelf();
         shared = getOwn().getAllShikigami();
         for (Entity entity : shared) {
             entity.getEventController().add(this);

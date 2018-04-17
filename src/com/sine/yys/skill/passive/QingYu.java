@@ -79,7 +79,8 @@ public class QingYu extends BasePassiveSkill implements EventHandler<AfterRoundE
         final ShikigamiEntity entity = getOwn().getLeastLifeShikigami();
         int count = (int) (entity.getLostLifeInt() * getMaxCureLostPct());
         count = waWa.use(count);
-        getController().cure(self, entity, count);
+        if (count > 0)
+            getController().cure(self, entity, count);
     }
 
     class BeDamageHandler extends SealablePassiveHandler implements EventHandler<LostLifeEvent> {

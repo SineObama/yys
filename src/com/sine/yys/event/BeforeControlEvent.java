@@ -1,6 +1,6 @@
 package com.sine.yys.event;
 
-import com.sine.yys.buff.debuff.control.ControlBuff;
+import com.sine.yys.buff.control.ControlBuff;
 
 /**
  * 实施控制效果前触发。

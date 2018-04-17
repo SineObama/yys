@@ -3,7 +3,7 @@ package com.sine.yys.buff.shield;
 import com.sine.yys.buff.buff.Buff;
 
 /**
- * 盾。
+ * 护盾buff。
  */
 public interface Shield extends Buff {
     /**

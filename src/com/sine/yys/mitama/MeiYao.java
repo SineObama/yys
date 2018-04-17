@@ -1,6 +1,6 @@
 package com.sine.yys.mitama;
 
-import com.sine.yys.buff.debuff.control.HunLuan;
+import com.sine.yys.buff.control.HunLuan;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.IBuff;
 

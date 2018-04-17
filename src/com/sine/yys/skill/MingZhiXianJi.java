@@ -2,7 +2,6 @@ package com.sine.yys.skill;
 
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.Self;
 import com.sine.yys.util.Msg;
 
 /**
@@ -15,7 +14,7 @@ import com.sine.yys.util.Msg;
 public class MingZhiXianJi extends BaseNoTargetSkill {
     @Override
     protected void doApply(Entity target) {
-        Self self = getSelf();
+        Entity self = getSelf();
         int count = (int) (self.getLifeInt() * getReducePctByCur());
         log.info(Msg.info(self, "损失生命", count));
         self.reduceLife(count);

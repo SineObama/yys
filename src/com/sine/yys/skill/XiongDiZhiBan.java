@@ -14,10 +14,8 @@ public class XiongDiZhiBan extends BaseNoTargetSkill {
         final Entity self = getSelf();
         for (Entity entity : getOwn().getAllAlive()) {
             entity.addPosition(getAddPosition());
-            entity.getBuffController().add(new AddAttack(getLast(), getName(), getAttackPct(), self) {
-            });
-            entity.getBuffController().add(new AddEffectDef(getLast(), getName(), getEffectDef(), self) {
-            });
+            entity.getBuffController().add(new Attack(getLast(), getName(), getAttackPct(), self));
+            entity.getBuffController().add(new EffectDef(getLast(), getName(), getEffectDef(), self));
         }
     }
 
@@ -48,5 +46,17 @@ public class XiongDiZhiBan extends BaseNoTargetSkill {
 
     public int getLast() {
         return 2;
+    }
+
+    public class Attack extends AddAttack {
+        Attack(int last, String prefix, double atkPct, Entity src) {
+            super(last, prefix, atkPct, src);
+        }
+    }
+
+    public class EffectDef extends AddEffectDef {
+        EffectDef(int last, String prefix, double effectDef, Entity src) {
+            super(last, prefix, effectDef, src);
+        }
     }
 }

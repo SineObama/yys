@@ -1,11 +1,9 @@
 package com.sine.yys.mitama;
 
-import com.sine.yys.buff.debuff.control.ChaoFeng;
-import com.sine.yys.event.AfterActionEvent;
+import com.sine.yys.buff.control.ChaoFeng;
 import com.sine.yys.event.BeDamageEvent;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
-import com.sine.yys.inter.Self;
 import com.sine.yys.inter.base.Callback;
 import com.sine.yys.inter.base.Named;
 import com.sine.yys.util.Msg;
@@ -21,8 +19,8 @@ import com.sine.yys.util.RandUtil;
  * 4. 反击触发溢彩。
  */
 public class Zheng extends BaseSelfMitama implements EventHandler<BeDamageEvent> {
-    private Runner common = new Runner("普通狰反击");
-    private Runner zhenNv = new Runner("针女狰反击");
+    private final Runner common = new Runner("普通狰反击");
+    private final Runner zhenNv = new Runner("针女狰反击");
 
     @Override
     public String getName() {
@@ -69,15 +67,11 @@ public class Zheng extends BaseSelfMitama implements EventHandler<BeDamageEvent>
 
         @Override
         public void call() {
-            final Self self = getSelf();
+            final Entity self = getSelf();
             if (self.isDead())
                 return;
             log.info(Msg.info(self, name));
-            Entity target = self.applyControl(this.target);
-            if (target == null)
-                return;
-            self.getCommonAttack().counter(target);
-            self.getEventController().trigger(new AfterActionEvent(self));
+            self.counter(target);
         }
 
         @Override
