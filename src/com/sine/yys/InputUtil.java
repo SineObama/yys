@@ -3,11 +3,13 @@ package com.sine.yys;
 import com.sine.yys.impl.CampInfo;
 import com.sine.yys.impl.EntityInfo;
 import com.sine.yys.impl.PropertyImpl;
+import util.UnicodeReader;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * 从文件读取数据，构成模拟器。
@@ -23,68 +25,19 @@ import java.util.List;
  * （可用井号#开头写入注释，纯注释行将被忽略）
  */
 public class InputUtil {
+    public static String defaultEncoding = "UTF-8";
+    private final Logger log = Logger.getLogger(this.getClass().getName());
+    private List<String> data = new ArrayList<>();
+
+    private InputUtil() {
+    }
+
     public static RedBlueSimulator create(String filename) throws IOException {
-        return create(filename, null);
+        return new InputUtil()._create(filename, null);
     }
 
     public static RedBlueSimulator create(String filename, String encoding) throws IOException {
-        File file = new File(filename);
-        final InputStreamReader reader;
-        reader = new InputStreamReader(new FileInputStream(file), encoding == null ? "UTF-8" : encoding);
-        final List<String> lines = readFileByLines(reader);
-        final Iterator<String> iterator = lines.iterator();
-        final double times = readNum(iterator);
-        final CampInfo red = readCamp(iterator);
-        red.lifeTimes = times;
-        final CampInfo blue = readCamp(iterator);
-        blue.lifeTimes = times;
-        return new RedBlueSimulator(red, blue);
-    }
-
-    /**
-     * 尝试读取第一行血量加成系数。
-     */
-    private static double readNum(Iterator<String> iterator) {
-        while (iterator.hasNext()) {
-            final String line = iterator.next();
-            if (line.isEmpty())
-                continue;
-            if (line.startsWith("#"))
-                continue;
-            final String[] tokens = line.replaceAll("#.*", "").split("\\s+");
-            try {
-                return Double.valueOf(tokens[0]);
-            } catch (Exception e) {
-                break;
-            }
-        }
-        return 1.0;
-    }
-
-    /**
-     * 从tokens读取至少一个式神信息，在遇到空行时结束。
-     * 忽略#开头的行。其他行去掉#后的内容，再分割，读入。
-     */
-    private static CampInfo readCamp(Iterator<String> iterator) {
-        CampInfo campInfo = new CampInfo();
-        while (iterator.hasNext()) {
-            final String line = iterator.next();
-            if (line.isEmpty()) {
-                if (campInfo.infos.size() > 0) break;
-                else continue;
-            }
-            if (line.startsWith("#"))
-                continue;
-            final String[] tokens = line.replaceAll("#.*", "").split("\\s+");
-            if (tokens.length != 10 && tokens.length != 9)
-                throw new NumberFormatException("输入格式非法，字段数不正确：" + String.join(" ", tokens));
-            EntityInfo info = new EntityInfo();
-            info.shiShen = tokens[0];
-            info.property = new PropertyImpl(fromString(tokens, 1, 8));
-            info.mitama = tokens.length == 10 ? tokens[9] : null;
-            campInfo.infos.add(info);
-        }
-        return campInfo;
+        return new InputUtil()._create(filename, encoding);
     }
 
     /**
@@ -110,5 +63,72 @@ public class InputUtil {
             lines.add(line.trim());
         bufferedReader.close();
         return lines;
+    }
+
+    private RedBlueSimulator _create(String filename, String encoding) throws IOException {
+        File file = new File(filename);
+        final Reader reader = new UnicodeReader(new FileInputStream(file), encoding == null ? defaultEncoding : encoding);
+        final Iterator<String> iterator = readFileByLines(reader).iterator();
+        final double times = readNum(iterator);
+        data.add("读取信息如下：");
+        data.add(String.valueOf(times));
+
+        final CampInfo red = readCamp(iterator);
+        red.lifeTimes = times;
+        data.add("");
+        final CampInfo blue = readCamp(iterator);
+        blue.lifeTimes = times;
+        data.add("");
+
+        log.info(String.join("\n", data.toArray(new String[0])));
+        return new RedBlueSimulator(red, blue);
+    }
+
+    /**
+     * 尝试读取第一行血量加成系数。
+     */
+    private double readNum(Iterator<String> iterator) {
+        while (iterator.hasNext()) {
+            final String line = iterator.next();
+            if (line.isEmpty())
+                continue;
+            if (line.startsWith("#"))
+                continue;
+            final String[] tokens = line.replaceAll("#.*", "").split("\\s+");
+            try {
+                return Double.valueOf(tokens[0]);
+            } catch (Exception e) {
+                break;
+            }
+        }
+        return 1.0;
+    }
+
+    /**
+     * 从tokens读取至少一个式神信息，在遇到空行时结束。
+     * 忽略#开头的行。其他行去掉#后的内容，再分割，读入。
+     */
+    private CampInfo readCamp(Iterator<String> iterator) {
+        CampInfo campInfo = new CampInfo();
+        while (iterator.hasNext()) {
+            final String line = iterator.next();
+            if (line.isEmpty()) {
+                if (campInfo.infos.size() > 0) break;
+                else continue;
+            }
+            if (line.startsWith("#"))
+                continue;
+            final String[] tokens = line.replaceAll("#.*", "").split("\\s+");
+            String _data = String.join(" ", tokens);
+            if (tokens.length != 10 && tokens.length != 9)
+                throw new NumberFormatException("输入格式非法，字段数不正确：" + _data);
+            data.add(_data);
+            EntityInfo info = new EntityInfo();
+            info.shiShen = tokens[0];
+            info.property = new PropertyImpl(fromString(tokens, 1, 8));
+            info.mitama = tokens.length == 10 ? tokens[9] : null;
+            campInfo.infos.add(info);
+        }
+        return campInfo;
     }
 }
