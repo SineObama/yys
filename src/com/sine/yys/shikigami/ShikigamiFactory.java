@@ -2,7 +2,6 @@ package com.sine.yys.shikigami;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 式神工厂。
@@ -45,16 +44,16 @@ public class ShikigamiFactory {
     public static BaseShikigami create(String key) {
         final Creator creator = map.get(key.toLowerCase());
         if (creator == null)
-            throw new RuntimeException("can't found shikigami:" + key);
+            throw new RuntimeException("can't find shikigami:" + key);
         return creator.create();
     }
 
     public static String getDefaultName(String key) {
-        return names.get(key);
+        return names.get(key.toLowerCase());
     }
 
-    static Set<String> keySet() {
-        return map.keySet();
+    public static boolean isSupport(String key) {
+        return map.containsKey(key.toLowerCase());
     }
 
     interface Creator {

@@ -2,7 +2,6 @@ package com.sine.yys.mitama;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 御魂工厂。
@@ -46,8 +45,8 @@ public class MitamaFactory {
         return creator.create();
     }
 
-    static Set<String> keySet() {
-        return map.keySet();
+    public static boolean isSupport(String key) {
+        return map.containsKey(key.toLowerCase());
     }
 
     interface Creator {

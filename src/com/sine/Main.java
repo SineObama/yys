@@ -1,5 +1,6 @@
 package com.sine;
 
+import com.sine.yys.IllegalDataException;
 import com.sine.yys.InputUtil;
 import com.sine.yys.RedBlueSimulator;
 
@@ -42,6 +43,8 @@ public class Main {
             System.err.println("unsupported encoding: " + e.getMessage());
         } catch (IOException e) {
             System.err.println("read file failed: " + e.getLocalizedMessage());
+        } catch (IllegalDataException e) {
+            System.err.println("illegal input data: " + e.getMessage());
         }
     }
 

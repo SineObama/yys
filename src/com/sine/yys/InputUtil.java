@@ -3,6 +3,8 @@ package com.sine.yys;
 import com.sine.yys.impl.CampInfo;
 import com.sine.yys.impl.EntityInfo;
 import com.sine.yys.impl.PropertyImpl;
+import com.sine.yys.mitama.MitamaFactory;
+import com.sine.yys.shikigami.ShikigamiFactory;
 import util.UnicodeReader;
 
 import java.io.*;
@@ -47,10 +49,14 @@ public class InputUtil {
         double[] doubles = new double[length];
         for (int i = 0; i < length; i++) {
             String string = s[begin + i];
-            if (string.endsWith("%"))
-                doubles[i] = Double.valueOf(string.substring(0, string.length() - 1)) / 100.0;
-            else
-                doubles[i] = Double.valueOf(string);
+            try {
+                if (string.endsWith("%"))
+                    doubles[i] = Double.valueOf(string.substring(0, string.length() - 1)) / 100.0;
+                else
+                    doubles[i] = Double.valueOf(string);
+            } catch (NumberFormatException e) {
+                throw new IllegalDataException("can't read as double: " + string);
+            }
         }
         return doubles;
     }
@@ -97,7 +103,7 @@ public class InputUtil {
             final String[] tokens = line.replaceAll("#.*", "").split("\\s+");
             try {
                 return Double.valueOf(tokens[0]);
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 break;
             }
         }
@@ -121,12 +127,16 @@ public class InputUtil {
             final String[] tokens = line.replaceAll("#.*", "").split("\\s+");
             String _data = String.join(" ", tokens);
             if (tokens.length != 10 && tokens.length != 9)
-                throw new NumberFormatException("输入格式非法，字段数不正确：" + _data);
+                throw new IllegalDataException("wrong fields ：" + _data);
             data.add(_data);
             EntityInfo info = new EntityInfo();
             info.shiShen = tokens[0];
             info.property = new PropertyImpl(fromString(tokens, 1, 8));
             info.mitama = tokens.length == 10 ? tokens[9] : null;
+            if (!ShikigamiFactory.isSupport(info.shiShen))
+                throw new IllegalDataException("unsupport shikigami：" + info.shiShen);
+            if (!MitamaFactory.isSupport(info.mitama))
+                throw new IllegalDataException("unsupport mitama：" + info.mitama);
             campInfo.infos.add(info);
         }
         return campInfo;
