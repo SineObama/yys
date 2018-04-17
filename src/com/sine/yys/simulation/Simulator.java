@@ -62,7 +62,7 @@ public class Simulator {
     /**
      * 初始化。
      */
-    private void init() {
+    public void init() {
         if (started)
             return;
         started = true;

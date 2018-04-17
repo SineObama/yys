@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class AttackInfoImpl implements AttackInfo {
-    private final static double defaultWaveRadius = 0.01;
+    public static double _defaultWaveRadius = 0.01;
     private final double coefficient;
     private final double ignoreDefensePct;
     private final int IgnoreDefense;
@@ -20,7 +20,7 @@ public class AttackInfoImpl implements AttackInfo {
         this.coefficient = coefficient;
         this.ignoreDefensePct = 0;
         IgnoreDefense = 0;
-        waveRadius = defaultWaveRadius;
+        waveRadius = _defaultWaveRadius;
     }
 
     public AttackInfoImpl(Collection<DebuffEffect> debuffEffects, double coefficient, double waveRadius) {
@@ -36,7 +36,7 @@ public class AttackInfoImpl implements AttackInfo {
         this.coefficient = coefficient;
         this.ignoreDefensePct = ignoreDefensePct;
         IgnoreDefense = ignoreDefense;
-        waveRadius = defaultWaveRadius;
+        waveRadius = _defaultWaveRadius;
     }
 
     @Override

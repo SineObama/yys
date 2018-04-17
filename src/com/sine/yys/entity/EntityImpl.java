@@ -375,7 +375,7 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
         return activeSkills;
     }
 
-    private CommonAttack getCommonAttack() {
+    public CommonAttack getCommonAttack() {
         for (Skill skill : shikigami.getSkills()) {
             if (skill instanceof CommonAttack)
                 return (CommonAttack) skill;
