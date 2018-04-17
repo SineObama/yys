@@ -1,7 +1,6 @@
 package com.sine.yys.simulation;
 
 import com.sine.yys.entity.ShikigamiEntityImpl;
-import com.sine.yys.impl.CampInfo;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.FireRepo;
@@ -18,8 +17,8 @@ public class PVPCamp extends BaseCamp implements FireRepo {
     private boolean prepared = false;  // 调用ready()后为true。在2个状态之间转换
     private int increase = 3;  // 每次行动满5回合的回复鬼火数。此数字依次增长，最高5点：3 4 5 5 5...
 
-    public PVPCamp(String name, CampInfo info, int fire) {
-        super(name, info);
+    public PVPCamp(String name, int fire) {
+        super(name);
         this.fire = fire;
     }
 
@@ -49,7 +48,6 @@ public class PVPCamp extends BaseCamp implements FireRepo {
         if (count > fire)
             count = fire;
         fire -= count;
-        log.info(Msg.info(this, "减少", count, "点鬼火，当前剩余", fire, "点"));
         return count;
     }
 

@@ -1,7 +1,11 @@
 package com.sine.yys;
 
 import com.sine.yys.entity.BattleKoinobori;
+import com.sine.yys.entity.ShikigamiEntityImpl;
 import com.sine.yys.impl.CampInfo;
+import com.sine.yys.impl.EntityInfo;
+import com.sine.yys.mitama.MitamaFactory;
+import com.sine.yys.shikigami.ShikigamiFactory;
 import com.sine.yys.simulation.BaseCamp;
 import com.sine.yys.simulation.PVPCamp;
 import com.sine.yys.simulation.Simulator;
@@ -38,8 +42,12 @@ public class RedBlueSimulator {
         try {
             start = System.currentTimeMillis();
             for (; i <= times; i++) {
-                BaseCamp red = new PVPCamp(redName, redInfo, 3);
-                BaseCamp blue = new PVPCamp(buleName, blueInfo, 3);
+                BaseCamp red = new PVPCamp(redName, 3);
+                BaseCamp blue = new PVPCamp(buleName, 3);
+                for (EntityInfo info : redInfo.infos)
+                    red.addEntity(new ShikigamiEntityImpl(ShikigamiFactory.create(info.shiShen), info.property, MitamaFactory.create(info.mitama), redInfo.lifeTimes, ShikigamiFactory.getDefaultName(info.shiShen)));
+                for (EntityInfo info : blueInfo.infos)
+                    blue.addEntity(new ShikigamiEntityImpl(ShikigamiFactory.create(info.shiShen), info.property, MitamaFactory.create(info.mitama), blueInfo.lifeTimes, ShikigamiFactory.getDefaultName(info.shiShen)));
                 Simulator simulator = new Simulator(red, blue, Collections.singletonList(new BattleKoinobori(128.0, red, blue)));
                 while (simulator.step()) ;
                 String winName = simulator.getWin().getName();

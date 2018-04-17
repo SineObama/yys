@@ -5,16 +5,13 @@ import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
 import com.sine.yys.event.*;
 import com.sine.yys.impl.BuffControllerImpl;
-import com.sine.yys.impl.EntityInfo;
 import com.sine.yys.impl.EventControllerImpl;
 import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.Callback;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.inter.base.Property;
 import com.sine.yys.mitama.BaseMitama;
-import com.sine.yys.mitama.MitamaFactory;
 import com.sine.yys.shikigami.BaseShikigami;
-import com.sine.yys.shikigami.ShikigamiFactory;
 import com.sine.yys.shikigami.operation.OperationImpl;
 import com.sine.yys.skill.BaseSkill;
 import com.sine.yys.skill.mono.BaseMonoAttack;
@@ -45,14 +42,14 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
     private FireRepo fireRepo;
     private int life;
 
-    EntityImpl(EntityInfo info, double lifeTimes) {
-        super(ShikigamiFactory.getDefaultName(info.shiShen), 9999);
-        this.property = info.property;
-        this.shikigami = ShikigamiFactory.create(info.shiShen);
+    EntityImpl(BaseShikigami shikigami, Property property, BaseMitama mitama, double lifeTimes, String name) {
+        super(name, 9999);
+        this.property = property;
+        this.shikigami = shikigami;
         this.lifeTimes = lifeTimes;
         this.mitamas = new ArrayList<>();
-        if (info.mitama != null)
-            this.mitamas.add(MitamaFactory.create(info.mitama));
+        if (mitama != null)
+            this.mitamas.add(mitama);
         this.life = getMaxLife();
     }
 
