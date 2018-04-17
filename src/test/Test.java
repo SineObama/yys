@@ -16,6 +16,9 @@ public class Test {
         }
     }
 
+    /**
+     * 模拟./tests/下所有测试用例，规定文件名为非0自然数（无后缀），依次增加。
+     */
     public static void main(String[] args) throws IOException {
         RedBlueSimulator simulator;
         try {
