@@ -21,7 +21,10 @@ public class CalcDam {
      */
     public static double expect(Property self, Property target, AttackInfo attackInfo, boolean critical) {
         final double criticalCoefficient = critical ? self.getCriticalDamage() : 1.0;
-        final double finalDefense = (target.getDefense() - attackInfo.getIgnoreDefense()) * (1.0 - attackInfo.getIgnoreDefensePct());
+        double defense = target.getDefense() - attackInfo.getIgnoreDefense();
+        if (defense < 0)
+            defense = 0.0;
+        final double finalDefense = defense * (1.0 - attackInfo.getIgnoreDefensePct());
         return attackInfo.getCoefficient() * injuryPct(finalDefense) * self.getAttack() * criticalCoefficient;
     }
 }
