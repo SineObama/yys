@@ -14,7 +14,7 @@ public class RandUtil {
 
     static {
         final long seed = Seed.get();
-        log.info("using random seed:" + seed);
+        log.info("using random seed: " + seed + "L");
         random = new Random(seed);
     }
 
