@@ -20,7 +20,7 @@ public class Test {
      */
     public static void main(String[] args) throws IOException {
         RedBlueSimulator simulator;
-        if (System.getProperty("info") == null)
+        if (System.getProperty("info") != null)
             Logger.getLogger("").setLevel(Level.INFO);
         try {
             for (int i = 1; i < 99; i++) {
