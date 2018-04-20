@@ -8,7 +8,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class AttackInfoImpl implements AttackInfo {
-    public static double _defaultWaveRadius = 0.01;
+    private final static double _defaultWaveRadius = 0.01;
+    public static boolean _float = true;  // 伤害浮动设置
     private final double coefficient;
     private final double ignoreDefensePct;
     private final int IgnoreDefense;
@@ -56,7 +57,7 @@ public class AttackInfoImpl implements AttackInfo {
 
     @Override
     public double randomFloat() {
-        return RandUtil.doubles(1 - waveRadius, 1 + waveRadius);
+        return _float ? RandUtil.doubles(1 - waveRadius, 1 + waveRadius) : 1.0;
     }
 
     @Override
