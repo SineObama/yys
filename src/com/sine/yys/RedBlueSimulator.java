@@ -58,6 +58,8 @@ public class RedBlueSimulator {
             end = System.currentTimeMillis();
             printResult();
         } catch (Exception e) {
+            log.severe("red:\n" + redInfo.lifeTimes + "\n" + redInfo.infosToString());
+            log.severe("blue:\n" + blueInfo.lifeTimes + "\n" + blueInfo.infosToString());
             log.severe(JSON.format("test case", i, "seed", Seed.get()));
             throw e;
         }
