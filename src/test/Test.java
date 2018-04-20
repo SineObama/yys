@@ -6,15 +6,13 @@ import com.sine.yys.util.RandUtil;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Test {
     static {
-        if (System.getProperty("java.util.logging.config.file") == null) {
-            if (System.getProperty("info") == null)
-                System.setProperty("java.util.logging.config.file", "tests/logging_warning.properties");
-            else
-                System.setProperty("java.util.logging.config.file", "tests/logging_info.properties");
-        }
+        if (System.getProperty("java.util.logging.config.file") == null)
+            System.setProperty("java.util.logging.config.file", "tests/logging.properties");
     }
 
     /**
@@ -22,6 +20,8 @@ public class Test {
      */
     public static void main(String[] args) throws IOException {
         RedBlueSimulator simulator;
+        if (System.getProperty("info") == null)
+            Logger.getLogger("").setLevel(Level.INFO);
         try {
             for (int i = 1; i < 99; i++) {
                 RandUtil.reset();
