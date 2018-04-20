@@ -385,6 +385,13 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
         return mitamas;
     }
 
+    /**
+     * @return 普通攻击数值=攻击*普攻系数。
+     */
+    public double getComCount() {
+        return getAttack() * getCommonAttack().getCoefficient();
+    }
+
     @Override
     public void xieZhan(Entity target) {
         target = applyControl(target);
