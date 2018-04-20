@@ -381,6 +381,10 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
         throw new RuntimeException(getFullName() + " 没有普通攻击。");
     }
 
+    public List<BaseMitama> getMitamas() {
+        return mitamas;
+    }
+
     @Override
     public void xieZhan(Entity target) {
         target = applyControl(target);
