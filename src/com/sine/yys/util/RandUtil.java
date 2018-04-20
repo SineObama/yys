@@ -18,6 +18,10 @@ public class RandUtil {
         random = new Random(seed);
     }
 
+    public static void reset() {
+        random.setSeed(Seed.get());
+    }
+
     public static double doubles(double origin, double bound) {
         double v = random.nextDouble();
         log.fine(String.valueOf(v));
