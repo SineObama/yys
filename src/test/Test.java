@@ -2,6 +2,7 @@ package test;
 
 import com.sine.yys.InputUtil;
 import com.sine.yys.RedBlueSimulator;
+import com.sine.yys.util.RandUtil;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class Test {
         RedBlueSimulator simulator;
         try {
             for (int i = 1; i < 99; i++) {
+                RandUtil.reset();
                 simulator = InputUtil.create("tests/" + i);
                 simulator.test(Integer.valueOf(args[0]));
             }
