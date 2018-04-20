@@ -1,4 +1,4 @@
-package com.sine.yys.impl;
+package com.sine.yys;
 
 import java.util.ArrayList;
 import java.util.List;

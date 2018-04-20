@@ -1,5 +1,6 @@
-package com.sine.yys.impl;
+package com.sine.yys;
 
+import com.sine.yys.impl.PropertyImpl;
 import com.sine.yys.mitama.MitamaFactory;
 import com.sine.yys.shikigami.ShikigamiFactory;
 

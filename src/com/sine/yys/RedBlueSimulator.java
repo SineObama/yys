@@ -2,8 +2,6 @@ package com.sine.yys;
 
 import com.sine.yys.entity.BattleKoinobori;
 import com.sine.yys.entity.ShikigamiEntityImpl;
-import com.sine.yys.impl.CampInfo;
-import com.sine.yys.impl.EntityInfo;
 import com.sine.yys.mitama.MitamaFactory;
 import com.sine.yys.shikigami.ShikigamiFactory;
 import com.sine.yys.simulation.BaseCamp;

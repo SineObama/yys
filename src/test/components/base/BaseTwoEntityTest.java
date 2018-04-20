@@ -1,8 +1,7 @@
 package test.components.base;
 
-import com.sine.yys.entity.EntityImpl;
+import com.sine.yys.EntityInfo;
 import com.sine.yys.entity.ShikigamiEntityImpl;
-import com.sine.yys.impl.EntityInfo;
 import com.sine.yys.mitama.MitamaFactory;
 import com.sine.yys.shikigami.ShikigamiFactory;
 import com.sine.yys.simulation.BaseCamp;

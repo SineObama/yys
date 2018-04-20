@@ -1,7 +1,5 @@
 package com.sine.yys;
 
-import com.sine.yys.impl.CampInfo;
-import com.sine.yys.impl.EntityInfo;
 import util.UnicodeReader;
 
 import java.io.*;
