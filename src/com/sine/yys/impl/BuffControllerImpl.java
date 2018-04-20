@@ -44,7 +44,7 @@ public class BuffControllerImpl implements BuffController {
 
     private final Logger log = Logger.getLogger(getClass().getName());
 
-    private final Set<BaseIBuff> set = new HashSet<>();
+    private final List<BaseIBuff> set = new ArrayList<>();
     private final BeDamage beDamage = new BeDamage();
     private final Cure cure = new Cure();
     private final DamageUp damageUp = new DamageUp();
