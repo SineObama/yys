@@ -11,6 +11,7 @@ import com.sine.yys.simulation.PVPCamp;
 import com.sine.yys.simulation.Simulator;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
+import com.sine.yys.util.Seed;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class RedBlueSimulator {
             end = System.currentTimeMillis();
             printResult();
         } catch (Exception e) {
-            log.severe(JSON.format("test case", i));
+            log.severe(JSON.format("test case", i, "seed", Seed.get()));
             throw e;
         }
     }
