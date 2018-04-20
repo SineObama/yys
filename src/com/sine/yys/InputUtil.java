@@ -2,9 +2,6 @@ package com.sine.yys;
 
 import com.sine.yys.impl.CampInfo;
 import com.sine.yys.impl.EntityInfo;
-import com.sine.yys.impl.PropertyImpl;
-import com.sine.yys.mitama.MitamaFactory;
-import com.sine.yys.shikigami.ShikigamiFactory;
 import util.UnicodeReader;
 
 import java.io.*;
@@ -29,7 +26,6 @@ import java.util.logging.Logger;
 public class InputUtil {
     public static String defaultEncoding = "UTF-8";
     private final Logger log = Logger.getLogger(this.getClass().getName());
-    private List<String> data = new ArrayList<>();
 
     private InputUtil() {
     }
@@ -38,27 +34,8 @@ public class InputUtil {
         return new InputUtil()._create(filename, null);
     }
 
-    public static RedBlueSimulator create(String filename, String encoding) throws IOException {
+    public static RedBlueSimulator create(String filename, String encoding) throws IOException, IllegalDataException {
         return new InputUtil()._create(filename, encoding);
-    }
-
-    /**
-     * 把数组中指定位置开始的若干个字符串转为浮点，简单支持百分号类型。
-     */
-    private static double[] fromString(String[] s, int begin, int length) {
-        double[] doubles = new double[length];
-        for (int i = 0; i < length; i++) {
-            String string = s[begin + i];
-            try {
-                if (string.endsWith("%"))
-                    doubles[i] = Double.valueOf(string.substring(0, string.length() - 1)) / 100.0;
-                else
-                    doubles[i] = Double.valueOf(string);
-            } catch (NumberFormatException e) {
-                throw new IllegalDataException("can't read as double: " + string);
-            }
-        }
-        return doubles;
     }
 
     private static List<String> readFileByLines(Reader reader) throws IOException {
@@ -76,17 +53,13 @@ public class InputUtil {
         final Reader reader = new UnicodeReader(new FileInputStream(file), encoding == null ? defaultEncoding : encoding);
         final Iterator<String> iterator = readFileByLines(reader).iterator();
         final double times = readNum(iterator);
-        data.add("读取信息如下：");
-        data.add(String.valueOf(times));
 
         final CampInfo red = readCamp(iterator);
         red.lifeTimes = times;
-        data.add("");
         final CampInfo blue = readCamp(iterator);
         blue.lifeTimes = times;
-        data.add("");
 
-        log.info(String.join("\n", data.toArray(new String[0])));
+        log.info("读取信息如下：\n" + String.valueOf(times) + "\n" + red.infosToString() + "\n" + blue.infosToString());
         return new RedBlueSimulator(red, blue);
     }
 
@@ -124,20 +97,11 @@ public class InputUtil {
             }
             if (line.startsWith("#"))
                 continue;
-            final String[] tokens = line.replaceAll("#.*", "").split("\\s+");
-            String _data = String.join(" ", tokens);
-            if (tokens.length != 10 && tokens.length != 9)
-                throw new IllegalDataException("wrong fields ：" + _data);
-            data.add(_data);
-            EntityInfo info = new EntityInfo();
-            info.shiShen = tokens[0];
-            info.property = new PropertyImpl(fromString(tokens, 1, 8));
-            info.mitama = tokens.length == 10 ? tokens[9] : null;
-            if (!ShikigamiFactory.isSupport(info.shiShen))
-                throw new IllegalDataException("unsupport shikigami：" + info.shiShen);
-            if (!MitamaFactory.isSupport(info.mitama))
-                throw new IllegalDataException("unsupport mitama：" + info.mitama);
-            campInfo.infos.add(info);
+            try {
+                campInfo.infos.add(EntityInfo.fromString(line.replaceAll("#.*", "")));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalDataException(e.getMessage());
+            }
         }
         return campInfo;
     }

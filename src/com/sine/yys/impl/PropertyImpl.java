@@ -35,6 +35,25 @@ public class PropertyImpl implements Property {
     }
 
     @Override
+    public String toString() {
+        return "" + attack +
+                ' ' +
+                life +
+                ' ' +
+                defense +
+                ' ' +
+                speed +
+                ' ' +
+                critical +
+                ' ' +
+                criticalDamage +
+                ' ' +
+                effectHit +
+                ' ' +
+                effectDef;
+    }
+
+    @Override
     public double getAttack() {
         return attack;
     }
