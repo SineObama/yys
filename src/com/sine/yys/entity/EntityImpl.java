@@ -8,9 +8,9 @@ import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
 import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.impl.BuffControllerImpl;
+import com.sine.yys.impl.EmptyFireRepo;
 import com.sine.yys.impl.EventControllerImpl;
 import com.sine.yys.inter.*;
-import com.sine.yys.inter.base.Callback;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.inter.base.Property;
 import com.sine.yys.util.JSON;
@@ -28,13 +28,14 @@ import java.util.Map;
  * 保存了{@linkplain Shikigami 式神信息}、{@linkplain Property 属性}、{@linkplain Mitama 御魂}，
  * 和战斗中的状态（技能cd、{@linkplain IBuff buff}、事件）。
  */
-public abstract class EntityImpl extends SimpleObject implements Entity, JSONable, Callback {
+public abstract class EntityImpl extends SimpleObject implements Entity, JSONable {
     final EventControllerImpl eventController = new EventControllerImpl();
     final BuffControllerImpl buffController = new BuffControllerImpl(this);
     final Property property;
     final int maxLife;
     private final Map<Object, Object> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
     Camp camp = null;
+    FireRepo fireRepo = new EmptyFireRepo();
     int life;
 
     protected EntityImpl(Property property, String name, int maxLife) {
@@ -279,6 +280,11 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
     @Override
     public final BuffController getBuffController() {
         return buffController;
+    }
+
+    @Override
+    public final FireRepo getFireRepo() {
+        return fireRepo;
     }
 
     @Override

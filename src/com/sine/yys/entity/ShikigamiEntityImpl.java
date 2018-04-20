@@ -3,6 +3,7 @@ package com.sine.yys.entity;
 import com.sine.yys.buff.control.*;
 import com.sine.yys.event.*;
 import com.sine.yys.inter.*;
+import com.sine.yys.inter.base.Callback;
 import com.sine.yys.inter.base.Property;
 import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.shikigami.BaseShikigami;
@@ -21,10 +22,9 @@ import java.util.Map;
 /**
  * 战场中的式神实体（非召唤物）。
  */
-public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity {
+public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, Callback {
     private final BaseShikigami shikigami;
     private final List<BaseMitama> mitamas;
-    private FireRepo fireRepo;
 
     public ShikigamiEntityImpl(BaseShikigami shikigami, Property property, BaseMitama mitama, double lifeTimes, String name) {
         super(property, name, (int) (property.getLife() * lifeTimes));
@@ -225,11 +225,6 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity {
      */
     public double getComCount() {
         return getAttack() * getCommonAttack().getCoefficient();
-    }
-
-    @Override
-    public final FireRepo getFireRepo() {
-        return fireRepo;
     }
 
     public void setFireRepo(FireRepo fireRepo) {
