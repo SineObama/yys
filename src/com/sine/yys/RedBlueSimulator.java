@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class RedBlueSimulator {
     public static final String redName = "红方";
-    public static final String buleName = "蓝方";
+    public static final String blueName = "蓝方";
     private final Logger log = Logger.getLogger(getClass().getName());
     private final CampInfo redInfo, blueInfo;
     private final Map<String, Integer> count = new HashMap<>(2);
@@ -35,7 +35,7 @@ public class RedBlueSimulator {
         this.redInfo = red;
         this.blueInfo = blue;
         count.put(redName, 0);
-        count.put(buleName, 0);
+        count.put(blueName, 0);
     }
 
     public void test(int times) {
@@ -44,7 +44,7 @@ public class RedBlueSimulator {
             start = System.currentTimeMillis();
             for (; i <= times; i++) {
                 BaseCamp red = new PVPCamp(redName, 3);
-                BaseCamp blue = new PVPCamp(buleName, 3);
+                BaseCamp blue = new PVPCamp(blueName, 3);
                 for (EntityInfo info : redInfo.infos)
                     red.addEntity(new ShikigamiEntityImpl(ShikigamiFactory.create(info.shiShen), info.property, MitamaFactory.create(info.mitama), redInfo.lifeTimes, ShikigamiFactory.getDefaultName(info.shiShen)));
                 for (EntityInfo info : blueInfo.infos)
@@ -68,11 +68,11 @@ public class RedBlueSimulator {
     }
 
     public int getBlueWins() {
-        return count.get(buleName);
+        return count.get(blueName);
     }
 
     public void printResult() {
-        final String msg = "result=" + count.get(redName) + ":" + count.get(buleName) + ", time=" + (end - start);
+        final String msg = "result=" + count.get(redName) + ":" + count.get(blueName) + ", time=" + (end - start);
         log.info(msg);
         System.out.println(msg);
     }
