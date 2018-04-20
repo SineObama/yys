@@ -69,6 +69,11 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
     }
 
     @Override
+    public double getAttack() {
+        return property.getAttack() * (1 + buffController.getAtkPct());
+    }
+
+    @Override
     public int getMaxLife() {
         return maxLife;
     }
