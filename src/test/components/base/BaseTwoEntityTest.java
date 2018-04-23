@@ -1,13 +1,13 @@
 package test.components.base;
 
-import com.sine.yys.EntityInfo;
 import com.sine.yys.entity.ShikigamiEntityImpl;
-import com.sine.yys.mitama.MitamaFactory;
+import com.sine.yys.mitama.BaseMitama;
+import com.sine.yys.shikigami.BaseShikigami;
 import com.sine.yys.shikigami.ShikigamiFactory;
 import com.sine.yys.simulation.BaseCamp;
 import com.sine.yys.simulation.PVPCamp;
 import com.sine.yys.simulation.Simulator;
-import test.property.Property1;
+import test.components.TestProperty;
 
 import java.util.Collections;
 
@@ -15,24 +15,41 @@ import java.util.Collections;
  * 两个式神对打的测试，只有一方出手。
  */
 public abstract class BaseTwoEntityTest implements Test {
-    protected EntityInfo first = new EntityInfo();
-    protected EntityInfo second = new EntityInfo();
-    protected BaseCamp red;
-    protected BaseCamp blue;
+    protected final EnInfo i1 = new EnInfo();
+    protected final EnInfo i2 = new EnInfo();
+    protected final BaseCamp c1 = new PVPCamp(redName, 0);
+    protected final BaseCamp c2 = new PVPCamp(buleName, 0);
     protected Simulator simulator;
-    protected ShikigamiEntityImpl firstEnt;
-    protected ShikigamiEntityImpl secondEnt;
+    protected ShikigamiEntityImpl e1;
+    protected ShikigamiEntityImpl e2;
 
-    protected void before() {
-        first.property = new Property1(10000);
-        second.property = new Property1(1);
-        red = new PVPCamp(redName, 0);
-        blue = new PVPCamp(buleName, 0);
-        firstEnt = new ShikigamiEntityImpl(ShikigamiFactory.create(first.shiShen), first.property, MitamaFactory.create(first.mitama), 1.0, ShikigamiFactory.getDefaultName(first.shiShen));
-        red.addEntity(firstEnt);
-        secondEnt = new ShikigamiEntityImpl(ShikigamiFactory.create(second.shiShen), second.property, MitamaFactory.create(second.mitama), 1.0, ShikigamiFactory.getDefaultName(second.shiShen));
-        blue.addEntity(secondEnt);
-        simulator = new Simulator(red, blue, Collections.EMPTY_LIST);
+    @Override
+    public void test() throws AssertionError {
+        i1.property.speed = 10000;
+        i2.property.speed = 1;
+        init();
+        e1 = new ShikigamiEntityImpl(i1.shikigami, i1.property, i1.mitama, 1.0, i1.shikigami.getName());
+        c1.addEntity(e1);
+        e2 = new ShikigamiEntityImpl(i2.shikigami, i2.property, i2.mitama, 1.0, i2.shikigami.getName());
+        c2.addEntity(e2);
+        simulator = new Simulator(c1, c2, Collections.EMPTY_LIST);
         simulator.init();
+        dotest();
+    }
+
+    /**
+     * 自定义具体设置，设置式神、属性、御魂。
+     */
+    protected abstract void init();
+
+    /**
+     * 初始化战斗环境后调用，执行测试逻辑。
+     */
+    protected abstract void dotest();
+
+    protected class EnInfo {
+        public BaseShikigami shikigami = ShikigamiFactory.create("雨女");
+        public TestProperty property = new TestProperty();
+        public BaseMitama mitama = null;
     }
 }

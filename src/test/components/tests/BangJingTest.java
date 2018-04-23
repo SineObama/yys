@@ -4,23 +4,26 @@ import com.sine.yys.mitama.BangJing;
 import test.components.base.BaseTwoEntityTest;
 
 public class BangJingTest extends BaseTwoEntityTest {
+
+    private final BangJing bangJing = new BangJing();
+
     @Override
     public String getLabels() {
         return "御魂 蚌精";
     }
 
     @Override
-    public void test() {
-        first.shiShen = "雨女";
-        second.mitama = "蚌精";
-        second.shiShen = "雨女";
-        before();
-        BangJing bangJing = (BangJing) secondEnt.getMitamas().get(0);
-        int life = (int) (secondEnt.getMaxLife() * (1 + bangJing.getShieldByMaxLife()));
-        while (life >= secondEnt.getMaxLife()) {
+    public void dotest() {
+        int life = (int) (e2.getMaxLife() * (1 + bangJing.getShieldByMaxLife()));
+        while (life >= e2.getMaxLife()) {
             simulator.step();
-            life -= firstEnt.getComCount();
+            life -= e1.getComCount();
         }
-        assert secondEnt.getLifeInt() == life : "蚌精1";
+        assert e2.getLifeInt() == life : "蚌精1";
+    }
+
+    @Override
+    protected void init() {
+        i2.mitama = bangJing;
     }
 }
