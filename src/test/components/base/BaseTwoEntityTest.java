@@ -29,12 +29,12 @@ public abstract class BaseTwoEntityTest implements Test {
     protected abstract void init();
 
     /**
-     * 初始化战斗环境后调用，执行测试逻辑。
+     * 构造战斗环境后被调用，执行测试逻辑。
      */
     protected abstract void doTest();
 
     @Override
-    public void test() throws AssertionError {
+    public final void test() throws AssertionError {
         i1.property.speed = 10000;
         i2.property.speed = 1;
         init();
