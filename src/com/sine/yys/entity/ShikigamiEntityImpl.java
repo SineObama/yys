@@ -25,6 +25,7 @@ import java.util.Map;
 public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, Callback {
     private final BaseShikigami shikigami;
     private final List<BaseMitama> mitamas;
+    private OperationHandler handler;
 
     public ShikigamiEntityImpl(BaseShikigami shikigami, Property property, BaseMitama mitama, double lifeTimes, String name) {
         super(property, name, (int) (property.getLife() * lifeTimes));
@@ -32,6 +33,17 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, 
         this.mitamas = new ArrayList<>();
         if (mitama != null)
             this.mitamas.add(mitama);
+        this.handler = shikigami.getAI();
+    }
+
+    /**
+     * @param handler 式神操作的处理器，实现人工控制。null 表示使用原本的AI进行自动控制。
+     */
+    public void setHandler(OperationHandler handler) {
+        if (handler == null)
+            this.handler = shikigami.getAI();
+        else
+            this.handler = handler;
     }
 
     @Override
@@ -124,7 +136,7 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, 
             }
 
             if (!map.isEmpty())
-                operation = this.shikigami.getAI().handle(this, this.camp, map);
+                operation = this.handler.handle(this, this.camp, map);
             else
                 operation = new OperationImpl(null, null);
 

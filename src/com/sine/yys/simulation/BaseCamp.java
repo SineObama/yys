@@ -137,6 +137,15 @@ public abstract class BaseCamp implements Camp, JSONable {
         return current;
     }
 
+    /**
+     * 设置全阵营的式神操作处理器，实现人工控制。null 表示使用原本的AI进行自动控制。
+     */
+    public void setHandler(OperationHandler handler) {
+        for (Position<EntityImpl> position : positions)
+            if (position.getSource() instanceof ShikigamiEntityImpl)
+                ((ShikigamiEntityImpl) position.getSource()).setHandler(handler);
+    }
+
     @Override
     public String toString() {
         return getFullName();
