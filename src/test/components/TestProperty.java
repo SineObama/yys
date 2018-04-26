@@ -4,6 +4,7 @@ import com.sine.yys.inter.base.Property;
 
 /**
  * 测试用的基础属性实现，可随时修改数值。提供一定默认值。
+ * 默认无防御暴击等属性。
  */
 public class TestProperty implements Property {
     public double attack = 1000.0;
