@@ -4,12 +4,11 @@ import com.sine.yys.mitama.PoShi;
 import test.components.base.BaseTwoEntityTest;
 
 public class PoShiTest extends BaseTwoEntityTest {
-
     private PoShi poShi = new PoShi();
 
     @Override
-    public String getLabels() {
-        return "御魂 破势";
+    protected void init() {
+        i1.mitama = poShi;
     }
 
     @Override
@@ -34,7 +33,7 @@ public class PoShiTest extends BaseTwoEntityTest {
     }
 
     @Override
-    protected void init() {
-        i1.mitama = poShi;
+    public String getLabels() {
+        return "御魂 破势";
     }
 }

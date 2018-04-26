@@ -23,6 +23,16 @@ public abstract class BaseTwoEntityTest implements Test {
     protected ShikigamiEntityImpl e1;
     protected ShikigamiEntityImpl e2;
 
+    /**
+     * 自定义具体设置，设置式神、属性、御魂。
+     */
+    protected abstract void init();
+
+    /**
+     * 初始化战斗环境后调用，执行测试逻辑。
+     */
+    protected abstract void dotest();
+
     @Override
     public void test() throws AssertionError {
         i1.property.speed = 10000;
@@ -36,16 +46,6 @@ public abstract class BaseTwoEntityTest implements Test {
         simulator.init();
         dotest();
     }
-
-    /**
-     * 自定义具体设置，设置式神、属性、御魂。
-     */
-    protected abstract void init();
-
-    /**
-     * 初始化战斗环境后调用，执行测试逻辑。
-     */
-    protected abstract void dotest();
 
     protected class EnInfo {
         public BaseShikigami shikigami = ShikigamiFactory.create("雨女");

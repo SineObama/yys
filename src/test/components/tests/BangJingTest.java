@@ -4,12 +4,11 @@ import com.sine.yys.mitama.BangJing;
 import test.components.base.BaseTwoEntityTest;
 
 public class BangJingTest extends BaseTwoEntityTest {
-
     private final BangJing bangJing = new BangJing();
 
     @Override
-    public String getLabels() {
-        return "御魂 蚌精";
+    protected void init() {
+        i2.mitama = bangJing;
     }
 
     @Override
@@ -23,7 +22,7 @@ public class BangJingTest extends BaseTwoEntityTest {
     }
 
     @Override
-    protected void init() {
-        i2.mitama = bangJing;
+    public String getLabels() {
+        return "御魂 蚌精";
     }
 }
