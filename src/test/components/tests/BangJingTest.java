@@ -12,7 +12,7 @@ public class BangJingTest extends BaseTwoEntityTest {
     }
 
     @Override
-    public void dotest() {
+    public void doTest() {
         int life = (int) (e2.getMaxLife() * (1 + bangJing.getShieldByMaxLife()));
         while (life >= e2.getMaxLife()) {
             simulator.step();

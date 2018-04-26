@@ -31,7 +31,7 @@ public abstract class BaseTwoEntityTest implements Test {
     /**
      * 初始化战斗环境后调用，执行测试逻辑。
      */
-    protected abstract void dotest();
+    protected abstract void doTest();
 
     @Override
     public void test() throws AssertionError {
@@ -44,7 +44,7 @@ public abstract class BaseTwoEntityTest implements Test {
         c2.addEntity(e2);
         simulator = new Simulator(c1, c2, Collections.EMPTY_LIST);
         simulator.init();
-        dotest();
+        doTest();
     }
 
     protected class EnInfo {

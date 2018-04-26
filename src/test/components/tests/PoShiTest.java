@@ -12,7 +12,7 @@ public class PoShiTest extends BaseTwoEntityTest {
     }
 
     @Override
-    public void dotest() {
+    public void doTest() {
         int src;
         src = (int) (e2.getMaxLife() * 1);
         e2.setLife(src);
