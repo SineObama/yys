@@ -17,7 +17,7 @@ public class BangJingTest extends BaseTwoEntityTest {
         test.addShield(e2.getMaxLife() * bangJing.getShieldByMaxLife());
         while (test.getLife() >= e2.getMaxLife()) {
             simulator.step();
-            test.test(-e1.getComCount(), "蚌精");
+            test.test(-com(e1), "蚌精");
         }
     }
 

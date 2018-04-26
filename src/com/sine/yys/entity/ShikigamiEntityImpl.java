@@ -219,6 +219,7 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, 
         return activeSkills;
     }
 
+    @Override
     public CommonAttack getCommonAttack() {
         for (Skill skill : shikigami.getSkills()) {
             if (skill instanceof CommonAttack)
@@ -230,13 +231,6 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, 
 
     public List<BaseMitama> getMitamas() {
         return mitamas;
-    }
-
-    /**
-     * @return 普通攻击数值=攻击*普攻系数。
-     */
-    public double getComCount() {
-        return getAttack() * getCommonAttack().getCoefficient();
     }
 
     public void setFireRepo(FireRepo fireRepo) {

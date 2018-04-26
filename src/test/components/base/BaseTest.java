@@ -1,5 +1,6 @@
 package test.components.base;
 
+import com.sine.yys.entity.EntityImpl;
 import com.sine.yys.entity.ShikigamiEntityImpl;
 import com.sine.yys.entity.SimpleObject;
 import com.sine.yys.mitama.BaseMitama;
@@ -27,6 +28,20 @@ public abstract class BaseTest implements Test {
 
     protected static ShikigamiEntityImpl form(EnInfo i) {
         return new ShikigamiEntityImpl(i.shikigami, i.property, i.mitama, 1.0, i.name != null ? i.name : i.shikigami.getName());
+    }
+
+    /**
+     * @return 普通攻击数值=攻击*普攻系数。
+     */
+    protected static double com(EntityImpl entity) {
+        return entity.getAttack() * entity.getCommonAttack().getCoefficient();
+    }
+
+    /**
+     * @return 暴击的普通攻击数值=攻击*普攻系数*暴击伤害。
+     */
+    protected static double comc(EntityImpl entity) {
+        return entity.getAttack() * entity.getCommonAttack().getCoefficient() * entity.getCriticalDamage();
     }
 
     final void initSimulation() {
@@ -72,12 +87,8 @@ public abstract class BaseTest implements Test {
         }
 
         public void setLife(double life) {
-            this.setLife((int) life);
-        }
-
-        public void setLife(int life) {
-            this.life = life;
-            entity.setLife(life);
+            this.life = (int) life;
+            entity.setLife((int) life);
         }
 
         public void test(double change, String message) {
@@ -86,6 +97,8 @@ public abstract class BaseTest implements Test {
                 if (shield < 0) {
                     change = shield;
                     shield = 0;
+                } else {
+                    change = 0;
                 }
             }
             life += change;
