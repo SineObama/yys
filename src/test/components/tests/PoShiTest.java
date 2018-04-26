@@ -13,23 +13,18 @@ public class PoShiTest extends BaseTwoEntityTest {
 
     @Override
     public void doTest() {
-        int src;
-        src = (int) (e2.getMaxLife() * 1);
-        e2.setLife(src);
+        LifeTest test = new LifeTest(e2);
         simulator.step();
-        assert src - e2.getLifeInt() == e1.getComCount() * poShi.getCoefficient() : "破势正1";
-        src = (int) (e2.getMaxLife() * 0.701);
-        e2.setLife(src);
+        test.test(-e1.getComCount() * poShi.getCoefficient(), "破势+1");
+        test.setLife(e2.getMaxLife() * 0.701);
         simulator.step();
-        assert src - e2.getLifeInt() == e1.getComCount() * poShi.getCoefficient() : "破势正2";
-        src = (int) (e2.getMaxLife() * 0.7);
-        e2.setLife(src);
+        test.test(-e1.getComCount() * poShi.getCoefficient(), "破势+2");
+        test.setLife(e2.getMaxLife() * 0.7);
         simulator.step();
-        assert src - e2.getLifeInt() == e1.getComCount() * poShi.getCoefficient() : "破势正3";
-        src = (int) (e2.getMaxLife() * 0.7) - 1;
-        e2.setLife(src);
+        test.test(-e1.getComCount() * poShi.getCoefficient(), "破势+3");
+        test.setLife(e2.getMaxLife() * 0.7 - 1);
         simulator.step();
-        assert src - e2.getLifeInt() == e1.getComCount() : "破势负1";
+        test.test(-e1.getComCount(), "破势-1");
     }
 
     @Override

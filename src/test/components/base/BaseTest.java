@@ -45,4 +45,51 @@ public abstract class BaseTest implements Test {
         public BaseMitama mitama = null;
         public String name = null;
     }
+
+    /**
+     * 辅助生命值检查。
+     */
+    protected class LifeTest {
+        int life;
+        int shield = 0;
+        ShikigamiEntityImpl entity;
+
+        public LifeTest(ShikigamiEntityImpl entity) {
+            this.entity = entity;
+            this.life = entity.getMaxLife();
+        }
+
+        public void addShield(double count) {
+            shield += count;
+        }
+
+        public void setShield(int shield) {
+            this.shield = shield;
+        }
+
+        public int getLife() {
+            return life;
+        }
+
+        public void setLife(double life) {
+            this.setLife((int) life);
+        }
+
+        public void setLife(int life) {
+            this.life = life;
+            entity.setLife(life);
+        }
+
+        public void test(double change, String message) {
+            if (change < 0) {
+                shield += change;
+                if (shield < 0) {
+                    change = shield;
+                    shield = 0;
+                }
+            }
+            life += change;
+            assert life == entity.getLifeInt() : message;
+        }
+    }
 }
