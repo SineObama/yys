@@ -21,6 +21,7 @@ public abstract class BaseCamp implements Camp, JSONable {
     private final String fullName;
     private final List<PositionImpl<EntityImpl>> positions = new ArrayList<>();
     private Camp opposite;
+    private OperationHandler handler;
 
     public BaseCamp(String name) {
         this.name = name;
@@ -39,6 +40,8 @@ public abstract class BaseCamp implements Camp, JSONable {
 
     public final void addEntity(EntityImpl entity) {
         positions.add(new PositionImpl<>(entity));
+        if (entity instanceof ShikigamiEntityImpl)
+            ((ShikigamiEntityImpl) entity).setHandler(handler);
     }
 
     @Override
@@ -141,6 +144,7 @@ public abstract class BaseCamp implements Camp, JSONable {
      * 设置全阵营的式神操作处理器，实现人工控制。null 表示使用原本的AI进行自动控制。
      */
     public void setHandler(OperationHandler handler) {
+        this.handler = handler;
         for (Position<EntityImpl> position : positions)
             if (position.getSource() instanceof ShikigamiEntityImpl)
                 ((ShikigamiEntityImpl) position.getSource()).setHandler(handler);

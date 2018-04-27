@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * 作为基类保有一些变量，提供初始化逻辑。
+ * 作为基类保有一些变量，定义测试过程（一些抽象函数），进行阵营的装填和模拟初始化等通用逻辑。
+ * 也提供一些辅助函数。
  */
 public abstract class BaseTest implements Test {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
@@ -44,7 +45,26 @@ public abstract class BaseTest implements Test {
         return entity.getAttack() * entity.getCommonAttack().getCoefficient() * entity.getCriticalDamage();
     }
 
-    final void initSimulation() {
+    /**
+     * 基类进行通用设置。
+     */
+    abstract void beforeInit();
+
+    /**
+     * 自定义具体设置，设置式神、属性、御魂。
+     */
+    protected abstract void init();
+
+    /**
+     * 基类进行通用设置。
+     */
+    abstract void afterInit();
+
+    @Override
+    public final void test() throws AssertionError {
+        beforeInit();
+        init();
+        afterInit();
         for (ShikigamiEntityImpl entity : _list1)
             c1.addEntity(entity);
         for (ShikigamiEntityImpl entity : _list2)
@@ -52,57 +72,28 @@ public abstract class BaseTest implements Test {
         simulator = new Simulator(c1, c2, _extra);
         simulator.init();
         log.info("初始化模拟完毕");
+        doTest();
     }
+
+    /**
+     * 构造战斗环境后被调用，执行测试逻辑。
+     */
+    protected abstract void doTest();
 
     protected class EnInfo {
         public BaseShikigami shikigami = ShikigamiFactory.create("雨女");
         public TestProperty property = new TestProperty();
         public BaseMitama mitama = null;
         public String name = null;
-    }
 
-    /**
-     * 辅助生命值检查。
-     */
-    protected class LifeTest {
-        int life;
-        int shield = 0;
-        ShikigamiEntityImpl entity;
-
-        public LifeTest(ShikigamiEntityImpl entity) {
-            this.entity = entity;
-            this.life = entity.getMaxLife();
+        public EnInfo() {
         }
 
-        public void addShield(double count) {
-            shield += count;
-        }
-
-        public void setShield(int shield) {
-            this.shield = shield;
-        }
-
-        public int getLife() {
-            return life;
-        }
-
-        public void setLife(double life) {
-            this.life = (int) life;
-            entity.setLife((int) life);
-        }
-
-        public void test(double change, String message) {
-            if (change < 0) {
-                shield += change;
-                if (shield < 0) {
-                    change = shield;
-                    shield = 0;
-                } else {
-                    change = 0;
-                }
-            }
-            life += change;
-            assert life == entity.getLifeInt() : message;
+        public EnInfo(BaseShikigami shikigami, TestProperty property, BaseMitama mitama, String name) {
+            this.shikigami = shikigami;
+            this.property = property;
+            this.mitama = mitama;
+            this.name = name;
         }
     }
 }

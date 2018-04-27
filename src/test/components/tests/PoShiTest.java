@@ -2,7 +2,11 @@ package test.components.tests;
 
 import com.sine.yys.mitama.PoShi;
 import test.components.base.BaseTwoEntityTest;
+import test.components.util.LifeTest;
 
+/**
+ * 测试各临界值下破势的触发效果。
+ */
 public class PoShiTest extends BaseTwoEntityTest {
     private PoShi poShi = new PoShi();
 
@@ -14,17 +18,21 @@ public class PoShiTest extends BaseTwoEntityTest {
     @Override
     public void doTest() {
         LifeTest test = new LifeTest(e2);
+
         simulator.step();
-        test.test(-com(e1) * poShi.getCoefficient(), "破势+1");
+        test.test(-com(e1) * poShi.getCoefficient(), "+1");
+
         test.setLife(e2.getMaxLife() * 0.701);
         simulator.step();
-        test.test(-com(e1) * poShi.getCoefficient(), "破势+2");
+        test.test(-com(e1) * poShi.getCoefficient(), "+2");
+
         test.setLife(e2.getMaxLife() * 0.7);
         simulator.step();
-        test.test(-com(e1) * poShi.getCoefficient(), "破势+3");
+        test.test(-com(e1) * poShi.getCoefficient(), "+3");
+
         test.setLife(e2.getMaxLife() * 0.7 - 1);
         simulator.step();
-        test.test(-com(e1), "破势-1");
+        test.test(-com(e1), "-");
     }
 
     @Override

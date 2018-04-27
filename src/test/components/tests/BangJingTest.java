@@ -2,7 +2,11 @@ package test.components.tests;
 
 import com.sine.yys.mitama.BangJing;
 import test.components.base.BaseTwoEntityTest;
+import test.components.util.LifeTest;
 
+/**
+ * 测试蚌精盾的生产。
+ */
 public class BangJingTest extends BaseTwoEntityTest {
     private final BangJing bangJing = new BangJing();
 
@@ -17,7 +21,7 @@ public class BangJingTest extends BaseTwoEntityTest {
         test.addShield(e2.getMaxLife() * bangJing.getShieldByMaxLife());
         while (test.getLife() >= e2.getMaxLife()) {
             simulator.step();
-            test.test(-com(e1), "蚌精");
+            test.test(-com(e1), "");
         }
     }
 
