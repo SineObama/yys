@@ -92,12 +92,15 @@ public class ZiYang extends BaseActiveSkill {
 
     class DieHandler extends SealablePassiveHandler implements EventHandler<DieEvent> {
         private final Callback callback = () -> {
+            final Entity self = getSelf();
+            if (self.isDead())
+                return;
             // 查找己方式神站位，可复活的队友。
             final ShikigamiEntity choosed = RandUtil.choose(getOwn().getRevivable());
             if (choosed == null)
                 return;
-            log.info(Msg.trigger(getSelf(), ZiYang.this));
-            QingTianWaWa waWa = getSelf().get(QingTianWaWa.class, null);
+            log.info(Msg.trigger(self, ZiYang.this));
+            QingTianWaWa waWa = self.get(QingTianWaWa.class, null);
             waWa.sacrifice();
             getController().revive(choosed, Integer.MAX_VALUE);  // 回复满生命
             double energy = waWa.use(Integer.MAX_VALUE);  // 消耗所有能量。
@@ -107,11 +110,15 @@ public class ZiYang extends BaseActiveSkill {
             energy /= num;  // 每人治疗量
             for (ShikigamiEntity shikigamiEntity : allShikigami)
                 if (shikigamiEntity != choosed)
-                    getController().cure(getSelf(), shikigamiEntity, energy);
+                    getController().cure(self, shikigamiEntity, energy);
         };
 
         @Override
         public void handle(DieEvent event) {
+            if (event.getEntity() == getSelf()) {
+                log.warning("日和坊自己死后仍能进入死亡处理");
+                return;
+            }
             QingTianWaWa waWa = getSelf().get(QingTianWaWa.class, null);
             if (waWa.getCd() > 0)
                 return;
