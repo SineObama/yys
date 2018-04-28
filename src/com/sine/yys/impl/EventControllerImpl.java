@@ -21,7 +21,7 @@ public class EventControllerImpl implements EventController {
 
     private final Map<Class, Set<Container<EventHandler>>> controllerMap = new HashMap<>();
     // 事件触发计数
-    private final Map<Object, Integer> times = new HashMap<>();
+    private final Map<Class, Integer> times = new HashMap<>();
     private final Map<EventHandler, Integer> prior = new HashMap<>();
     private final Map<EventHandler, Integer> triggerAt = new HashMap<>();
     private EventController parent = null;
@@ -67,15 +67,16 @@ public class EventControllerImpl implements EventController {
 
     @Override
     public <EventType extends Event> EventType trigger(EventType event) {
-        if (times.containsKey(event)) {
-            times.put(event, times.get(event) + 1);
+        Class<? extends Event> eventClass = event.getClass();
+        if (times.containsKey(eventClass)) {
+            times.put(eventClass, times.get(eventClass) + 1);
         } else {
-            times.put(event, 0);
+            times.put(eventClass, 0);
         }
-        final Set<Container<EventHandler>> containers = new TreeSet<>(getNoCreate(event.getClass()));
+        final Set<Container<EventHandler>> containers = new TreeSet<>(getNoCreate(eventClass));
         for (Container<EventHandler> container : containers) {
             @SuppressWarnings("unchecked") final EventHandler<EventType> obj = container.getObj();
-            if (triggerAt.containsKey(obj) && !triggerAt.get(obj).equals(times.get(event)))
+            if (triggerAt.containsKey(obj) && !triggerAt.get(obj).equals(times.get(eventClass)))
                 continue;
             if (obj instanceof Sealable && ((Sealable) obj).sealed())
                 continue;
