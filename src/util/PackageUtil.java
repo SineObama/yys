@@ -26,6 +26,8 @@ public class PackageUtil {
      */
     private static final char DOT_CHAR = '.';
 
+    public static boolean getInnerClassInDirectory = false;
+
     /**
      * 在当前项目中寻找指定包下的所有类
      *
@@ -126,6 +128,8 @@ public class PackageUtil {
                 //由于传入的文件可能是相对路径, 这里要拿到文件的实际路径, 如果不存在则报IOException
                 path = path.toRealPath();
                 String pathStr = path.toString();
+                if (!getInnerClassInDirectory && pathStr.contains("$"))
+                    return classList;
                 //这里拿到的一般的"aa:\bb\...\cc.class"格式的文件名, 要去除末尾的类型后缀(.class)
                 int lastDotIndex = pathStr.lastIndexOf(DOT_CHAR);
                 //Class.forName只允许使用用'.'分隔的类名的形式
