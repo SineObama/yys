@@ -19,7 +19,9 @@ public class RandUtil {
     }
 
     public static void reset() {
-        random.setSeed(Seed.get());
+        final long seed = Seed.get();
+        log.info("reset random seed: " + seed + "L");
+        random.setSeed(seed);
     }
 
     public static double doubles(double origin, double bound) {
