@@ -17,7 +17,6 @@ public class CalcDam {
 
     /**
      * 计算某式神攻击目标的期望伤害。
-     * 包括暴击的计算（但没有反馈信息）。
      */
     public static double expect(Property self, Property target, AttackInfo attackInfo, boolean critical) {
         final double criticalCoefficient = critical ? self.getCriticalDamage() : 1.0;
