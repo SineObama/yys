@@ -96,6 +96,9 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void applyDamage(Entity self, Entity target, double damage, boolean critical, AttackType type) {
+        damage *= self.getEventController().trigger(new AttackEvent(self, target)).getCoefficient();
+        target.getEventController().trigger(new BeAttackEvent(target, self, type));
+
         // 破盾
         final int remain = breakShield(target, (int) damage);
 
@@ -112,8 +115,7 @@ public class ControllerImpl implements Controller {
             self.getEventController().trigger(new DamageEvent(self, target));
         }
 
-        damage *= self.getEventController().trigger(new AttackEvent(self, target)).getCoefficient();
-        target.getEventController().trigger(new BeAttackEvent(target, self, type));
+        self.getEventController().trigger(new AttackEvent2(self, target));
 
         if (remain != 0) {
             doDamage(self, target, (int) damage, type, critical);
