@@ -25,7 +25,7 @@ public class Test {
         try {
             for (int i = 1; i < 99; i++) {
                 RandUtil.reset();
-                simulator = InputUtil.create("tests/" + i);
+                simulator = InputUtil.create("tests/" + i, InputUtil.projectEnc);
                 simulator.test(Integer.valueOf(args[0]));
             }
         } catch (FileNotFoundException ignored) {
