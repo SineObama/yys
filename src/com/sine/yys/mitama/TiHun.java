@@ -4,7 +4,7 @@ import com.sine.yys.buff.control.ChenMo;
 import com.sine.yys.buff.control.ControlBuff;
 import com.sine.yys.event.*;
 import com.sine.yys.impl.AttackTypeImpl;
-import com.sine.yys.info.AttackTypeEnum;
+import com.sine.yys.info.TransferType;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -106,7 +106,7 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
             // XXXX 薙魂的减伤只对破盾后的伤害生效
             final double damage = event.getTotal() * (1 - getDamageReducePct());
             // 单人断涓流的也会触发薙魂
-            getController().directDamage(event.getEntity(), getSelf(), (int) (damage * getSharePct()), new AttackTypeImpl(event.getType(), AttackTypeEnum.TI_HUN));
+            getController().directDamage(event.getEntity(), getSelf(), (int) (damage * getSharePct()), new AttackTypeImpl(event.getType(), TransferType.TI_HUN));
             event.setLeft(damage * (1 - getSharePct()));
         }
     }

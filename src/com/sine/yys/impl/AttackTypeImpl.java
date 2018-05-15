@@ -1,12 +1,15 @@
 package com.sine.yys.impl;
 
-import com.sine.yys.info.AttackTypeEnum;
+import com.sine.yys.info.TransferType;
 import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.TransferrableEffect;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 由{@linkplain TransferrableEffect}
+ */
 public class AttackTypeImpl implements AttackType {
     boolean counter = false;
     boolean tiHun = false;
@@ -19,14 +22,22 @@ public class AttackTypeImpl implements AttackType {
     public AttackTypeImpl() {
     }
 
-    public AttackTypeImpl(AttackType src, AttackTypeEnum typeEnum) {
-        this.counter = src.isCounter() || typeEnum == AttackTypeEnum.COUNTER;
-        this.tiHun = src.isTiHun() || typeEnum == AttackTypeEnum.TI_HUN;
-        this.juanLiu = src.isJuanLiu() || typeEnum == AttackTypeEnum.JUAN_LIU;
-        this.zhenNv = src.isZhenNv() || typeEnum == AttackTypeEnum.ZHEN_NV;
-        this.buff = src.isBuff() || typeEnum == AttackTypeEnum.BUFF;
+    /**
+     * 以某种伤害变换为契机，新建
+     *
+     * @param src
+     * @param typeEnum
+     */
+    public AttackTypeImpl(AttackType src, TransferType typeEnum) {
+        this.counter = src.isCounter();
+        this.tiHun = src.isTiHun() || typeEnum == TransferType.TI_HUN;
+        this.juanLiu = src.isJuanLiu() || typeEnum == TransferType.JUAN_LIU;
+        this.zhenNv = src.isZhenNv() || typeEnum == TransferType.ZHEN_NV;
+        this.buff = src.isBuff();
         for (Map.Entry<Class, TransferrableEffect> classObjectEntry : src.getEffects().entrySet()) {
-            this.effects.put(classObjectEntry.getKey(), classObjectEntry.getValue().through(typeEnum));
+            TransferrableEffect value = classObjectEntry.getValue();
+            if (value != null)
+                this.effects.put(classObjectEntry.getKey(), value.through(typeEnum));
         }
     }
 

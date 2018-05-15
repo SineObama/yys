@@ -93,7 +93,7 @@ public class ControllerImpl implements Controller {
         target.getEventController().trigger(new BeAttackEvent(target, self, type));
 
         STZZ stzz = type.getEffect(STZZ.class);
-        if (stzz != null && stzz.getSelf() != null) {
+        if (stzz != null && stzz.effective()) {
             damage *= stzz.getSelf().getEventController().trigger(new STZZEnterEvent(self, target)).getCoefficient();
         }
 
@@ -113,7 +113,7 @@ public class ControllerImpl implements Controller {
             self.getEventController().trigger(new DamageEvent(self, target));
         }
 
-        if (stzz != null && stzz.getSelf() != null) {
+        if (stzz != null && stzz.effective()) {
             stzz.getSelf().getEventController().trigger(new STZZExitEvent(self, target));
         }
 
@@ -139,7 +139,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void directDamage(Entity self, Entity target, int damage, AttackType type) {
         STZZ stzz = type.getEffect(STZZ.class);
-        if (stzz != null && stzz.getSelf() != null) {
+        if (stzz != null && stzz.effective()) {
             damage *= stzz.getSelf().getEventController().trigger(new STZZEnterEvent(self, target)).getCoefficient();
         }
         damage = breakShield(target, damage);
@@ -147,12 +147,10 @@ public class ControllerImpl implements Controller {
             if (!type.isJuanLiu()) {  // 薙魂可以再被涓流分摊，涓流后不再判断涓流
                 final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, type);
                 damage = (int) target.getEventController().trigger(damageShareEvent).getLeft();
-//            } else if (!type.isTiHun()) {
-//                self.getEventController().trigger(new JuanLiuDamageEvent(target));
             }
             doDamage(self, target, damage, type, false);
         }
-        if (stzz != null && stzz.getSelf() != null) {
+        if (stzz != null && stzz.effective()) {
             stzz.getSelf().getEventController().trigger(new STZZExitEvent(self, target));
         }
     }
