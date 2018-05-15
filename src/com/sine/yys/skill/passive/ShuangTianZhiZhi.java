@@ -85,6 +85,7 @@ public class ShuangTianZhiZhi extends BasePassiveSkill implements EventHandler<A
 
     @Override
     public void doInit(Controller controller, Entity self) {
+        self.getEventController().add(this);
         self.getEventController().add(new STZZEnterHandler());
         self.getEventController().add(new STZZExitHandler());
         if (self instanceof ShikigamiEntity) {
