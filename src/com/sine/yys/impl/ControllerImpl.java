@@ -92,7 +92,7 @@ public class ControllerImpl implements Controller {
         self.getEventController().trigger(new AttackEvent(self, target, type));
         target.getEventController().trigger(new BeAttackEvent(target, self, type));
 
-        STZZ stzz = type.get(STZZ.class);
+        STZZ stzz = type.getEffect(STZZ.class);
         if (stzz != null && stzz.getSelf() != null) {
             damage *= stzz.getSelf().getEventController().trigger(new STZZEnterEvent(self, target)).getCoefficient();
         }
@@ -138,7 +138,7 @@ public class ControllerImpl implements Controller {
     // 注意与applyDamage的统一
     @Override
     public void directDamage(Entity self, Entity target, int damage, AttackType type) {
-        STZZ stzz = type.get(STZZ.class);
+        STZZ stzz = type.getEffect(STZZ.class);
         if (stzz != null && stzz.getSelf() != null) {
             damage *= stzz.getSelf().getEventController().trigger(new STZZEnterEvent(self, target)).getCoefficient();
         }
@@ -161,7 +161,7 @@ public class ControllerImpl implements Controller {
     public void buffDamage(Entity self, Entity target, int damage) {
         damage = breakShield(target, damage);
         if (damage > 0)
-            doDamage(self, target, damage, new BuffAttackType(), false);
+            doDamage(self, target, damage, AttackTypeImpl.createBuff(), false);
     }
 
     @Override

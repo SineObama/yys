@@ -4,7 +4,7 @@ import com.sine.yys.event.AfterMovementEvent;
 import com.sine.yys.event.BeforeRoundEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
-import com.sine.yys.impl.CounterAttackType;
+import com.sine.yys.impl.AttackTypeImpl;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -29,7 +29,7 @@ public class GuiNiao extends BaseCommonAttack {
 
     @Override
     public void doCounter(Entity target) {
-        getController().attack(getSelf(), target, getAttack(), new CounterAttackType());
+        getController().attack(getSelf(), target, getAttack(), AttackTypeImpl.createCounter());
 
         // 减少一只飞鸟
         int niao = getFeiNiao();

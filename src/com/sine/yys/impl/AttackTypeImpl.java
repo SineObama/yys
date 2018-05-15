@@ -30,8 +30,20 @@ public class AttackTypeImpl implements AttackType {
         }
     }
 
+    public static AttackType createCounter() {
+        AttackTypeImpl attackType = new AttackTypeImpl();
+        attackType.counter = true;
+        return attackType;
+    }
+
+    public static AttackType createBuff() {
+        AttackTypeImpl attackType = new AttackTypeImpl();
+        attackType.buff = true;
+        return attackType;
+    }
+
     @Override
-    public <T> T get(Class<T> tClass) {
+    public <T> T getEffect(Class<T> tClass) {
         return (T) effects.get(tClass);
     }
 
