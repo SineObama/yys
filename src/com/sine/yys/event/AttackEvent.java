@@ -1,5 +1,6 @@
 package com.sine.yys.event;
 
+import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -11,18 +12,14 @@ import com.sine.yys.inter.Entity;
  * 2. 伤害系数变动；
  */
 public class AttackEvent extends BaseVectorEvent {
-    private double coefficient = 1.0;
+    private final AttackType attackType;
 
-    public AttackEvent(Entity entity, Entity target) {
+    public AttackEvent(Entity entity, Entity target, AttackType attackType) {
         super(entity, target);
+        this.attackType = attackType;
     }
 
-    public double getCoefficient() {
-        return coefficient;
+    public AttackType getAttackType() {
+        return attackType;
     }
-
-    public void multiplyCoefficient(double coefficient) {
-        this.coefficient *= coefficient;
-    }
-
 }

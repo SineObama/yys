@@ -1,6 +1,8 @@
 package com.sine.yys.mitama;
 
 import com.sine.yys.event.CriticalEvent;
+import com.sine.yys.impl.AttackTypeImpl;
+import com.sine.yys.info.AttackTypeEnum;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.inter.PctEffect;
@@ -46,13 +48,12 @@ public class ZhenNv extends BaseSelfMitama implements EventHandler<CriticalEvent
                 return;
             final Entity self = getSelf();
             log.info(Msg.trigger(self, this));
-            event.getType().setZhenNv(true);
             final double damage1 = self.getAttack() * getMaxDamageByAttack();
             final double damage2 = event.getTarget().getMaxLife() * getMaxDamageByMaxLife();
             double damage = Double.min(damage1, damage2);
             // 根据旗帜buff增减。
             damage *= self.getFlagDamageCoefficient();
-            getController().applyDamage(self, event.getTarget(), damage, false, event.getType());
+            getController().applyDamage(self, event.getTarget(), damage, false, new AttackTypeImpl(event.getType(), AttackTypeEnum.ZHEN_NV));
         }
     }
 }

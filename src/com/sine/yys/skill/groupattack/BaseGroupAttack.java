@@ -4,7 +4,6 @@ import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.BaseAttackSkill;
-import com.sine.yys.skill.model.AttackInfoImpl;
 import com.sine.yys.skill.targetresolver.EnemyCampResolver;
 
 /**
@@ -17,7 +16,7 @@ public abstract class BaseGroupAttack extends BaseAttackSkill {
         final Entity self = getSelf();
         for (int i = 0; i < getTimes(); i++) {
             for (Entity target : getEnemy().getAllAlive()) {
-                controller.attack(self, target, new AttackInfoImpl(getDebuffEffects(), getCoefficient()));
+                controller.attack(self, target, getAttack(), getAttackType());
             }
         }
     }

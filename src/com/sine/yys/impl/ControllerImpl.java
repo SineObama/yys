@@ -11,6 +11,7 @@ import com.sine.yys.inter.base.Callback;
 import com.sine.yys.rule.CalcDam;
 import com.sine.yys.rule.CalcEffect;
 import com.sine.yys.rule.buff.Cure;
+import com.sine.yys.transeffect.STZZ;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
@@ -52,25 +53,17 @@ public class ControllerImpl implements Controller {
 
     /**
      * 伤害逻辑：
+     * 0. 施加攻击直接附带的debuff效果。
      * 1. 由攻击、伤害系数、对方防御（忽略防御）计算。
      * 2. 根据双方buff进行增减。
      * 3. 破盾，施加剩余伤害，添加御魂效果。
      */
     @Override
-    public void attack(Entity self, Entity target, AttackInfo attackInfo) {
-        attack(self, target, attackInfo, new AttackTypeImpl());
-    }
-
-    @Override
-    public void counter(Entity self, Entity target, AttackInfo attackInfo) {
-        attack(self, target, attackInfo, new AttackTypeImpl(false, true));
-    }
-
-    private void attack(Entity self, Entity target, AttackInfo attackInfo, AttackType type) {
+    public void attack(Entity self, Entity target, AttackInfo attackInfo, AttackType type) {
         if (target.isDead())  // 多段攻击目标可能中途死亡
             return;
 
-        // XXX 关于触发时机
+        // 0. XXX 关于触发时机
         for (DebuffEffect debuffEffect : attackInfo.getDebuffEffects()) {
             applyDebuff(self, target, debuffEffect);
         }
@@ -96,8 +89,13 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void applyDamage(Entity self, Entity target, double damage, boolean critical, AttackType type) {
-        damage *= self.getEventController().trigger(new AttackEvent(self, target)).getCoefficient();
+        self.getEventController().trigger(new AttackEvent(self, target, type));
         target.getEventController().trigger(new BeAttackEvent(target, self, type));
+
+        STZZ stzz = type.get(STZZ.class);
+        if (stzz != null && stzz.getSelf() != null) {
+            damage *= stzz.getSelf().getEventController().trigger(new STZZEnterEvent(self, target)).getCoefficient();
+        }
 
         // 破盾
         final int remain = breakShield(target, (int) damage);
@@ -108,11 +106,15 @@ public class ControllerImpl implements Controller {
             damage *= self.getEventController().trigger(new PreDamageEvent(self, target)).getCoefficient();
 
             // 处理薙魂和涓流。未来考虑金鱼、小松丸躲避。
-            final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, new AttackTypeImpl(type));
+            final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, type);
             damage = target.getEventController().trigger(damageShareEvent).getLeft();
 
-            // 附加效果
+            // 附加御魂效果
             self.getEventController().trigger(new DamageEvent(self, target));
+        }
+
+        if (stzz != null && stzz.getSelf() != null) {
+            stzz.getSelf().getEventController().trigger(new STZZExitEvent(self, target));
         }
 
         self.getEventController().trigger(new AttackEvent2(self, target));
@@ -125,26 +127,33 @@ public class ControllerImpl implements Controller {
             // XXX 地藏像死亡后盾buff还在？
             if (critical) {
                 target.getEventController().trigger(new BeCriticalEvent(target, self));
-                self.getEventController().trigger(new CriticalEvent(self, target, new AttackTypeImpl(type)));
+                self.getEventController().trigger(new CriticalEvent(self, target, type));
             }
         } else {
             log.info(Msg.noDamage(self, target));
         }
     }
 
-    // 涓流死亡算击杀，薙魂不算（阴摩罗）
+    // （阴摩罗）涓流死亡算击杀，薙魂不算
     // 注意与applyDamage的统一
     @Override
     public void directDamage(Entity self, Entity target, int damage, AttackType type) {
+        STZZ stzz = type.get(STZZ.class);
+        if (stzz != null && stzz.getSelf() != null) {
+            damage *= stzz.getSelf().getEventController().trigger(new STZZEnterEvent(self, target)).getCoefficient();
+        }
         damage = breakShield(target, damage);
         if (damage > 0) {
             if (!type.isJuanLiu()) {  // 薙魂可以再被涓流分摊，涓流后不再判断涓流
-                final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, new AttackTypeImpl(type));
+                final DamageShareEvent damageShareEvent = new DamageShareEvent(self, target, damage, type);
                 damage = (int) target.getEventController().trigger(damageShareEvent).getLeft();
-            } else if (!type.isTiHun()) {
-                self.getEventController().trigger(new JuanLiuDamageEvent(target));
+//            } else if (!type.isTiHun()) {
+//                self.getEventController().trigger(new JuanLiuDamageEvent(target));
             }
             doDamage(self, target, damage, type, false);
+        }
+        if (stzz != null && stzz.getSelf() != null) {
+            stzz.getSelf().getEventController().trigger(new STZZExitEvent(self, target));
         }
     }
 
@@ -152,7 +161,7 @@ public class ControllerImpl implements Controller {
     public void buffDamage(Entity self, Entity target, int damage) {
         damage = breakShield(target, damage);
         if (damage > 0)
-            doDamage(self, target, damage, new AttackTypeImpl(true), false);
+            doDamage(self, target, damage, new BuffAttackType(), false);
     }
 
     @Override
@@ -183,7 +192,7 @@ public class ControllerImpl implements Controller {
      */
     private void doDamage(Entity self, Entity target, double damage, AttackType type, boolean critical) {
         log.info(Msg.damage(self, target, (int) damage, critical));
-        final BeDamageEvent event = new BeDamageEvent(target, self, new AttackTypeImpl(type), damage);
+        final BeDamageEvent event = new BeDamageEvent(target, self, type, damage);
         target.getEventController().trigger(event);
         damage = event.getDamage();
         if (event.isWake())

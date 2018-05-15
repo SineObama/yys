@@ -22,12 +22,7 @@ public interface Controller extends DamageController {
     /**
      * 主动攻击目标（包括赤团华，不包括持续伤害和反击）。
      */
-    void attack(Entity self, Entity target, AttackInfo attackInfo);
-
-    /**
-     * 反击。
-     */
-    void counter(Entity self, Entity target, AttackInfo attackInfo);
+    void attack(Entity self, Entity target, AttackInfo attackInfo, AttackType attackType);
 
     void applyDamage(Entity self, Entity target, double damage, boolean critical, AttackType type);
 

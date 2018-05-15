@@ -1,5 +1,6 @@
 package com.sine.yys.skill.commonattack;
 
+import com.sine.yys.impl.CounterAttackType;
 import com.sine.yys.inter.CommonAttack;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.skill.mono.BaseMonoAttack;
@@ -37,6 +38,6 @@ public abstract class BaseCommonAttack extends BaseMonoAttack implements CommonA
 
     protected void doCounter(Entity target) {
         for (int i = 0; i < getTimes(); i++)
-            getController().counter(getSelf(), target, getAttack());
+            getController().attack(getSelf(), target, getAttack(), new CounterAttackType());
     }
 }

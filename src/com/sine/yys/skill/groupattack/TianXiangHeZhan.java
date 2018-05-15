@@ -4,7 +4,6 @@ import com.sine.yys.event.BeMonoAttackEvent;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.ShikigamiEntity;
 import com.sine.yys.inter.TargetResolver;
-import com.sine.yys.skill.model.AttackInfoImpl;
 import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 
 /**
@@ -14,7 +13,7 @@ public class TianXiangHeZhan extends BaseGroupAttack {
     @Override
     public void doApply(Entity target) {
         super.doApply(target);
-        getController().attack(getSelf(), target, new AttackInfoImpl(getDebuffEffects(), getFinalCoefficient()));
+        getController().attack(getSelf(), target, getAttack(), getAttackType());
     }
 
     @Override

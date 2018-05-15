@@ -15,7 +15,7 @@ public abstract class BaseMonoAttack extends BaseAttackSkill {
     @Override
     protected void doApply(Entity target) {
         for (int i = 0; i < getTimes(); i++)
-            getController().attack(getSelf(), target, getAttack());
+            getController().attack(getSelf(), target, getAttack(), getAttackType());
     }
 
     /**

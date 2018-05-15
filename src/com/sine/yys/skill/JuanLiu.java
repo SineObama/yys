@@ -4,6 +4,9 @@ import com.sine.yys.buff.NumIBuff;
 import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.DamageShareEvent;
 import com.sine.yys.event.DieEvent;
+import com.sine.yys.impl.AttackTypeImpl;
+import com.sine.yys.info.AttackTypeEnum;
+import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 
@@ -59,10 +62,10 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
     @Override
     public void handle(DamageShareEvent event) {
         final int damage = (int) (event.getTotal() / shared.size());
-        event.getType().setJuanLiu(true);
+        AttackType type = new AttackTypeImpl(event.getType(), AttackTypeEnum.JUAN_LIU);
         for (Entity entity : new ArrayList<>(shared))
             if (entity != event.getTarget())
-                getController().directDamage(event.getEntity(), entity, damage, event.getType());
+                getController().directDamage(event.getEntity(), entity, damage, type);
         event.setLeft(damage);
     }
 

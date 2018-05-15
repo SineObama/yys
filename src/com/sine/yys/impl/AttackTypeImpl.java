@@ -1,32 +1,43 @@
 package com.sine.yys.impl;
 
+import com.sine.yys.info.AttackTypeEnum;
 import com.sine.yys.inter.AttackType;
+import com.sine.yys.inter.TransferrableEffect;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AttackTypeImpl implements AttackType {
-    private boolean counter = false;
-    private boolean tiHun = false;
-    private boolean juanLiu = false;
-    private boolean zhenNv = false;
-    private boolean buff = false;
+    boolean counter = false;
+    boolean tiHun = false;
+    boolean juanLiu = false;
+    boolean zhenNv = false;
+    boolean buff = false;
 
-    public AttackTypeImpl(boolean buff) {
-        this.buff = buff;
-    }
-
-    public AttackTypeImpl(AttackType type) {
-        this.counter = type.isCounter();
-        this.tiHun = type.isTiHun();
-        this.juanLiu = type.isJuanLiu();
-        this.zhenNv = type.isZhenNv();
-        this.buff = type.isBuff();
-    }
-
-    public AttackTypeImpl(boolean buff, boolean counter) {
-        this.buff = buff;
-        this.counter = counter;
-    }
+    private Map<Class, TransferrableEffect> effects = new HashMap<>();
 
     public AttackTypeImpl() {
+    }
+
+    public AttackTypeImpl(AttackType src, AttackTypeEnum typeEnum) {
+        this.counter = src.isCounter() || typeEnum == AttackTypeEnum.COUNTER;
+        this.tiHun = src.isTiHun() || typeEnum == AttackTypeEnum.TI_HUN;
+        this.juanLiu = src.isJuanLiu() || typeEnum == AttackTypeEnum.JUAN_LIU;
+        this.zhenNv = src.isZhenNv() || typeEnum == AttackTypeEnum.ZHEN_NV;
+        this.buff = src.isBuff() || typeEnum == AttackTypeEnum.BUFF;
+        for (Map.Entry<Class, TransferrableEffect> classObjectEntry : src.getEffects().entrySet()) {
+            this.effects.put(classObjectEntry.getKey(), classObjectEntry.getValue().through(typeEnum));
+        }
+    }
+
+    @Override
+    public <T> T get(Class<T> tClass) {
+        return (T) effects.get(tClass);
+    }
+
+    @Override
+    public Map<Class, TransferrableEffect> getEffects() {
+        return effects;
     }
 
     @Override
@@ -35,18 +46,8 @@ public class AttackTypeImpl implements AttackType {
     }
 
     @Override
-    public void setCounter(boolean counter) {
-        this.counter = counter;
-    }
-
-    @Override
     public boolean isTiHun() {
         return tiHun;
-    }
-
-    @Override
-    public void setTiHun(boolean tiHun) {
-        this.tiHun = tiHun;
     }
 
     @Override
@@ -55,27 +56,12 @@ public class AttackTypeImpl implements AttackType {
     }
 
     @Override
-    public void setJuanLiu(boolean juanLiu) {
-        this.juanLiu = juanLiu;
-    }
-
-    @Override
     public boolean isZhenNv() {
         return zhenNv;
     }
 
     @Override
-    public void setZhenNv(boolean zhenNv) {
-        this.zhenNv = zhenNv;
-    }
-
-    @Override
     public boolean isBuff() {
         return buff;
-    }
-
-    @Override
-    public void setBuff(boolean buff) {
-        this.buff = buff;
     }
 }

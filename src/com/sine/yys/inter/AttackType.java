@@ -1,5 +1,7 @@
 package com.sine.yys.inter;
 
+import java.util.Map;
+
 /**
  * 攻击类型。
  * <p>
@@ -8,35 +10,30 @@ package com.sine.yys.inter;
  * 最简单的例子是攻击和针女伤害通过椒图分摊，传递给狰式神，实现2次反击。
  */
 public interface AttackType {
+    <T> T get(Class<T> tClass);
+
+    Map<Class, TransferrableEffect> getEffects();
+
     /**
      * @return 是否反击。
      */
     boolean isCounter();
-
-    void setCounter(boolean counter);
 
     /**
      * @see com.sine.yys.mitama.TiHun
      */
     boolean isTiHun();
 
-    void setTiHun(boolean tiHun);
-
     /**
      * @see com.sine.yys.skill.JuanLiu
      */
     boolean isJuanLiu();
-
-    void setJuanLiu(boolean juanLiu);
 
     /**
      * @see com.sine.yys.mitama.ZhenNv
      */
     boolean isZhenNv();
 
-    void setZhenNv(boolean zhenNv);
-
     boolean isBuff();
 
-    void setBuff(boolean buff);
 }
