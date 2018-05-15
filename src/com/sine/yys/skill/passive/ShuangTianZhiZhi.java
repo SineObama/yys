@@ -2,13 +2,11 @@ package com.sine.yys.skill.passive;
 
 import com.sine.yys.buff.control.BingDong;
 import com.sine.yys.effect.BaseDebuffEffect;
-import com.sine.yys.entity.ShikigamiEntityImpl;
 import com.sine.yys.event.AttackEvent;
 import com.sine.yys.event.STZZEnterEvent;
 import com.sine.yys.event.STZZExitEvent;
 import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.Callback;
-import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.mitama.XueYouHun;
 import com.sine.yys.transeffect.STZZ;
 import com.sine.yys.util.Msg;
@@ -89,10 +87,10 @@ public class ShuangTianZhiZhi extends BasePassiveSkill implements EventHandler<A
     public void doInit(Controller controller, Entity self) {
         self.getEventController().add(new STZZEnterHandler());
         self.getEventController().add(new STZZExitHandler());
-        if (self instanceof ShikigamiEntityImpl) {
-            for (BaseMitama baseMitama : ((ShikigamiEntityImpl) self).getMitamas()) {
-                if (baseMitama instanceof XueYouHun) {
-                    xueYouHun = ((XueYouHun) baseMitama);
+        if (self instanceof ShikigamiEntity) {
+            for (Mitama mitama : ((ShikigamiEntity) self).getMitamas()) {
+                if (mitama instanceof XueYouHun) {
+                    xueYouHun = ((XueYouHun) mitama);
                     break;
                 }
             }
