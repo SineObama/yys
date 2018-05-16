@@ -15,6 +15,8 @@ import com.sine.yys.transeffect.STZZ;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Logger;
@@ -92,10 +94,9 @@ public class ControllerImpl implements Controller {
         self.getEventController().trigger(new AttackEvent(self, target, type));
         target.getEventController().trigger(new BeAttackEvent(target, self, type));
 
-        STZZ stzz = type.getEffect(STZZ.class);
-        if (stzz != null && stzz.effective()) {
-            damage *= stzz.getSelf().getEventController().trigger(new STZZEnterEvent(self, target)).getCoefficient();
-        }
+        List<DebuffEffect> effects = self.getEventController().trigger(new AddDamageEffectEvent(self)).getEffects();
+        if (type.getEffects().containsKey(STZZ.class))
+            damage *= self.getEventController().trigger(new AfterAddDamageEffectEvent(self, target, Collections.EMPTY_LIST)).getCoefficient();
 
         // 破盾
         final int remain = breakShield(target, (int) damage);
@@ -110,11 +111,8 @@ public class ControllerImpl implements Controller {
             damage = target.getEventController().trigger(damageShareEvent).getLeft();
 
             // 附加御魂效果
-            self.getEventController().trigger(new DamageEvent(self, target));
-        }
-
-        if (stzz != null && stzz.effective()) {
-            stzz.getSelf().getEventController().trigger(new STZZExitEvent(self, target));
+            for (DebuffEffect effect : effects)
+                this.applyDebuff(self, target, effect);
         }
 
         self.getEventController().trigger(new AttackEvent2(self, target));
@@ -138,10 +136,8 @@ public class ControllerImpl implements Controller {
     // 注意与applyDamage的统一
     @Override
     public void directDamage(Entity self, Entity target, int damage, AttackType type) {
-        STZZ stzz = type.getEffect(STZZ.class);
-        if (stzz != null && stzz.effective()) {
-            damage *= stzz.getSelf().getEventController().trigger(new STZZEnterEvent(self, target)).getCoefficient();
-        }
+        if (type.getEffects().containsKey(STZZ.class))
+            damage *= self.getEventController().trigger(new AfterAddDamageEffectEvent(self, target, Collections.EMPTY_LIST)).getCoefficient();
         damage = breakShield(target, damage);
         if (damage > 0) {
             if (!type.isJuanLiu()) {  // 薙魂可以再被涓流分摊，涓流后不再判断涓流
@@ -149,9 +145,6 @@ public class ControllerImpl implements Controller {
                 damage = (int) target.getEventController().trigger(damageShareEvent).getLeft();
             }
             doDamage(self, target, damage, type, false);
-        }
-        if (stzz != null && stzz.effective()) {
-            stzz.getSelf().getEventController().trigger(new STZZExitEvent(self, target));
         }
     }
 
