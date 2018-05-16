@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class TestSingle {
     static {
         if (System.getProperty("java.util.logging.config.file") == null)
-            System.setProperty("java.util.logging.config.file", "tests/logging.properties");
+            System.setProperty("java.util.logging.config.file", "tests/logging_single.properties");
     }
 
     /**

@@ -1,21 +1,22 @@
-package test.components;
+package test;
 
 import com.sine.yys.skill.model.AttackInfoImpl;
+import test.components.TestFactory;
 import test.components.base.Test;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ComponentsTest {
+    private static Logger log;
+
     static {
         if (System.getProperty("java.util.logging.config.file") == null)
-            System.setProperty("java.util.logging.config.file", "tests/logging.properties");
+            System.setProperty("java.util.logging.config.file", "tests/logging_component.properties");
+        log = Logger.getLogger(ComponentsTest.class.getName());
     }
 
     public static void main(String[] args) {
         AttackInfoImpl._float = false;
-        Logger log = Logger.getLogger(ComponentsTest.class.getName());
-        log.setLevel(Level.INFO);
         int count = 0, fail = 0;
         for (TestFactory.Creator creator : TestFactory.get("")) {
             Test test = creator.create();
