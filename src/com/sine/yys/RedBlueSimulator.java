@@ -36,6 +36,9 @@ public class RedBlueSimulator {
         count.put(blueName, 0);
     }
 
+    /**
+     * 测试给定次数并输出结果。
+     */
     public void test(int times) {
         int i = 1;
         try {
