@@ -69,8 +69,8 @@ public class ShuangTianZhiZhi extends BasePassiveSkill implements EventHandler<A
     @Override
     public void handle(AfterAddDamageEffectEvent event) {
         Entity target = event.getTarget();
+        log.info(Msg.trigger(getSelf(), this));
         if (target.getBuffController().contain(BingDong.class)) {
-            log.info(Msg.trigger(getSelf(), this));
             log.info(Msg.vector(getSelf(), "对", target, "碎冰"));
             target.getBuffController().remove(BingDong.class);
             removeXueYouHun(event.getEffects());
@@ -79,7 +79,6 @@ public class ShuangTianZhiZhi extends BasePassiveSkill implements EventHandler<A
         }
         getController().applyDebuff(getSelf(), target, effect);
         if (target.getBuffController().contain(BingDong.class)) {
-            log.info(Msg.trigger(getSelf(), this));
             log.info(Msg.vector(getSelf(), "冰冻", target));
             removeXueYouHun(event.getEffects());
         }
