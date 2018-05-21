@@ -2,12 +2,12 @@ package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.inter.CommonAttack;
 import com.sine.yys.inter.Entity;
-import com.sine.yys.skill.mono.BaseMonoAttack;
+import com.sine.yys.skill.mono.BaseDirectiveSkill;
 
 /**
  * 普通攻击。
  */
-public abstract class BaseCommonAttack extends BaseMonoAttack implements CommonAttack {
+public abstract class BaseCommonAttack extends BaseDirectiveSkill implements CommonAttack {
     @Override
     public final int getFire() {
         return 0;
@@ -30,9 +30,9 @@ public abstract class BaseCommonAttack extends BaseMonoAttack implements CommonA
 
     @Override
     public final void counter(Entity target) {
-        doBeforeAction();
+        beforeApply(target);
         doCounter(target);
-        doAfterAction();
+        afterApply(target);
     }
 
     protected void doCounter(Entity target) {

@@ -7,7 +7,6 @@ import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.inter.PctEffect;
-import com.sine.yys.skill.JuanLiu;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
@@ -70,7 +69,7 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
 
     @Override
     public void handle(BeMonoAttackEvent event) {
-        if (event.isTreated() || event.getEntity() == getSelf() || event.getEntity().getBuffController().contain(JuanLiu.JuanLiuBuff.class))
+        if (event.isTreated() || event.getEntity() == getSelf())
             return;
         final ControlBuff controlBuff = getSelf().getBuffController().getFirstWithPrior(ControlBuff.class);
         if (controlBuff != null && !(controlBuff instanceof ChenMo))

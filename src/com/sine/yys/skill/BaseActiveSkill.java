@@ -21,9 +21,15 @@ public abstract class BaseActiveSkill extends BaseSkill implements ActiveSkill {
      */
     protected abstract void doApply(Entity target);
 
+    /**
+     * 主动技能使用前调用。
+     */
     protected void beforeApply(Entity target) {
     }
 
+    /**
+     * 主动技能使用后调用。
+     */
     protected void afterApply(Entity target) {
     }
 }

@@ -1,14 +1,28 @@
 package com.sine.yys.skill.mono;
 
+import com.sine.yys.event.BeMonoAttackEvent;
+import com.sine.yys.inter.DirectiveSkill;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.ShikigamiEntity;
 import com.sine.yys.inter.TargetResolver;
 import com.sine.yys.skill.BaseAttackSkill;
+import com.sine.yys.skill.JuanLiu;
 import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 
 /**
- * 单体攻击。
+ * 指向性攻击技能。
+ * 包括普攻和部分大招。
  */
-public abstract class BaseMonoAttack extends BaseAttackSkill {
+public abstract class BaseDirectiveSkill extends BaseAttackSkill implements DirectiveSkill {
+    @Override
+    protected void beforeApply(Entity target) {
+        super.beforeApply(target);
+        if (target instanceof ShikigamiEntity && !target.getBuffController().contain(JuanLiu.JuanLiuBuff.class)) {
+            // 触发对方被单体攻击事件
+            target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf()));
+        }
+    }
+
     /**
      * 默认以getAttack的攻击，对target攻击getTimes次。
      */

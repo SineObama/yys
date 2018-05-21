@@ -9,7 +9,7 @@ import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.shikigami.BaseShikigami;
 import com.sine.yys.shikigami.operation.OperationImpl;
 import com.sine.yys.skill.BaseSkill;
-import com.sine.yys.skill.mono.BaseMonoAttack;
+import com.sine.yys.skill.JuanLiu;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -187,10 +187,6 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, 
             }
 
             // 执行技能
-            if (activeSkill instanceof BaseMonoAttack && target instanceof ShikigamiEntity) {
-                // 触发对方被单体攻击事件
-                target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
-            }
             activeSkill.apply(target);
             // XXXX 协战的时机，各个普攻各不相同
             if (activeSkill instanceof CommonAttack) {
