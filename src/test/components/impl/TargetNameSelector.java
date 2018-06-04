@@ -20,6 +20,8 @@ public class TargetNameSelector implements TargetSelector {
 
     @Override
     public Entity select(List<? extends Entity> entities) {
+        if (entities.isEmpty())
+            return null;
         for (Entity entity : entities) {
             if (entity.getName().equals(name))
                 return entity;
