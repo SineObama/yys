@@ -4,9 +4,9 @@ import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.Entity;
 
 /**
- * 击杀事件。
+ * 击杀事件。目标死亡就触发。
  * <p>
- * 规则（根据阴摩罗得出）：
+ * 阴摩罗规则：
  * 1. 薙魂者死亡不算；
  * 2. 涓流间接击杀算；
  * 3. 毒伤算。

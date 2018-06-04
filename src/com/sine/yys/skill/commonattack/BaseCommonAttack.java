@@ -1,5 +1,6 @@
 package com.sine.yys.skill.commonattack;
 
+import com.sine.yys.impl.AttackTypeImpl;
 import com.sine.yys.inter.CommonAttack;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.skill.mono.BaseDirectiveSkill;
@@ -37,6 +38,6 @@ public abstract class BaseCommonAttack extends BaseDirectiveSkill implements Com
 
     protected void doCounter(Entity target) {
         for (int i = 0; i < getTimes(); i++)
-            getController().counter(getSelf(), target, getAttack());
+            getController().attack(getSelf(), target, getAttack(), AttackTypeImpl.createCounter());
     }
 }

@@ -225,7 +225,8 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, 
         throw new RuntimeException(getFullName() + " 没有普通攻击。");
     }
 
-    public List<BaseMitama> getMitamas() {
+    @Override
+    public List<? extends Mitama> getMitamas() {
         return mitamas;
     }
 

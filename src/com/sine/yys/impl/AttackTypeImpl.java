@@ -1,32 +1,64 @@
 package com.sine.yys.impl;
 
+import com.sine.yys.info.TransferType;
 import com.sine.yys.inter.AttackType;
+import com.sine.yys.inter.TransferrableEffect;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AttackTypeImpl implements AttackType {
-    private boolean counter = false;
-    private boolean tiHun = false;
-    private boolean juanLiu = false;
-    private boolean zhenNv = false;
-    private boolean buff = false;
+    boolean counter = false;
+    boolean tiHun = false;
+    boolean juanLiu = false;
+    boolean zhenNv = false;
+    boolean caoRen = false;
+    boolean buff = false;
+    boolean wake = true;
+    boolean trigger = true;  // 触发御魂和被动效果。包括一矢·封魔和针线等
 
-    public AttackTypeImpl(boolean buff) {
-        this.buff = buff;
-    }
-
-    public AttackTypeImpl(AttackType type) {
-        this.counter = type.isCounter();
-        this.tiHun = type.isTiHun();
-        this.juanLiu = type.isJuanLiu();
-        this.zhenNv = type.isZhenNv();
-        this.buff = type.isBuff();
-    }
-
-    public AttackTypeImpl(boolean buff, boolean counter) {
-        this.buff = buff;
-        this.counter = counter;
-    }
+    private Map<Class, TransferrableEffect> effects = new HashMap<>();
 
     public AttackTypeImpl() {
+    }
+
+    /**
+     * 根据某一种伤害变换，创建新的实例。
+     */
+    public AttackTypeImpl(AttackType src, TransferType typeEnum) {
+        this.counter = src.isCounter();
+        this.tiHun = src.isTiHun() || typeEnum == TransferType.TI_HUN;
+        this.juanLiu = src.isJuanLiu() || typeEnum == TransferType.JUAN_LIU;
+        this.zhenNv = src.isZhenNv() || typeEnum == TransferType.ZHEN_NV;
+        this.caoRen = src.isCaoRen() || typeEnum == TransferType.CAO_REN;
+        this.buff = src.isBuff();
+        for (Map.Entry<Class, TransferrableEffect> classObjectEntry : src.getEffects().entrySet()) {
+            TransferrableEffect value = classObjectEntry.getValue();
+            if (value != null)
+                this.effects.put(classObjectEntry.getKey(), value.through(typeEnum));
+        }
+    }
+
+    public static AttackType createCounter() {
+        AttackTypeImpl attackType = new AttackTypeImpl();
+        attackType.counter = true;
+        return attackType;
+    }
+
+    public static AttackType createBuff() {
+        AttackTypeImpl attackType = new AttackTypeImpl();
+        attackType.buff = true;
+        return attackType;
+    }
+
+    @Override
+    public <T> T getEffect(Class<T> tClass) {
+        return (T) effects.get(tClass);
+    }
+
+    @Override
+    public Map<Class, TransferrableEffect> getEffects() {
+        return effects;
     }
 
     @Override
@@ -35,18 +67,8 @@ public class AttackTypeImpl implements AttackType {
     }
 
     @Override
-    public void setCounter(boolean counter) {
-        this.counter = counter;
-    }
-
-    @Override
     public boolean isTiHun() {
         return tiHun;
-    }
-
-    @Override
-    public void setTiHun(boolean tiHun) {
-        this.tiHun = tiHun;
     }
 
     @Override
@@ -55,18 +77,13 @@ public class AttackTypeImpl implements AttackType {
     }
 
     @Override
-    public void setJuanLiu(boolean juanLiu) {
-        this.juanLiu = juanLiu;
-    }
-
-    @Override
     public boolean isZhenNv() {
         return zhenNv;
     }
 
     @Override
-    public void setZhenNv(boolean zhenNv) {
-        this.zhenNv = zhenNv;
+    public boolean isCaoRen() {
+        return caoRen;
     }
 
     @Override
@@ -75,7 +92,12 @@ public class AttackTypeImpl implements AttackType {
     }
 
     @Override
-    public void setBuff(boolean buff) {
-        this.buff = buff;
+    public boolean isWake() {
+        return wake;
+    }
+
+    @Override
+    public boolean isTrigger() {
+        return trigger;
     }
 }

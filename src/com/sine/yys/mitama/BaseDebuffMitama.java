@@ -1,6 +1,6 @@
 package com.sine.yys.mitama;
 
-import com.sine.yys.event.DamageEvent;
+import com.sine.yys.event.AddDamageEffectEvent;
 import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -14,10 +14,10 @@ import com.sine.yys.inter.EventHandler;
  * 1. {@linkplain DebuffEffect#getDebuff(Entity)}设置效果；
  * 2. {@linkplain DebuffEffect#getPct()}设置概率。
  */
-public abstract class BaseDebuffMitama extends BaseSelfMitama implements DebuffEffect, EventHandler<DamageEvent> {
+public abstract class BaseDebuffMitama extends BaseSelfMitama implements DebuffEffect, EventHandler<AddDamageEffectEvent> {
     @Override
-    public final void handle(DamageEvent event) {
-        getController().applyDebuff(event.getEntity(), event.getTarget(), this);
+    public final void handle(AddDamageEffectEvent event) {
+        event.getEffects().add(this);
     }
 
     @Override
