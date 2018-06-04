@@ -26,6 +26,7 @@ public class MitamaFactory {
         put(Zheng::new);
         put(ShuYao::new);
         put(MuMei::new);
+        put(XueYouHun::new);
     }
 
     private static void put(Creator creator, String... keys) {
