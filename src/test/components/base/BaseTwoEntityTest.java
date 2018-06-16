@@ -13,7 +13,7 @@ public abstract class BaseTwoEntityTest extends BaseTest implements Test {
     protected final Handler handler = new Handler();
     protected final EnInfo i1 = new EnInfo();
     protected final EnInfo i2 = new EnInfo();
-    protected final TargetNameSelector targetSelector = new TargetNameSelector(i2.shikigami.getName());
+    protected final TargetNameSelector targetSelector = new TargetNameSelector(i2);
     protected final SkillTypeSelector skillSelector = new SkillTypeSelector(CommonAttack.class);
     protected ShikigamiEntityImpl e1;
     protected ShikigamiEntityImpl e2;

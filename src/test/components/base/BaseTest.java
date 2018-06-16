@@ -3,6 +3,7 @@ package test.components.base;
 import com.sine.yys.entity.EntityImpl;
 import com.sine.yys.entity.ShikigamiEntityImpl;
 import com.sine.yys.entity.SimpleObject;
+import com.sine.yys.inter.base.Named;
 import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.shikigami.BaseShikigami;
 import com.sine.yys.shikigami.ShikigamiFactory;
@@ -28,7 +29,7 @@ public abstract class BaseTest implements Test {
     protected Simulator simulator;
 
     protected static ShikigamiEntityImpl form(EnInfo i) {
-        return new ShikigamiEntityImpl(i.shikigami, i.property, i.mitama, 1.0, i.name != null ? i.name : i.shikigami.getName());
+        return new ShikigamiEntityImpl(i.shikigami, i.property, i.mitama, 1.0, i.getName());
     }
 
     /**
@@ -80,7 +81,7 @@ public abstract class BaseTest implements Test {
      */
     protected abstract void doTest();
 
-    protected class EnInfo {
+    protected class EnInfo implements Named {
         public BaseShikigami shikigami = ShikigamiFactory.create("雨女");
         public TestProperty property = new TestProperty();
         public BaseMitama mitama = null;
@@ -94,6 +95,11 @@ public abstract class BaseTest implements Test {
             this.property = property;
             this.mitama = mitama;
             this.name = name;
+        }
+
+        @Override
+        public String getName() {
+            return this.name != null ? this.name : this.shikigami.getName();
         }
     }
 }
