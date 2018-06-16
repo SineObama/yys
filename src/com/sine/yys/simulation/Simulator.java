@@ -6,6 +6,7 @@ import com.sine.yys.event.BattleStartEvent;
 import com.sine.yys.event.EnterEvent;
 import com.sine.yys.impl.ControllerImpl;
 import com.sine.yys.inter.Camp;
+import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.base.Callback;
 import com.sine.yys.util.Msg;
 
@@ -36,7 +37,10 @@ public class Simulator {
         controller = new ControllerImpl(camp0, camp1);
     }
 
-    private SimpleObject next() {
+    /**
+     * 模拟行动条前进，得到下一个行动式神。
+     */
+    private SimpleObject actionBarMove() {
         double min = 1.0;  // 不可能达到的较大值
         List<SimpleObject> all = new ArrayList<>(15);
         all.addAll(camp0.getAllAlive());
@@ -79,8 +83,9 @@ public class Simulator {
     }
 
     /**
-     * 行动条前进一次，一般会让一个式神行动一次。
-     * 获得新回合不会返回，也包括反击等动作。
+     * 让一个式神行动一次。
+     * <p>
+     * 一般是行动条前进一次，也可能出现获得新回合的情况（会返回）。另外包括行动后的反击等自动动作。
      *
      * @return 战斗是否还能继续。
      */
@@ -91,11 +96,20 @@ public class Simulator {
 
         try {
             // 获取下一行动式神
-            final SimpleObject self = next();
+            Entity next = controller.setNext(null);
+            final SimpleObject self;
+            final boolean newRound;
+            if (next == null) {
+                self = actionBarMove();
+                newRound = false;
+            } else {
+                self = (SimpleObject) next;
+                newRound = true;
+            }
 
             round += 1;
             log.info(Msg.info(self, "行动，序号", round));
-            self.action();
+            self.action(newRound);
             log.info(Msg.info(self, "行动结束，序号", round));
 
             while (true) {

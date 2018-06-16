@@ -3,7 +3,6 @@ package com.sine.yys.entity;
 import com.sine.yys.buff.control.*;
 import com.sine.yys.event.*;
 import com.sine.yys.inter.*;
-import com.sine.yys.inter.base.Callback;
 import com.sine.yys.inter.base.Property;
 import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.shikigami.BaseShikigami;
@@ -21,7 +20,7 @@ import java.util.Map;
 /**
  * 战场中的式神实体（非召唤物）。
  */
-public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, Callback {
+public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity {
     private final BaseShikigami shikigami;
     private final List<BaseMitama> mitamas;
     private OperationHandler handler;
@@ -55,24 +54,24 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, 
             mitama.init(controller, this, camp);
     }
 
-    /*
+    /**
      * 整个行动，包括鬼火处理、技能处理、事件触发、行动后的反击等。
      */
     @Override
-    public void action() {
+    public void action(boolean newRound) {
         // 预备推进鬼火行动条
-        this.getFireRepo().ready();
+        this.getFireRepo().ready(newRound);
 
         call();
 
         // 完成推进鬼火行动条
-        this.getFireRepo().finish();
+        this.getFireRepo().finish(newRound);
     }
 
     /**
-     * 除去鬼火推进的整个行动。用于多次行动时作为回调。
+     * 除去鬼火推进的整个行动。
      */
-    public void call() {
+    private void call() {
         if (this.isDead())
             return;
         log.info(Msg.info(this, "行动"));
@@ -102,12 +101,6 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity, 
 
         for (Skill skill : this.shikigami.getSkills())
             skill.afterAction();
-
-        // 多次行动
-        if (this.getPosition() == 1.0) {
-            this.setPosition(0.0);  // 提前重置，使被反击等死亡后位置归0
-            getController().addAction(Integer.MAX_VALUE, this);
-        }
 
         log.info(Msg.info(this, "行动结束"));
     }

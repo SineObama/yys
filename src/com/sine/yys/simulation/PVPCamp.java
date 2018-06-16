@@ -60,7 +60,9 @@ public class PVPCamp extends BaseCamp implements FireRepo {
     }
 
     @Override
-    public void ready() {
+    public void ready(boolean newRound) {
+        if (newRound)
+            return;
         if (prepared) {
             log.warning("异常调用ready()");
             return;
@@ -71,7 +73,9 @@ public class PVPCamp extends BaseCamp implements FireRepo {
     }
 
     @Override
-    public void finish() {
+    public void finish(boolean newRound) {
+        if (newRound)
+            return;
         if (!prepared)
             return;
         prepared = false;

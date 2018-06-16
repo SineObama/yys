@@ -23,10 +23,10 @@ public class EmptyFireRepo implements FireRepo {
     }
 
     @Override
-    public void ready() {
+    public void ready(boolean newRound) {
     }
 
     @Override
-    public void finish() {
+    public void finish(boolean newRound) {
     }
 }

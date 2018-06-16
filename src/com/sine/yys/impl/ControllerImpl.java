@@ -26,6 +26,7 @@ public class ControllerImpl implements Controller {
     private final Camp camp0;
     private final Camp camp1;
     private final Queue<SingleAction> actions = new PriorityQueue<>();
+    private Entity next;
 
     public ControllerImpl(Camp camp0, Camp camp1) {
         this.camp0 = camp0;
@@ -51,6 +52,21 @@ public class ControllerImpl implements Controller {
         if (poll == null)
             return null;
         return poll.getCallback();
+    }
+
+    // XXXX 额外行动的实现方式
+    /**
+     * 设置唯一的额外行动者（获得额外回合）。
+     * <p>
+     * PVP中该次行动不会计算鬼火条。
+     * 例子包括轮入道、人多势众、余音、鬼使黑击杀等。
+     */
+    public Entity setNext(Entity next) {
+        if (this.next != null && next != null)
+            log.warning("重复设置额外行动：" + this.next.getFullName() + " " + next.getFullName());
+        Entity temp = this.next;
+        this.next = next;
+        return temp;
     }
 
     /**
@@ -281,7 +297,8 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void actionChance(Entity self) {
-        self.setPosition(1.0);
+        setNext(self);
+        self.setPosition(0.0);
         log.info(Msg.info(self, "获得一次行动机会"));
     }
 

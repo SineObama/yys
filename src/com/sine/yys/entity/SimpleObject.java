@@ -27,8 +27,10 @@ public abstract class SimpleObject implements Target {
 
     /**
      * 对象自身的行动逻辑。
+     *
+     * @param newRound 是否额外获得的回合。
      */
-    public abstract void action();
+    public abstract void action(boolean newRound);
 
     protected abstract void doInit();
 
