@@ -3,12 +3,14 @@ package com.sine.yys.shikigami;
 import com.sine.yys.inter.*;
 import com.sine.yys.shikigami.operation.AutoOperationHandler;
 import com.sine.yys.shikigami.operation.OperationImpl;
+import com.sine.yys.skill.BaseSkill;
 import com.sine.yys.skill.LongShouZhiYu;
 import com.sine.yys.skill.commonattack.PengLaiYuZhi;
 import com.sine.yys.skill.passive.HuoShuQiu;
 import com.sine.yys.util.Helper;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -16,13 +18,24 @@ import java.util.Map;
  * 辉夜姬。
  */
 public class HuiYeJi extends BaseShikigami {
-    public HuiYeJi() {
-        super(Arrays.asList(new PengLaiYuZhi(), new HuoShuQiu(), new LongShouZhiYu()), "辉夜姬", 2332);
+    @Override
+    protected Collection<BaseSkill> initSkill() {
+        return Arrays.asList(new PengLaiYuZhi(), new HuoShuQiu(), new LongShouZhiYu());
     }
 
     @Override
     public OperationHandler getAI() {
         return new HuiYeJiAI();
+    }
+
+    @Override
+    public double getOriginAttack() {
+        return 2332;
+    }
+
+    @Override
+    public String getName() {
+        return "辉夜姬";
     }
 
     /**
