@@ -4,7 +4,6 @@ import com.sine.yys.event.AfterMovementEvent;
 import com.sine.yys.event.BeforeRoundEvent;
 import com.sine.yys.event.DieEvent;
 import com.sine.yys.event.EnterEvent;
-import com.sine.yys.impl.AttackTypeImpl;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;

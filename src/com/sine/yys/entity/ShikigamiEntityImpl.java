@@ -9,7 +9,6 @@ import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.shikigami.BaseShikigami;
 import com.sine.yys.shikigami.operation.OperationImpl;
 import com.sine.yys.skill.BaseSkill;
-import com.sine.yys.skill.JuanLiu;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
