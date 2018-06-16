@@ -112,7 +112,7 @@ public class ControllerImpl implements Controller {
 
         List<DebuffEffect> effects = self.getEventController().trigger(new AddDamageEffectEvent(self)).getEffects();
         if (type.getEffects().containsKey(STZZ.class))
-            damage *= self.getEventController().trigger(new AfterAddDamageEffectEvent(self, target, Collections.EMPTY_LIST)).getCoefficient();
+            damage *= self.getEventController().trigger(new AfterAddDamageEffectEvent(self, target, effects)).getCoefficient();
 
         // 破盾
         final int remain = breakShield(target, (int) damage);
