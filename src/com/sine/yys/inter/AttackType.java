@@ -48,6 +48,11 @@ public interface AttackType extends HandlerEffect {
 
     boolean isTrigger();
 
+    /**
+     * @return 是否间接伤害。
+     */
+    boolean isIndirect();
+
     double getDamage();
 
     void setDamage(double damage);
@@ -58,4 +63,14 @@ public interface AttackType extends HandlerEffect {
      * @return 附加负面效果。
      */
     Collection<DebuffEffect> getDebuffEffects();
+
+    /**
+     * @return 是否原始攻击（触发攻击事件、御魂效果等）。
+     */
+    boolean isOrigin();
+
+    /**
+     * @return 伤害是否可被分摊。
+     */
+    boolean isSharable();
 }

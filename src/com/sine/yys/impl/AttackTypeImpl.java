@@ -20,6 +20,7 @@ public class AttackTypeImpl implements AttackType {
     boolean buff = false;
     boolean wake = true;
     boolean trigger = true;  // 触发御魂和被动效果。包括一矢·封魔和针线等
+    boolean indirect = false;
     Double damage;
 
     private List<TransferrableEffect> effects = new ArrayList<>();
@@ -93,6 +94,11 @@ public class AttackTypeImpl implements AttackType {
     }
 
     @Override
+    public boolean isIndirect() {
+        return indirect;
+    }
+
+    @Override
     public double getDamage() {
         if (damage == null)
             return 0.0;
@@ -119,5 +125,15 @@ public class AttackTypeImpl implements AttackType {
         for (TransferrableEffect transferrableEffect : effects) {
             transferrableEffect.handle(self, target, attackType, debuffEffects);
         }
+    }
+
+    @Override
+    public boolean isOrigin() {
+        return !tiHun && !juanLiu && !buff;
+    }
+
+    @Override
+    public boolean isSharable(){
+        return !buff && !indirect;
     }
 }

@@ -80,6 +80,10 @@ public class ControllerImpl implements Controller {
         if (target.isDead())  // 多段攻击目标可能中途死亡
             return;
 
+        // 打醒睡眠
+        if (type.isWake())
+            target.getBuffController().remove(ShuiMian.class);
+
         // 0. XXX 关于触发时机
         for (DebuffEffect debuffEffect : type.getDebuffEffects()) {
             applyDebuff(self, target, debuffEffect);
@@ -87,28 +91,35 @@ public class ControllerImpl implements Controller {
 
         // 1.2.
         type.getDamage(); // 提前计算伤害（包含随机函数调用）
-        self.getEventController().trigger(new AttackEvent(self, target, type));
-        target.getEventController().trigger(new BeAttackEvent(target, self, type));
+        List<DebuffEffect> effects;
+        if (type.isOrigin()) {
+            self.getEventController().trigger(new AttackEvent(self, target, type));
+            target.getEventController().trigger(new BeAttackEvent(target, self, type));
+            effects = self.getEventController().trigger(new AddDamageEffectEvent(self)).getEffects();
+        } else {
+            effects = Collections.EMPTY_LIST;
+        }
 
-        List<DebuffEffect> effects = self.getEventController().trigger(new AddDamageEffectEvent(self)).getEffects();
         type.handle(self, target, type, effects);
 
         // 3.
         breakShield(target, type);
 
         if (type.getDamage() != 0) {
+            if (type.isOrigin())
+                self.getEventController().trigger(new PreDamageEvent(self, target, type));
 
-            self.getEventController().trigger(new PreDamageEvent(self, target, type));
-
-            // 处理薙魂和涓流。未来考虑金鱼、小松丸躲避。
-            target.getEventController().trigger(new DamageShareEvent(self, target, type));
+            if (type.isSharable())
+                // 处理薙魂和涓流。未来考虑金鱼、小松丸躲避。
+                target.getEventController().trigger(new DamageShareEvent(self, target, type));
 
             // 附加御魂效果
             for (DebuffEffect effect : effects)
                 this.applyDebuff(self, target, effect);
         }
 
-        self.getEventController().trigger(new AttackEvent2(self, target));
+        if (type.isOrigin())
+            self.getEventController().trigger(new AttackEvent2(self, target));
 
         if (type.getDamage() != 0) {
             doDamage(self, target, type);
@@ -116,32 +127,12 @@ public class ControllerImpl implements Controller {
                 log.info(Msg.vector(self, "击杀", target));
 
             // XXX 地藏像死亡后盾buff还在？
-            if (type.isCritical()) {
+            if (type.isOrigin() && type.isCritical()) {
                 target.getEventController().trigger(new BeCriticalEvent(target, self));
                 self.getEventController().trigger(new CriticalEvent(self, target, type));
             }
         } else {
             log.info(Msg.noDamage(self, target));
-        }
-    }
-
-    // （阴摩罗）涓流死亡算击杀，薙魂不算
-    // 注意与attack的统一
-    @Override
-    public void directDamage(Entity self, Entity target, AttackType type) {
-        type.handle(self, target, type, Collections.EMPTY_LIST);
-        breakShield(target, type);
-        if (type.getDamage() != 0) {
-            target.getEventController().trigger(new DamageShareEvent(self, target, type));
-            doDamage(self, target, type);
-        }
-    }
-
-    @Override
-    public void buffDamage(Entity self, Entity target, AttackType buff) {
-        breakShield(target, buff);
-        if (buff.getDamage() != 0) {
-            doDamage(self, target, buff);
         }
     }
 
@@ -174,8 +165,6 @@ public class ControllerImpl implements Controller {
     private void doDamage(Entity self, Entity target, AttackType type) {
         target.getEventController().trigger(new BeDamageEvent(target, self, type));
         log.info(Msg.damage(self, target, (int) type.getDamage(), type.isCritical()));
-        if (type.isWake())
-            target.getBuffController().remove(ShuiMian.class);
         final double src = target.getLife();
         final int srcLife = target.getLifeInt();
         final int life = target.reduceLife((int) type.getDamage());

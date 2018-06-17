@@ -68,7 +68,7 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
             if (entity != event.getTarget()) {
                 AttackType type = new AttackTypeImpl(event.getType(), TransferType.JUAN_LIU);
                 type.setDamage(damage);
-                getController().directDamage(event.getEntity(), entity, type);
+                getController().attack(event.getEntity(), entity, type);
             }
         event.setLeft(damage);
     }

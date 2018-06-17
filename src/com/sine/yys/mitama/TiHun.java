@@ -109,7 +109,7 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
             // 单人断涓流的也会触发薙魂
             final AttackTypeImpl type = new AttackTypeImpl(event.getType(), TransferType.TI_HUN);
             type.setDamage(damage * getSharePct());
-            getController().directDamage(event.getEntity(), getSelf(), type);
+            getController().attack(event.getEntity(), getSelf(), type);
             event.setLeft(damage * (1 - getSharePct()));
         }
     }

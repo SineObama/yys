@@ -20,21 +20,6 @@ public interface Controller extends DamageController {
     void addAction(int prior, Callback action);
 
     /**
-     * 直接攻击目标。可能被分摊。
-     *
-     * 实现内容：正常攻击、反击、赤团华、针女。不包括持续伤害。
-     * 具体伤害由 AttackType 给出。
-     */
-    void attack(Entity self, Entity target, AttackType attackType);
-
-    /**
-     * 直接的伤害输出。可能被分摊。
-     *
-     * 实现内容：薙魂伤害、涓流分摊后（其他人的）伤害、草人伤害。
-     */
-    void directDamage(Entity src, Entity self, AttackType type);
-
-    /**
      * 治疗。（不会计算暴击）
      *
      * @param src 初始治疗量。
