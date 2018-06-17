@@ -134,7 +134,7 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity {
         } else {  // 受行动控制debuff影响
 
             log.info(Msg.info(this, "受控制效果", controlBuff, "影响"));
-            operation = controlBuff.resolve(this, this.shikigami.getAI(), this.camp, this.camp.getOpposite(), this.getCommonAttack());
+            operation = controlBuff.resolve(this, this.handler, this.camp, this.camp.getOpposite(), this.getCommonAttack());
 
         }
 
