@@ -132,9 +132,7 @@ public class ControllerImpl implements Controller {
         type.handle(self, target, type, Collections.EMPTY_LIST);
         breakShield(target, type);
         if (type.getDamage() != 0) {
-            if (!type.isJuanLiu()) {  // 薙魂可以再被涓流分摊，涓流后不再判断涓流
-                target.getEventController().trigger(new DamageShareEvent(self, target, type));
-            }
+            target.getEventController().trigger(new DamageShareEvent(self, target, type));
             doDamage(self, target, type);
         }
     }

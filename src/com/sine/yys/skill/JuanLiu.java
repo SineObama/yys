@@ -61,6 +61,8 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
 
     @Override
     public void handle(DamageShareEvent event) {
+        if (event.getType().isJuanLiu()) // 薙魂可以再被涓流分摊，涓流后不再判断涓流
+            return;
         final int damage = (int) (event.getType().getDamage() / shared.size());
         for (Entity entity : new ArrayList<>(shared))
             if (entity != event.getTarget()) {
