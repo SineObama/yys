@@ -1,6 +1,6 @@
 package com.sine.yys.entity;
 
-import com.sine.yys.buff.control.*;
+import com.sine.yys.buff.control.ControlBuff;
 import com.sine.yys.event.*;
 import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.Property;
@@ -10,7 +10,6 @@ import com.sine.yys.shikigami.operation.OperationImpl;
 import com.sine.yys.skill.BaseSkill;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
-import com.sine.yys.util.RandUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,32 +134,7 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity {
         } else {  // 受行动控制debuff影响
 
             log.info(Msg.info(this, "受控制效果", controlBuff, "影响"));
-            if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
-                final List<Entity> allAlive = new ArrayList<>();
-                allAlive.addAll(this.camp.getAllAlive());
-                allAlive.addAll(this.camp.getOpposite().getAllAlive());
-                allAlive.remove(this);
-                operation = new OperationImpl(RandUtil.choose(allAlive), this.getCommonAttack());
-            } else if (controlBuff instanceof ChaoFeng) {
-                Entity target = controlBuff.getSrc();
-                if (target.isDead())
-                    target = this.camp.getOpposite().randomTarget();
-                operation = new OperationImpl(target, this.getCommonAttack());
-            } else if (controlBuff instanceof ChenMo) {
-                final CommonAttack activeSkill = this.getCommonAttack();
-                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this.camp, this);
-                if (targets != null)
-                    operation = this.shikigami.getAI().handle(this, this.camp, new HashMap<ActiveSkill, List<? extends Entity>>() {{
-                        put(activeSkill, targets);
-                    }});
-                else
-                    operation = new OperationImpl(null, null);
-            } else if (controlBuff instanceof Unmovable) {
-                operation = new OperationImpl(null, null);
-            } else {
-                log.warning("没有判断出控制效果。默认无法行动。" + controlBuff);
-                operation = new OperationImpl(null, null);
-            }
+            operation = controlBuff.resolve(this, this.shikigami.getAI(), this.camp, this.camp.getOpposite(), this.getCommonAttack());
 
         }
 
