@@ -37,6 +37,8 @@ public class AttackTypeImpl implements AttackType {
         this.zhenNv = src.isZhenNv() || typeEnum == TransferType.ZHEN_NV;
         this.caoRen = src.isCaoRen() || typeEnum == TransferType.CAO_REN;
         this.buff = src.isBuff();
+        this.wake = src.isWake();
+        this.trigger = src.isTrigger();
         this.damage = src.getDamage();
         for (TransferrableEffect effect : src.getEffects()) {
             effect = effect.through(typeEnum);
