@@ -22,7 +22,7 @@ public class Test {
      */
     public static void main(String[] args) throws IOException {
         RedBlueSimulator simulator;
-        System.out.println("random seed: " + Seed.get());
+        System.out.println("random seed: " + Seed.get() + "L");
         if (System.getProperty("info") != null)
             Logger.getLogger("").setLevel(Level.INFO);
         try {
