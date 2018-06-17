@@ -2,14 +2,11 @@ package com.sine.yys.impl;
 
 import com.sine.yys.inter.AttackInfo;
 import com.sine.yys.inter.AttackType;
-import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.rule.CalcDam;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.logging.Logger;
 
 /**
@@ -20,16 +17,11 @@ public class OriginAttackType extends AttackTypeImpl implements AttackType {
     final Entity self, target;
     final AttackInfo attackInfo;
     boolean critical;
-    private final Collection<DebuffEffect> debuffEffects;
 
-    public OriginAttackType(Entity self, Entity target, AttackInfo attackInfo, Collection<DebuffEffect> debuffEffects) {
+    public OriginAttackType(Entity self, Entity target, AttackInfo attackInfo) {
         this.self = self;
         this.target = target;
         this.attackInfo = attackInfo;
-        if (debuffEffects != null)
-            this.debuffEffects = debuffEffects;
-        else
-            this.debuffEffects = Collections.EMPTY_LIST;
     }
 
     public void setCounter() {
@@ -56,10 +48,5 @@ public class OriginAttackType extends AttackTypeImpl implements AttackType {
     @Override
     public boolean isCritical() {
         return critical;
-    }
-
-    @Override
-    public Collection<DebuffEffect> getDebuffEffects() {
-        return debuffEffects;
     }
 }

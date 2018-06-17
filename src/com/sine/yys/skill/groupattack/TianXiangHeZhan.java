@@ -16,10 +16,10 @@ public class TianXiangHeZhan extends BaseDirectiveSkill {
         final Entity self = getSelf();
         for (int i = 0; i < getTimes(); i++) {
             for (Entity entity : getEnemy().getAllAlive()) {
-                controller.attack(self, entity, new OriginAttackType(self, entity, new AttackInfoImpl(getCoefficient()), getDebuffEffects()));
+                controller.attack(self, entity, new OriginAttackType(self, entity, new AttackInfoImpl(getCoefficient())), getDebuffEffects());
             }
         }
-        controller.attack(self, target, new OriginAttackType(self, target, new AttackInfoImpl(getFinalCoefficient()), getDebuffEffects()));
+        controller.attack(self, target, new OriginAttackType(self, target, new AttackInfoImpl(getFinalCoefficient())), getDebuffEffects());
     }
 
     @Override

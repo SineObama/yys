@@ -1,5 +1,7 @@
 package com.sine.yys.inter;
 
+import java.util.Collection;
+
 /**
  * 伤害控制器。
  * <p>
@@ -23,6 +25,11 @@ public interface DamageController {
      * @return 最终数值。
      */
     int calcCritical(Entity self, double src);
+
+    /**
+     * 额外附加效果。
+     */
+    void attack(Entity self, Entity target, AttackType attackType, Collection<DebuffEffect> debuffEffects);
 
     /**
      * 直接攻击目标。可能被分摊。

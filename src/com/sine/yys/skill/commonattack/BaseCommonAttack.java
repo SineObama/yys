@@ -38,9 +38,9 @@ public abstract class BaseCommonAttack extends BaseDirectiveSkill implements Com
 
     protected void doCounter(Entity target) {
         for (int i = 0; i < getTimes(); i++) {
-            final OriginAttackType attackType = new OriginAttackType(getSelf(), target, getAttack(), getDebuffEffects());
+            final OriginAttackType attackType = new OriginAttackType(getSelf(), target, getAttack());
             attackType.setCounter();
-            getController().attack(getSelf(), target, attackType);
+            getController().attack(getSelf(), target, attackType, getDebuffEffects());
         }
     }
 }

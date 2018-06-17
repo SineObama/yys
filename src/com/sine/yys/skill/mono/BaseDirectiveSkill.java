@@ -30,7 +30,7 @@ public abstract class BaseDirectiveSkill extends BaseAttackSkill implements Dire
     @Override
     protected void doApply(Entity target) {
         for (int i = 0; i < getTimes(); i++)
-            getController().attack(getSelf(), target, new OriginAttackType(getSelf(), target, getAttack(), getDebuffEffects()));
+            getController().attack(getSelf(), target, new OriginAttackType(getSelf(), target, getAttack()), getDebuffEffects());
     }
 
     /**

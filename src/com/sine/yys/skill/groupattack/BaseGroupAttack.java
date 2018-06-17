@@ -17,7 +17,7 @@ public abstract class BaseGroupAttack extends BaseAttackSkill {
         final Entity self = getSelf();
         for (int i = 0; i < getTimes(); i++) {
             for (Entity target : getEnemy().getAllAlive()) {
-                controller.attack(self, target, new OriginAttackType(self, target, getAttack(), getDebuffEffects()));
+                controller.attack(self, target, new OriginAttackType(self, target, getAttack()), getDebuffEffects());
             }
         }
     }

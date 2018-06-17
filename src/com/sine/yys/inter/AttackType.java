@@ -60,11 +60,6 @@ public interface AttackType extends HandlerEffect {
     boolean isCritical();
 
     /**
-     * @return 附加负面效果。
-     */
-    Collection<DebuffEffect> getDebuffEffects();
-
-    /**
      * @return 是否原始攻击（触发攻击事件、御魂效果等）。
      */
     boolean isOrigin();

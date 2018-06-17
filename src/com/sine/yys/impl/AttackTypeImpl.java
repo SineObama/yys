@@ -7,8 +7,6 @@ import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.TransferrableEffect;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class AttackTypeImpl implements AttackType {
@@ -113,11 +111,6 @@ public class AttackTypeImpl implements AttackType {
     @Override
     public boolean isCritical() {
         return false;
-    }
-
-    @Override
-    public Collection<DebuffEffect> getDebuffEffects() {
-        return Collections.EMPTY_LIST;
     }
 
     @Override

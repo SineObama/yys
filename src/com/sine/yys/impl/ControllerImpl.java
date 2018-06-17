@@ -13,10 +13,7 @@ import com.sine.yys.rule.buff.Cure;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ControllerImpl implements Controller {
@@ -76,6 +73,15 @@ public class ControllerImpl implements Controller {
      * 3. 破盾，施加剩余伤害，添加御魂效果。
      */
     @Override
+    public void attack(Entity self, Entity target, AttackType attackType, Collection<DebuffEffect> debuffEffects) {
+        // 0. XXX 关于触发时机
+        if (debuffEffects != null)
+            for (DebuffEffect debuffEffect : debuffEffects)
+                applyDebuff(self, target, debuffEffect);
+        attack(self, target, attackType);
+    }
+
+    @Override
     public void attack(Entity self, Entity target, AttackType type) {
         if (target.isDead())  // 多段攻击目标可能中途死亡
             return;
@@ -83,11 +89,6 @@ public class ControllerImpl implements Controller {
         // 打醒睡眠
         if (type.isWake())
             target.getBuffController().remove(ShuiMian.class);
-
-        // 0. XXX 关于触发时机
-        for (DebuffEffect debuffEffect : type.getDebuffEffects()) {
-            applyDebuff(self, target, debuffEffect);
-        }
 
         // 1.2.
         type.getDamage(); // 提前计算伤害（包含随机函数调用）
