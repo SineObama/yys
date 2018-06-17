@@ -53,7 +53,9 @@ public class ZhenNv extends BaseSelfMitama implements EventHandler<CriticalEvent
             double damage = Double.min(damage1, damage2);
             // 根据旗帜buff增减。
             damage *= self.getFlagDamageCoefficient();
-            getController().applyDamage(self, event.getTarget(), damage, false, new AttackTypeImpl(event.getType(), TransferType.ZHEN_NV));
+            final AttackTypeImpl attackType = new AttackTypeImpl(event.getType(), TransferType.ZHEN_NV);
+            attackType.setDamage(damage);
+            getController().attack(self, event.getTarget(), attackType);
         }
     }
 }

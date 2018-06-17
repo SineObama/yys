@@ -1,5 +1,6 @@
 package com.sine.yys.skill.groupattack;
 
+import com.sine.yys.impl.OriginAttackType;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.TargetResolver;
@@ -16,7 +17,7 @@ public abstract class BaseGroupAttack extends BaseAttackSkill {
         final Entity self = getSelf();
         for (int i = 0; i < getTimes(); i++) {
             for (Entity target : getEnemy().getAllAlive()) {
-                controller.attack(self, target, getAttack(), getAttackType());
+                controller.attack(self, target, new OriginAttackType(self, target, getAttack(), getDebuffEffects()));
             }
         }
     }

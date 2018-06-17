@@ -9,6 +9,6 @@ import com.sine.yys.info.TransferType;
  * <p>
  * 实现霜天之织等。
  */
-public interface TransferrableEffect<T> {
+public interface TransferrableEffect<T> extends HandlerEffect {
     TransferrableEffect<T> through(TransferType typeEnum);
 }

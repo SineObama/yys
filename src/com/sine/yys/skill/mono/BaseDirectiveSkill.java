@@ -1,6 +1,7 @@
 package com.sine.yys.skill.mono;
 
 import com.sine.yys.event.BeMonoAttackEvent;
+import com.sine.yys.impl.OriginAttackType;
 import com.sine.yys.inter.DirectiveSkill;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.ShikigamiEntity;
@@ -29,7 +30,7 @@ public abstract class BaseDirectiveSkill extends BaseAttackSkill implements Dire
     @Override
     protected void doApply(Entity target) {
         for (int i = 0; i < getTimes(); i++)
-            getController().attack(getSelf(), target, getAttack(), getAttackType());
+            getController().attack(getSelf(), target, new OriginAttackType(getSelf(), target, getAttack(), getDebuffEffects()));
     }
 
     /**

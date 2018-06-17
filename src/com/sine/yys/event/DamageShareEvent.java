@@ -19,18 +19,10 @@ import java.util.logging.Logger;
  */
 public class DamageShareEvent extends BaseAttackEvent {
     private final Logger log = Logger.getLogger(getClass().getName());
-    private final double total;
-    private double left;
-    private boolean set;
+    private boolean set = false;
 
-    public DamageShareEvent(Entity src, Entity entity, double total, AttackType type) {
+    public DamageShareEvent(Entity src, Entity entity, AttackType type) {
         super(src, entity, type);
-        this.total = total;
-        this.left = total;
-    }
-
-    public double getLeft() {
-        return left;
     }
 
     public void setLeft(double left) {
@@ -39,10 +31,6 @@ public class DamageShareEvent extends BaseAttackEvent {
             return;
         }
         this.set = true;
-        this.left = left;
-    }
-
-    public double getTotal() {
-        return total;
+        getType().setDamage(left);
     }
 }

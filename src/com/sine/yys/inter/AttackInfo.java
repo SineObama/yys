@@ -19,8 +19,4 @@ public interface AttackInfo {
      */
     double randomFloat();
 
-    /**
-     * 附加负面效果。
-     */
-    Collection<DebuffEffect> getDebuffEffects();
 }

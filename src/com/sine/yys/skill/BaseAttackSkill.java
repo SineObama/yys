@@ -1,8 +1,6 @@
 package com.sine.yys.skill;
 
-import com.sine.yys.impl.AttackTypeImpl;
 import com.sine.yys.inter.AttackInfo;
-import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.skill.model.AttackInfoImpl;
 
@@ -37,15 +35,6 @@ public abstract class BaseAttackSkill extends BaseActiveSkill {
      * @return 攻击信息。
      */
     public AttackInfo getAttack() {
-        return new AttackInfoImpl(getDebuffEffects(), getCoefficient());
-    }
-
-    /**
-     * 默认使用{@linkplain #getCoefficient()}和{@linkplain #getDebuffEffects()}，无破防效果。
-     *
-     * @return 攻击信息。
-     */
-    public AttackType getAttackType() {
-        return new AttackTypeImpl();
+        return new AttackInfoImpl(getCoefficient());
     }
 }

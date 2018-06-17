@@ -2,10 +2,14 @@ package com.sine.yys.impl;
 
 import com.sine.yys.info.TransferType;
 import com.sine.yys.inter.AttackType;
+import com.sine.yys.inter.DebuffEffect;
+import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.TransferrableEffect;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class AttackTypeImpl implements AttackType {
     boolean counter = false;
@@ -16,8 +20,9 @@ public class AttackTypeImpl implements AttackType {
     boolean buff = false;
     boolean wake = true;
     boolean trigger = true;  // 触发御魂和被动效果。包括一矢·封魔和针线等
+    Double damage;
 
-    private Map<Class, TransferrableEffect> effects = new HashMap<>();
+    private List<TransferrableEffect> effects = new ArrayList<>();
 
     public AttackTypeImpl() {
     }
@@ -32,17 +37,12 @@ public class AttackTypeImpl implements AttackType {
         this.zhenNv = src.isZhenNv() || typeEnum == TransferType.ZHEN_NV;
         this.caoRen = src.isCaoRen() || typeEnum == TransferType.CAO_REN;
         this.buff = src.isBuff();
-        for (Map.Entry<Class, TransferrableEffect> classObjectEntry : src.getEffects().entrySet()) {
-            TransferrableEffect value = classObjectEntry.getValue();
-            if (value != null)
-                this.effects.put(classObjectEntry.getKey(), value.through(typeEnum));
+        this.damage = src.getDamage();
+        for (TransferrableEffect effect : src.getEffects()) {
+            effect = effect.through(typeEnum);
+            if (effect != null)
+                this.effects.add(effect);
         }
-    }
-
-    public static AttackType createCounter() {
-        AttackTypeImpl attackType = new AttackTypeImpl();
-        attackType.counter = true;
-        return attackType;
     }
 
     public static AttackType createBuff() {
@@ -52,12 +52,7 @@ public class AttackTypeImpl implements AttackType {
     }
 
     @Override
-    public <T> T getEffect(Class<T> tClass) {
-        return (T) effects.get(tClass);
-    }
-
-    @Override
-    public Map<Class, TransferrableEffect> getEffects() {
+    public List<TransferrableEffect> getEffects() {
         return effects;
     }
 
@@ -99,5 +94,34 @@ public class AttackTypeImpl implements AttackType {
     @Override
     public boolean isTrigger() {
         return trigger;
+    }
+
+    @Override
+    public double getDamage() {
+        if (damage == null)
+            return 0.0;
+        return damage;
+    }
+
+    @Override
+    public void setDamage(double damage) {
+        this.damage = damage;
+    }
+
+    @Override
+    public boolean isCritical() {
+        return false;
+    }
+
+    @Override
+    public Collection<DebuffEffect> getDebuffEffects() {
+        return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public void handle(Entity self, Entity target, AttackType attackType, List<DebuffEffect> debuffEffects) {
+        for (TransferrableEffect transferrableEffect : effects) {
+            transferrableEffect.handle(self, target, attackType, debuffEffects);
+        }
     }
 }

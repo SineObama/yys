@@ -11,15 +11,8 @@ import com.sine.yys.inter.Entity;
  * 1. 附加效果（不需要造成伤害）；
  * 2. 伤害系数变动；
  */
-public class AttackEvent extends BaseVectorEvent {
-    private final AttackType attackType;
-
-    public AttackEvent(Entity entity, Entity target, AttackType attackType) {
-        super(entity, target);
-        this.attackType = attackType;
-    }
-
-    public AttackType getAttackType() {
-        return attackType;
+public class AttackEvent extends BaseAttackEvent {
+    public AttackEvent(Entity entity, Entity target, AttackType type) {
+        super(entity, target, type);
     }
 }

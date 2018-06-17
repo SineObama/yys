@@ -1,20 +1,24 @@
 package com.sine.yys.inter;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.List;
 
 /**
- * 攻击类型。存储攻击的类型信息：攻击来源（反击、椒图分担、薙魂等等），特殊效果信息（霜天之织）。
- * 用于在伤害分摊时进行信息、效果传递。
+ * 存储攻击信息，包括伤害、暴击、攻击类型。
  * <p>
- * 但是各个位之间并不能完全组合，有不可能出现的情况，判断上也较为“主观”吧？
+ * 攻击的类型信息包括：攻击来源（反击、椒图分担、薙魂等等）、一般的附加负面效果、特殊的可传递效果（霜天之织）。
+ * 用于实现“信息传递”。
  * <p>
- * 例子：
- * 1. 一般伤害和针女伤害通过涓流分摊，传递给狰式神，实现2次反击。
+ * 相关例子：
+ * * 一般伤害和针女伤害通过涓流分摊，传递给狰式神，实现2次反击。
+ * * 食梦貘的攻击通过涓流分摊也不会打醒睡眠。
+ * * 霜天之织可经由草人链接或涓流传递一次。
  */
-public interface AttackType {
-    <T> T getEffect(Class<T> tClass);
-
-    Map<Class, TransferrableEffect> getEffects();
+public interface AttackType extends HandlerEffect {
+    /**
+     * @return 特殊的可传递效果。
+     */
+    List<TransferrableEffect> getEffects();
 
     /**
      * @return 是否反击。
@@ -43,4 +47,15 @@ public interface AttackType {
     boolean isWake();
 
     boolean isTrigger();
+
+    double getDamage();
+
+    void setDamage(double damage);
+
+    boolean isCritical();
+
+    /**
+     * @return 附加负面效果。
+     */
+    Collection<DebuffEffect> getDebuffEffects();
 }

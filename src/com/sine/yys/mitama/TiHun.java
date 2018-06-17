@@ -105,9 +105,11 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
             if (event.getType().isCaoRen())
                 return;
             // XXXX 薙魂的减伤只对破盾后的伤害生效
-            final double damage = event.getTotal() * (1 - getDamageReducePct());
+            final double damage = event.getType().getDamage() * (1 - getDamageReducePct());
             // 单人断涓流的也会触发薙魂
-            getController().directDamage(event.getEntity(), getSelf(), (int) (damage * getSharePct()), new AttackTypeImpl(event.getType(), TransferType.TI_HUN));
+            final AttackTypeImpl type = new AttackTypeImpl(event.getType(), TransferType.TI_HUN);
+            type.setDamage(damage * getSharePct());
+            getController().directDamage(event.getEntity(), getSelf(), type);
             event.setLeft(damage * (1 - getSharePct()));
         }
     }
