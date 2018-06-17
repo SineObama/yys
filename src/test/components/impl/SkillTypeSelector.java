@@ -24,7 +24,6 @@ public class SkillTypeSelector implements SkillSelector {
             if (aClass.isAssignableFrom(skill.getClass()))
                 return skill;
         }
-        log.severe(aClass.getSimpleName() + " skill not found");
         return null;
     }
 }
