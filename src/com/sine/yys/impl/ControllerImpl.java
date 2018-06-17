@@ -140,9 +140,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void buffDamage(Entity self, Entity target, int damage) {
-        final AttackType buff = AttackTypeImpl.createBuff();
-        buff.setDamage(damage);
+    public void buffDamage(Entity self, Entity target, AttackType buff) {
         breakShield(target, buff);
         if (buff.getDamage() != 0) {
             doDamage(self, target, buff);

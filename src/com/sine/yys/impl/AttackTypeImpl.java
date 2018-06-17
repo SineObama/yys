@@ -47,12 +47,6 @@ public class AttackTypeImpl implements AttackType {
         }
     }
 
-    public static AttackType createBuff() {
-        AttackTypeImpl attackType = new AttackTypeImpl();
-        attackType.buff = true;
-        return attackType;
-    }
-
     @Override
     public List<TransferrableEffect> getEffects() {
         return effects;
