@@ -95,7 +95,7 @@ public class AttackTypeImpl implements AttackType {
 
     @Override
     public boolean isTrigger() {
-        return trigger;
+        return !buff && trigger;
     }
 
     @Override
