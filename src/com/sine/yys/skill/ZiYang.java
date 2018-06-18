@@ -88,12 +88,11 @@ public class ZiYang extends BaseActiveSkill {
     }
 
     class DieHandler extends SealablePassiveHandler implements EventHandler<DieEvent> {
+        private ShikigamiEntity choosed;
         private final Callback callback = () -> {
             final Entity self = getSelf();
             if (self.isDead())
                 return;
-            // 查找己方式神站位，可复活的队友。
-            final ShikigamiEntity choosed = RandUtil.choose(getOwn().getRevivable());
             if (choosed == null)
                 return;
             log.info(Msg.trigger(self, ZiYang.this));
@@ -119,6 +118,8 @@ public class ZiYang extends BaseActiveSkill {
             QingTianWaWa waWa = getSelf().get(QingTianWaWa.class, null);
             if (waWa.getCd() > 0)
                 return;
+            // 查找己方式神站位，可复活的队友。
+            choosed = RandUtil.choose(getOwn().getRevivable());
             getController().addAction(400, callback);
         }
     }
