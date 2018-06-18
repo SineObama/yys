@@ -26,11 +26,12 @@ import com.sine.yys.inter.ShikigamiEntity;
  */
 public class BeMonoAttackEvent extends BaseVectorEvent {
     private boolean treated = false;
+    private final boolean juanLiu;
 
-    public BeMonoAttackEvent(ShikigamiEntity entity, Entity target) {
+    public BeMonoAttackEvent(ShikigamiEntity entity, Entity target, boolean juanLiu) {
         super(entity, target);
+        this.juanLiu = juanLiu;
     }
-
 
     public boolean isTreated() {
         return treated;
@@ -38,5 +39,9 @@ public class BeMonoAttackEvent extends BaseVectorEvent {
 
     public void setTreated() {
         this.treated = true;
+    }
+
+    public boolean isJuanLiu() {
+        return juanLiu;
     }
 }

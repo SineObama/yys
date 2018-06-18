@@ -12,15 +12,15 @@ import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 
 /**
  * 指向性攻击技能。
- * 包括普攻和部分大招。
+ * 包括普攻和部分鬼火技能。
  */
 public abstract class BaseDirectiveSkill extends BaseAttackSkill implements DirectiveSkill {
     @Override
     protected void beforeApply(Entity target) {
         super.beforeApply(target);
-        if (target instanceof ShikigamiEntity && !target.getBuffController().contain(JuanLiu.JuanLiuBuff.class)) {
+        if (target instanceof ShikigamiEntity) {
             // 触发对方被单体攻击事件
-            target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf()));
+            target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, getSelf(), target.getBuffController().contain(JuanLiu.JuanLiuBuff.class)));
         }
     }
 
