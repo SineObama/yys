@@ -43,6 +43,6 @@ public class LifeTest {
             }
         }
         life += change;
-        assert life == entity.getLifeInt() : message;
+        assert life == entity.getLifeInt() : message + ". " + life + " == " + entity.getLifeInt();
     }
 }
