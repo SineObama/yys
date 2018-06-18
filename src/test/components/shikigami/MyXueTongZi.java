@@ -1,4 +1,4 @@
-package test.components.impl;
+package test.components.shikigami;
 
 import com.sine.yys.shikigami.XueTongZi;
 import com.sine.yys.skill.BaseSkill;
