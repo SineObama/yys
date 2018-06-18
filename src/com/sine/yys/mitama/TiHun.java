@@ -2,7 +2,9 @@ package com.sine.yys.mitama;
 
 import com.sine.yys.buff.control.ChenMo;
 import com.sine.yys.buff.control.ControlBuff;
-import com.sine.yys.event.*;
+import com.sine.yys.event.AfterMovementEvent;
+import com.sine.yys.event.BeMonoAttackEvent;
+import com.sine.yys.event.DamageShareEvent;
 import com.sine.yys.impl.AttackTypeImpl;
 import com.sine.yys.info.TransferType;
 import com.sine.yys.inter.Controller;
@@ -54,19 +56,17 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
     }
 
     @Override
-    protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> getOwn().getEventController().add(0, this);
+    protected void onEnter() {
+        getOwn().getEventController().add(0, this);
     }
 
     @Override
-    protected EventHandler<DieEvent> getDieHandler() {
-        return event -> {
-            getOwn().getEventController().remove(this);
-            if (target != null) {
-                target.getEventController().remove(damageShareHandler);
-                target = null;
-            }
-        };
+    protected void onDie() {
+        getOwn().getEventController().remove(this);
+        if (target != null) {
+            target.getEventController().remove(damageShareHandler);
+            target = null;
+        }
     }
 
     @Override

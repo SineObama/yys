@@ -2,8 +2,6 @@ package com.sine.yys.skill.commonattack;
 
 import com.sine.yys.event.AfterMovementEvent;
 import com.sine.yys.event.BeforeRoundEvent;
-import com.sine.yys.event.DieEvent;
-import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
@@ -93,13 +91,13 @@ public class GuiNiao extends BaseCommonAttack {
     }
 
     @Override
-    protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> getOwn().getEventController().add(afterMovementHandler);
+    protected void onEnter() {
+        getOwn().getEventController().add(afterMovementHandler);
     }
 
     @Override
-    protected EventHandler<DieEvent> getDieHandler() {
-        return event -> getOwn().getEventController().remove(afterMovementHandler);
+    protected void onDie() {
+        getOwn().getEventController().remove(afterMovementHandler);
     }
 
     class BeforeActionHandler implements EventHandler<BeforeRoundEvent> {

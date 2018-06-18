@@ -1,7 +1,6 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.event.DieEvent;
-import com.sine.yys.event.EnterEvent;
 import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.Callback;
 import com.sine.yys.skill.model.QingTianWaWa;
@@ -73,16 +72,14 @@ public class ZiYang extends BaseActiveSkill {
     }
 
     @Override
-    protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> getOwn().getEventController().add(dieHandler);
+    protected void onEnter() {
+        getOwn().getEventController().add(dieHandler);
     }
 
     @Override
-    public EventHandler<DieEvent> getDieHandler() {
-        return event -> {
-            // XXXX 死亡是否需要处理日光能量
-            getOwn().getEventController().remove(dieHandler);
-        };
+    protected void onDie() {
+        // XXXX 死亡是否需要处理日光能量
+        getOwn().getEventController().remove(dieHandler);
     }
 
     @Override

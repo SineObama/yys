@@ -3,7 +3,6 @@ package com.sine.yys.skill;
 import com.sine.yys.buff.NumIBuff;
 import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.DamageShareEvent;
-import com.sine.yys.event.DieEvent;
 import com.sine.yys.impl.AttackTypeImpl;
 import com.sine.yys.info.TransferType;
 import com.sine.yys.inter.AttackType;
@@ -45,18 +44,18 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
             last -= 1;
             getSelf().put(LAST, last);
             if (last <= 0)
-                remove(null);
+                remove();
         }
     }
 
-    private void remove(DieEvent event) {
+    private void remove() {
         for (Entity entity : new ArrayList<>(shared))
             entity.getBuffController().remove(JuanLiuBuff.class);
     }
 
     @Override
-    protected EventHandler<DieEvent> getDieHandler() {
-        return this::remove;
+    protected void onDie() {
+        remove();
     }
 
     @Override

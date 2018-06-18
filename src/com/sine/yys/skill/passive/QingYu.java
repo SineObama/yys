@@ -1,6 +1,8 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.event.*;
+import com.sine.yys.event.AfterRoundEvent;
+import com.sine.yys.event.BeCureEvent;
+import com.sine.yys.event.LostLifeEvent;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.inter.ShikigamiEntity;
@@ -43,27 +45,23 @@ public class QingYu extends BasePassiveSkill implements EventHandler<AfterRoundE
     }
 
     @Override
-    protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> {
-            getEnemy().getEventController().add(this);
-            getEnemy().getEventController().add(beCureHandler);
-            getOwn().getEventController().add(beDamageHandler);
-        };
+    protected void onEnter() {
+        getEnemy().getEventController().add(this);
+        getEnemy().getEventController().add(beCureHandler);
+        getOwn().getEventController().add(beDamageHandler);
+    }
+
+    @Override
+    protected void onDie() {
+        getEnemy().getEventController().remove(this);
+        getEnemy().getEventController().remove(beCureHandler);
+        getOwn().getEventController().remove(beDamageHandler);
     }
 
     public void addEnergy(int count) {
         final QingTianWaWa waWa = getSelf().get(QingTianWaWa.class, null);
         if (waWa.getCd() == 0)
             waWa.add(count);
-    }
-
-    @Override
-    public EventHandler<DieEvent> getDieHandler() {
-        return event -> {
-            getEnemy().getEventController().remove(this);
-            getEnemy().getEventController().remove(beCureHandler);
-            getOwn().getEventController().remove(beDamageHandler);
-        };
     }
 
     @Override
