@@ -6,8 +6,10 @@ import com.sine.yys.inter.IBuff;
 import com.sine.yys.shikigami.JiaoTu;
 import com.sine.yys.shikigami.LianYou;
 import com.sine.yys.skill.BaseSkill;
+import com.sine.yys.skill.JuanLiu;
 import com.sine.yys.skill.XiongDiZhiBan;
 import com.sine.yys.skill.commonattack.PangZou;
+import com.sine.yys.skill.commonattack.ShuiHuaDan;
 import com.sine.yys.skill.passive.RenDuoShiZhong;
 import com.sine.yys.skill.passive.RunWuWuSheng;
 import test.components.base.BaseTwoEntityTest;
@@ -40,7 +42,17 @@ public class RunWuWuShengBuffTest extends BaseTwoEntityTest {
     @Override
     protected void init() {
         i1.shikigami = lianYou;
-        i2.shikigami = new JiaoTu();
+        i2.shikigami = new JiaoTu() {
+            @Override
+            protected Collection<BaseSkill> initSkill() {
+                return Arrays.asList(new ShuiHuaDan(), new RunWuWuSheng(){
+                    @Override
+                    public double getPct() {
+                        return 1.0;
+                    }
+                }, new JuanLiu());
+            }
+        };
         i2.property.speed = i1.property.speed - 1;
     }
 
@@ -48,6 +60,7 @@ public class RunWuWuShengBuffTest extends BaseTwoEntityTest {
     public void doTest() {
         simulator.step();
         simulator.step();
+        assert e2.getBuffController().contain(RunWuWuSheng.Buff.class) : "+";
         assert e2.getBuffController().get(RunWuWuSheng.Buff.class).getLast() > new RunWuWuSheng().getLast() : "+";
     }
 
