@@ -1,7 +1,6 @@
 package com.sine.yys.skill;
 
 import com.sine.yys.buff.debuff.ReduceSpeed;
-import com.sine.yys.effect.BaseDebuffEffect;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
@@ -11,21 +10,13 @@ import com.sine.yys.util.RandUtil;
 /**
  * 雨女-天之泪。
  */
-public class TianZhiLei extends BaseNoTargetSkill {
-    private final DebuffEffect effect = new BaseDebuffEffect(getReduceSpeedPct(), getName()) {
-        @Override
-        public IBuff getDebuff(Entity self) {
-            return new ReduceSpeed(getLast(), getName(), getReduceSpeed(), self) {
-            };
-        }
-    };
-
+public class TianZhiLei extends BaseNoTargetSkill implements DebuffEffect {
     @Override
     protected void doApply(Entity target) {
         final Controller controller = getController();
         final Entity self = getSelf();
         for (Entity entity : getEnemy().getAllAlive()) {
-            controller.applyDebuff(self, entity, effect);
+            controller.applyDebuff(self, entity, this);
             controller.dispelBuff(entity, getDispelBuff());
         }
         for (Entity entity : getOwn().getAllAlive()) {
@@ -44,7 +35,7 @@ public class TianZhiLei extends BaseNoTargetSkill {
     /**
      * @return 减速概率。
      */
-    public double getReduceSpeedPct() {
+    public double getPct() {
         return 1.0;
     }
 
@@ -84,5 +75,11 @@ public class TianZhiLei extends BaseNoTargetSkill {
     @Override
     public int getFire() {
         return 2;
+    }
+
+    @Override
+    public IBuff getDebuff(Entity self) {
+        return new ReduceSpeed(getLast(), getName(), getReduceSpeed(), self) {
+        };
     }
 }

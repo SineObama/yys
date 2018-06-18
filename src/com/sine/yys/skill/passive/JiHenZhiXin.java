@@ -4,21 +4,13 @@ import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.buff.debuff.DispellableDebuff;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
-import com.sine.yys.effect.BaseDebuffEffect;
 import com.sine.yys.event.AttackEvent;
 import com.sine.yys.inter.*;
 
 /**
  * 般若-嫉恨之心。
  */
-public class JiHenZhiXin extends BasePassiveSkill implements EventHandler<AttackEvent>, PctEffect {
-    private final DebuffEffect effect = new BaseDebuffEffect(getPct(), getName()) {
-        @Override
-        public IBuff getDebuff(Entity self) {
-            return new FengYin(getLast(), getName(), self);
-        }
-    };
-
+public class JiHenZhiXin extends BasePassiveSkill implements EventHandler<AttackEvent>, DebuffEffect {
     @Override
     public double getPct() {
         return 0.4;
@@ -35,7 +27,7 @@ public class JiHenZhiXin extends BasePassiveSkill implements EventHandler<Attack
 
     @Override
     public void handle(AttackEvent event) {
-        getController().applyDebuff(getSelf(), event.getTarget(), effect);
+        getController().applyDebuff(getSelf(), event.getTarget(), this);
     }
 
     @Override
@@ -47,5 +39,10 @@ public class JiHenZhiXin extends BasePassiveSkill implements EventHandler<Attack
         FengYin(int last, String name, Entity src) {
             super(last, name + "-封印御魂和被动", src);
         }
+    }
+
+    @Override
+    public IBuff getDebuff(Entity self) {
+        return new FengYin(getLast(), getName(), self);
     }
 }

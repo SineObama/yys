@@ -3,11 +3,9 @@ package com.sine.yys.skill.commonattack;
 import com.sine.yys.buff.control.XuanYun;
 import com.sine.yys.buff.debuff.PctDoT;
 import com.sine.yys.buff.debuff.ReduceDefense;
-import com.sine.yys.effect.BaseDebuffEffect;
 import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.IBuff;
-import com.sine.yys.inter.PctEffect;
 import com.sine.yys.util.RandUtil;
 
 import java.util.Arrays;
@@ -17,17 +15,7 @@ import java.util.Collections;
 /**
  * 镰鼬-胖揍。
  */
-public class PangZou extends BaseCommonAttack implements PctEffect {
-    private final DebuffEffect effect = new BaseDebuffEffect(getPct(), getName()) {
-        @Override
-        public IBuff getDebuff(Entity self) {
-            return RandUtil.choose(Arrays.asList(
-                    new ReduceDefense(getLast(), getName(), getReduceDefensePct(), self) {
-                    }, new XuanYun(self), new PctDoT(getLast(), getName(), getReduceLifePct(), self) {
-                    }));
-        }
-    };
-
+public class PangZou extends BaseCommonAttack implements DebuffEffect {
     @Override
     public double getPct() {
         return 0.2;
@@ -66,6 +54,14 @@ public class PangZou extends BaseCommonAttack implements PctEffect {
 
     @Override
     public Collection<DebuffEffect> getDebuffEffects() {
-        return Collections.singleton(effect);
+        return Collections.singleton(this);
+    }
+
+    @Override
+    public IBuff getDebuff(Entity self) {
+        return RandUtil.choose(Arrays.asList(
+                new ReduceDefense(getLast(), getName(), getReduceDefensePct(), self) {
+                }, new XuanYun(self), new PctDoT(getLast(), getName(), getReduceLifePct(), self) {
+                }));
     }
 }

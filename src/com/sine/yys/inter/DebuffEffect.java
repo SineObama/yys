@@ -5,6 +5,7 @@ import com.sine.yys.inter.base.Named;
 
 /**
  * 定义一个可以附加{@linkplain Debuff}的效果。
+ * 默认受效果命中影响。
  */
 public interface DebuffEffect extends Named, PctEffect {
     /**
@@ -12,7 +13,9 @@ public interface DebuffEffect extends Named, PctEffect {
      *
      * @return 是否受影响。
      */
-    boolean involveHitAndDef();
+    default boolean involveHitAndDef() {
+        return true;
+    }
 
     /**
      * 获取附加的debuff。

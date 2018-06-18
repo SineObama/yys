@@ -1,7 +1,6 @@
 package com.sine.yys.skill.passive;
 
 import com.sine.yys.buff.control.BingDong;
-import com.sine.yys.effect.BaseDebuffEffect;
 import com.sine.yys.event.AttackEvent;
 import com.sine.yys.info.TransferType;
 import com.sine.yys.inter.*;
@@ -26,14 +25,7 @@ import java.util.List;
  * * 打草人（未实现）也可以传递。
  * * 只能传递一次，比如从草人传递给目标，不能再经由涓流传递。
  */
-public class ShuangTianZhiZhi extends BasePassiveSkill implements EventHandler<AttackEvent>, PctEffect {
-    private final DebuffEffect effect = new BaseDebuffEffect(getPct(), getName()) {
-        @Override
-        public IBuff getDebuff(Entity self) {
-            return new BingDong(getLast(), self);
-        }
-    };
-
+public class ShuangTianZhiZhi extends BasePassiveSkill implements EventHandler<AttackEvent>, DebuffEffect {
     @Override
     public double getPct() {
         return 0.45;
@@ -72,7 +64,7 @@ public class ShuangTianZhiZhi extends BasePassiveSkill implements EventHandler<A
             removeXueYouHun(debuffEffects);
             return getBreakCoefficient();
         }
-        getController().applyDebuff(getSelf(), target, effect);
+        getController().applyDebuff(getSelf(), target, this);
         if (target.getBuffController().contain(BingDong.class)) {
             log.info(Msg.vector(getSelf(), "冰冻", target));
             removeXueYouHun(debuffEffects);
@@ -93,6 +85,11 @@ public class ShuangTianZhiZhi extends BasePassiveSkill implements EventHandler<A
     @Override
     public void handle(AttackEvent event) {
         event.getType().getEffects().add(new STZZ(getSelf()));
+    }
+
+    @Override
+    public IBuff getDebuff(Entity self) {
+        return new BingDong(getLast(), self);
     }
 
     /**

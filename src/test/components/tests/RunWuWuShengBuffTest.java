@@ -1,8 +1,6 @@
 package test.components.tests;
 
 import com.sine.yys.buff.debuff.PctDoT;
-import com.sine.yys.effect.BaseDebuffEffect;
-import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.IBuff;
 import com.sine.yys.shikigami.JiaoTu;
@@ -16,7 +14,6 @@ import test.components.base.BaseTwoEntityTest;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * 测试buff伤害（镰鼬）对润物无声的触发效果。
@@ -32,14 +29,9 @@ public class RunWuWuShengBuffTest extends BaseTwoEntityTest {
                 }
 
                 @Override
-                public Collection<DebuffEffect> getDebuffEffects() {
-                    return Collections.singleton(new BaseDebuffEffect(getPct(), getName()) {
-                        @Override
-                        public IBuff getDebuff(Entity self) {
-                            return new PctDoT(getLast(), getName(), getReduceLifePct(), self) {
-                            };
-                        }
-                    });
+                public IBuff getDebuff(Entity self) {
+                    return new PctDoT(getLast(), getName(), getReduceLifePct(), self) {
+                    };
                 }
             }, new RenDuoShiZhong(), new XiongDiZhiBan());
         }
