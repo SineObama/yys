@@ -74,6 +74,8 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void attack(Entity self, Entity target, AttackType attackType, Collection<DebuffEffect> debuffEffects) {
+        if (target.isDead())  // 强行防止目标已死
+            return;
         // 0. XXX 关于触发时机
         if (debuffEffects != null)
             for (DebuffEffect debuffEffect : debuffEffects)
@@ -83,7 +85,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void attack(Entity self, Entity target, AttackType type) {
-        if (target.isDead())  // 多段攻击目标可能中途死亡
+        if (target.isDead())  // 强行防止目标已死
             return;
 
         // 打醒睡眠
@@ -98,7 +100,7 @@ public class ControllerImpl implements Controller {
             target.getEventController().trigger(new BeAttackEvent(target, self, type));
             effects = self.getEventController().trigger(new AddDamageEffectEvent(self)).getEffects();
         } else {
-            effects = Collections.EMPTY_LIST;
+            effects = Collections.emptyList();
         }
 
         type.handle(self, target, type, effects);
