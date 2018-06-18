@@ -29,9 +29,9 @@ public class Handler extends AutoOperationHandler {
 
     @Override
     public Operation handle(Entity self, Camp own, Map<ActiveSkill, List<? extends Entity>> map) {
-        ActiveSkill skill = skillSelector.select(map.keySet());
+        ActiveSkill skill = skillSelector.select(self, own, map.keySet());
         if (skill != null)
-            return new OperationImpl(targetSelector.select(map.get(skill)), skill);
+            return new OperationImpl(targetSelector.select(self, own, skill, map.get(skill)), skill);
         return super.handle(self, own, map);
     }
 }

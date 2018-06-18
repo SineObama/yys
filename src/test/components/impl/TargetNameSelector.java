@@ -1,5 +1,7 @@
 package test.components.impl;
 
+import com.sine.yys.inter.ActiveSkill;
+import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.base.Named;
 import test.components.inter.TargetSelector;
@@ -25,7 +27,7 @@ public class TargetNameSelector implements TargetSelector {
     }
 
     @Override
-    public Entity select(List<? extends Entity> entities) {
+    public Entity select(Entity self, Camp own, ActiveSkill skill, List<? extends Entity> entities) {
         if (name == null)
             name = entity.getName();
         if (entities.isEmpty())

@@ -1,6 +1,8 @@
 package test.components.impl;
 
 import com.sine.yys.inter.ActiveSkill;
+import com.sine.yys.inter.Camp;
+import com.sine.yys.inter.Entity;
 import test.components.inter.SkillSelector;
 
 import java.util.Set;
@@ -19,7 +21,7 @@ public class SkillTypeSelector implements SkillSelector {
     }
 
     @Override
-    public ActiveSkill select(Set<ActiveSkill> skills) {
+    public ActiveSkill select(Entity self, Camp own, Set<ActiveSkill> skills) {
         for (ActiveSkill skill : skills) {
             if (aClass.isAssignableFrom(skill.getClass()))
                 return skill;

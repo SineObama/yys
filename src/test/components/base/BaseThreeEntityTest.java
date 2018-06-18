@@ -14,12 +14,12 @@ public abstract class BaseThreeEntityTest extends BaseTwoEntityTest implements T
         super.beforeInit();
         i3.property.speed = 1;
         i3.name = "旁观";
+        _list2.add(i3);
     }
 
     @Override
     void afterInit() {
         super.afterInit();
-        e3 = form(i3);
-        _list2.add(e3);
+        e3 = i3.entity;
     }
 }
