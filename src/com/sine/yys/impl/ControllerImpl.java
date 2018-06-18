@@ -188,8 +188,6 @@ public class ControllerImpl implements Controller {
 
     /**
      * 进行护盾的伤害减免计算。
-     *
-     * @return 剩余伤害。
      */
     private void breakShield(Entity target, AttackType type) {
         int damage = (int) type.getDamage();
