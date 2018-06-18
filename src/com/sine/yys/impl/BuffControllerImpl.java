@@ -115,24 +115,21 @@ public class BuffControllerImpl implements BuffController {
     @Override
     public <T> void add(Comparable<T> buff0) {
         final BaseIBuff buff = (BaseIBuff) buff0;
-        for (BaseIBuff iBuff : set) {
-            if (iBuff.getClass() == buff0.getClass()) {
-                if (iBuff.compareTo(buff) <= 0) {
-                    set.remove(iBuff);
-                    set.add(buff);
-                }
-                return;
+        BaseIBuff iBuff = find(buff0.getClass());
+        if (iBuff != null) {
+            if (iBuff.compareTo(buff) <= 0) {
+                set.remove(iBuff);
+                set.add(buff);
             }
+            return;
         }
         set.add(buff);
     }
 
     private <T> BaseIBuff find(Class<T> clazz) {
-        for (BaseIBuff iBuff : set) {
-            if (iBuff.getClass() == clazz) {
+        for (BaseIBuff iBuff : set)
+            if (iBuff.getClass().isAssignableFrom(clazz))
                 return iBuff;
-            }
-        }
         return null;
     }
 
