@@ -29,11 +29,11 @@ public class DiZangXiangTest extends BaseThreeEntityTest {
         simulator.step();
         test.test(-com(e1), "-1");
 
-        targetSelector.setName(e3.getName());
+        targetSelector.setName(e3);
         simulator.step();
         test3.test(-com(e1), "队友-");
 
-        targetSelector.setName(e2.getName());
+        targetSelector.setName(e2);
         i1.property.critical = 1.0;
         simulator.step();
         test.test(-comc(e1), "-2");
@@ -43,7 +43,7 @@ public class DiZangXiangTest extends BaseThreeEntityTest {
         simulator.step();
         test.test(-comc(e1), "+");
 
-        targetSelector.setName(e3.getName());
+        targetSelector.setName(e3);
         simulator.step();
         test3.test(-comc(e1), "队友+");
     }

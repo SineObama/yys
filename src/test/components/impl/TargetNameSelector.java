@@ -22,6 +22,10 @@ public class TargetNameSelector implements TargetSelector {
         this.name = name;
     }
 
+    public void setName(Named entity) {
+        this.name = entity.getName();
+    }
+
     public void setName(String name) {
         this.name = name;
     }
