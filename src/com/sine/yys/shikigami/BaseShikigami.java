@@ -12,10 +12,9 @@ import java.util.Collections;
  * 式神基类。
  */
 public abstract class BaseShikigami implements Shikigami {
-    private final Collection<BaseSkill> skills;
+    private Collection<BaseSkill> skills;
 
     BaseShikigami() {
-        this.skills = Collections.unmodifiableCollection(initSkill());
     }
 
     protected abstract Collection<BaseSkill> initSkill();
@@ -27,6 +26,8 @@ public abstract class BaseShikigami implements Shikigami {
 
     @Override
     public Collection<BaseSkill> getSkills() {
+        if (skills == null)
+            skills = Collections.unmodifiableCollection(initSkill());
         return skills;
     }
 
