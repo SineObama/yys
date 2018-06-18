@@ -18,6 +18,8 @@ public class ComponentsTest {
     public static void main(String[] args) {
         AttackInfoImpl._float = false;
         int count = 0, fail = 0;
+        long start, end;
+        start = System.currentTimeMillis();
         for (TestFactory.Creator creator : TestFactory.get("")) {
             Test test = creator.create();
             try {
@@ -29,6 +31,7 @@ public class ComponentsTest {
             }
             count++;
         }
-        log.info(fail + "/" + count + " tests failed");
+        end = System.currentTimeMillis();
+        log.info(fail + "/" + count + " tests failed, time=" + (end - start));
     }
 }
