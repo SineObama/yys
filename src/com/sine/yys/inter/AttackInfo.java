@@ -1,7 +1,5 @@
 package com.sine.yys.inter;
 
-import java.util.Collection;
-
 /**
  * 一次攻击（一次伤害）中的信息。
  * <p>

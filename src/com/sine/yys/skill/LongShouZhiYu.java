@@ -10,6 +10,7 @@ import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
 // XXX 是否行动前回火和火鼠裘都是依赖于式神身上各种的buff，即死亡复活后就没有效果？
+
 /**
  * 辉夜姬-龙首之玉。
  * <p>

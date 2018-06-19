@@ -131,7 +131,7 @@ public class AttackTypeImpl implements AttackType {
     }
 
     @Override
-    public boolean isSharable(){
+    public boolean isSharable() {
         return !buff && !indirect;
     }
 }

@@ -36,44 +36,6 @@ public abstract class BaseTest implements Test {
     final List<SimpleObject> _extra = new ArrayList<>();
     protected Simulator simulator;
 
-    class DispatcherTargetSelector implements TargetSelector {
-        final List<EnInfo> list;
-
-        DispatcherTargetSelector(List<EnInfo> list) {
-            this.list = list;
-        }
-
-        @Override
-        public Entity select(Entity self, Camp own, ActiveSkill skill, List<? extends Entity> entities) {
-            for (EnInfo enInfo : list)
-                if (enInfo.entity == self) {
-                    if (enInfo.target == null)
-                        return null;
-                    return enInfo.target.select(self, own, skill, entities);
-                }
-            return null;
-        }
-    }
-
-    class DispatcherSkillSelector implements SkillSelector {
-        final List<EnInfo> list;
-
-        DispatcherSkillSelector(List<EnInfo> list) {
-            this.list = list;
-        }
-
-        @Override
-        public ActiveSkill select(Entity self, Camp own, Set<ActiveSkill> skills) {
-            for (EnInfo enInfo : list)
-                if (enInfo.entity == self) {
-                    if (enInfo.skill == null)
-                        return null;
-                    return enInfo.skill.select(self, own, skills);
-                }
-            return null;
-        }
-    }
-
     private static ShikigamiEntityImpl form(EnInfo i) {
         return new ShikigamiEntityImpl(i.shikigami, i.property, i.mitama, 1.0, i.getName());
     }
@@ -139,14 +101,52 @@ public abstract class BaseTest implements Test {
      */
     protected abstract void doTest();
 
+    class DispatcherTargetSelector implements TargetSelector {
+        final List<EnInfo> list;
+
+        DispatcherTargetSelector(List<EnInfo> list) {
+            this.list = list;
+        }
+
+        @Override
+        public Entity select(Entity self, Camp own, ActiveSkill skill, List<? extends Entity> entities) {
+            for (EnInfo enInfo : list)
+                if (enInfo.entity == self) {
+                    if (enInfo.target == null)
+                        return null;
+                    return enInfo.target.select(self, own, skill, entities);
+                }
+            return null;
+        }
+    }
+
+    class DispatcherSkillSelector implements SkillSelector {
+        final List<EnInfo> list;
+
+        DispatcherSkillSelector(List<EnInfo> list) {
+            this.list = list;
+        }
+
+        @Override
+        public ActiveSkill select(Entity self, Camp own, Set<ActiveSkill> skills) {
+            for (EnInfo enInfo : list)
+                if (enInfo.entity == self) {
+                    if (enInfo.skill == null)
+                        return null;
+                    return enInfo.skill.select(self, own, skills);
+                }
+            return null;
+        }
+    }
+
     protected class EnInfo implements Named {
         public BaseShikigami shikigami = ShikigamiFactory.create("雨女");
         public TestProperty property = new TestProperty();
         public BaseMitama mitama = null;
         public String name = null;
+        public ShikigamiEntityImpl entity;  // 初始化后可用
         SkillSelector skill;
         TargetSelector target;
-        public ShikigamiEntityImpl entity;  // 初始化后可用
 
         EnInfo() {
         }

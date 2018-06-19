@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  * 伤害由双方属性和 AttackInfo 计算出初步结果。
  */
 public class OriginAttackType extends AttackTypeImpl implements AttackType {
-    private final Logger log = Logger.getLogger(getClass().getName());
     final Entity self, target;
     final AttackInfo attackInfo;
+    private final Logger log = Logger.getLogger(getClass().getName());
     boolean critical;
 
     public OriginAttackType(Entity self, Entity target, AttackInfo attackInfo) {

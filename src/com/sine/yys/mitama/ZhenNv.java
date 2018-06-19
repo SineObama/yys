@@ -1,7 +1,7 @@
 package com.sine.yys.mitama;
 
-import com.sine.yys.event.CriticalEvent;
 import com.sine.yys.attacktype.AttackTypeImpl;
+import com.sine.yys.event.CriticalEvent;
 import com.sine.yys.info.TransferType;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;

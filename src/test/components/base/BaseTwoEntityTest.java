@@ -10,10 +10,10 @@ import test.components.inter.Test;
  * 两个式神对打的测试，只有一方出手。
  */
 public abstract class BaseTwoEntityTest extends BaseTest implements Test {
-    protected SkillTypeSelector skillSelector;
-    protected TargetNameSelector targetSelector;
     protected final EnInfo i1 = new EnInfo();
     protected final EnInfo i2 = new EnInfo();
+    protected SkillTypeSelector skillSelector;
+    protected TargetNameSelector targetSelector;
     protected ShikigamiEntityImpl e1;
     protected ShikigamiEntityImpl e2;
 

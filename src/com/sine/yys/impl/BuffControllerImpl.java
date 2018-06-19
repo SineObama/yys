@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 // XXXX buff的先后顺序与效率问题，考虑改用LinkList存储，还有优先级获取是否会有多个buff的问题。
 // XXXX 连并删除附属buff时会不会有多次调用onRemove产生的问题，约定不写onRemove？
+
 /**
  * 额外给主逻辑提供行动前后调用的接口。
  */
@@ -45,8 +46,6 @@ public class BuffControllerImpl implements BuffController {
     }
 
     private final Logger log = Logger.getLogger(getClass().getName());
-
-    private List<BaseIBuff> buffs = new ArrayList<>();
     private final BeDamage beDamage = new BeDamage();
     private final Cure cure = new Cure();
     private final DamageUp damageUp = new DamageUp();
@@ -58,8 +57,8 @@ public class BuffControllerImpl implements BuffController {
     private final CriticalDamage criticalDamage = new CriticalDamage();
     private final EffectHit effectHit = new EffectHit();
     private final EffectDef effectDef = new EffectDef();
-
     private final Entity self;
+    private List<BaseIBuff> buffs = new ArrayList<>();
 
     public BuffControllerImpl(Entity self) {
         this.self = self;

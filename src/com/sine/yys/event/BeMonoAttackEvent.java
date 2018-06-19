@@ -25,8 +25,8 @@ import com.sine.yys.inter.ShikigamiEntity;
  * 5. （似乎）不对己方混乱打己方触发的协战生效。
  */
 public class BeMonoAttackEvent extends BaseVectorEvent {
-    private boolean treated = false;
     private final boolean juanLiu;
+    private boolean treated = false;
 
     public BeMonoAttackEvent(ShikigamiEntity entity, Entity target, boolean juanLiu) {
         super(entity, target);

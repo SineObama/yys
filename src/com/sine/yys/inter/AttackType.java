@@ -61,7 +61,6 @@ public interface AttackType extends HandlerEffect {
 
     /**
      * @return 是否原始攻击（触发攻击事件、御魂效果等）。
-     *
      * @see OriginAttackType
      */
     boolean isOrigin();

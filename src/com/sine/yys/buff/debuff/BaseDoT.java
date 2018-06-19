@@ -1,7 +1,7 @@
 package com.sine.yys.buff.debuff;
 
-import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.attacktype.BuffAttack;
+import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.inter.DamageController;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.util.Msg;

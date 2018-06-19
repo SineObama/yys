@@ -35,14 +35,14 @@ public class JiHenZhiXin extends BasePassiveSkill implements EventHandler<Attack
         self.getEventController().add(this);
     }
 
+    @Override
+    public IBuff getDebuff(Entity self) {
+        return new FengYin(getLast(), getName(), self);
+    }
+
     public class FengYin extends BaseIBuff implements SealPassive, SealMitama, DispellableDebuff {
         FengYin(int last, String name, Entity src) {
             super(last, name + "-封印御魂和被动", src);
         }
-    }
-
-    @Override
-    public IBuff getDebuff(Entity self) {
-        return new FengYin(getLast(), getName(), self);
     }
 }

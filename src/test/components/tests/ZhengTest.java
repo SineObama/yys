@@ -11,13 +11,13 @@ import test.components.util.LifeTest;
  */
 public class ZhengTest extends BaseTwoEntityTest {
     private double pct = 1.0;
-    private double znPct = 1.0;
     private final Zheng zheng = new Zheng() {
         @Override
         public double getPct(Entity unused) {
             return pct;
         }
     };
+    private double znPct = 1.0;
     private final ZhenNv zhenNv = new ZhenNv() {
         @Override
         public double getPct() {

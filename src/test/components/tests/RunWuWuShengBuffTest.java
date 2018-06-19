@@ -45,7 +45,7 @@ public class RunWuWuShengBuffTest extends BaseTwoEntityTest {
         i2.shikigami = new JiaoTu() {
             @Override
             protected Collection<BaseSkill> initSkill() {
-                return Arrays.asList(new ShuiHuaDan(), new RunWuWuSheng(){
+                return Arrays.asList(new ShuiHuaDan(), new RunWuWuSheng() {
                     @Override
                     public double getPct() {
                         return 1.0;

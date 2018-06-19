@@ -77,6 +77,12 @@ public class BaseComponent {
         doInit(controller, self);
     }
 
+    /**
+     * 初始化操作。
+     */
+    public void doInit(Controller controller, Entity self) {
+    }
+
     class EnterHandler implements EventHandler<EnterEvent> {
         @Override
         public void handle(EnterEvent event) {
@@ -89,11 +95,5 @@ public class BaseComponent {
         public void handle(DieEvent event) {
             onDie();
         }
-    }
-
-    /**
-     * 初始化操作。
-     */
-    public void doInit(Controller controller, Entity self) {
     }
 }
