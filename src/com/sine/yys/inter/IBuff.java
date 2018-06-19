@@ -27,4 +27,19 @@ public interface IBuff extends IBuffProperty, Named, Comparable<IBuff> {
      * @return 来源式神。
      */
     Entity getSrc();
+
+    /**
+     * 式神身上含有同类buff的上限。
+     * 一般情况为1，毒伤一般为3。
+     */
+    default int maxCount() {
+        return 1;
+    }
+
+    /**
+     * @return 式神死亡时移除。
+     */
+    default boolean removeOnDie() {
+        return true;
+    }
 }

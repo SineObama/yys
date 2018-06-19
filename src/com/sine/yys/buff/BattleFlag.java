@@ -34,4 +34,9 @@ public class BattleFlag extends BaseIBuff {
     public int compareTo(IBuff o) {
         return 1;
     }
+
+    @Override
+    public boolean removeOnDie() {
+        return false;
+    }
 }
