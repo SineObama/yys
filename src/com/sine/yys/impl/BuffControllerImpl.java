@@ -8,6 +8,7 @@ import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
 import com.sine.yys.inter.BuffController;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.IBuff;
 import com.sine.yys.rule.buff.*;
 import com.sine.yys.util.Msg;
 
@@ -114,17 +115,24 @@ public class BuffControllerImpl implements BuffController {
     }
 
     @Override
-    public <T> void add(Comparable<T> buff0) {
-        final BaseIBuff buff = (BaseIBuff) buff0;
-        BaseIBuff iBuff = find(buff0.getClass());
-        if (iBuff != null) {
-            if (iBuff.compareTo(buff) <= 0) {
-                buffs.remove(iBuff);
-                buffs.add(buff);
+    public <T> void add(IBuff buff) {
+        int count = buff.maxCount();
+        List<IBuff> origin = new LinkedList<>();
+        for (BaseIBuff iBuff : buffs) {
+            if (iBuff.getClass().isAssignableFrom(buff.getClass())) {  // 新buff是原有buff的子类
+                origin.add(iBuff);
+                count--;
+                if (count == 0)
+                    break;
             }
-            return;
         }
-        buffs.add(buff);
+        if (count == 0) {
+            final IBuff replace = buff.replace(origin);
+            if (replace == null)
+                return;
+            buffs.remove(replace);
+        }
+        buffs.add((BaseIBuff) buff);
     }
 
     private <T> BaseIBuff find(Class<T> clazz) {

@@ -23,13 +23,13 @@ public interface BuffController extends IBuffProperty {
     <T> T getFirstWithPrior(Class<T> tClass);
 
     /**
-     * 添加唯一的buff。
+     * 添加buff。
      * <p>
-     * 若已有同类buff，会调用{@link Comparable#compareTo(Object)}进行比较，根据返回值决定保留的buff（值为负则保留后者/参数）。
+     * 若同类buff个数已达上限，会调用新buff的{@link IBuff#replace(Collection)}决定是否替换掉原有buff。
      *
      * @param buff 新添加的buff。
      */
-    <T> void add(Comparable<T> buff);
+    <T> void add(IBuff buff);
 
     <T> T get(Class<T> clazz);
 
