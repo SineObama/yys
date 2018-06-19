@@ -87,6 +87,9 @@ public class ZiYang extends BaseActiveSkill {
         return "滋养";
     }
 
+    /**
+     * 监听阵营中死亡事件。
+     */
     class DieHandler extends SealablePassiveHandler implements EventHandler<DieEvent> {
         private ShikigamiEntity choosed;
         private final Callback callback = () -> {

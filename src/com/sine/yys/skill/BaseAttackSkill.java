@@ -30,7 +30,7 @@ public abstract class BaseAttackSkill extends BaseActiveSkill {
     }
 
     /**
-     * 默认使用{@linkplain #getCoefficient()}和{@linkplain #getDebuffEffects()}，无破防效果。
+     * 默认使用{@linkplain #getCoefficient()}，无破防效果。
      *
      * @return 攻击信息。
      */

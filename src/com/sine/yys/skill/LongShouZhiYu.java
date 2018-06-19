@@ -9,14 +9,15 @@ import com.sine.yys.inter.base.Callback;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
+// XXX 是否行动前回火和火鼠裘都是依赖于式神身上各种的buff，即死亡复活后就没有效果？
 /**
  * 辉夜姬-龙首之玉。
  * <p>
  * 附带开局释放效果（游戏中写在被动技能中）。
  * <p>
  * 规则：
- * 1. 开局战备动作可以触发招财猫；
- * 2. 开局战备动作可以触发溢彩。
+ * * 开局战备动作可以触发招财猫；
+ * * 开局战备动作可以触发溢彩；
  */
 public class LongShouZhiYu extends BaseNoTargetSkill implements PctEffect {
     private final BeforeActionHandler beforeActionHandler = new BeforeActionHandler();
