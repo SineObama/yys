@@ -28,7 +28,7 @@ public class LianYou extends BaseShikigami {
             @Override
             public Operation handle(Entity self, Camp own, Map<ActiveSkill, List<? extends Entity>> map) {
                 for (Entity entity : own.getAllAlive()) {
-                    if (entity.getBuffController().contain(XiongDiZhiBan.Attack.class) || entity.getBuffController().contain(XiongDiZhiBan.EffectDef.class)) {
+                    if (entity.getBuffController().contain(XiongDiZhiBan.Attack.class)) {
                         Helper.findKeyBySubClassAndRemove(map, XiongDiZhiBan.class);
                         break;
                     }
