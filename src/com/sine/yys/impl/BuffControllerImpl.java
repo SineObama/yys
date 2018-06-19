@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 /**
- * 给主逻辑提供行动前后调用的接口。
+ * 额外给主逻辑提供行动前后调用的接口。
  */
 public class BuffControllerImpl implements BuffController {
     private static final Map<Class, Integer> prior = new HashMap<>();
@@ -128,7 +128,7 @@ public class BuffControllerImpl implements BuffController {
 
     private <T> BaseIBuff find(Class<T> clazz) {
         for (BaseIBuff iBuff : set)
-            if (iBuff.getClass().isAssignableFrom(clazz))
+            if (clazz.isAssignableFrom(iBuff.getClass()))
                 return iBuff;
         return null;
     }
