@@ -149,7 +149,6 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity {
             if (fire > 0) {
                 fire = camp.getEventController().trigger(new UseFireEvent(this, fire)).getCostFire();
                 fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
-                log.info(Msg.info(this, "消耗", fire, "点鬼火，剩余", fireRepo.getFire(), "点"));
             }
 
             // 执行技能

@@ -40,7 +40,10 @@ public class PVPCamp extends BaseCamp implements FireRepo {
 
     @Override
     public void useFire(int count) {
+        if (fire < count)
+            throw new RuntimeException("使用鬼火超过已有值");
         fire -= count;
+        log.info(Msg.info(this, "消耗", count, "点鬼火，剩余", fire, "点"));
     }
 
     @Override
@@ -48,6 +51,7 @@ public class PVPCamp extends BaseCamp implements FireRepo {
         if (count > fire)
             count = fire;
         fire -= count;
+        log.info(Msg.info(this, "减少", count, "点鬼火，当前剩余", fire, "点"));
         return count;
     }
 

@@ -207,9 +207,10 @@ public class ControllerImpl implements Controller {
     public void randomGrab(Entity self, Entity target, double pct) {
         if (RandUtil.success(pct)) {
             int num = target.getFireRepo().grabFire(1);
-            if (num > 0)
+            if (num > 0) {
                 log.info(Msg.vector(self, "吸取", target, num, "点鬼火"));
-            self.getFireRepo().addFire(num);
+                self.getFireRepo().addFire(num);
+            }
         }
     }
 

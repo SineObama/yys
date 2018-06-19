@@ -12,8 +12,10 @@ public class PengLaiYuZhi extends BaseCommonAttack implements PctEffect {
     @Override
     public void afterApply(Entity target) {
         super.beforeApply(target);
-        if (RandUtil.success(getPct()) && target.getFireRepo().grabFire(1) > 0)
-            log.info(Msg.vector(getSelf(), "打掉", target, "1 点鬼火"));
+        if (RandUtil.success(getPct())) {
+            log.info(Msg.trigger(getSelf(), this));
+            target.getFireRepo().grabFire(1);
+        }
     }
 
     @Override
