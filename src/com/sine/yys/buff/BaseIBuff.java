@@ -4,7 +4,7 @@ import com.sine.yys.inter.DamageController;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.IBuff;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -85,7 +85,7 @@ public abstract class BaseIBuff implements IBuff {
     }
 
     @Override
-    public IBuff replace(Collection<IBuff> buffs) {
+    public IBuff replace(List<IBuff> buffs) {
         IBuff min = this;
         for (IBuff iBuff : buffs) {
             if (min.compareTo(iBuff) >= 0) {

@@ -3,7 +3,7 @@ package com.sine.yys.inter;
 import com.sine.yys.inter.base.IBuffProperty;
 import com.sine.yys.inter.base.Named;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 式神头上显示的buff。提供属性加成、护盾、控制等。
@@ -44,7 +44,7 @@ public interface IBuff extends IBuffProperty, Named, Comparable<IBuff> {
      * @param buffs 原有buff，非空，和本buff类型相同。
      * @return 要替换的buff，null表示不替换。
      */
-    IBuff replace(Collection<IBuff> buffs);
+    IBuff replace(List<IBuff> buffs);
 
     /**
      * @return 式神死亡时移除。

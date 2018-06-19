@@ -25,7 +25,7 @@ public interface BuffController extends IBuffProperty {
     /**
      * 添加buff。
      * <p>
-     * 若同类buff个数已达上限，会调用新buff的{@link IBuff#replace(Collection)}决定是否替换掉原有buff。
+     * 若同类buff个数已达上限，会调用新buff的{@link IBuff#replace(java.util.List)}决定是否替换掉原有buff。
      *
      * @param buff 新添加的buff。
      */
