@@ -5,7 +5,6 @@ import com.sine.yys.inter.DebuffEffect;
 import com.sine.yys.skill.model.AttackInfoImpl;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * 攻击技能。
@@ -27,7 +26,7 @@ public abstract class BaseAttackSkill extends BaseActiveSkill {
      * @return 攻击时附带的debuff效果。null表示无效果。
      */
     public Collection<DebuffEffect> getDebuffEffects() {
-        return Collections.emptyList();
+        return null;
     }
 
     /**
