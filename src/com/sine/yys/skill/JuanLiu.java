@@ -49,8 +49,11 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
     }
 
     private void remove() {
-        for (Entity entity : new ArrayList<>(shared))
-            entity.getBuffController().remove(JuanLiuBuff.class);
+        for (Entity entity : new ArrayList<>(shared)) {
+            final JuanLiuBuff juanLiuBuff = entity.getBuffController().get(JuanLiuBuff.class);
+            if (juanLiuBuff != null && juanLiuBuff.getSrc() == getSelf())
+                entity.getBuffController().remove(juanLiuBuff);
+        }
     }
 
     @Override
