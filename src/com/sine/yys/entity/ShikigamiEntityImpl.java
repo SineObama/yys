@@ -6,6 +6,7 @@ import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.Property;
 import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.shikigami.BaseShikigami;
+import com.sine.yys.shikigami.operation.OperationImpl;
 import com.sine.yys.skill.BaseSkill;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
@@ -125,7 +126,10 @@ public class ShikigamiEntityImpl extends EntityImpl implements ShikigamiEntity {
                     map.put(activeSkill, targets);
             }
 
-            operation = this.handler.handle(this, this.camp, map);
+            if (!map.isEmpty())
+                operation = this.handler.handle(this, this.camp, map);
+            else
+                operation = new OperationImpl(null, null);
 
         } else {  // 受行动控制debuff影响
 
