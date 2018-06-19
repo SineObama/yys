@@ -39,10 +39,9 @@ public interface IBuff extends IBuffProperty, Named, Comparable<IBuff> {
     }
 
     /**
-     * 是否用本buff替换参数中的某个原有buff。
-     * 默认不替换。
+     * 是否用本buff替换参数中的某个原有的同类buff。
      *
-     * @param buffs 原有buff。
+     * @param buffs 原有buff，非空，和本buff类型相同。
      * @return 要替换的buff，null表示不替换。
      */
     IBuff replace(Collection<IBuff> buffs);

@@ -119,7 +119,7 @@ public class BuffControllerImpl implements BuffController {
         int count = buff.maxCount();
         List<IBuff> origin = new LinkedList<>();
         for (BaseIBuff iBuff : buffs) {
-            if (iBuff.getClass().isAssignableFrom(buff.getClass())) {  // 新buff是原有buff的子类
+            if (iBuff.getClass().equals(buff.getClass())) {
                 origin.add(iBuff);
                 count--;
                 if (count == 0)
