@@ -1,4 +1,4 @@
-package com.sine.yys.impl;
+package com.sine.yys.attacktype;
 
 /**
  * 属于 Buff 大类的 AttackType。

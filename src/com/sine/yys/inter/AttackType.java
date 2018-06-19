@@ -1,5 +1,7 @@
 package com.sine.yys.inter;
 
+import com.sine.yys.attacktype.OriginAttackType;
+
 import java.util.List;
 
 /**
@@ -60,7 +62,7 @@ public interface AttackType extends HandlerEffect {
     /**
      * @return 是否原始攻击（触发攻击事件、御魂效果等）。
      *
-     * @see com.sine.yys.impl.OriginAttackType
+     * @see OriginAttackType
      */
     boolean isOrigin();
 

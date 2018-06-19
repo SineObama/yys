@@ -2,7 +2,7 @@ package com.sine.yys.skill.passive;
 
 import com.sine.yys.event.BeforeRoundEvent;
 import com.sine.yys.event.LostLifeEvent;
-import com.sine.yys.impl.OriginAttackType;
+import com.sine.yys.attacktype.OriginAttackType;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;

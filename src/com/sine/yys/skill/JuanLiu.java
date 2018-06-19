@@ -3,7 +3,7 @@ package com.sine.yys.skill;
 import com.sine.yys.buff.NumIBuff;
 import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.DamageShareEvent;
-import com.sine.yys.impl.AttackTypeImpl;
+import com.sine.yys.attacktype.AttackTypeImpl;
 import com.sine.yys.info.TransferType;
 import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.Entity;

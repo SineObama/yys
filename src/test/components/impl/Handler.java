@@ -4,8 +4,8 @@ import com.sine.yys.inter.ActiveSkill;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.Operation;
-import com.sine.yys.shikigami.operation.AutoOperationHandler;
-import com.sine.yys.shikigami.operation.OperationImpl;
+import com.sine.yys.operation.AutoOperationHandler;
+import com.sine.yys.operation.OperationImpl;
 import test.components.inter.SkillSelector;
 import test.components.inter.TargetSelector;
 

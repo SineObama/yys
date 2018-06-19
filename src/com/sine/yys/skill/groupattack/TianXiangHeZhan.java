@@ -1,6 +1,6 @@
 package com.sine.yys.skill.groupattack;
 
-import com.sine.yys.impl.OriginAttackType;
+import com.sine.yys.attacktype.OriginAttackType;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.skill.model.AttackInfoImpl;

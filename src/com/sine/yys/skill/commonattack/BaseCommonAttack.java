@@ -1,6 +1,6 @@
 package com.sine.yys.skill.commonattack;
 
-import com.sine.yys.impl.OriginAttackType;
+import com.sine.yys.attacktype.OriginAttackType;
 import com.sine.yys.inter.CommonAttack;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.skill.mono.BaseDirectiveSkill;

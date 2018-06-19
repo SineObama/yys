@@ -6,7 +6,7 @@ import com.sine.yys.inter.*;
 import com.sine.yys.inter.base.Property;
 import com.sine.yys.mitama.BaseMitama;
 import com.sine.yys.shikigami.BaseShikigami;
-import com.sine.yys.shikigami.operation.OperationImpl;
+import com.sine.yys.operation.OperationImpl;
 import com.sine.yys.skill.BaseSkill;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;

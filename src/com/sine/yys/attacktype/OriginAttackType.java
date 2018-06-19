@@ -1,4 +1,4 @@
-package com.sine.yys.impl;
+package com.sine.yys.attacktype;
 
 import com.sine.yys.inter.AttackInfo;
 import com.sine.yys.inter.AttackType;

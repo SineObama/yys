@@ -1,7 +1,7 @@
 package com.sine.yys.buff.control;
 
 import com.sine.yys.inter.*;
-import com.sine.yys.shikigami.operation.OperationImpl;
+import com.sine.yys.operation.OperationImpl;
 
 /**
  * 不可移动（行动）的控制效果，标记接口。

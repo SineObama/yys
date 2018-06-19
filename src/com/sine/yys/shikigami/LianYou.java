@@ -1,7 +1,7 @@
 package com.sine.yys.shikigami;
 
 import com.sine.yys.inter.*;
-import com.sine.yys.shikigami.operation.AutoOperationHandler;
+import com.sine.yys.operation.AutoOperationHandler;
 import com.sine.yys.skill.BaseSkill;
 import com.sine.yys.skill.XiongDiZhiBan;
 import com.sine.yys.skill.commonattack.PangZou;

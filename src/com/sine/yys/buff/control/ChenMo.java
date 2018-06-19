@@ -3,7 +3,7 @@ package com.sine.yys.buff.control;
 import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.buff.debuff.DispellableDebuff;
 import com.sine.yys.inter.*;
-import com.sine.yys.shikigami.operation.OperationImpl;
+import com.sine.yys.operation.OperationImpl;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.sine.yys.shikigami;
 
 import com.sine.yys.inter.OperationHandler;
-import com.sine.yys.shikigami.operation.SimpleCureHandler;
+import com.sine.yys.operation.SimpleCureHandler;
 import com.sine.yys.skill.BaseSkill;
 import com.sine.yys.skill.HuaNiaoXiangWen;
 import com.sine.yys.skill.MingZhiXianJi;
