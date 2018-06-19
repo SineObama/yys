@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 提供分别对技能和目标进行选择的方法。
+ * 测试用，逻辑框架为分别选择技能和目标。
  */
 public class Handler extends AutoOperationHandler {
     private SkillSelector skillSelector;

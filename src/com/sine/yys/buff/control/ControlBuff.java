@@ -13,11 +13,6 @@ import com.sine.yys.inter.*;
 public interface ControlBuff extends Debuff {
     /**
      * 根据控制效果获取采取的操作（可能无操作）。
-     * @param self
-     * @param handler
-     * @param own
-     * @param enemy
-     * @param commonAttack
      */
     Operation resolve(Entity self, OperationHandler handler, Camp own, Camp enemy, CommonAttack commonAttack);
 }

@@ -17,6 +17,9 @@ public abstract class BaseShikigami implements Shikigami {
     BaseShikigami() {
     }
 
+    /**
+     * 定义式神的技能，获取技能时被调用一次。
+     */
     protected abstract Collection<BaseSkill> initSkill();
 
     @Override
@@ -34,10 +37,5 @@ public abstract class BaseShikigami implements Shikigami {
     @Override
     public String toString() {
         return getName();
-    }
-
-    @FunctionalInterface
-    interface InitSkill {
-        Collection<BaseSkill> init();
     }
 }

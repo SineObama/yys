@@ -10,7 +10,9 @@ import com.sine.yys.util.RandUtil;
 import java.util.logging.Logger;
 
 /**
- * 原始攻击，由攻击者和被攻击者双方属性计算出初步伤害。
+ * 原始攻击。由式神直接打出的攻击，区别于被分摊的攻击、草人、针女等其他所有类型。
+ * <p>
+ * 伤害由双方属性和 AttackInfo 计算出初步结果。
  */
 public class OriginAttackType extends AttackTypeImpl implements AttackType {
     private final Logger log = Logger.getLogger(getClass().getName());

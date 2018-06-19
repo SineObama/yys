@@ -4,7 +4,7 @@ import com.sine.yys.buff.control.BingDong;
 import com.sine.yys.inter.base.Callback;
 import com.sine.yys.mitama.XueYouHun;
 import test.components.base.BaseTwoEntityTest;
-import test.components.impl.MyXueTongZi;
+import test.components.shikigami.MyXueTongZi;
 import test.components.util.LifeTest;
 
 /**

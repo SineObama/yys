@@ -2,10 +2,15 @@ package test;
 
 import com.sine.yys.skill.model.AttackInfoImpl;
 import test.components.TestFactory;
-import test.components.base.Test;
+import test.components.inter.Test;
 
 import java.util.logging.Logger;
 
+/**
+ * 御魂和技能的组件测试。
+ *
+ * @see test.components
+ */
 public class ComponentsTest {
     private static Logger log;
 

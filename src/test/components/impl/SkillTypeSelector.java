@@ -8,6 +8,9 @@ import test.components.inter.SkillSelector;
 import java.util.Set;
 import java.util.logging.Logger;
 
+/**
+ * 根据技能类型进行选择。
+ */
 public class SkillTypeSelector implements SkillSelector {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
     private Class<?> aClass;

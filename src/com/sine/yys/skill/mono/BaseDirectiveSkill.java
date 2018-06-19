@@ -13,6 +13,8 @@ import com.sine.yys.skill.targetresolver.EnemyEntityResolver;
 /**
  * 指向性攻击技能。
  * 包括普攻和部分鬼火技能。
+ * <p>
+ * 在技能释放前触发对方的{@linkplain BeMonoAttackEvent 被单体攻击事件}。
  */
 public abstract class BaseDirectiveSkill extends BaseAttackSkill implements DirectiveSkill {
     @Override
@@ -40,6 +42,9 @@ public abstract class BaseDirectiveSkill extends BaseAttackSkill implements Dire
         return 1;
     }
 
+    /**
+     * 目标选择为一个敌对单位。
+     */
     @Override
     public final TargetResolver getTargetResolver() {
         return new EnemyEntityResolver();

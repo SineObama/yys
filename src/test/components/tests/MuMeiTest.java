@@ -6,7 +6,7 @@ import com.sine.yys.skill.groupattack.TianXiangHeZhan;
 import test.components.base.BaseThreeEntityTest;
 
 /**
- * 测试木魅的效果，包括队友。
+ * 测试木魅的效果，包括单人和多人。
  */
 public class MuMeiTest extends BaseThreeEntityTest {
     private double pct = 1.0;

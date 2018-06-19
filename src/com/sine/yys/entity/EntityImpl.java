@@ -251,7 +251,7 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
      * 根据当前控制效果（强控或嘲讽），重新确认攻击目标。
      * 不处理目标死亡。
      *
-     * @param origin 期望攻击目标。
+     * @param target 期望攻击目标。
      * @return 最终攻击目标。无法攻击则为null。
      */
     private Entity applyControl(Entity target) {

@@ -13,8 +13,8 @@ import java.util.Collection;
 
 /**
  * 测试人多势众的效果。
- * 1. 可以获得额外行动。
- * 2. 拉条后行动条归0。
+ * * 可以获得额外行动；
+ * * 拉条后行动条归0；
  */
 public class RenDuoShiZhongTest extends BaseTwoEntityTest {
     private double pct = 1.0;

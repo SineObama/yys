@@ -1,6 +1,7 @@
 package test.components.base;
 
 import com.sine.yys.entity.ShikigamiEntityImpl;
+import test.components.inter.Test;
 
 /**
  * 1打2的测试。

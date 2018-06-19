@@ -12,10 +12,10 @@ import java.util.logging.Logger;
  * 在真正造成伤害前触发（破盾后）。
  * <p>
  * 用途：
- * 1. 薙魂；
- * 2. 金鱼姬的金鱼；
- * 3. 涓流；
- * 4. 未来：小松丸躲避。
+ * * 薙魂；
+ * * 金鱼姬的金鱼；
+ * * 涓流；
+ * * 小松丸躲避；
  */
 public class DamageShareEvent extends BaseAttackEvent {
     private final Logger log = Logger.getLogger(getClass().getName());

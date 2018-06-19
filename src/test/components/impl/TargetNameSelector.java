@@ -9,6 +9,9 @@ import test.components.inter.TargetSelector;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * 根据目标名字进行选择。
+ */
 public class TargetNameSelector implements TargetSelector {
     protected final Logger log = Logger.getLogger(this.getClass().getName());
     private Named entity;

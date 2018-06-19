@@ -16,6 +16,7 @@ import test.components.TestProperty;
 import test.components.impl.Handler;
 import test.components.inter.SkillSelector;
 import test.components.inter.TargetSelector;
+import test.components.inter.Test;
 
 import java.util.ArrayList;
 import java.util.List;

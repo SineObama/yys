@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * 测试火鼠裘的触发效果。
+ * 测试火鼠裘群攻下的触发效果。
  */
 public class HuoShuQiuTest extends BaseThreeEntityTest {
     private final HuiYeJi huiYeJi = new HuiYeJi() {

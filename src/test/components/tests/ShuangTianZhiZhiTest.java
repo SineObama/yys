@@ -4,7 +4,7 @@ import com.sine.yys.buff.control.BingDong;
 import com.sine.yys.shikigami.JiaoTu;
 import com.sine.yys.skill.JuanLiu;
 import test.components.base.BaseThreeEntityTest;
-import test.components.impl.MyXueTongZi;
+import test.components.shikigami.MyXueTongZi;
 import test.components.util.LifeTest;
 
 /**

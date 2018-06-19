@@ -3,7 +3,7 @@ package test.components.util;
 import com.sine.yys.entity.ShikigamiEntityImpl;
 
 /**
- * 辅助生命值检查。
+ * 辅助生命值的验证。
  */
 public class LifeTest {
     int life;

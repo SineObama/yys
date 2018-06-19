@@ -4,6 +4,7 @@ import com.sine.yys.entity.ShikigamiEntityImpl;
 import com.sine.yys.inter.CommonAttack;
 import test.components.impl.SkillTypeSelector;
 import test.components.impl.TargetNameSelector;
+import test.components.inter.Test;
 
 /**
  * 两个式神对打的测试，只有一方出手。

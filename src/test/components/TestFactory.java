@@ -1,6 +1,6 @@
 package test.components;
 
-import test.components.base.Test;
+import test.components.inter.Test;
 import util.PackageUtil;
 
 import java.util.*;
