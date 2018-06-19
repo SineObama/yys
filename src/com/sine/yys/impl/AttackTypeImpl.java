@@ -9,6 +9,11 @@ import com.sine.yys.inter.TransferrableEffect;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 基类。攻击发生传递时通过构造函数构建新对象。
+ * <p>
+ * 非暴击。一般描述分摊后（非本体）受到的攻击类型，和针女、草人等类型。
+ */
 public class AttackTypeImpl implements AttackType {
     boolean counter = false;
     boolean tiHun = false;
@@ -122,7 +127,7 @@ public class AttackTypeImpl implements AttackType {
 
     @Override
     public boolean isOrigin() {
-        return !tiHun && !juanLiu && !buff;
+        return !tiHun && !juanLiu && !buff && !indirect;
     }
 
     @Override
