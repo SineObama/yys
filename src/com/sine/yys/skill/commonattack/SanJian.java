@@ -23,6 +23,6 @@ public class SanJian extends BaseCommonAttack {
 
     @Override
     public AttackInfo getAttack() {
-        return new AttackInfoImpl(getDebuffEffects(), getCoefficient(), getIgnoreDefendPct(), 0);
+        return new AttackInfoImpl(getCoefficient(), getIgnoreDefendPct(), 0);
     }
 }

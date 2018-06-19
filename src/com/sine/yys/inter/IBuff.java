@@ -3,6 +3,8 @@ package com.sine.yys.inter;
 import com.sine.yys.inter.base.IBuffProperty;
 import com.sine.yys.inter.base.Named;
 
+import java.util.List;
+
 /**
  * 式神头上显示的buff。提供属性加成、护盾、控制等。
  * <p>
@@ -27,4 +29,27 @@ public interface IBuff extends IBuffProperty, Named, Comparable<IBuff> {
      * @return 来源式神。
      */
     Entity getSrc();
+
+    /**
+     * 式神身上含有同类buff的上限。
+     * 一般情况为1，毒伤一般为3。
+     */
+    default int maxCount() {
+        return 1;
+    }
+
+    /**
+     * 是否用本buff替换参数中的某个原有的同类buff。
+     *
+     * @param buffs 原有buff，非空，和本buff类型相同。
+     * @return 要替换的buff，null表示不替换。
+     */
+    IBuff replace(List<IBuff> buffs);
+
+    /**
+     * @return 式神死亡时移除。
+     */
+    default boolean removeOnDie() {
+        return true;
+    }
 }

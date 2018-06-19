@@ -1,4 +1,4 @@
-package com.sine.yys.impl;
+package com.sine.yys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,4 +9,11 @@ import java.util.List;
 public class CampInfo {
     public final List<EntityInfo> infos = new ArrayList<>();
     public double lifeTimes = 1.0;
+
+    public String infosToString() {
+        String s = "";
+        for (EntityInfo info : infos)
+            s += info.toString() + "\n";
+        return s;
+    }
 }

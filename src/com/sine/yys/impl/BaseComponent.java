@@ -46,17 +46,15 @@ public class BaseComponent {
     }
 
     /**
-     * @return 进场监听器（进入战场或复活）。
+     * 在进场事件时被调用。
      */
-    protected EventHandler<EnterEvent> getEnterHandler() {
-        return null;
+    protected void onEnter() {
     }
 
     /**
-     * @return 死亡监听器（死亡）。
+     * 在死亡事件时被调用。
      */
-    protected EventHandler<DieEvent> getDieHandler() {
-        return null;
+    protected void onDie() {
     }
 
     /**
@@ -73,12 +71,8 @@ public class BaseComponent {
         this.own = own;
         this.enemy = this.own.getOpposite();
 
-        final EventHandler<DieEvent> dieHandler = getDieHandler();
-        if (dieHandler != null)
-            self.getEventController().add(DieEvent.class, dieHandler);
-        final EventHandler<EnterEvent> enterHandler = getEnterHandler();
-        if (enterHandler != null)
-            self.getEventController().add(EnterEvent.class, enterHandler);
+        self.getEventController().add(EnterEvent.class, new EnterHandler());
+        self.getEventController().add(DieEvent.class, new DieHandler());
 
         doInit(controller, self);
     }
@@ -87,5 +81,19 @@ public class BaseComponent {
      * 初始化操作。
      */
     public void doInit(Controller controller, Entity self) {
+    }
+
+    class EnterHandler implements EventHandler<EnterEvent> {
+        @Override
+        public void handle(EnterEvent event) {
+            onEnter();
+        }
+    }
+
+    class DieHandler implements EventHandler<DieEvent> {
+        @Override
+        public void handle(DieEvent event) {
+            onDie();
+        }
     }
 }

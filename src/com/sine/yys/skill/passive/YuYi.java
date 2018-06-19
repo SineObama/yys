@@ -49,8 +49,8 @@ public class YuYi extends BasePassiveSkill implements EventHandler<BeDamageEvent
         if (type.isJuanLiu() || type.isZhenNv())
             return;
         log.info(Msg.trigger(getSelf(), this));
-        final double damage1 = getMaxAbsorbDamgePct() * event.getDamage();
+        final double damage1 = getMaxAbsorbDamgePct() * event.getType().getDamage();
         final double damage2 = getAbsorbLifePct() * getSelf().getMaxLife();
-        event.setDamage(Double.min(damage1, damage2));
+        event.getType().setDamage(Double.min(damage1, damage2));
     }
 }

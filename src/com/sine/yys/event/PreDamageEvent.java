@@ -1,5 +1,6 @@
 package com.sine.yys.event;
 
+import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.Entity;
 
 /**
@@ -7,18 +8,8 @@ import com.sine.yys.inter.Entity;
  * <p>
  * 用途：伤害加成（破势、心眼、鸣屋等）。
  */
-public class PreDamageEvent extends BaseVectorEvent {
-    private double coefficient = 1.0;
-
-    public PreDamageEvent(Entity entity, Entity target) {
-        super(entity, target);
-    }
-
-    public double getCoefficient() {
-        return coefficient;
-    }
-
-    public void multiplyCoefficient(double coefficient) {
-        this.coefficient *= coefficient;
+public class PreDamageEvent extends BaseAttackEvent {
+    public PreDamageEvent(Entity entity, Entity target, AttackType type) {
+        super(entity, target, type);
     }
 }

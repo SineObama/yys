@@ -1,23 +1,18 @@
 package com.sine.yys.entity;
 
-import com.sine.yys.buff.control.*;
+import com.sine.yys.buff.control.ChaoFeng;
+import com.sine.yys.buff.control.ControlBuff;
+import com.sine.yys.buff.control.HunLuan;
+import com.sine.yys.buff.control.Unmovable;
 import com.sine.yys.buff.debuff.SealMitama;
 import com.sine.yys.buff.debuff.SealPassive;
-import com.sine.yys.event.*;
+import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.impl.BuffControllerImpl;
-import com.sine.yys.impl.EntityInfo;
+import com.sine.yys.impl.EmptyFireRepo;
 import com.sine.yys.impl.EventControllerImpl;
 import com.sine.yys.inter.*;
-import com.sine.yys.inter.base.Callback;
 import com.sine.yys.inter.base.JSONable;
 import com.sine.yys.inter.base.Property;
-import com.sine.yys.mitama.BaseMitama;
-import com.sine.yys.mitama.MitamaFactory;
-import com.sine.yys.shikigami.BaseShikigami;
-import com.sine.yys.shikigami.ShikigamiFactory;
-import com.sine.yys.shikigami.operation.OperationImpl;
-import com.sine.yys.skill.BaseSkill;
-import com.sine.yys.skill.mono.BaseMonoAttack;
 import com.sine.yys.util.JSON;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
@@ -33,185 +28,26 @@ import java.util.Map;
  * 保存了{@linkplain Shikigami 式神信息}、{@linkplain Property 属性}、{@linkplain Mitama 御魂}，
  * 和战斗中的状态（技能cd、{@linkplain IBuff buff}、事件）。
  */
-public abstract class EntityImpl extends SimpleObject implements Entity, JSONable, Callback {
-    private final EventControllerImpl eventController = new EventControllerImpl();
-    private final BuffControllerImpl buffController = new BuffControllerImpl(this);
-    private final BaseShikigami shikigami;
-    private final List<BaseMitama> mitamas;
-    private final Property property;
+public abstract class EntityImpl extends SimpleObject implements Entity, JSONable {
+    final EventControllerImpl eventController = new EventControllerImpl();
+    final BuffControllerImpl buffController = new BuffControllerImpl(this);
+    final Property property;
+    final int maxLife;
     private final Map<Object, Object> map = new HashMap<>(3);  // 分别保存技能属性，包括技能cd
-    private final double lifeTimes;
-    private Camp camp = null;
-    private FireRepo fireRepo;
-    private int life;
+    Camp camp = null;
+    FireRepo fireRepo = new EmptyFireRepo();
+    int life;
 
-    EntityImpl(EntityInfo info, double lifeTimes) {
-        super(ShikigamiFactory.getDefaultName(info.shiShen), 9999);
-        this.property = info.property;
-        this.shikigami = ShikigamiFactory.create(info.shiShen);
-        this.lifeTimes = lifeTimes;
-        this.mitamas = new ArrayList<>();
-        if (info.mitama != null)
-            this.mitamas.add(MitamaFactory.create(info.mitama));
-        this.life = getMaxLife();
+    protected EntityImpl(Property property, String name, int maxLife) {
+        super(name, 9999);
+        this.property = property;
+        this.maxLife = maxLife;
+        this.life = maxLife;
     }
 
     @Override
-    protected final void doInit() {
+    protected void doInit() {
         eventController.setParent(camp.getEventController());
-        final Controller controller = getController();
-        for (BaseSkill skill : this.shikigami.getSkills())
-            skill.init(controller, this, camp);
-        for (BaseMitama mitama : this.mitamas)
-            mitama.init(controller, this, camp);
-    }
-
-    /*
-     * 整个行动，包括鬼火处理、技能处理、事件触发、行动后的反击等。
-     */
-    @Override
-    public void action() {
-        // 预备推进鬼火行动条
-        this.getFireRepo().ready();
-
-        call();
-
-        // 完成推进鬼火行动条
-        this.getFireRepo().finish();
-    }
-
-    /**
-     * 除去鬼火推进的整个行动。用于多次行动时作为回调。
-     */
-    public void call() {
-        if (this.isDead())
-            return;
-        log.info(Msg.info(this, "行动"));
-
-        for (Skill skill : this.shikigami.getSkills())
-            skill.beforeAction();
-
-        // 回合前事件
-        // 为了行动前彼岸花的控制效果生效，事件要在buff调用之前。
-        this.eventController.trigger(new ZhaoCaiMaoEvent());
-        this.eventController.trigger(new BeforeRoundEvent(this));
-
-        getController().afterMovement();
-
-        // 包括执行持续伤害、治疗
-        this.buffController.beforeAction(getController());
-
-        if (!this.isDead())
-            this.action2();
-
-        // buff回合数-1
-        this.buffController.afterAction(getController());
-
-        // 回合后事件
-        this.eventController.trigger(new AfterActionEvent(this));
-        this.eventController.trigger(new AfterRoundEvent(this));
-
-        for (Skill skill : this.shikigami.getSkills())
-            skill.afterAction();
-
-        // 多次行动
-        if (this.getPosition() == 1.0) {
-            this.setPosition(0.0);  // 提前重置，使被反击等死亡后位置归0
-            getController().addAction(Integer.MAX_VALUE, this);
-        }
-
-        log.info(Msg.info(this, "行动结束"));
-    }
-
-    private void action2() {
-        log.info(Msg.info(this, "当前鬼火", this.fireRepo.getFire()));
-
-        final Operation operation;
-        // 判断是否有行动控制debuff，进行相关操作。
-        final ControlBuff controlBuff = this.buffController.getFirstWithPrior(ControlBuff.class);
-        if (controlBuff == null) {  // 无行动控制debuff
-            // 获取每个主动技能的可选目标，不添加不可用（无目标），或鬼火不足的技能
-            Map<ActiveSkill, List<? extends Entity>> map = new HashMap<>();
-            for (ActiveSkill activeSkill : this.getActiveSkills()) {
-                int cd = activeSkill.getCD();
-                if (cd > 0) {
-                    log.info(Msg.info(this, "技能", activeSkill.getName(), "还有CD", cd));
-                    continue;
-                }
-                if (this.fireRepo.getFire() < activeSkill.getFire())
-                    continue;
-                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this.camp, this);
-                if (targets != null)
-                    map.put(activeSkill, targets);
-            }
-
-            if (!map.isEmpty())
-                operation = this.shikigami.getAI().handle(this, this.camp, map);
-            else
-                operation = new OperationImpl(null, null);
-
-        } else {  // 受行动控制debuff影响
-
-            log.info(Msg.info(this, "受控制效果", controlBuff, "影响"));
-            if (controlBuff instanceof HunLuan) {  // 混乱，使用普通攻击，随机攻击一个目标
-                final List<Entity> allAlive = new ArrayList<>();
-                allAlive.addAll(this.camp.getAllAlive());
-                allAlive.addAll(this.camp.getOpposite().getAllAlive());
-                allAlive.remove(this);
-                operation = new OperationImpl(RandUtil.choose(allAlive), this.getCommonAttack());
-            } else if (controlBuff instanceof ChaoFeng) {
-                Entity target = controlBuff.getSrc();
-                if (target.isDead())
-                    target = this.camp.getOpposite().randomTarget();
-                operation = new OperationImpl(target, this.getCommonAttack());
-            } else if (controlBuff instanceof ChenMo) {
-                final CommonAttack activeSkill = this.getCommonAttack();
-                final List<? extends Entity> targets = activeSkill.getTargetResolver().resolve(this.camp, this);
-                if (targets != null)
-                    operation = this.shikigami.getAI().handle(this, this.camp, new HashMap<ActiveSkill, List<? extends Entity>>() {{
-                        put(activeSkill, targets);
-                    }});
-                else
-                    operation = new OperationImpl(null, null);
-            } else if (controlBuff instanceof Unmovable) {
-                operation = new OperationImpl(null, null);
-            } else {
-                log.warning("没有判断出控制效果。默认无法行动。" + controlBuff);
-                operation = new OperationImpl(null, null);
-            }
-
-        }
-
-        // 执行操作
-        ActiveSkill activeSkill = operation.getSkill();
-        if (activeSkill != null) {
-            Entity target = operation.getTarget();
-            log.info(Msg.vector(this, target != null ? "对" : "", target, "使用了", activeSkill.getName()));
-
-            // 消耗鬼火
-            int fire = activeSkill.getFire();
-            if (fire > 0) {
-                fire = camp.getEventController().trigger(new UseFireEvent(this, fire)).getCostFire();
-                fireRepo.useFire(fire); // XXX 对于荒-月的逻辑修改
-                log.info(Msg.info(this, "消耗", fire, "点鬼火，剩余", fireRepo.getFire(), "点"));
-            }
-
-            // 执行技能
-            if (activeSkill instanceof BaseMonoAttack && target instanceof ShikigamiEntity) {
-                // 触发对方被单体攻击事件
-                target.getEventController().trigger(new BeMonoAttackEvent((ShikigamiEntity) target, this));
-            }
-            activeSkill.apply(target);
-            // XXXX 协战的时机，各个普攻各不相同
-            if (activeSkill instanceof CommonAttack) {
-                // 触发普攻事件
-                this.eventController.trigger(new CommonAttackEvent(this, target));
-            }
-
-            this.eventController.trigger(new FinishActionEvent());
-        } else {
-            log.info(Msg.info(this, "无法行动。"));
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -234,18 +70,18 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
     }
 
     @Override
-    public final double getAttack() {
-        return property.getAttack() + shikigami.getOriginAttack() * buffController.getAtkPct();
+    public double getAttack() {
+        return property.getAttack() * (1 + buffController.getAtkPct());
     }
 
     @Override
-    public final int getMaxLife() {
-        return (int) (property.getLife() * lifeTimes);
+    public int getMaxLife() {
+        return maxLife;
     }
 
     @Override
     public int getLostLifeInt() {
-        return getMaxLife() - life;
+        return maxLife - life;
     }
 
     @Override
@@ -287,13 +123,13 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
     // XXX 可能的负值问题。
     @Override
     public final double getLife() {
-        return (double) life / getMaxLife();
+        return (double) life / maxLife;
     }
 
     @Override
     public void setLife(int life) {
-        if (life > getMaxLife())
-            life = getMaxLife();
+        if (life > maxLife)
+            life = maxLife;
         this.life = life;
     }
 
@@ -305,8 +141,8 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
         }
         log.info(Msg.info(this, "回复生命", count));
         this.life += count;
-        if (this.life > getMaxLife())
-            this.life = getMaxLife();
+        if (this.life > maxLife)
+            this.life = maxLife;
         return this.life;
     }
 
@@ -365,24 +201,7 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
         return false;
     }
 
-    private List<ActiveSkill> getActiveSkills() {
-        List<ActiveSkill> activeSkills = new ArrayList<>();
-        for (Skill skill : shikigami.getSkills()) {
-            if (skill instanceof ActiveSkill) {
-                activeSkills.add((ActiveSkill) skill);
-            }
-        }
-        return activeSkills;
-    }
-
-    private CommonAttack getCommonAttack() {
-        for (Skill skill : shikigami.getSkills()) {
-            if (skill instanceof CommonAttack)
-                return (CommonAttack) skill;
-        }
-        // XXX 没有普攻技能
-        throw new RuntimeException(getFullName() + " 没有普通攻击。");
-    }
+    public abstract CommonAttack getCommonAttack();
 
     @Override
     public void xieZhan(Entity target) {
@@ -432,7 +251,7 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
      * 根据当前控制效果（强控或嘲讽），重新确认攻击目标。
      * 不处理目标死亡。
      *
-     * @param origin 期望攻击目标。
+     * @param target 期望攻击目标。
      * @return 最终攻击目标。无法攻击则为null。
      */
     private Entity applyControl(Entity target) {
@@ -468,10 +287,6 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
         return fireRepo;
     }
 
-    public void setFireRepo(FireRepo fireRepo) {
-        this.fireRepo = fireRepo;
-    }
-
     @Override
     public String toString() {
         return Msg.join(super.toString(), getPosition(), life);
@@ -479,6 +294,6 @@ public abstract class EntityImpl extends SimpleObject implements Entity, JSONabl
 
     @Override
     public String toJSON() {
-        return JSON.format("name", getFullName(), "mitama", mitamas, "life", life);
+        return JSON.format("name", getFullName(), "life", life);
     }
 }

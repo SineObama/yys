@@ -5,7 +5,9 @@ package com.sine.yys.inter;
  * <p>
  * 定义了协战、反击接口。
  */
-public interface CommonAttack extends ActiveSkill {
+public interface CommonAttack extends DirectiveSkill {
+    double getCoefficient();
+
     /**
      * @param target 协战的攻击目标。
      */

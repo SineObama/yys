@@ -1,5 +1,6 @@
 package com.sine.yys.buff.debuff;
 
+import com.sine.yys.attacktype.BuffAttack;
 import com.sine.yys.buff.BaseIBuff;
 import com.sine.yys.inter.DamageController;
 import com.sine.yys.inter.Entity;
@@ -17,7 +18,7 @@ public abstract class BaseDoT extends BaseIBuff {
     protected final void doBeforeAction(DamageController controller, Entity self) {
         log.info(Msg.info(self, "受到效果", getName()));
         double damage = handle(self);
-        controller.buffDamage(getSrc(), self, (int) damage);
+        controller.attack(getSrc(), self, new BuffAttack(damage));
     }
 
     /**

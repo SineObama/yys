@@ -2,40 +2,25 @@ package com.sine.yys.shikigami;
 
 import com.sine.yys.inter.OperationHandler;
 import com.sine.yys.inter.Shikigami;
-import com.sine.yys.shikigami.operation.AutoOperationHandler;
+import com.sine.yys.operation.AutoOperationHandler;
 import com.sine.yys.skill.BaseSkill;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * 式神基类。
  */
 public abstract class BaseShikigami implements Shikigami {
-    private final Collection<BaseSkill> skills;
-    private final String name;
-    private final double originAttack;
+    private Collection<BaseSkill> skills;
 
-    BaseShikigami(Collection<BaseSkill> skills, String name, double originAttack) {
-        this.skills = skills;
-        this.name = name;
-        this.originAttack = originAttack;
+    BaseShikigami() {
     }
 
-    BaseShikigami(InitSkill initSkill, String name, double originAttack) {
-        this.skills = initSkill.init();
-        this.name = name;
-        this.originAttack = originAttack;
-    }
-
-    @Override
-    public double getOriginAttack() {
-        return originAttack;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
+    /**
+     * 定义式神的技能，获取技能时被调用一次。
+     */
+    protected abstract Collection<BaseSkill> initSkill();
 
     @Override
     public OperationHandler getAI() {
@@ -44,16 +29,13 @@ public abstract class BaseShikigami implements Shikigami {
 
     @Override
     public Collection<BaseSkill> getSkills() {
+        if (skills == null)
+            skills = Collections.unmodifiableCollection(initSkill());
         return skills;
     }
 
     @Override
     public String toString() {
         return getName();
-    }
-
-    @FunctionalInterface
-    interface InitSkill {
-        Collection<BaseSkill> init();
     }
 }

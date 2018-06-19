@@ -1,7 +1,6 @@
 package com.sine.yys.simulation;
 
 import com.sine.yys.entity.ShikigamiEntityImpl;
-import com.sine.yys.impl.CampInfo;
 import com.sine.yys.inter.Camp;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.FireRepo;
@@ -18,8 +17,8 @@ public class PVPCamp extends BaseCamp implements FireRepo {
     private boolean prepared = false;  // 调用ready()后为true。在2个状态之间转换
     private int increase = 3;  // 每次行动满5回合的回复鬼火数。此数字依次增长，最高5点：3 4 5 5 5...
 
-    public PVPCamp(String name, CampInfo info, int fire) {
-        super(name, info);
+    public PVPCamp(String name, int fire) {
+        super(name);
         this.fire = fire;
     }
 
@@ -41,7 +40,10 @@ public class PVPCamp extends BaseCamp implements FireRepo {
 
     @Override
     public void useFire(int count) {
+        if (fire < count)
+            throw new RuntimeException("使用鬼火超过已有值");
         fire -= count;
+        log.info(Msg.info(this, "消耗", count, "点鬼火，剩余", fire, "点"));
     }
 
     @Override
@@ -62,7 +64,9 @@ public class PVPCamp extends BaseCamp implements FireRepo {
     }
 
     @Override
-    public void ready() {
+    public void ready(boolean newRound) {
+        if (newRound)
+            return;
         if (prepared) {
             log.warning("异常调用ready()");
             return;
@@ -73,7 +77,9 @@ public class PVPCamp extends BaseCamp implements FireRepo {
     }
 
     @Override
-    public void finish() {
+    public void finish(boolean newRound) {
+        if (newRound)
+            return;
         if (!prepared)
             return;
         prepared = false;

@@ -1,7 +1,5 @@
 package com.sine.yys.skill.passive;
 
-import com.sine.yys.event.DieEvent;
-import com.sine.yys.event.EnterEvent;
 import com.sine.yys.event.UseFireEvent;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.inter.PctEffect;
@@ -27,13 +25,13 @@ public class MingDeng extends BasePassiveSkill implements EventHandler<UseFireEv
     }
 
     @Override
-    protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> getOwn().getEventController().add(this);
+    protected void onEnter() {
+        getOwn().getEventController().add(this);
     }
 
     @Override
-    public EventHandler<DieEvent> getDieHandler() {
-        return event -> getOwn().getEventController().remove(this);
+    protected void onDie() {
+        getOwn().getEventController().remove(this);
     }
 
     @Override

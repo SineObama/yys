@@ -1,4 +1,4 @@
-package com.sine.yys.shikigami.operation;
+package com.sine.yys.operation;
 
 import com.sine.yys.inter.*;
 import com.sine.yys.util.RandUtil;

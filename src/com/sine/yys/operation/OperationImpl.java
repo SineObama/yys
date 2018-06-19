@@ -1,4 +1,4 @@
-package com.sine.yys.shikigami.operation;
+package com.sine.yys.operation;
 
 import com.sine.yys.inter.ActiveSkill;
 import com.sine.yys.inter.Entity;

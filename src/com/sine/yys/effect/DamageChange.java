@@ -27,7 +27,7 @@ public abstract class DamageChange extends BaseEffect implements EventHandler<Pr
         double coefficient = judge(event.getTarget());
         if (coefficient != 1.0) {
             log.info(Msg.trigger(event.getEntity(), this));
-            event.multiplyCoefficient(coefficient);
+            event.getType().setDamage(event.getType().getDamage() * coefficient);
         }
     }
 }

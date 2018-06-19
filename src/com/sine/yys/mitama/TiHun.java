@@ -1,13 +1,16 @@
 package com.sine.yys.mitama;
 
+import com.sine.yys.attacktype.AttackTypeImpl;
 import com.sine.yys.buff.control.ChenMo;
 import com.sine.yys.buff.control.ControlBuff;
-import com.sine.yys.event.*;
+import com.sine.yys.event.AfterMovementEvent;
+import com.sine.yys.event.BeMonoAttackEvent;
+import com.sine.yys.event.DamageShareEvent;
+import com.sine.yys.info.TransferType;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 import com.sine.yys.inter.PctEffect;
-import com.sine.yys.skill.JuanLiu;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
 
@@ -53,24 +56,22 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
     }
 
     @Override
-    protected EventHandler<EnterEvent> getEnterHandler() {
-        return event -> getOwn().getEventController().add(0, this);
+    protected void onEnter() {
+        getOwn().getEventController().add(0, this);
     }
 
     @Override
-    protected EventHandler<DieEvent> getDieHandler() {
-        return event -> {
-            getOwn().getEventController().remove(this);
-            if (target != null) {
-                target.getEventController().remove(damageShareHandler);
-                target = null;
-            }
-        };
+    protected void onDie() {
+        getOwn().getEventController().remove(this);
+        if (target != null) {
+            target.getEventController().remove(damageShareHandler);
+            target = null;
+        }
     }
 
     @Override
     public void handle(BeMonoAttackEvent event) {
-        if (event.isTreated() || event.getEntity() == getSelf() || event.getEntity().getBuffController().contain(JuanLiu.JuanLiuBuff.class))
+        if (event.isJuanLiu() || event.isTreated() || event.getEntity() == getSelf())
             return;
         final ControlBuff controlBuff = getSelf().getBuffController().getFirstWithPrior(ControlBuff.class);
         if (controlBuff != null && !(controlBuff instanceof ChenMo))
@@ -101,11 +102,14 @@ public class TiHun extends BaseMitama implements EventHandler<BeMonoAttackEvent>
     class DamageShareHandler implements EventHandler<DamageShareEvent> {
         @Override
         public void handle(DamageShareEvent event) {
+            if (event.getType().isCaoRen())
+                return;
             // XXXX 薙魂的减伤只对破盾后的伤害生效
-            final double damage = event.getTotal() * (1 - getDamageReducePct());
-            event.getType().setTiHun(true);
+            final double damage = event.getType().getDamage() * (1 - getDamageReducePct());
             // 单人断涓流的也会触发薙魂
-            getController().directDamage(event.getEntity(), getSelf(), (int) (damage * getSharePct()), event.getType());
+            final AttackTypeImpl type = new AttackTypeImpl(event.getType(), TransferType.TI_HUN);
+            type.setDamage(damage * getSharePct());
+            getController().attack(event.getEntity(), getSelf(), type);
             event.setLeft(damage * (1 - getSharePct()));
         }
     }

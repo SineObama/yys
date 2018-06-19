@@ -1,6 +1,7 @@
 package com.sine.yys.buff.control;
 
 import com.sine.yys.buff.debuff.Debuff;
+import com.sine.yys.inter.*;
 
 /**
  * 控制buff。
@@ -10,4 +11,8 @@ import com.sine.yys.buff.debuff.Debuff;
  * 无法使用技能的效果：沉默。
  */
 public interface ControlBuff extends Debuff {
+    /**
+     * 根据控制效果获取采取的操作（可能无操作）。
+     */
+    Operation resolve(Entity self, OperationHandler handler, Camp own, Camp enemy, CommonAttack commonAttack);
 }

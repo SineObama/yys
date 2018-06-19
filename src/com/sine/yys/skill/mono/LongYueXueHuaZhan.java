@@ -7,11 +7,12 @@ import com.sine.yys.inter.Entity;
 /**
  * 雪童子-胧月雪华斩。
  */
-public class LongYueXueHuaZhan extends BaseMonoAttack {
+public class LongYueXueHuaZhan extends BaseDirectiveSkill {
     private EffectHitIBuff effectHitIBuff;
 
     @Override
     protected void beforeApply(Entity target) {
+        super.beforeApply(target);
         final BuffController buffController = getSelf().getBuffController();
         effectHitIBuff = new EffectHitIBuff(1, getName(), buffController.getEffectHit(), getSelf()) {
         };
@@ -20,6 +21,7 @@ public class LongYueXueHuaZhan extends BaseMonoAttack {
 
     @Override
     protected void afterApply(Entity target) {
+        super.beforeApply(target);
         getSelf().getBuffController().remove(effectHitIBuff);
     }
 

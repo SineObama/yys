@@ -9,6 +9,7 @@ import com.sine.yys.inter.Entity;
 public class YuCi extends BaseCommonAttack {
     @Override
     protected void afterApply(Entity target) {
+        super.beforeApply(target);
         // 羽刺的效果抵抗不能驱散。
         getSelf().getBuffController().add(new EffectDefIBuff(getLast(), getName(), getAddEffectDef(), getSelf()) {
         });

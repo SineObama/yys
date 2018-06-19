@@ -14,8 +14,14 @@ public class RandUtil {
 
     static {
         final long seed = Seed.get();
-        log.info("using random seed:" + seed);
+        log.info("using random seed: " + seed + "L");
         random = new Random(seed);
+    }
+
+    public static void reset() {
+        final long seed = Seed.get();
+        log.info("reset random seed: " + seed + "L");
+        random.setSeed(seed);
     }
 
     public static double doubles(double origin, double bound) {

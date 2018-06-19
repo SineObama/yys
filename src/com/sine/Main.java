@@ -49,6 +49,7 @@ public class Main {
     }
 
     private static String[] process(String[] args) {
+        fileEncoding = InputUtil.projectEnc;
         String[] temp = new String[args.length];
         int count = 0;
         for (String arg : args) {

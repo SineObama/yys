@@ -28,7 +28,7 @@ public final class BattleKoinobori extends SimpleObject {
     }
 
     @Override
-    public void action() {
+    public void action(boolean newRound) {
         level += 1;
         battleFlagSource.setDamage(level * damageRatioAddition);
         battleFlagSource.setCure(level * cureRatioReduction);

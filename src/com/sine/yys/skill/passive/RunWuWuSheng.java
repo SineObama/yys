@@ -2,12 +2,11 @@ package com.sine.yys.skill.passive;
 
 import com.sine.yys.buff.buff.AddCriticalDamage;
 import com.sine.yys.event.BeDamageEvent;
-import com.sine.yys.inter.Controller;
-import com.sine.yys.inter.Entity;
-import com.sine.yys.inter.EventHandler;
-import com.sine.yys.inter.PctEffect;
+import com.sine.yys.inter.*;
 import com.sine.yys.util.Msg;
 import com.sine.yys.util.RandUtil;
+
+import java.util.List;
 
 /**
  * 椒图-润物无声。
@@ -48,14 +47,8 @@ public class RunWuWuSheng extends BasePassiveSkill implements EventHandler<BeDam
         for (Entity entity : getOwn().getAllAlive()) {
             if (RandUtil.success(getPct())) {
                 log.info(Msg.trigger(getSelf(), this));
-                AddCriticalDamage buff = new AddCriticalDamage(getLast(), getName(), getCriticalDamage(), getSelf()) {
-                };
-                AddCriticalDamage buff0 = entity.getBuffController().get(buff.getClass());
-                if (buff0 == null) {
-                    entity.getBuffController().add(buff);
-                } else {
-                    buff0.addLast(getLast());
-                }
+                AddCriticalDamage buff = new Buff();
+                entity.getBuffController().add(buff);
                 log.info(Msg.addBuff(getSelf(), entity, buff));
             }
         }
@@ -64,5 +57,18 @@ public class RunWuWuSheng extends BasePassiveSkill implements EventHandler<BeDam
     @Override
     public void doInit(Controller controller, Entity self) {
         self.getEventController().add(this);
+    }
+
+    public class Buff extends AddCriticalDamage {
+        Buff() {
+            super(RunWuWuSheng.this.getLast(), RunWuWuSheng.this.getName(), RunWuWuSheng.this.getCriticalDamage(), RunWuWuSheng.this.getSelf());
+        }
+
+        @Override
+        public IBuff replace(List<IBuff> buffs) {
+            final IBuff iBuff = buffs.get(0);
+            iBuff.addLast(RunWuWuSheng.this.getLast());
+            return null;
+        }
     }
 }

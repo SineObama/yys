@@ -1,7 +1,6 @@
 package com.sine.yys.impl;
 
 import com.sine.yys.buff.BaseIBuff;
-import com.sine.yys.buff.BattleFlag;
 import com.sine.yys.buff.control.*;
 import com.sine.yys.buff.shield.BangJingShield;
 import com.sine.yys.buff.shield.DiZangXiangShield;
@@ -9,14 +8,18 @@ import com.sine.yys.buff.shield.XueZhiHuaHaiShield;
 import com.sine.yys.inter.BuffController;
 import com.sine.yys.inter.Controller;
 import com.sine.yys.inter.Entity;
+import com.sine.yys.inter.IBuff;
 import com.sine.yys.rule.buff.*;
 import com.sine.yys.util.Msg;
 
 import java.util.*;
 import java.util.logging.Logger;
 
+// XXXX buff的先后顺序与效率问题，考虑改用LinkList存储，还有优先级获取是否会有多个buff的问题。
+// XXXX 连并删除附属buff时会不会有多次调用onRemove产生的问题，约定不写onRemove？
+
 /**
- * 给主逻辑提供行动前后调用的接口。
+ * 额外给主逻辑提供行动前后调用的接口。
  */
 public class BuffControllerImpl implements BuffController {
     private static final Map<Class, Integer> prior = new HashMap<>();
@@ -43,8 +46,6 @@ public class BuffControllerImpl implements BuffController {
     }
 
     private final Logger log = Logger.getLogger(getClass().getName());
-
-    private final Set<BaseIBuff> set = new HashSet<>();
     private final BeDamage beDamage = new BeDamage();
     private final Cure cure = new Cure();
     private final DamageUp damageUp = new DamageUp();
@@ -56,8 +57,8 @@ public class BuffControllerImpl implements BuffController {
     private final CriticalDamage criticalDamage = new CriticalDamage();
     private final EffectHit effectHit = new EffectHit();
     private final EffectDef effectDef = new EffectDef();
-
     private final Entity self;
+    private List<BaseIBuff> buffs = new ArrayList<>();
 
     public BuffControllerImpl(Entity self) {
         this.self = self;
@@ -68,13 +69,13 @@ public class BuffControllerImpl implements BuffController {
         final BaseIBuff iBuff = (BaseIBuff) obj;
         if (iBuff != null)
             iBuff.onRemove(self);
-        return set.remove(iBuff);
+        return buffs.remove(iBuff);
     }
 
     @Override
     public <T> Collection<T> getWithPrior(Class<T> tClass) {
         Map<Integer, T> sorted = new TreeMap<>();
-        for (Object o : set) {
+        for (Object o : buffs) {
             if (tClass.isAssignableFrom(o.getClass()))
                 sorted.put(prior.get(o.getClass()), tClass.cast(o));
         }
@@ -88,24 +89,24 @@ public class BuffControllerImpl implements BuffController {
     }
 
     public void beforeAction(Controller controller) {
-        Collection<BaseIBuff> buffs = new ArrayList<>(set);
+        Collection<BaseIBuff> buffs = new ArrayList<>(this.buffs);
         for (BaseIBuff buff : buffs) {
             if (self.isDead())
                 break;
             if (buff.beforeAction(controller, self) == 0) {
                 buff.onRemove(self);
-                set.remove(buff);
+                this.buffs.remove(buff);
                 log.info(Msg.info(self, buff.getName(), "效果消失了"));
             }
         }
     }
 
     public void afterAction(Controller controller) {
-        Collection<BaseIBuff> buffs = new ArrayList<>(set);
+        Collection<BaseIBuff> buffs = new ArrayList<>(this.buffs);
         for (BaseIBuff buff : buffs) {
             if (buff.afterAction(controller, self) == 0) {
                 buff.onRemove(self);
-                set.remove(buff);
+                this.buffs.remove(buff);
                 // TODO 输出信息移到buff中？
                 log.info(Msg.info(self, buff.getName(), "效果消失了"));
             }
@@ -113,26 +114,30 @@ public class BuffControllerImpl implements BuffController {
     }
 
     @Override
-    public <T> void add(Comparable<T> buff0) {
-        final BaseIBuff buff = (BaseIBuff) buff0;
-        for (BaseIBuff iBuff : set) {
-            if (iBuff.getClass() == buff0.getClass()) {
-                if (iBuff.compareTo(buff) <= 0) {
-                    set.remove(iBuff);
-                    set.add(buff);
-                }
-                return;
+    public <T> void add(IBuff buff) {
+        int count = buff.maxCount();
+        List<IBuff> origin = new LinkedList<>();
+        for (BaseIBuff iBuff : buffs) {
+            if (iBuff.getClass().equals(buff.getClass())) {
+                origin.add(iBuff);
+                count--;
+                if (count == 0)
+                    break;
             }
         }
-        set.add(buff);
+        if (count == 0) {
+            final IBuff replace = buff.replace(origin);
+            if (replace == null)
+                return;
+            buffs.remove(replace);
+        }
+        buffs.add((BaseIBuff) buff);
     }
 
     private <T> BaseIBuff find(Class<T> clazz) {
-        for (BaseIBuff iBuff : set) {
-            if (iBuff.getClass() == clazz) {
+        for (BaseIBuff iBuff : buffs)
+            if (clazz.isAssignableFrom(iBuff.getClass()))
                 return iBuff;
-            }
-        }
         return null;
     }
 
@@ -147,7 +152,7 @@ public class BuffControllerImpl implements BuffController {
     }
 
     public Collection<BaseIBuff> getAll() {
-        return set;
+        return buffs;
     }
 
     @Override
@@ -157,74 +162,77 @@ public class BuffControllerImpl implements BuffController {
 
     @Override
     public double getBeDamage() {
-        return beDamage.calc(set);
+        return beDamage.calc(buffs);
     }
 
     @Override
     public double getCure() {
-        return cure.calc(set);
+        return cure.calc(buffs);
     }
 
     @Override
     public double getDamageUp() {
-        return damageUp.calc(set);
+        return damageUp.calc(buffs);
     }
 
     @Override
     public double getFlagDamage() {
-        return flagDamage.calc(set);
+        return flagDamage.calc(buffs);
     }
 
     @Override
     public double getAtkPct() {
-        return atkPct.calc(set);
+        return atkPct.calc(buffs);
     }
 
     @Override
     public double getDefPct() {
-        return defPct.calc(set);
+        return defPct.calc(buffs);
     }
 
     @Override
     public double getSpeed() {
-        return speed.calc(set);
+        return speed.calc(buffs);
     }
 
     @Override
     public double getCritical() {
-        return critical.calc(set);
+        return critical.calc(buffs);
     }
 
     @Override
     public double getCriticalDamage() {
-        return criticalDamage.calc(set);
+        return criticalDamage.calc(buffs);
     }
 
     @Override
     public double getEffectHit() {
-        return effectHit.calc(set);
+        return effectHit.calc(buffs);
     }
 
     @Override
     public double getEffectDef() {
-        return effectDef.calc(set);
+        return effectDef.calc(buffs);
     }
 
     @Override
     public void clear() {
-        final BattleFlag battleFlag = get(BattleFlag.class);
-        for (BaseIBuff iBuff : new ArrayList<>(set))
-            if (iBuff != battleFlag)
-                iBuff.onRemove(self);
-        set.clear();
-        if (battleFlag != null)
-            set.add(battleFlag);
+        final ArrayList<BaseIBuff> newList = new ArrayList<>(buffs);
+        final Iterator<BaseIBuff> iterator = newList.iterator();
+        while (iterator.hasNext()) {
+            final BaseIBuff buff = iterator.next();
+            if (buff.removeOnDie()) {
+                buff.onRemove(self);
+                iterator.remove();
+            }
+        }
+        buffs = newList;
     }
 
     @Override
     public <T> Collection<T> getBuffs(Class<T> clazz) {
         Collection<T> buffs = new ArrayList<>(5);
-        for (BaseIBuff iBuff : set) {
+        for (BaseIBuff iBuff : this.buffs) {
             if (clazz.isAssignableFrom(iBuff.getClass()))
                 buffs.add(clazz.cast(iBuff));
         }

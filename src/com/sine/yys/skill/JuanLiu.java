@@ -1,9 +1,11 @@
 package com.sine.yys.skill;
 
+import com.sine.yys.attacktype.AttackTypeImpl;
 import com.sine.yys.buff.NumIBuff;
 import com.sine.yys.event.AfterActionEvent;
 import com.sine.yys.event.DamageShareEvent;
-import com.sine.yys.event.DieEvent;
+import com.sine.yys.info.TransferType;
+import com.sine.yys.inter.AttackType;
 import com.sine.yys.inter.Entity;
 import com.sine.yys.inter.EventHandler;
 
@@ -42,27 +44,34 @@ public class JuanLiu extends BaseNoTargetSkill implements EventHandler<DamageSha
             last -= 1;
             getSelf().put(LAST, last);
             if (last <= 0)
-                remove(null);
+                remove();
         }
     }
 
-    private void remove(DieEvent event) {
-        for (Entity entity : new ArrayList<>(shared))
-            entity.getBuffController().remove(JuanLiuBuff.class);
+    private void remove() {
+        for (Entity entity : new ArrayList<>(shared)) {
+            final JuanLiuBuff juanLiuBuff = entity.getBuffController().get(JuanLiuBuff.class);
+            if (juanLiuBuff != null && juanLiuBuff.getSrc() == getSelf())
+                entity.getBuffController().remove(juanLiuBuff);
+        }
     }
 
     @Override
-    protected EventHandler<DieEvent> getDieHandler() {
-        return this::remove;
+    protected void onDie() {
+        remove();
     }
 
     @Override
     public void handle(DamageShareEvent event) {
-        final int damage = (int) (event.getTotal() / shared.size());
-        event.getType().setJuanLiu(true);
+        if (event.getType().isJuanLiu()) // 薙魂可以再被涓流分摊，涓流后不再判断涓流
+            return;
+        final int damage = (int) (event.getType().getDamage() / shared.size());
         for (Entity entity : new ArrayList<>(shared))
-            if (entity != event.getTarget())
-                getController().directDamage(event.getEntity(), entity, damage, event.getType());
+            if (entity != event.getTarget()) {
+                AttackType type = new AttackTypeImpl(event.getType(), TransferType.JUAN_LIU);
+                type.setDamage(damage);
+                getController().attack(event.getEntity(), entity, type);
+            }
         event.setLeft(damage);
     }
 

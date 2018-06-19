@@ -8,4 +8,8 @@ import com.sine.yys.inter.base.Event;
  * 保存上下文信息、反馈信息。供{@linkplain com.sine.yys.inter.EventHandler}判断、反馈。
  */
 public abstract class BaseEvent implements Event {
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 }
